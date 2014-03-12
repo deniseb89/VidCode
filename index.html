@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.9.2.custom.css">
         <link rel="stylesheet" href="js/vendor/codemirror-3.22/lib/codemirror.css">
+        <link rel="stylesheet" href="js/vendor/codemirror-3.22/theme/solarized.css">
         <link rel="stylesheet" href="css/codemirror-vidcode.css">
         <link rel="stylesheet" href="css/contentflow.css">
 
@@ -111,8 +112,8 @@
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseTwo">
-         Blur 
-      </a>
+         Blur
+         </a>
     </div>
     <div id="collapseTwo" class="accordion-body collapse">
       <div class="accordion-inner">
@@ -124,7 +125,7 @@
     <div class="accordion-heading">
       <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseThree">
           Vignette
-      </a>
+          </a>
     </div>
     <div id="collapseThree" class="accordion-body collapse">
       <div class="accordion-inner">
@@ -167,8 +168,18 @@
                       
                                               <div class="tabs-2">
 
-                           <!--  <pre id="editor"></pre> -->
-                            <textarea id="codemirror"></textarea>
+                            <textarea id="codemirror">
+  function showEffect() {
+    movie.play();
+    movie.interval(1000, EffectProcessing);
+  }
+
+  effects = {
+      blur: seriously.effect('blur'),
+      vignette: seriously.effect('vignette'),
+      filmgrain: seriously.effect('filmgrain')
+      };                                
+                            </textarea>
 
                         </div>
 

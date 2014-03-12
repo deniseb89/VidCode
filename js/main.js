@@ -23,32 +23,31 @@ target.source = effects.filmgrain;
 
 seriously.go();
 
-  // var greeting = "Good" + ((now.getHours() > 17) ? " evening." : " day.");   
-  $(".runbtn").text(media.paused ? "Play" : "Pause");
+   $(".runbtn").text(media.paused ? "Play" : "Pause");
 
     // Using CodeMirror
-        var editor_text = 
-"\
-  \n\
-  function showEffect() {\n\
-    movie.play();\n\
-    movie.interval(1000, blackAndWhiteProcessing);\n\
-  }\n\
-  \n\
-  function blackAndWhiteProcessing() {\n\
-    foreach (row in movie.pixelRows) {\n\
-      foreach (pixel in row.pixels) {\n\
-        pixel = convertToBlackAndWhite(pixel);\n\
-          }\n\
-      }\n\
-  }\n\
-  \n\
-  effects = {\n\
-      blur: seriously.effect('blur'),\n\
-      vignette: seriously.effect('vignette'),\n\
-      filmgrain: seriously.effect('filmgrain')\n\
-      };\n\
-    ";
+        var editor_text = "Testing";
+// "\
+//   \n\
+//   function showEffect() {\n\
+//     movie.play();\n\
+//     movie.interval(1000, blackAndWhiteProcessing);\n\
+//   }\n\
+//   \n\
+//   function blackAndWhiteProcessing() {\n\
+//     foreach (row in movie.pixelRows) {\n\
+//       foreach (pixel in row.pixels) {\n\
+//         pixel = convertToBlackAndWhite(pixel);\n\
+//           }\n\
+//       }\n\
+//   }\n\
+//   \n\
+//   effects = {\n\
+//       blur: seriously.effect('blur'),\n\
+//       vignette: seriously.effect('vignette'),\n\
+//       filmgrain: seriously.effect('filmgrain')\n\
+//       };\n\
+//     ";
 
 
             var glossary = {
@@ -62,12 +61,13 @@ seriously.go();
                 'foreach' :
 ' * foreach allows you to cycle through all the pixels in your video.  The computer reads each of your pixels in list form (a really loooong list), then paints them on the screen.  This is the secret to video processing!',
                 'effects' :
-' * effects is an object that contains information about each filter you had to your video.'
+' * effects is an object that contains information about each filter you ad dto your video.'
             };
 
             var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
                   value: "function myScript(){return 100;}\n",
                   mode:  "javascript",
+                  theme: "solarized light",
                   lineWrapping: true,
                   lineNumbers: true
                 });
@@ -102,7 +102,7 @@ seriously.go();
             
         
                 var matches = document.querySelectorAll(".cm-number");
-
+                console.log("number of scrubbing nums: "+matches.length);
                 for (var i = 0; i < matches.length; i++)
                     {
                         var match = matches[i];
@@ -116,12 +116,15 @@ match
 
                     }
 
-       myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
+       // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
 
   
     $("#grain_amount").change(function(){
         //editor.gotoLine(9);
+        // var new_text = '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';';
+        //  myCodeMirror.replaceRange(new_text,CodeMirror.Pos(10)),CodeMirror.Pos(13);
        myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
+
     });
 
     $("#blur_amount").change(function(){
