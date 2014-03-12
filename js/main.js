@@ -61,7 +61,7 @@ seriously.go();
                 'foreach' :
 ' * foreach allows you to cycle through all the pixels in your video.  The computer reads each of your pixels in list form (a really loooong list), then paints them on the screen.  This is the secret to video processing!',
                 'effects' :
-' * effects is an object that contains information about each filter you ad dto your video.'
+' * effects is an object that contains information about each filter you add to your video.'
             };
 
             var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
