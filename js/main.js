@@ -27,28 +27,6 @@ seriously.go();
 
     // Using CodeMirror
         var editor_text = "Testing";
-// "\
-//   \n\
-//   function showEffect() {\n\
-//     movie.play();\n\
-//     movie.interval(1000, blackAndWhiteProcessing);\n\
-//   }\n\
-//   \n\
-//   function blackAndWhiteProcessing() {\n\
-//     foreach (row in movie.pixelRows) {\n\
-//       foreach (pixel in row.pixels) {\n\
-//         pixel = convertToBlackAndWhite(pixel);\n\
-//           }\n\
-//       }\n\
-//   }\n\
-//   \n\
-//   effects = {\n\
-//       blur: seriously.effect('blur'),\n\
-//       vignette: seriously.effect('vignette'),\n\
-//       filmgrain: seriously.effect('filmgrain')\n\
-//       };\n\
-//     ";
-
 
             var glossary = {
                 'function': 
@@ -100,9 +78,13 @@ seriously.go();
                 .data('placement', 'right')
                 .tooltip();
             
-        
+                function GetScrubVals(){
+                    $('.cm-number').each(function(){                          
+                    //console.log("val: "+$(this).text());
+                })  
+                }    
+
                 var matches = document.querySelectorAll(".cm-number");
-                console.log("number of scrubbing nums: "+matches.length);
                 for (var i = 0; i < matches.length; i++)
                     {
                         var match = matches[i];
@@ -113,26 +95,21 @@ match
                              Scrubbing.driver.MouseWheel,
                              Scrubbing.driver.Touch
                            ]});
-
+                 //match.addEventListener("mousemove", GetScrubVals())
+                  match.addEventListener("touch", GetScrubVals());
                     }
 
-       // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
-
-  
     $("#grain_amount").change(function(){
-        //editor.gotoLine(9);
-        // var new_text = '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';';
-        //  myCodeMirror.replaceRange(new_text,CodeMirror.Pos(10)),CodeMirror.Pos(13);
-       myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
-
+      myCodeMirror.setSelection(CodeMirror.Pos(11,0),CodeMirror.Pos(12,0))
     });
 
     $("#blur_amount").change(function(){
-       myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
+      myCodeMirror.setSelection(CodeMirror.Pos(12,0),CodeMirror.Pos(13,0))     
     });
 
     $("#vignette_amount").change(function(){
-       myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
+      myCodeMirror.setSelection(CodeMirror.Pos(13,0),CodeMirror.Pos(14,0))
+      // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
     });
 
     $(".tab2").click(function(){
@@ -182,39 +159,8 @@ match
       }
     });
 
-    $( "#sortable" ).sortable({
-        revert: true
-    });
-    $( "#draggable" ).draggable({
-      connectToSortable: "#sortable",
-      helper: "clone",
-      revert: "invalid"
-    });
+    $(".tab2").click(GetScrubVals);
 
-    $( "#draggable2" ).draggable({
-      connectToSortable: "#sortable",
-      helper: "clone",
-      revert: "invalid",
-      stop: function( event, ui ) {               
-        // editor.setValue(editor_text);  
-      }
-
-    });
-
-    $( "#draggable3" ).draggable({
-      connectToSortable: "#sortable",
-      helper: "clone",
-      revert: "invalid"
-    });
-
-    $( "#draggable4" ).draggable({
-      connectToSortable: "#sortable",
-      helper: "clone",
-      revert: "invalid",
-      stop: function( event, ui ) {
-        // editor.setValue(editor_text);
-      }
-    });
     $( "ul, li" ).disableSelection();
 
        },delay)
