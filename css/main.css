@@ -120,7 +120,7 @@ textarea {
 
 .video2 {
     z-index: 5;
-    margin-top: 10%;
+    margin-top: 25%;
     width: 100%;
 }
 
@@ -361,6 +361,10 @@ ul{
     -webkit-animation-duration: 150s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-iteration-count: infinite;
+}
+
+#effects.active{
+    height: 0;
 }
 
 #controls {
