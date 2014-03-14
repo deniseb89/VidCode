@@ -107,8 +107,20 @@ textarea {
 }
 
 /* ==========================================================================
-   Author's custom styles
+   VidCode custom styles
    ========================================================================== */
+/*Header */
+.nav{background-color: #e8f4ed;}
+.nav li a:hover{background-color: #e8f4ed!important; border: 1px solid transparent!important;}
+.nav a{
+    font-family: 'Open Sans', sans-serif!important;
+    font-weight: 700;
+    font-size: 1.7em;
+    color: #319665;
+}
+.nav .small{margin-top: 6px;}
+.nav a:hover{color: #1B4F33; margin-bottom: -1px;}
+.nav > li > a {padding: 3px 15px!important;}
 
 /* First and Second Video */
 
@@ -283,11 +295,6 @@ ul{
 .activebtn{
 }
 
-.nav a{
-    font-family: 'Open Sans', sans-serif!important;
-    font-weight: 700;
-    font-size: 1.5em;
-}
 
 .small{
     font-size: 1.1em!important;
