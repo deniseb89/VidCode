@@ -27,7 +27,6 @@ html {
 
 body{
     font-family: 'Open Sans', sans-serif!important;
-    overflow: hidden;
     height: 100%;
 }
 
@@ -120,12 +119,9 @@ textarea {
 }
 
 .video2 {
-    position: absolute;
     z-index: 5;
-    left: 200px;
-    top: 100px;
-    width: 600px;
-    height: 450px;
+    margin-top: 10%;
+    width: 100%;
 }
 
 /* Popup upload video */
@@ -260,7 +256,6 @@ top: 235px;
     width: 480px!important;
     z-index: 501;
     background-color: #fff;
-    margin-left: -500px;
 }
 
 .hidden2{
@@ -283,11 +278,6 @@ top: 235px;
 
 ul{
     list-style-type: none;
-}
-
-.btn-primary{
-    font-weight: 600!important;
-    height: 45px;
 }
 
 .activebtn{
@@ -356,8 +346,6 @@ ul{
 }
 
 .overlay {
-    margin-left: 400px;
-    width: 67%!important;
     height: 800px;
     background: #81DBBA; /* Old browsers */
     background: -moz-linear-gradient(110deg, #81DBBA 15%, #7D43A3 50%, #81DBBA 80%); /* FF3.6+ */
@@ -471,7 +459,6 @@ canvas{
     clip: rect(0 0 0 0);
     height: 1px;
     margin: -1px;
-    overflow: hidden;
     padding: 0;
     position: absolute;
     width: 1px;
