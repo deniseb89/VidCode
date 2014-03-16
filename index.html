@@ -44,22 +44,33 @@
 
         <!-- Add your site or application content here -->
         <ul class="nav nav-tabs">
-            <li><a id="logo" href="#">VidCode</a></li>
-            <li class="pull-right"><a class="small" href="#">Sign in</a></li>
-            <li class="pull-right"><a class="small" href="#">Sign up</a></li>
+            <li><a href="#"><img src="img/logo.png"></a></li>
+            <li class="pull-right">
+              <a class="small" href="http://vidcode.io/" target="_blank">
+              <span class="glyphicon glyphicon-star"></span>About & Updates
+            </a>
+            </li>
 
         </ul>
 
 
-          <div class="ContentFlow">
-                        <div class="loadIndicator"><div class="indicator"></div></div>
-                        <div class="flow">
-                         <img class="film" src="img/filmstrip.png" title="filmstrip"/>
-                                <!-- Add as many items as you like. -->
-                        </div>
-                        <div class="globalCaption"></div>
-                        <div class="scrollbar"><div class="slider"><div class="position"></div></div></div>
-                        </div>
+          <div class="ContentFlow hidden">
+            <div class="loadIndicator">
+              <div class="indicator">
+              </div>
+            </div>
+            <div class="flow">
+                <img class="film" src="img/filmstrip.png" title="filmstrip"/>
+                <!-- Add as many items as you like. -->
+            </div>
+            <div class="globalCaption"></div>
+            <div class="scrollbar">
+              <div class="slider">
+                <div class="position">
+                </div>
+              </div>
+            </div>
+          </div>
 
         <div class="container-fluid">
 
@@ -67,7 +78,7 @@
                 Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" />
                 <button class="btn btn-primary uploadbtn">Upload</button>
             </div>
-            <div class="row getting-started">
+            <div class="row hidden">
                 <div clsas="col-md-4">
                     <h3>Get Started</h3>
                     <button class="large-button layer1"><img class="checkbtn"  src="img/checked.png">Hello World</button>
@@ -78,65 +89,66 @@
                 </div>
             </div>
 
-            <div class="displayfirst">
-                <div class="col-md-4">
-                    <button class="large-button layer2">Pixelate</button>
-                    <button class="large-button layer2">Blur</button>
-                    <button class="large-button layer2">Hue</button>
-                    <button class="large-button layer2">Invert</button>
-                    <button class="large-button layer2">Alpha</button>
-                </div>
-            </div>
             <div class="row">
 
-                <div class="col-md-5 displaysecond">
+                <div class="col-md-6">
                     <!-- <img class="xbtn" src="img/xbtn.png"> -->
 
-                    <div class="methods">
+                  <div class="methods">
 
-    <div id="effects">
+                    <div id="effects">
 
-<div class="accordion" id="accordcontrol">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseOne">
-         Film Grain
-      </a>
-    </div>
-    <div id="collapseOne" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <div><label for="amount"></label><input type="range" id="grain_amount" min="0" max="1" step="0.01" value="0"/></div>
-      </div>
-    </div>
-  </div>
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseTwo">
-         Blur
-         </a>
-    </div>
-    <div id="collapseTwo" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <div><label for="amount"></label><input type="range" id="blur_amount" min="0" max=".25" step="0.001" value="0"/></div>
-    </div>
-      </div>
-    </div>
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseThree">
-          Vignette
-          </a>
-    </div>
-    <div id="collapseThree" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <div><label for="amount"></label><input type="range" id="vignette_amount" min="0" max="10" step="1" value="1"/></div>
-    </div>
-      </div>
-    </div>
+                      <div class="accordion" id="accordcontrol">
+                        <div class="accordion-group">
+                          <div class="accordion-heading">
+                            <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseOne">
+                              Film Grain
+                            </a>
+                          </div>
+                          <div id="collapseOne" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                              <div>
+                                <label for="amount">
+                                </label>
+                                <input type="range" id="grain_amount" min="0" max="1" step="0.01" value="0"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-group">
+                          <div class="accordion-heading">
+                            <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseTwo">
+                              Blur
+                            </a>
+                          </div>
+                          <div id="collapseTwo" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                              <div>
+                                <label for="amount"></label><input type="range" id="blur_amount" min="0" max=".25" step="0.001" value="0"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-group">
+                        <div class="accordion-heading">
+                          <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseThree">
+                          Vignette
+                          </a>
+                        </div>
+                        <div id="collapseThree" class="accordion-body collapse">
+                          <div class="accordion-inner">
+                            <div>
+                              <label for="amount">
+                              </label>
+                              <input type="range" id="vignette_amount" min="0" max="10" step="1" value="1"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-  </div>
+                    </div>
 
-</div>
+                  </div>
 
 <!--                         <div class="col-md-5 pullLeft">
                             <ul><li id="draggable" class="btn btn-method">Film Grain</button></li></ul>
@@ -147,14 +159,12 @@
                             <ul><li id="draggable4" class="btn btn-method">Exposure</button></li></ul>
                         </div> -->
                     </div>
-                               <div class="clearfix">
-                            <button type="button" class="runbtn btn btn-primary pullRight">Play/Pause</button>
-                        </div>
+                    <div class="clearfix">
+                        <button type="button" class="runbtn btn btn-danger pullRight">Play/Pause</button>
+                        <button type="button" class="slidebtn btn btn-primary pullRight">Hide Sliders</button>
+                    </div>
                     <div id="tabs">
 
-                        <div class="btn-group">
-                          <button type="button" class="tab2 btn btn-default">Code Edit</button>
-                        </div>
 
 <!--                         <div class="tabs-1 hidden">
                             <ul id="sortable">
@@ -166,7 +176,7 @@
                             </ul>
                         </div> -->
 
-                                              <div class="tabs-2">
+                      <div class="tabs-2">
 
                             <textarea id="codemirror">
   function showEffect() {
@@ -193,25 +203,25 @@ effects.vignette.amount = 0;
                 </div>
 
 <!--                 <div class="col-md-7 overlay">-->
-                <div class="col-md-7 overlay">
+                <div class="col-md-6 overlay">
 
-            <video class="video1 hidden" id="myvideo" autoplay loop>
-                <source src="vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
-            </video>
+                  <video class="video1 hidden" id="myvideo" autoplay loop>
+                      <source src="vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                  </video>
 
                   <canvas class="video2 hidden" id="canvas"></canvas>
 
-                    <div class="buttons">
+                  <div class="buttons">
                         <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
-                        <button type="button" class="btn btn-primary uploadfirst">Import a Video</button>
-<!--                         <button type="button" class="btn btn-primary uploadfirst">Import from Instagram</button> -->
-                    </div>
-                    <div class="clearHover">
-                    </div>
-                </div>
-            </div>
+                    <button type="button" class="btn btn-primary uploadfirst">Import a Video</button>
 
-        </div>
+                  </div>
+                  <div class="clearHover">
+                  </div>
+                </div>
+              </div>
+
+            </div>
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
@@ -225,5 +235,7 @@ effects.vignette.amount = 0;
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>
+
+
     </body>
 </html>

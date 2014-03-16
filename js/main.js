@@ -11,7 +11,7 @@ var media = document.getElementById('myvideo');
     vignette: seriously.effect('vignette'),
     blur: seriously.effect('blur'),
     filmgrain: seriously.effect('filmgrain')
-    };  
+    };
 
 effects.vignette.source = video;
 effects.vignette.amount = '#vignette_amount';
@@ -29,7 +29,7 @@ seriously.go();
         var editor_text = "Testing";
 
             var glossary = {
-                'function': 
+                'function':
 'In vidcode, a function is a block of code which executes a certain behavior.\
  * You can \"call\" on a function to complete its behavior in other parts of your code (and as many times as you want).\
  * Our vidcode has 3 functions: pixelate(), blackandWhiteProcessing(), and scrubProcessing().',
@@ -77,12 +77,12 @@ seriously.go();
                 .data('toggle', 'tooltip')
                 .data('placement', 'right')
                 .tooltip();
-            
+
                 function GetScrubVals(){
-                    $('.cm-number').each(function(){                          
+                    $('.cm-number').each(function(){
                     //console.log("val: "+$(this).text());
-                })  
-                }    
+                })
+                }
 
                 var matches = document.querySelectorAll(".cm-number");
                 for (var i = 0; i < matches.length; i++)
@@ -104,7 +104,7 @@ match
     });
 
     $("#blur_amount").change(function(){
-      myCodeMirror.setSelection(CodeMirror.Pos(12,0),CodeMirror.Pos(13,0))     
+      myCodeMirror.setSelection(CodeMirror.Pos(12,0),CodeMirror.Pos(13,0))
     });
 
     $("#vignette_amount").change(function(){
@@ -124,7 +124,7 @@ match
     $(".layer1").click(function(){
         $(".displaysecond").animate({
             "margin-left": 0}, "ease", function(){
-                $(".displayfirst").addClass("hidden2"); 
+                $(".displayfirst").addClass("hidden2");
             });
         $(".tabs-1").removeClass("hidden");
     });
@@ -152,12 +152,28 @@ match
         $(".buttons").addClass("hidden");
          if (media.paused) {
           media.play();
-          $(this).text('Pause');                   
+          $(this).text('Pause');
         } else {
           media.pause();
-          $(this).text('Play');                   
+          $(this).text('Play');
       }
     });
+
+
+    $('.slidebtn').click(function() {
+      $('#effects').toggleClass("active");
+        if ($(this).text() == "Show Sliders")
+          {
+             $(this).text("Hide Sliders");
+          }
+          else
+          {
+             $(this).text("Show Sliders");
+          };
+    });
+
+
+
 
     $(".tab2").click(GetScrubVals);
 
