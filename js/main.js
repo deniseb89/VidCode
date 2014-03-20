@@ -79,10 +79,13 @@ seriously.go();
                 .tooltip();
 
                 function GetScrubVals(){
-                    $('.cm-number').each(function(){
-                    //console.log("val: "+$(this).text());
-                })
-                }
+                    // $('.cm-number').each(function(){
+                
+                    effects.filmgrain.amount = parseFloat($(matches[0]).text());
+                    effects.blur.amount = parseFloat($(matches[1]).text());
+                    effects.vignette.amount = parseFloat($(matches[2]).text());
+                    // console.log();
+              }
 
                 var matches = document.querySelectorAll(".cm-number");
                 for (var i = 0; i < matches.length; i++)
@@ -92,11 +95,13 @@ seriously.go();
 new Scrubbing (
 match
               , { driver : [ Scrubbing.driver.Mouse,
-                             Scrubbing.driver.MouseWheel,
-                             Scrubbing.driver.Touch
+                             Scrubbing.driver.MouseWheel
+                             //Scrubbing.driver.Touch
                            ]});
-                 //match.addEventListener("mousemove", GetScrubVals())
-                  match.addEventListener("touch", GetScrubVals());
+                  //limit scrubbing range
+                  //add IDs to each effect handler
+                 match.addEventListener("mousemove", GetScrubVals,false);
+                 match.addEventListener("touch", GetScrubVals,false);
                     }
 
     $("#grain_amount").change(function(){
