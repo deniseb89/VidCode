@@ -88,24 +88,28 @@ seriously.go();
               }
 
                 var matches = document.querySelectorAll(".cm-number");
+
+// var VigArr = ['0','1','2','3','4','5','6','7','8','9'];
+
                 for (var i = 0; i < matches.length; i++)
                     {
                         var match = matches[i];
-
-new Scrubbing (
+new Scrubbing ( 
 match
-              , { driver : [ Scrubbing.driver.Mouse,
+              , {driver : [ Scrubbing.driver.Mouse,
                              Scrubbing.driver.MouseWheel
                              //Scrubbing.driver.Touch
                            ]});
                   //limit scrubbing range
                   //add IDs to each effect handler
+
                  match.addEventListener("mousemove", GetScrubVals,false);
                  match.addEventListener("touch", GetScrubVals,false);
                     }
 
     $("#grain_amount").change(function(){
       myCodeMirror.setSelection(CodeMirror.Pos(11,0),CodeMirror.Pos(12,0))
+      // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';'); 
     });
 
     $("#blur_amount").change(function(){
