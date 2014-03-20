@@ -127,13 +127,19 @@ textarea {
 .video1{
     position: absolute;
     z-index: 5;
-    margin-left: 45px;
+    margin-left: 245px;
+    width: 320px;
+    height: 240px;
 }
 
 .video2 {
     z-index: 5;
+    margin-left: 245px;
+    margin-bottom: 445px;
     margin-top: 25%;
     width: 100%;
+    width: 640px;
+    height: 480px;
 }
 
 /* Popup upload video */
