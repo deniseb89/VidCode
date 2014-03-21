@@ -134,12 +134,8 @@ textarea {
 
 .video2 {
     z-index: 5;
-    margin-left: 245px;
-    margin-bottom: 445px;
-    margin-top: 25%;
+    padding-top: 5%;
     width: 100%;
-    width: 640px;
-    height: 480px;
 }
 
 /* Popup upload video */
