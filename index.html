@@ -103,7 +103,7 @@
                           <div class="accordion-heading">
                             <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseOne">
                               Film Grain
-                            </a>
+                            </a>                          
                           </div>
                           <div id="collapseOne" class="accordion-body collapse">
                             <div class="accordion-inner">
@@ -147,17 +147,17 @@
                       </div>
 
                     </div>
-
-                  </div>
-
-<!--                         <div class="col-md-5 pullLeft">
-                            <ul><li id="draggable" class="btn btn-method">Film Grain</button></li></ul>
-                            <ul><li id="draggable2" class="btn btn-method">Vignette</button></li></ul>
+                        <div class="col-md-5 pullLeft">
+                            <ul><li id="filmdrag" class="btn btn-method draggable">Film Grain</li></ul>
+                            <ul><li id="vigdrag" class="btn btn-method draggable">Vignette</li></ul>
                         </div>
                         <div class="col-md-6">
-                            <ul><li id="draggable3" class="btn btn-method">Blur</button></li></ul>
-                            <ul><li id="draggable4" class="btn btn-method">Exposure</button></li></ul>
-                        </div> -->
+                           <ul><li id="blurdrag" class="btn btn-method draggable">Blur</li></ul>
+                            <ul><li id="expdrag" class="btn btn-method draggable">N/A</li></ul>
+                        </div>
+                  </div>
+
+
                     </div>
                     <div class="clearfix">
                         <button type="button" class="runbtn btn btn-danger pullRight">Play/Pause</button>
@@ -165,19 +165,7 @@
                     </div>
                     <div id="tabs">
 
-
-<!--                         <div class="tabs-1 hidden">
-                            <ul id="sortable">
-                              <li class="hidden2 ui-state-default"></li>
-                              <li class="hidden2 ui-state-default"></li>
-                              <li class="hidden2 ui-state-default"></li>
-                              <li class="hidden2 ui-state-default"></li>
-                              <li class="hidden2 ui-state-default"></li>
-                            </ul>
-                        </div> -->
-
                       <div class="tabs-2">
-
                             <textarea id="codemirror">
   function showEffect() {
     movie.play();

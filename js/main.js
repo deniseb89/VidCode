@@ -78,17 +78,34 @@ seriously.go();
                 .data('placement', 'right')
                 .tooltip();
 
-                function GetScrubVals(){
-                    // $('.cm-number').each(function(){
-                
-                    effects.filmgrain.amount = parseFloat($(matches[0]).text());
-                    effects.blur.amount = parseFloat($(matches[1]).text());
-                    effects.vignette.amount = parseFloat($(matches[2]).text());
-                    // console.log();
+              function GetScrubVals(){
+                    // $('.cm-number').each(function(){}           
+                  effects.filmgrain.amount = parseInt($(matches[0]).text())/10;
+                  effects.blur.amount = parseInt($(matches[1]).text())/100;
+                  effects.vignette.amount = Math.round(parseInt($(matches[2]).text()));
               }
 
                 var matches = document.querySelectorAll(".cm-number");
 
+var VigArr = {
+  
+    init : function ( element ) {
+      element.node.dataset.value =  0;
+    },
+  
+    start : function ( element ){
+      return parseInt ( element.node.dataset.value, 10 );
+    }, 
+    
+    change : function ( element, value ) { 
+      value = value > 0 ? value : 0;
+      value = value < 10 ? value: 10;
+      element.node.dataset.value = value;
+      element.node.textContent = value;
+    },
+    
+    end : function () { }
+};
 // var VigArr = ['0','1','2','3','4','5','6','7','8','9'];
 
                 for (var i = 0; i < matches.length; i++)
@@ -96,9 +113,9 @@ seriously.go();
                         var match = matches[i];
 new Scrubbing ( 
 match
-              , {driver : [ Scrubbing.driver.Mouse,
-                             Scrubbing.driver.MouseWheel
-                             //Scrubbing.driver.Touch
+              , {adapter: VigArr, driver : [ Scrubbing.driver.Mouse,
+                             Scrubbing.driver.MouseWheel,
+                             Scrubbing.driver.Touch
                            ]});
                   //limit scrubbing range
                   //add IDs to each effect handler
@@ -108,6 +125,7 @@ match
                     }
 
     $("#grain_amount").change(function(){
+      effects.vignette.amount = '#vignette_amount';
       myCodeMirror.setSelection(CodeMirror.Pos(11,0),CodeMirror.Pos(12,0))
       // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';'); 
     });
@@ -120,6 +138,44 @@ match
       myCodeMirror.setSelection(CodeMirror.Pos(13,0),CodeMirror.Pos(14,0))
       // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
     });
+
+
+    $(".tabs-2").droppable({
+        drop: function( event, ui ) {
+          if(ui.draggable.attr("id") =="filmdrag"){
+                myCodeMirror.setSelection(CodeMirror.Pos(11,0),CodeMirror.Pos(12,0))
+          } else if (ui.draggable.attr("id") =="blurdrag"){
+                myCodeMirror.setSelection(CodeMirror.Pos(12,0),CodeMirror.Pos(13,0))
+          } else if(ui.draggable.attr("id") =="vigdrag"){
+                myCodeMirror.setSelection(CodeMirror.Pos(13,0),CodeMirror.Pos(14,0))
+          }
+        }
+});
+
+    $( "#filmdrag" ).draggable({
+       helper: "clone",
+       revert: "invalid"
+    });
+
+    $( "#vigdrag" ).draggable({
+      helper: "clone",
+      revert: "invalid",
+    });
+
+    $( "#blurdrag" ).draggable({
+      helper: "clone",
+      revert: "invalid"
+    });
+
+    $( "#expdrag" ).draggable({
+      connectToSortable: "#sortable",
+      helper: "clone",
+      revert: "invalid",
+      stop: function( event, ui ) {
+        // editor.setValue(editor_text);
+      }
+    });
+
 
     $(".tab2").click(function(){
         $(".tabs-2").removeClass("hidden");
@@ -180,11 +236,6 @@ match
              $(this).text("Show Sliders");
           };
     });
-
-
-
-
-    $(".tab2").click(GetScrubVals);
 
     $( "ul, li" ).disableSelection();
 
