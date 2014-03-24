@@ -79,7 +79,7 @@ seriously.go();
                 .tooltip();
 
               function GetScrubVals(){
-                    // $('.cm-number').each(function(){}           
+                    // $('.cm-number').each(function(){}
                   effects.filmgrain.amount = parseInt($(matches[0]).text())/10;
                   effects.blur.amount = parseInt($(matches[1]).text())/100;
                   effects.vignette.amount = Math.round(parseInt($(matches[2]).text()));
@@ -88,22 +88,22 @@ seriously.go();
                 var matches = document.querySelectorAll(".cm-number");
 
 var VigArr = {
-  
+
     init : function ( element ) {
       element.node.dataset.value =  0;
     },
-  
+
     start : function ( element ){
       return parseInt ( element.node.dataset.value, 10 );
-    }, 
-    
-    change : function ( element, value ) { 
+    },
+
+    change : function ( element, value ) {
       value = value > 0 ? value : 0;
       value = value < 10 ? value: 10;
       element.node.dataset.value = value;
       element.node.textContent = value;
     },
-    
+
     end : function () { }
 };
 // var VigArr = ['0','1','2','3','4','5','6','7','8','9'];
@@ -111,7 +111,7 @@ var VigArr = {
                 for (var i = 0; i < matches.length; i++)
                     {
                         var match = matches[i];
-new Scrubbing ( 
+new Scrubbing (
 match
               , {adapter: VigArr, driver : [ Scrubbing.driver.Mouse,
                              Scrubbing.driver.MouseWheel,
@@ -127,7 +127,7 @@ match
     $("#grain_amount").change(function(){
       effects.vignette.amount = '#vignette_amount';
       myCodeMirror.setSelection(CodeMirror.Pos(11,0),CodeMirror.Pos(12,0))
-      // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';'); 
+      // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';');
     });
 
     $("#blur_amount").change(function(){
@@ -210,6 +210,8 @@ match
         $(".video2").removeClass("hidden");
         $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
+        $(".buttons").addClass("hidden");
+        $(".runbtn").removeClass("hidden");
     });
 
     $(".runbtn").click(function(){
@@ -225,17 +227,6 @@ match
     });
 
 
-    $('.slidebtn').click(function() {
-      $('#effects').toggleClass("active");
-        if ($(this).text() == "Show Sliders")
-          {
-             $(this).text("Hide Sliders");
-          }
-          else
-          {
-             $(this).text("Show Sliders");
-          };
-    });
 
     $( "ul, li" ).disableSelection();
 

@@ -77,6 +77,7 @@
             <div class="popup hidden">
                 Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" />
                 <button class="btn btn-primary uploadbtn">Upload</button>
+
             </div>
             <div class="row hidden">
                 <div clsas="col-md-4">
@@ -90,83 +91,35 @@
             </div>
 
             <div class="row">
+              <div class="heading_bg">
 
-                <div class="col-md-6">
-                    <!-- <img class="xbtn" src="img/xbtn.png"> -->
+              <div class="col-md-5">
+                <div class="heading">video</div>
+                <div class="overlay">
+                  <video class="video1 hidden" id="myvideo" autoplay loop>
+                      <source src="vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                  </video>
 
-                  <div class="methods">
+                  <canvas class="video2 hidden" id="canvas"></canvas>
 
-                    <div id="effects">
+                  <div class="buttons">
+                        <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
+                    <button type="button" class="btn btn-primary uploadfirst">Import a Video</button>
+                    <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
+                      <input type="file" name="file" value="Choose a file" />
+                      <input type="submit" value="Upload" />
 
-                      <div class="accordion" id="accordcontrol">
-                        <div class="accordion-group">
-                          <div class="accordion-heading">
-                            <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseOne">
-                              Film Grain
-                            </a>                          
-                          </div>
-                          <div id="collapseOne" class="accordion-body collapse">
-                            <div class="accordion-inner">
-                              <div>
-                                <label for="amount">
-                                </label>
-                                <input type="range" id="grain_amount" min="0" max="1" step="0.01" value="0"/>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="accordion-group">
-                          <div class="accordion-heading">
-                            <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseTwo">
-                              Blur
-                            </a>
-                          </div>
-                          <div id="collapseTwo" class="accordion-body collapse">
-                            <div class="accordion-inner">
-                              <div>
-                                <label for="amount"></label><input type="range" id="blur_amount" min="0" max=".25" step="0.001" value="0"/>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle btn-method" data-toggle="collapse" data-parent="#accordcontrol" href="#collapseThree">
-                          Vignette
-                          </a>
-                        </div>
-                        <div id="collapseThree" class="accordion-body collapse">
-                          <div class="accordion-inner">
-                            <div>
-                              <label for="amount">
-                              </label>
-                              <input type="range" id="vignette_amount" min="0" max="10" step="1" value="1"/>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                        <div class="col-md-5 pullLeft">
-                            <ul><li id="filmdrag" class="btn btn-method draggable">Film Grain</li></ul>
-                            <ul><li id="vigdrag" class="btn btn-method draggable">Vignette</li></ul>
-                        </div>
-                        <div class="col-md-6">
-                           <ul><li id="blurdrag" class="btn btn-method draggable">Blur</li></ul>
-                            <ul><li id="expdrag" class="btn btn-method draggable">N/A</li></ul>
-                        </div>
+                    </form>
                   </div>
+                  <button type="button" class="runbtn btn btn-danger pullRight hidden">Play/Pause</button>
+                </div>
+              </div>
+              <div class="col-md-5 pull_left">
+                <div class="heading">code</div>
+                  <div id="tabs">
 
-
-                    </div>
-                    <div class="clearfix">
-                        <button type="button" class="runbtn btn btn-danger pullRight">Play/Pause</button>
-                        <button type="button" class="slidebtn btn btn-primary pullRight">Hide Sliders</button>
-                    </div>
-                    <div id="tabs">
-
-                      <div class="tabs-2">
-                            <textarea id="codemirror">
+                    <div class="tabs-2">
+                      <textarea id="codemirror">
   function showEffect() {
     movie.play();
     movie.interval(___, EffectProcessing);
@@ -181,38 +134,34 @@
 effects.filmgrain.amount = 0;
 effects.blur.amount = 0;
 effects.vignette.amount = 0;
-                            </textarea>
-
-                        </div>
-
+                      </textarea>
 
                     </div>
 
-                </div>
-
-<!--                 <div class="col-md-7 overlay">-->
-                <div class="col-md-6 overlay">
-
-                  <video class="video1 hidden" id="myvideo" autoplay loop>
-                      <source src="vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
-                  </video>
-
-                  <canvas class="video2 hidden" id="canvas"></canvas>
-
-                  <div class="buttons">
-                        <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
-                    <button type="button" class="btn btn-primary uploadfirst">Import a Video</button>
-                        <form method="POST" action="/upload" enctype="multipart/form-data">
-                            <input type="file" name="file" value="Choose a file" />
-                            <input type="submit" value="Upload" />
-
-                        </form>
-
-                  </div>
-                  <div class="clearHover">
                   </div>
                 </div>
+
+              <div class="col-md-2">
+                <div class="heading">
+                  add effects / learn more
+                </div>
+
+                <div class="methods">
+
+                  <ul><li id="filmdrag" class="btn btn-method draggable">Film Grain</li>
+
+                  <li id="vigdrag" class="btn btn-method draggable">Vignette</li>
+
+
+                  <li id="blurdrag" class="btn btn-method draggable">Blur</li>
+
+                  <li id="expdrag" class="btn btn-method draggable">N/A</li></ul>
+
+                </div>
+
+
               </div>
+
 
             </div>
 

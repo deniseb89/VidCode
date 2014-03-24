@@ -106,6 +106,8 @@ textarea {
     padding: 0.2em 0;
 }
 
+.row{background-color: #fdf6e3;}
+
 /* ==========================================================================
    VidCode custom styles
    ========================================================================== */
@@ -134,10 +136,18 @@ textarea {
 
 .video2 {
     z-index: 5;
-    padding-top: 5%;
-    width: 100%;
+    padding-top: 7%;
+    width: 103%;
 }
 
+.pull_left{margin-left: -31px;
+-webkit-box-shadow: 3px 2px 8px 0px rgba(50, 50, 50, 0.4);
+-moz-box-shadow:    3px 2px 8px 0px rgba(50, 50, 50, 0.4);
+box-shadow:         3px 2px 8px 0px rgba(50, 50, 50, 0.4);}
+
+
+.heading{background-color: #441B4B; padding: 5px 0; text-align: center; color: #fdf6e3; font-weight: 700; z-index: 500000; position: relative; font-size: .9em;}
+.heading_bg{background-color: #441B4B; height: 28px; position: relative;z-index: 5000001;}
 /* Popup upload video */
 .pops{
     width: 400px;
@@ -251,11 +261,8 @@ textarea {
 }
 
 .runbtn{
-position: center;
-z-index: 10000000;
-left: 100px;
-top: 235px;
-    }
+    margin: 0 30%!important;
+}
 
 /* main screen and edit menu */
 
@@ -314,6 +321,8 @@ ul{
     margin-top: 35px;
 }
 
+.methods ul{padding: 0 0 0 10px!important;}
+
 #editor {
     margin: 0;
     position: absolute;
@@ -326,17 +335,18 @@ ul{
 }
 
 .buttons{
-    margin: 200px auto;
+    padding: 150px;
     display: block;
     width: 100px;
     z-index: 100;
     position: relative;
 }
 
+
+
 .btn-method{
     background-color: #44A682;
     color: #fff;
-    height: 40px;
     margin-right: 15px!important;
     }
 .btn-method:hover{
@@ -355,7 +365,9 @@ ul{
 }
 
 .overlay {
-    height: 800px;
+    padding-right: 15px;
+    margin-left: -15px;
+    height: 500px;
     background: #81DBBA; /* Old browsers */
     background: -moz-linear-gradient(110deg, #81DBBA 15%, #7D43A3 50%, #81DBBA 80%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right bottom, color-stop(15%,#81DBBA), color-stop(50%,#7D43A3), color-stop(80%,#81DBBA)); /* Chrome,Safari4+ */
