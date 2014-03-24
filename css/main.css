@@ -23,11 +23,13 @@ html {
     font-size: 1em;
     line-height: 1.4;
     height: 100%;
+    background-color: #fdf6e3;
 }
 
 body{
     font-family: 'Open Sans', sans-serif!important;
     height: 100%;
+    background-color: #fdf6e3!important;
 }
 
 h3{
@@ -238,6 +240,8 @@ box-shadow:         3px 2px 8px 0px rgba(50, 50, 50, 0.4);}
 
 }
 
+
+
 .large-button:hover{
   /* Safari 4-5, Chrome 1-9 */
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#44A682), to(#44A682));
@@ -345,7 +349,7 @@ ul{
 
 
 .btn-method{
-    background-color: #44A682;
+    background-color: #319665;
     color: #fff;
     margin-right: 15px!important;
     }
@@ -446,6 +450,12 @@ canvas{
     position: relative;
     z-index: 1000;
 }
+
+/* The effects/ learn more area */
+.heading .switch{cursor: pointer;}
+.heading .active{color: #D6BAE8;}
+
+
 
 
 /* ==========================================================================

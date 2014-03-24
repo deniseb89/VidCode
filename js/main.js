@@ -1,6 +1,8 @@
 
 $( document ).ready(function() {
 
+  $('.learnMore').hide();
+
     var delay=1000//1 seconds
     setTimeout(function(){
 var media = document.getElementById('myvideo');
@@ -224,6 +226,20 @@ match
           media.pause();
           $(this).text('Play');
       }
+    });
+
+    $('.switchlearn').click(function(){
+      $('.switchlearn').removeClass('active');
+      $('.switcheffect').addClass('active');
+      $('.methods').hide();
+      $('.learnMore').fadeIn();
+    });
+
+    $('.switcheffect').click(function(){
+      $('.switcheffect').removeClass('active');
+      $('.switchlearn').addClass('active');
+      $('.learnMore').hide();
+      $('.methods').fadeIn();
     });
 
 
