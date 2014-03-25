@@ -128,9 +128,9 @@ seriously.go();
 
 
  $("#image").hover($('#greeting').modal());
-  $("#play").hover(function () { 
-  $('#code').modal()
-  });
+  // $("#play").hover(function () { 
+  // $('#code').modal()
+  // });
 
 //$("#play").hover($('#pause').modal());
 
