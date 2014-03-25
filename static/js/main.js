@@ -126,6 +126,16 @@ seriously.go();
 
             }
 
+
+ $("#image").hover($('#greeting').modal());
+  $("#play").hover(function () { 
+  $('#code').modal()
+  });
+
+//$("#play").hover($('#pause').modal());
+
+//$("#image").hover($('#greeting').modal());
+
 var VigArr = {
 
     init : function ( element ) {

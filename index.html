@@ -76,7 +76,7 @@
 
             <div class="popup hidden">
                 Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" />
-                <button class="btn btn-primary uploadbtn">Upload</button>
+                <!-- <button class="btn btn-primary uploadbtn">Upload</button> -->
             </div>
             <div class="row hidden">
                 <div clsas="col-md-4">
@@ -191,7 +191,7 @@ effects.vignette.amount = 0;
                 </div>
 
 <!--                 <div class="col-md-7 overlay">-->
-                <div class="col-md-6 overlay">
+                <div class="col-md-6 overlay" >
 
                   <video class="video1 hidden" id="myvideo" autoplay loop>
                       <source src="vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
@@ -199,18 +199,38 @@ effects.vignette.amount = 0;
 
                   <canvas class="video2 hidden" id="canvas"></canvas>
 
+
+
+
+
+                   <div class="modal fade" id="greeting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                   <div class="modal-dialog">
+                    <div class="modal-content">
+                   <div class="modal-header instruct-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="img/xbtn.png"></button>
+                   <h4 class="modal-title">Welcome!</h4>
+                  </div>
+                    <div class="modal-body instruct-body">
+                   <p>Welcome to VidCode! We'll step you through this process. Let's start by importing a video.</p>
+                   <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+                   </div>
+                    </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
                   <div class="buttons">
                         <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
-                    <button type="button" class="btn btn-primary uploadfirst">Import a Video</button>
-                        <form method="POST" action="/upload" enctype="multipart/form-data">
+                    <button type="button" class="btn btn-primary uploadfirst" data-toggle="modal" data-target="#greeting">Import a Video</button>
+                      <!--   <form method="POST" action="/upload" enctype="multipart/form-data">
                             <input type="file" name="file" value="Choose a file" />
                             <input type="submit" value="Upload" />
 
-                        </form>
+                        </form> -->
 
                   </div>
                   <div class="clearHover">
-                  </div>
+                </div>
                 </div>
               </div>
 
@@ -228,6 +248,9 @@ effects.vignette.amount = 0;
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>
+
+
+      
 
 
     </body>
