@@ -435,6 +435,15 @@ canvas{
     z-index: 1000;
 }
 
+.cm-number {
+  -webkit-transition: all .2s ease-in-out;
+          transition: all .2s ease-in-out;
+}
+.cm-number:hover {
+  -webkit-transform: scale(1.4);
+          transform: scale(1.4);
+}
+
 
 /* ==========================================================================
    Helper classes

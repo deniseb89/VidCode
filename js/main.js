@@ -79,53 +79,50 @@ seriously.go();
                 .tooltip();
 
               function GetScrubVals(){
-                    // $('.cm-number').each(function(){}           
-                  effects.filmgrain.amount = parseInt($(matches[0]).text())/10;
-                  effects.blur.amount = parseInt($(matches[1]).text())/100;
-                  effects.vignette.amount = Math.round(parseInt($(matches[2]).text()));
+              var matches = document.querySelectorAll(".cm-number");
+                            console.log(matches.length);
+                effects.filmgrain.amount = parseInt($(matches[0]).text())/10;
+                effects.blur.amount = parseInt($(matches[1]).text())/100;
+                effects.vignette.amount = Math.round(parseInt($(matches[2]).text()));
               }
-
-                var matches = document.querySelectorAll(".cm-number");
 
 var VigArr = {
   
     init : function ( element ) {
-      element.node.dataset.value =  0;
+      element.node.dataset.value =  4;
     },
   
-    start : function ( element ){
+    start : function ( element ){  
       return parseInt ( element.node.dataset.value, 10 );
     }, 
     
-    change : function ( element, value ) { 
-      value = value > 0 ? value : 0;
-      value = value < 10 ? value: 10;
-      element.node.dataset.value = value;
-      element.node.textContent = value;
+    change : function ( element, valin ) { 
+      valout = valin > 0 ? valin : 0;
+      valout = Math.floor(valout/20);
+      element.node.dataset.value = valout;
+      element.node.textContent = valout;
+      if (valin>0&&(valin%20)==0) {GetScrubVals()};
     },
     
-    end : function () { }
+    end : function () {}
 };
-// var VigArr = ['0','1','2','3','4','5','6','7','8','9'];
-
-                for (var i = 0; i < matches.length; i++)
-                    {
-                        var match = matches[i];
-new Scrubbing ( 
-match
-              , {adapter: VigArr, driver : [ Scrubbing.driver.Mouse,
-                             Scrubbing.driver.MouseWheel,
-                             Scrubbing.driver.Touch
-                           ]});
-                  //limit scrubbing range
+            function FindCMnums(){
+              var matches = document.querySelectorAll(".cm-number");
+              for (var i = 0; i < matches.length; i++)
+              {
+                var match = matches[i];
+                new Scrubbing ( 
+                  match, {adapter: VigArr, driver : [ Scrubbing.driver.Mouse,
+                   Scrubbing.driver.MouseWheel,
+                   Scrubbing.driver.Touch
+                   ]});
                   //add IDs to each effect handler
-
-                 match.addEventListener("mousemove", GetScrubVals,false);
-                 match.addEventListener("touch", GetScrubVals,false);
-                    }
+                match.addEventListener("mouseover",function(){this.style.cursor="pointer";},false);
+                match.addEventListener("mousewheel", function(){this.style.cursor="pointer";},false);                                 
+                } 
+                }  
 
     $("#grain_amount").change(function(){
-      effects.vignette.amount = '#vignette_amount';
       myCodeMirror.setSelection(CodeMirror.Pos(11,0),CodeMirror.Pos(12,0))
       // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';'); 
     });
@@ -139,9 +136,10 @@ match
       // myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = ' + effects.filmgrain.amount + ';\n\    effects.blur.amount = ' + effects.blur.amount + ';\n\    effects.vignette.amount = ' + effects.vignette.amount + ';');
     });
 
-
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
+          $( ".CodeMirror" ).effect("highlight",2000);
+
           if(ui.draggable.attr("id") =="filmdrag"){
                 myCodeMirror.setSelection(CodeMirror.Pos(11,0),CodeMirror.Pos(12,0))
           } else if (ui.draggable.attr("id") =="blurdrag"){
@@ -194,13 +192,6 @@ match
         $(".tabs-1").removeClass("hidden");
     });
 
-    // $(".layer1").click(function(){
-    //     $(".displayfirst").animate({
-    //         "margin-left": -15}, "ease", function(){
-    //             $(".getting-started").addClass("hidden2");
-    //         });
-    // });
-
     $(".uploadfirst").click(function(){
         $(".popup").removeClass("hidden");
     });
@@ -238,6 +229,6 @@ match
     });
 
     $( "ul, li" ).disableSelection();
-
+    FindCMnums();
        },delay)
 });
