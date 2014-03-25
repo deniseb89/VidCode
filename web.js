@@ -5,7 +5,6 @@ var express = require('express')
 
 var app = express();
 app.set('port', process.env.PORT || 8080);
-app.use(express.static(path.join(__dirname)));
 app.use(express.bodyParser({
 				keepExtensions: true,
 				limit: 10000000, // 10M limit
@@ -13,10 +12,15 @@ app.use(express.bodyParser({
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
+app.use(express.static(__dirname + '/static'));
 
-app.get('/', function(request, response) {
-var text = fs.readFileSync("index.html","utf-8")
- response.send(text);
+var engines = require('consolidate');
+app.set('views', __dirname + '/views');
+app.engine('html', engines.mustache);
+app.set('view engine', 'html');
+
+app.get("/", function(req, res) {
+  res.render('index.html');
 });
 
 app.post("/upload", function (req, res) { 
@@ -43,7 +47,6 @@ app.post("/upload", function (req, res) {
 				if (err) throw err; 
 			});
 		});
-		msg="File uploaded sucessfully"
 	}else{
 	// delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
 		fs.unlink(tmp_path, function(err) {
@@ -51,8 +54,11 @@ app.post("/upload", function (req, res) {
         });
 		msg="File upload failed.File extension not allowed and size must be less than "+maxSizeOfFile;
 	}
-	 res.end(msg);                                      
-});   
+	res.status(302);
+	res.setHeader("Location", "/");
+	res.end();
+});
+
 function oc(a){
   var o = {};
   for(var i=0;i<a.length;i++)
