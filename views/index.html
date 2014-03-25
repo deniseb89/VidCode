@@ -44,7 +44,7 @@
 
         <!-- Add your site or application content here -->
         <ul class="nav nav-tabs">
-            <li><a href="#"><img src="img/logo.png"></a></li>
+            <li><a href="#"><img src="../static/img/logo.png"></a></li>
             <li class="pull-right">
               <a class="small" href="http://vidcode.io/" target="_blank">
               <span class="glyphicon glyphicon-star"></span>About & Updates
@@ -60,7 +60,7 @@
               </div>
             </div>
             <div class="flow">
-                <img class="film" src="img/filmstrip.png" title="filmstrip"/>
+                <img class="film" src="../static/../static/img/filmstrip.png" title="filmstrip"/>
                 <!-- Add as many items as you like. -->
             </div>
             <div class="globalCaption"></div>
@@ -82,11 +82,11 @@
             <div class="row hidden">
                 <div clsas="col-md-4">
                     <h3>Get Started</h3>
-                    <button class="large-button layer1"><img class="checkbtn"  src="img/checked.png">Hello World</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Filters</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Motion</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Editing</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Advanced Graphics</button>
+                    <button class="large-button layer1"><img class="checkbtn"  src="../static/img/checked.png">Hello World</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="../static/img/unchecked.png">Filters</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="../static/img/unchecked.png">Motion</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="../static/img/unchecked.png">Editing</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="../static/img/unchecked.png">Advanced Graphics</button>
                 </div>
             </div>
 
@@ -121,9 +121,7 @@
                     <div class="tabs-2">
                       <textarea id="codemirror">
                       No Code To Show Yet!</textarea>
-
                     </div>
-
                   </div>
                 </div>
 
@@ -133,16 +131,16 @@
                 </div>
 
                 <div class="methods">
-                  <ul><li id="filmdrag" class="btn btn-method draggable">Film Grain</li>
-                  <li id="blurdrag" class="btn btn-method draggable">Blur</li>
-                  <li id="vigdrag" class="btn btn-method draggable">Vignette</li></ul>
+                  <ul><li id="filmdrag" class="btn btn-method draggable">Film Grain</li><img class="xbtn" id="filmgrainx" src="../static/img/xbtn.png">
+                  <li id="blurdrag" class="btn btn-method draggable">Blur</li><img class="xbtn" id="blurx" src="../static/img/xbtn.png">
+                  <li id="vigdrag" class="btn btn-method draggable">Vignette</li><img class="xbtn" id="vignettex" src="../static/img/xbtn.png"></ul>
                 </div>
 
                 <div class="learnMore">
                   <h4>What's in your VidCode?</h4>
                   <ul>
                     <li class="firstly arrowli">
-                      <img class="btnright" src="img/btnright.png">Objects
+                      <img class="btnright" src="../static/img/btnright.png">Objects
                     </li>
                       <li class="explanation">
                         A object in javascript can be anything!
@@ -152,19 +150,19 @@
                         We will cover this again and again!  For now just get used to the word and where objects are placed within the code.
                       </li>
 
-                    <li class="secondary arrowli"><img src="img/btnright.png">movie</li>
+                    <li class="secondary arrowli"><img src="../static/img/btnright.png">movie</li>
                       <li class="explanation">
                         movie is an object that uses the canvas element in HTML5 to play your video.
                       </li>
 
-                    <li class="secondary arrowli"><img src="img/btnright.png">effects</li>
+                    <li class="secondary arrowli"><img src="../static/img/btnright.png">effects</li>
                       <li class="explanation">
                         effects is an object within the seriously library.  It contains all the effects.
 
                         By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
                       </li>
 
-                    <li class="secondary arrowli"><img src="img/btnright.png">seriously</li>
+                    <li class="secondary arrowli"><img src="../static/img/btnright.png">seriously</li>
                       <li class="explanation">
                         seriously is a library which is represented by this object.
 
@@ -173,13 +171,13 @@
                         There is a lot of code in that library!  You just cant see it ;)
                       </li>
 
-                    <li class="secondary arrowli"><img src="img/btnright.png">filmgrain</li>
+                    <li class="secondary arrowli"><img src="../static/img/btnright.png">filmgrain</li>
                       <li class="explanation">
                         film grain is an object within the effects object.  It’s accessed via a "." dot notation.
                       </li>
 
                     <li class="firstly arrowli">
-                      <img src="img/btnright.png">Functions
+                      <img src="../static/img/btnright.png">Functions
                     </li>
                       <li class="explanation">
                         A function is a set of
@@ -187,36 +185,36 @@
                         to run on a block of code.
                       </li>
 
-                    <li class="secondary arrowli"><img src="img/btnright.png">showEffect</li>
+                    <li class="secondary arrowli"><img src="../static/img/btnright.png">showEffect</li>
                       <li class="explanation">
                         The "showeffect" function consists of  the arguments listed within the function’s brackets {  }.
                         In the same way as you are your body which consists of  many processes.
                       </li>
 
                     <li class="firstly arrowli">
-                      <img src="img/btnright.png">Methods
+                      <img src="../static/img/btnright.png">Methods
                     </li>
                       <li class="explanation">
                         A method is an argument (identical to a function) which is applied to a object using a "."
                       </li>
-                    <li class="secondary arrowli"><img src="img/btnright.png">play</li>
+                    <li class="secondary arrowli"><img src="../static/img/btnright.png">play</li>
                       <li class="explanation">
                         is method which effects the "movie" object
                       </li>
-                    <li class="secondary arrowli"><img src="img/btnright.png">interval</li>
+                    <li class="secondary arrowli"><img src="../static/img/btnright.png">interval</li>
                       <li class="explanation">
                         is a method which effects the "movie" object and it has two "parameters"
                       </li>
 
                     <li class="firstly arrowli">
-                      <img src="img/btnright.png">Parameters
+                      <img src="../static/img/btnright.png">Parameters
                     </li>
                       <li class="explanation">
                         A parameter is "value" which is passed from one function to another.
                       </li>
 
                     <li class="firstly arrowli">
-                      <img src="img/btnright.png">Values
+                      <img src="../static/img/btnright.png">Values
                     </li>
                       <li class="explanation">
                         A "value" in javascript can be any of the following:

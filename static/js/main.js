@@ -14,7 +14,7 @@ var media = document.getElementById('myvideo');
     blur: seriously.effect('blur'),
     filmgrain: seriously.effect('filmgrain')
     };
-var active_film = active_blur = active_vig = 0;
+var init_code = 1;
 effects.vignette.source = video;
 effects.blur.source = effects.vignette;
 effects.filmgrain.source = effects.blur;
@@ -78,9 +78,9 @@ seriously.go();
                 .data('placement', 'bottom')
                 .tooltip();
 
-            $(".cm-variable:contains('pixelate()')")
+            $(".cm-variable:contains('play()')")
                 .addClass('vc-glossary')
-                .attr('title', 'This is a method or function, same thing.')
+                .attr('title', glossary.play)
                 .data('toggle', 'tooltip')
                 .data('placement', 'right')
                 .tooltip();
@@ -93,19 +93,15 @@ seriously.go();
                 .tooltip();
 
             $("pre:contains('effects.filmgrain.amount')")
-                .addClass('scrub-film');            
-
-                console.log("got this far");
-
+                .addClass('scrub-filmgrain');            
             $("pre:contains('effects.blur.amount')")
                 .addClass('scrub-blur');  
-
             $("pre:contains('effects.vignette.amount')")
-                .addClass('scrub-vig');
+                .addClass('scrub-vignette');
 
-            $(".scrub-film").find('.cm-number').attr('id','num-film'); 
+            $(".scrub-filmgrain").find('.cm-number').attr('id','num-film'); 
             $(".scrub-blur").find('.cm-number').attr('id','num-blur');
-            $(".scrub-vig").find('.cm-number').attr('id','num-vig');  
+            $(".scrub-vignette").find('.cm-number').attr('id','num-vig');  
             
               var matches = document.querySelectorAll(".cm-number");
               
@@ -141,8 +137,9 @@ var VigArr = {
     }, 
     
     change : function ( element, valin ) { 
-      // valout = valin > 0 ? valin : 0;
+
       valout = Math.floor(valin/20);
+      valout = valout > 0 ? valout : 0;      
       element.node.dataset.value = valout;
       element.node.textContent = valout;
       if ((valin>=0)&&(valin%20)==0) {GetScrubVals()};
@@ -153,32 +150,30 @@ var VigArr = {
 
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
-
+          if (init_code) {myCodeMirror.setValue(editor_text);}
+          init_code = 0;
           if(ui.draggable.attr("id") =="filmdrag"){
-            if (active_film) {
-            active_film = 0;
-            ui.draggable.text("Film Grain");
-            ui.draggable.css("background-color","#319665");
-            effects.filmgrain.amount = 0;
-            $(".scrub-film").remove();
-          } else{
-            active_film = 1;          
-            myCodeMirror.setValue( editor_text + '\n\    effects.filmgrain.amount = 0;');
-            ui.draggable.text("Remove Film Grain");
-            ui.draggable.css("background-color","red");
+            myCodeMirror.replaceRange('\n\    effects.filmgrain.amount = 0;',CodeMirror.Pos(myCodeMirror.lastLine()));
             GetScrubVals();
-            $( ".scrub-film" ).effect("highlight",2000);
-          }
+            $( ".scrub-filmgrain" ).effect("highlight",2000);
           } else if (ui.draggable.attr("id") =="blurdrag"){
+            myCodeMirror.replaceRange('\n\    effects.blur.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));
+            GetScrubVals();
             $( ".scrub-blur" ).effect("highlight",2000);
-                // myCodeMirror.setSelection(CodeMirror.Pos(12,0),CodeMirror.Pos(13,0))
           } else if(ui.draggable.attr("id") =="vigdrag"){
-            $( ".scrub-vig" ).effect("highlight",2000);
-                // myCodeMirror.setSelection(CodeMirror.Pos(13,0),CodeMirror.Pos(14,0))
+            myCodeMirror.replaceRange('\n\    effects.vignette.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));            
+            GetScrubVals();
+            $( ".scrub-vignette" ).effect("highlight",2000);
           }           
         }
 });
 
+    $(".xbtn").click(function(){
+      var eff = ($(this).attr('id'));
+      eff = eff.slice(0,-1);
+            eval("effects."+eff+".amount = 0");
+            $(".scrub-"+eff).remove(); 
+      });
     $( "#filmdrag" ).draggable({
        helper: "clone",
        revert: "invalid"
@@ -265,12 +260,12 @@ var VigArr = {
       if( $(this).hasClass('active') ){
         $(this).next().fadeOut();
         $(this).removeClass('active');
-        img.attr("src","img/btnright.png");
+        img.attr("src","../static/img/btnright.png");
       }
       else{
         $(this).next().fadeIn();
         $(this).addClass('active');
-        img.attr("src","img/btndown.png");
+        img.attr("src","..static/img/btndown.png");
       }
     });
 

@@ -271,8 +271,8 @@ box-shadow:         3px 2px 8px 0px rgba(50, 50, 50, 0.4);}
 /* main screen and edit menu */
 
 .xbtn{
-    float: right;
-    width: 25px;
+    /*float: right;*/
+    /*width: 25px;*/
     cursor: pointer;
 }
 
