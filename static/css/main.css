@@ -452,11 +452,26 @@ canvas{
 }
 
 /* The effects/ learn more area */
+.learnMore{height: 500px; overflow-y: scroll; width: 120%}
+
 .heading .switch{cursor: pointer;}
 .heading .active{color: #D6BAE8;}
 
+.learnMore h4{font-weight: 700; color: #441B4B;}
+.learnMore ul{padding: 0;}
+.learnMore .firstly, .learnMore .secondary{cursor: pointer;font-weight: 700; padding-top: 8px;}
+.learnMore .firstly{padding-left: 6px; font-size: 1.1em;}
+.learnMore .secondary{padding-left: 12px;}
+
+.btndown{display: none;}
+
+.learnMore .explanation{display: none; padding-left: 3px; font-size: .9em;}
 
 
+.cm-number:hover{
+    font-size: 1.6em;
+    cursor: ew-resize;
+}
 
 /* ==========================================================================
    Helper classes

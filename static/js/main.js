@@ -242,6 +242,19 @@ match
       $('.methods').fadeIn();
     });
 
+    $('.arrowli').click(function(){
+      var img = $(this).find("img")
+      if( $(this).hasClass('active') ){
+        $(this).next().fadeOut();
+        $(this).removeClass('active');
+        img.attr("src","img/btnright.png");
+      }
+      else{
+        $(this).next().fadeIn();
+        $(this).addClass('active');
+        img.attr("src","img/btndown.png");
+      }
+    });
 
 
     $( "ul, li" ).disableSelection();
