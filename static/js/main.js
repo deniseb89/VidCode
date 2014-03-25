@@ -149,7 +149,8 @@ var VigArr = {
     change : function ( element, valin ) { 
 
       valout = Math.floor(valin/20);
-      valout = valout > 0 ? valout : 0;      
+      valout = valout > 0 ? valout : 0;
+      valout - valout < 10 > valout : 10;    
       element.node.dataset.value = valout;
       element.node.textContent = valout;
       if ((valin>=0)&&(valin%20)==0) {GetScrubVals()};
@@ -270,12 +271,12 @@ var VigArr = {
       if( $(this).hasClass('active') ){
         $(this).next().fadeOut();
         $(this).removeClass('active');
-        img.attr("src","../static/img/btnright.png");
+        img.attr("src","img/btnright.png");
       }
       else{
         $(this).next().fadeIn();
         $(this).addClass('active');
-        img.attr("src","..static/img/btndown.png");
+        img.attr("src","img/btndown.png");
       }
     });
 
