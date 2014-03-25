@@ -150,7 +150,7 @@ var VigArr = {
 
       valout = Math.floor(valin/20);
       valout = valout > 0 ? valout : 0;
-      valout - valout < 10 > valout : 10;    
+      valout = valout < 10 ? valout : 10;    
       element.node.dataset.value = valout;
       element.node.textContent = valout;
       if ((valin>=0)&&(valin%20)==0) {GetScrubVals()};
