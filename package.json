@@ -4,10 +4,12 @@
   "description": "creative coding for teen girls",
   "main": "web.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node web.js"
   },
   "dependencies": {
-    "express": "3.x"
+    "express": "3.5",
+    "consolidate": "~0.10.0",
+    "mustache": "~0.8.1"
   },
   "engines": {
     "node": "0.8.x",
@@ -15,10 +17,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/msmahliss/videocode-1"
+    "url": "https://github.com/vidcode/vidcode"
   },
   "keywords": [
     "node",
     "heroku"
-  ]
+  ],
+  "devDependencies": {
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-express-server": "~0.4.13"
+  }
 }
