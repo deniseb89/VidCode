@@ -42,9 +42,11 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+
+
         <!-- Add your site or application content here -->
         <ul class="nav nav-tabs">
-            <li><a href="#"><img src="img/logo.png"></a></li>
+            <li><a href="#"><img src="img/logo.png" id="image"></a></li>
             <li class="pull-right">
               <a class="small" href="http://vidcode.io/" target="_blank">
               <span class="glyphicon glyphicon-star"></span>About & Updates
@@ -96,6 +98,9 @@
               <div class="col-md-5">
                 <div class="heading">video</div>
                 <div class="overlay">
+
+
+
                   <video class="video1 hidden" id="myvideo" autoplay loop>
                       <source src="../static/vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
                   </video>
@@ -105,13 +110,13 @@
                   <div class="buttons">
                         <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
                     <button type="button" class="btn btn-primary uploadfirst">Import a Video</button>
-                    <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
+                 <!--    <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
                       <input type="file" name="file" value="Choose a file" />
                       <input type="submit" value="Upload" />
 
-                    </form>
+                    </form> -->
                   </div>
-                  <button type="button" class="runbtn btn btn-danger pullRight hidden">Play/Pause</button>
+                  <button type="button" data-toggle="modal" data-target="#play" class="runbtn btn btn-danger pullRight hidden" >Play/Pause</button>
                 </div>
               </div>
               <div class="col-md-5 pull_left">
@@ -137,6 +142,10 @@
                   <li id="blurdrag" class="btn btn-method draggable">Blur</li>
                   <li id="vigdrag" class="btn btn-method draggable">Vignette</li></ul>
                 </div>
+
+
+               
+
 
                 <div class="learnMore">
                   <h4>What's in your VidCode?</h4>
@@ -232,6 +241,38 @@
                 </div>
 
               </div>
+
+
+                <div class="modal fade" id="greeting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                   <div class="modal-dialog">
+                    <div class="modal-content">
+                   <div class="modal-header instruct-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="img/xbtn.png"></button>
+                   <h4 class="modal-title">Welcome!</h4>
+                  </div>
+                    <div class="modal-body instruct-body">
+                   <p>Welcome to VidCode! We'll step you through this process. Let's start by importing a video.</p>
+                   <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+                   </div>
+                    </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+              <div class="modal fade" id="play" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+               <div class="modal-content">
+               <div class="modal-header instruct-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="img/xbtn.png"></button>
+               <h4 class="modal-title">Great!</h4>
+               </div>
+               <div class="modal-body instruct-body">
+               <p>Now let's get coding! Select an effect from the tool bar to the right.</p>
+               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+                     </div>
+                   </div><!-- /.modal-content -->
+                 </div><!-- /.modal-dialog -->
+               </div><!-- /.modal -->
 
 
             </div>
