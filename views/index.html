@@ -12,27 +12,27 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="../static/css/normalize.css">
-        <link rel="stylesheet" href="../static/css/main.css">
-        <link rel="stylesheet" href="../static/css/bootstrap.css">
-        <link rel="stylesheet" href="../static/css/custom-theme/jquery-ui-1.9.2.custom.css">
-        <link rel="stylesheet" href="../static/js/vendor/codemirror-3.22/lib/codemirror.css">
-        <link rel="stylesheet" href="../static/js/vendor/codemirror-3.22/theme/solarized.css">
-        <link rel="stylesheet" href="../static/css/codemirror-vidcode.css">
-        <link rel="stylesheet" href="../static/css/contentflow.css">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.9.2.custom.css">
+        <link rel="stylesheet" href="js/vendor/codemirror-3.22/lib/codemirror.css">
+        <link rel="stylesheet" href="js/vendor/codemirror-3.22/theme/solarized.css">
+        <link rel="stylesheet" href="css/codemirror-vidcode.css">
+        <link rel="stylesheet" href="css/contentflow.css">
 
-        <script src="../static/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="../static/js/jquery.js"></script>
-        <script src="../static/js/jquery-ui-1.9.2.custom.min.js"></script>
-        <script src="../static/js/bootstrap.js"></script>
-        <script src="../static/js/contentflow.js"></script>
-        <script src="../static/js/vendor/codemirror-3.22/lib/codemirror.js"></script>
-        <script src="../static/js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
-        <script src="../static/js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
-        <script src="../static/Seriously/seriously.js"></script>
-        <script src="../static/Seriously/effects/seriously.vignette.js"></script>
-        <script src="../static/Seriously/effects/seriously.blur.js"></script>
-        <script src="../static/Seriously/effects/seriously.filmgrain.js"></script>
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui-1.9.2.custom.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/contentflow.js"></script>
+        <script src="js/vendor/codemirror-3.22/lib/codemirror.js"></script>
+        <script src="js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
+        <script src="js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
+        <script src="Seriously/seriously.js"></script>
+        <script src="Seriously/effects/seriously.vignette.js"></script>
+        <script src="Seriously/effects/seriously.blur.js"></script>
+        <script src="Seriously/effects/seriously.filmgrain.js"></script>
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
 
@@ -46,7 +46,7 @@
 
         <!-- Add your site or application content here -->
         <ul class="nav nav-tabs">
-            <li><a href="#"><img src="../static/img/logo.png" id="image"></a></li>
+            <li><a href="#"><img src="img/logo.png" id="image"></a></li>
             <li class="pull-right">
               <a class="small" href="http://vidcode.io/" target="_blank">
               <span class="glyphicon glyphicon-star"></span>About & Updates
@@ -62,7 +62,7 @@
               </div>
             </div>
             <div class="flow">
-                <img class="film" src="../static/../static/img/filmstrip.png" title="filmstrip"/>
+                <img class="film" src="img/filmstrip.png" title="filmstrip"/>
                 <!-- Add as many items as you like. -->
             </div>
             <div class="globalCaption"></div>
@@ -84,11 +84,11 @@
             <div class="row hidden">
                 <div clsas="col-md-4">
                     <h3>Get Started</h3>
-                    <button class="large-button layer1"><img class="checkbtn"  src="../static/img/checked.png">Hello World</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="../static/img/unchecked.png">Filters</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="../static/img/unchecked.png">Motion</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="../static/img/unchecked.png">Editing</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="../static/img/unchecked.png">Advanced Graphics</button>
+                    <button class="large-button layer1"><img class="checkbtn"  src="img/checked.png">Hello World</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Filters</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Motion</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Editing</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Advanced Graphics</button>
                 </div>
             </div>
 
@@ -102,7 +102,7 @@
 
 
                   <video class="video1 hidden" id="myvideo" autoplay loop>
-                      <source src="../static/vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                      <source src="vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
                   </video>
 
                   <canvas class="video2 hidden" id="canvas"></canvas>
@@ -136,9 +136,9 @@
                 </div>
 
                 <div class="methods">
-                  <ul><li id="filmdrag" class="btn btn-method draggable">Film Grain</li><img class="xbtn" id="filmgrainx" src="../static/img/xbtn.png">
-                  <li id="blurdrag" class="btn btn-method draggable">Blur</li><img class="xbtn" id="blurx" src="../static/img/xbtn.png">
-                  <li id="vigdrag" class="btn btn-method draggable">Vignette</li><img class="xbtn" id="vignettex" src="../static/img/xbtn.png"></ul>
+                  <ul><li id="filmdrag" class="btn btn-method draggable">Film Grain</li><img class="xbtn" id="filmgrainx" src="img/xbtn.png">
+                  <li id="blurdrag" class="btn btn-method draggable">Blur</li><img class="xbtn" id="blurx" src="img/xbtn.png">
+                  <li id="vigdrag" class="btn btn-method draggable">Vignette</li><img class="xbtn" id="vignettex" src="img/xbtn.png"></ul>
                 </div>
 
 
@@ -149,7 +149,7 @@
                   <h4>What's in your VidCode?</h4>
                   <ul>
                     <li class="firstly arrowli">
-                      <img class="btnright" src="../static/img/btnright.png">Objects
+                      <img class="btnright" src="img/btnright.png">Objects
                     </li>
                       <li class="explanation">
                         A object in javascript can be anything!
@@ -159,19 +159,19 @@
                         We will cover this again and again!  For now just get used to the word and where objects are placed within the code.
                       </li>
 
-                    <li class="secondary arrowli"><img src="../static/img/btnright.png">movie</li>
+                    <li class="secondary arrowli"><img src="img/btnright.png">movie</li>
                       <li class="explanation">
                         movie is an object that uses the canvas element in HTML5 to play your video.
                       </li>
 
-                    <li class="secondary arrowli"><img src="../static/img/btnright.png">effects</li>
+                    <li class="secondary arrowli"><img src="img/btnright.png">effects</li>
                       <li class="explanation">
                         effects is an object within the seriously library.  It contains all the effects.
 
                         By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
                       </li>
 
-                    <li class="secondary arrowli"><img src="../static/img/btnright.png">seriously</li>
+                    <li class="secondary arrowli"><img src="img/btnright.png">seriously</li>
                       <li class="explanation">
                         seriously is a library which is represented by this object.
 
@@ -180,13 +180,13 @@
                         There is a lot of code in that library!  You just cant see it ;)
                       </li>
 
-                    <li class="secondary arrowli"><img src="../static/img/btnright.png">filmgrain</li>
+                    <li class="secondary arrowli"><img src="img/btnright.png">filmgrain</li>
                       <li class="explanation">
                         film grain is an object within the effects object.  It’s accessed via a "." dot notation.
                       </li>
 
                     <li class="firstly arrowli">
-                      <img src="../static/img/btnright.png">Functions
+                      <img src="img/btnright.png">Functions
                     </li>
                       <li class="explanation">
                         A function is a set of
@@ -194,36 +194,36 @@
                         to run on a block of code.
                       </li>
 
-                    <li class="secondary arrowli"><img src="../static/img/btnright.png">showEffect</li>
+                    <li class="secondary arrowli"><img src="img/btnright.png">showEffect</li>
                       <li class="explanation">
                         The "showeffect" function consists of  the arguments listed within the function’s brackets {  }.
                         In the same way as you are your body which consists of  many processes.
                       </li>
 
                     <li class="firstly arrowli">
-                      <img src="../static/img/btnright.png">Methods
+                      <img src="img/btnright.png">Methods
                     </li>
                       <li class="explanation">
                         A method is an argument (identical to a function) which is applied to a object using a "."
                       </li>
-                    <li class="secondary arrowli"><img src="../static/img/btnright.png">play</li>
+                    <li class="secondary arrowli"><img src="img/btnright.png">play</li>
                       <li class="explanation">
                         is method which effects the "movie" object
                       </li>
-                    <li class="secondary arrowli"><img src="../static/img/btnright.png">interval</li>
+                    <li class="secondary arrowli"><img src="img/btnright.png">interval</li>
                       <li class="explanation">
                         is a method which effects the "movie" object and it has two "parameters"
                       </li>
 
                     <li class="firstly arrowli">
-                      <img src="../static/img/btnright.png">Parameters
+                      <img src="img/btnright.png">Parameters
                     </li>
                       <li class="explanation">
                         A parameter is "value" which is passed from one function to another.
                       </li>
 
                     <li class="firstly arrowli">
-                      <img src="../static/img/btnright.png">Values
+                      <img src="img/btnright.png">Values
                     </li>
                       <li class="explanation">
                         A "value" in javascript can be any of the following:
@@ -275,8 +275,8 @@
 
             </div>
 
-        <script src="../static/js/plugins.js"></script>
-        <script src="../static/js/main.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
