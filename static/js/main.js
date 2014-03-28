@@ -25,7 +25,7 @@ seriously.go();
 
    $(".runbtn").text(media.paused ? "Play" : "Pause");
 
-        var editor_text = 
+        var editor_text =
 "\
   \n\
   function showEffect() {\n\
@@ -68,7 +68,7 @@ seriously.go();
                 .addClass('vc-glossary')
                 .attr('title', glossary.function)
                 .data('toggle', 'tooltip')
-                .data('placement', 'bottom')
+                .data('placement', 'right')
                 .tooltip();
 
             $(".cm-variable:contains('foreach')")
@@ -93,22 +93,22 @@ seriously.go();
                 .tooltip();
 
             $("pre:contains('effects.filmgrain.amount')")
-                .addClass('scrub-filmgrain');            
+                .addClass('scrub-filmgrain');
             $("pre:contains('effects.blur.amount')")
-                .addClass('scrub-blur');  
+                .addClass('scrub-blur');
             $("pre:contains('effects.vignette.amount')")
                 .addClass('scrub-vignette');
 
-            $(".scrub-filmgrain").find('.cm-number').attr('id','num-film'); 
+            $(".scrub-filmgrain").find('.cm-number').attr('id','num-film');
             $(".scrub-blur").find('.cm-number').attr('id','num-blur');
-            $(".scrub-vignette").find('.cm-number').attr('id','num-vig');  
-            
+            $(".scrub-vignette").find('.cm-number').attr('id','num-vig');
+
               var matches = document.querySelectorAll(".cm-number");
-              
+
               for (var i = 0; i < matches.length; i++)
               {
                 var match = matches[i];
-                new Scrubbing ( 
+                new Scrubbing (
                   match, {adapter: VigArr, driver : [ Scrubbing.driver.Mouse,
                    Scrubbing.driver.MouseWheel,
                    Scrubbing.driver.Touch
@@ -118,7 +118,7 @@ seriously.go();
                  } else if ($(match).attr('id')=='num-blur'){
                   effects.blur.amount = parseInt($('#num-blur').text())/100;
                  }else if ($(match).attr('id')=='num-vig'){
-                  effects.vignette.amount = Math.round(parseInt($('#num-vig').text()));              
+                  effects.vignette.amount = Math.round(parseInt($('#num-vig').text()));
               }
             }
 
@@ -128,7 +128,7 @@ seriously.go();
 
 
  $("#image").hover($('#greeting').modal());
-  // $("#play").hover(function () { 
+  // $("#play").hover(function () {
   // $('#code').modal()
   // });
 
@@ -141,23 +141,23 @@ var VigArr = {
     init : function ( element ) {
       element.node.dataset.value =  4;
     },
-  
-    start : function ( element ){  
+
+    start : function ( element ){
       return parseInt ( element.node.dataset.value, 10 );
-    }, 
-    
-    change : function ( element, valin ) { 
+    },
+
+    change : function ( element, valin ) {
 
       valout = Math.floor(valin/20);
       valout = valout > 0 ? valout : 0;
-      valout = valout < 10 ? valout : 10;    
+      valout = valout < 10 ? valout : 10;
       element.node.dataset.value = valout;
       element.node.textContent = valout;
       if ((valin>=0)&&(valin%20)==0) {GetScrubVals()};
     },
-    
+
     end : function () {}
-}; 
+};
 
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
@@ -172,10 +172,10 @@ var VigArr = {
             GetScrubVals();
             $( ".scrub-blur" ).effect("highlight",2000);
           } else if(ui.draggable.attr("id") =="vigdrag"){
-            myCodeMirror.replaceRange('\n\    effects.vignette.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));            
+            myCodeMirror.replaceRange('\n\    effects.vignette.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));
             GetScrubVals();
             $( ".scrub-vignette" ).effect("highlight",2000);
-          }           
+          }
         }
 });
 
@@ -183,7 +183,7 @@ var VigArr = {
       var eff = ($(this).attr('id'));
       eff = eff.slice(0,-1);
             eval("effects."+eff+".amount = 0");
-            $(".scrub-"+eff).remove(); 
+            $(".scrub-"+eff).remove();
       });
     $( "#filmdrag" ).draggable({
        helper: "clone",
