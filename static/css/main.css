@@ -464,6 +464,12 @@ canvas{
 .learnMore{height: 500px; overflow-y: scroll; width: 94%}
 
 .methods .learnMore{background-color: #eee8d5;}
+.learnMore ul img{margin-right: 5px;}
+
+.learnMore .green{color: #319665;}
+.learnMore .blue{color: #3262EA;}
+.learnMore .purple{color: #AE40C1;}
+.learnMore .lightblue{color: #3BE2D6;}
 
 .heading .switch{cursor: pointer;}
 .heading .active{color: #D6BAE8;}
