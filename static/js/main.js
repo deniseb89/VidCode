@@ -20,7 +20,7 @@ effects.blur.source = effects.vignette;
 effects.filmgrain.source = effects.blur;
 effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = 0;
 target.source = effects.filmgrain;
-
+activeEffects = ["filmgrain","blur","vignette"];
 seriously.go();
 
    $(".runbtn").text(media.paused ? "Play" : "Pause");
@@ -92,17 +92,12 @@ seriously.go();
                 .data('placement', 'right')
                 .tooltip();
 
-            $("pre:contains('effects.filmgrain.amount')")
-                .addClass('scrub-filmgrain');            
-            $("pre:contains('effects.blur.amount')")
-                .addClass('scrub-blur');  
-            $("pre:contains('effects.vignette.amount')")
-                .addClass('scrub-vignette');
+                for (var e=0; e< activeEffects.length; e++){
+                  $("pre:contains('effects."+activeEffects[e]+".amount')")
+                      .addClass('scrub-'+activeEffects[e]);
+                  $(".scrub-"+activeEffects[e]).find('.cm-number').attr('id','num-'+activeEffects[e]); 
+                }
 
-            $(".scrub-filmgrain").find('.cm-number').attr('id','num-film'); 
-            $(".scrub-blur").find('.cm-number').attr('id','num-blur');
-            $(".scrub-vignette").find('.cm-number').attr('id','num-vig');  
-            
               var matches = document.querySelectorAll(".cm-number");
               
               for (var i = 0; i < matches.length; i++)
@@ -113,12 +108,12 @@ seriously.go();
                    Scrubbing.driver.MouseWheel,
                    Scrubbing.driver.Touch
                    ]});
-                 if ($(match).attr('id')=='num-film'){
-                  effects.filmgrain.amount = parseInt($('#num-film').text())/10;
+                 if ($(match).attr('id')=='num-filmgrain'){
+                  effects.filmgrain.amount = parseInt($('#num-filmgrain').text())/10;
                  } else if ($(match).attr('id')=='num-blur'){
                   effects.blur.amount = parseInt($('#num-blur').text())/100;
-                 }else if ($(match).attr('id')=='num-vig'){
-                  effects.vignette.amount = Math.round(parseInt($('#num-vig').text()));              
+                 }else if ($(match).attr('id')=='num-vignette'){
+                  effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));              
               }
             }
 
@@ -162,53 +157,36 @@ var VigArr = {
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
           if (init_code) {myCodeMirror.setValue(editor_text);}
-          init_code = 0;
-          if(ui.draggable.attr("id") =="filmdrag"){
-            myCodeMirror.replaceRange('\n\    effects.filmgrain.amount = 0;',CodeMirror.Pos(myCodeMirror.lastLine()));
+          init_code = 0;          
+          var eff = ui.draggable.attr("id");
+          eff = eff.slice(0,-4);
+            myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 0;',CodeMirror.Pos(myCodeMirror.lastLine()));
+            myCodeMirror.markText({line:myCodeMirror.lastLine(),ch:0},CodeMirror.Pos(myCodeMirror.lastLine()),{className:"cm-"+eff});                         
             GetScrubVals();
-            $( ".scrub-filmgrain" ).effect("highlight",2000);
-          } else if (ui.draggable.attr("id") =="blurdrag"){
-            myCodeMirror.replaceRange('\n\    effects.blur.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));
-            GetScrubVals();
-            $( ".scrub-blur" ).effect("highlight",2000);
-          } else if(ui.draggable.attr("id") =="vigdrag"){
-            myCodeMirror.replaceRange('\n\    effects.vignette.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));            
-            GetScrubVals();
-            $( ".scrub-vignette" ).effect("highlight",2000);
-          }           
+            $( ".scrub-"+eff).effect("highlight",2000);          
         }
-});
+      });
 
     $(".xbtn").click(function(){
       var eff = ($(this).attr('id'));
       eff = eff.slice(0,-1);
             eval("effects."+eff+".amount = 0");
-            $(".scrub-"+eff).remove(); 
+             var allTM = myCodeMirror.getAllMarks();
+             console.log(allTM.length);
+             for (var m=0; m<allTM.length; m++){
+              var tm = allTM[m];
+              if (tm.className=="cm-"+eff){
+                myCodeMirror.removeLine(tm.find().to.line);
+              }
+            }
       });
-    $( "#filmdrag" ).draggable({
+
+    for (var e=0; e<activeEffects.length; e++) {
+    $( "#"+activeEffects[e]+"drag" ).draggable({
        helper: "clone",
        revert: "invalid"
     });
-
-    $( "#vigdrag" ).draggable({
-      helper: "clone",
-      revert: "invalid",
-    });
-
-    $( "#blurdrag" ).draggable({
-      helper: "clone",
-      revert: "invalid"
-    });
-
-    $( "#expdrag" ).draggable({
-      connectToSortable: "#sortable",
-      helper: "clone",
-      revert: "invalid",
-      stop: function( event, ui ) {
-        // editor.setValue(editor_text);
-      }
-    });
-
+    }
 
     $(".tab2").click(function(){
         $(".tabs-2").removeClass("hidden");
