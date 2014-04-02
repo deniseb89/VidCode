@@ -25,7 +25,7 @@ seriously.go();
 
    $(".runbtn").text(media.paused ? "Play" : "Pause");
 
-        var editor_text = 
+        var editor_text =
 "\
   \n\
   function showEffect() {\n\
@@ -58,6 +58,7 @@ seriously.go();
                   value: "function myScript(){return 100;}\n",
                   mode:  "javascript",
                   theme: "solarized light",
+                  readOnly: true,
                   lineWrapping: true,
                   lineNumbers: true
                 });
@@ -68,7 +69,7 @@ seriously.go();
                 .addClass('vc-glossary')
                 .attr('title', glossary.function)
                 .data('toggle', 'tooltip')
-                .data('placement', 'bottom')
+                .data('placement', 'right')
                 .tooltip();
 
             $(".cm-variable:contains('foreach')")
@@ -99,11 +100,11 @@ seriously.go();
                 }
 
               var matches = document.querySelectorAll(".cm-number");
-              
+
               for (var i = 0; i < matches.length; i++)
               {
                 var match = matches[i];
-                new Scrubbing ( 
+                new Scrubbing (
                   match, {adapter: VigArr, driver : [ Scrubbing.driver.Mouse,
                    Scrubbing.driver.MouseWheel,
                    Scrubbing.driver.Touch
@@ -117,13 +118,11 @@ seriously.go();
               }
             }
 
-
-
             }
 
 
  $("#image").hover($('#greeting').modal());
-  // $("#play").hover(function () { 
+  // $("#play").hover(function () {
   // $('#code').modal()
   // });
 
@@ -136,23 +135,23 @@ var VigArr = {
     init : function ( element ) {
       element.node.dataset.value =  4;
     },
-  
-    start : function ( element ){  
+
+    start : function ( element ){
       return parseInt ( element.node.dataset.value, 10 );
-    }, 
-    
-    change : function ( element, valin ) { 
+    },
+
+    change : function ( element, valin ) {
 
       valout = Math.floor(valin/20);
       valout = valout > 0 ? valout : 0;
-      valout = valout < 10 ? valout : 10;    
+      valout = valout < 10 ? valout : 10;
       element.node.dataset.value = valout;
       element.node.textContent = valout;
       if ((valin>=0)&&(valin%20)==0) {GetScrubVals()};
     },
-    
+
     end : function () {}
-}; 
+};
 
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
@@ -163,7 +162,15 @@ var VigArr = {
             myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 0;',CodeMirror.Pos(myCodeMirror.lastLine()));
             myCodeMirror.markText({line:myCodeMirror.lastLine(),ch:0},CodeMirror.Pos(myCodeMirror.lastLine()),{className:"cm-"+eff});                         
             GetScrubVals();
+
             $( ".scrub-"+eff).effect("highlight",2000);          
+            
+          //   if(ui.draggable.attr("id") =="vigdrag"){
+          //   myCodeMirror.replaceRange('\n\    effects.vignette.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));
+          //   GetScrubVals();
+          //   $( ".scrub-vignette" ).effect("highlight",2000);
+          // }
+
         }
       });
 
@@ -171,6 +178,7 @@ var VigArr = {
       var eff = ($(this).attr('id'));
       eff = eff.slice(0,-1);
             eval("effects."+eff+".amount = 0");
+
              var allTM = myCodeMirror.getAllMarks();
              console.log(allTM.length);
              for (var m=0; m<allTM.length; m++){
@@ -179,6 +187,9 @@ var VigArr = {
                 myCodeMirror.removeLine(tm.find().to.line);
               }
             }
+
+            // $(".scrub-"+eff).remove();
+
       });
 
     for (var e=0; e<activeEffects.length; e++) {

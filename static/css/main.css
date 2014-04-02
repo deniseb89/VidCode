@@ -142,10 +142,7 @@ textarea {
     width: 103%;
 }
 
-.pull_left{margin-left: -31px;
--webkit-box-shadow: 3px 2px 8px 0px rgba(50, 50, 50, 0.4);
--moz-box-shadow:    3px 2px 8px 0px rgba(50, 50, 50, 0.4);
-box-shadow:         3px 2px 8px 0px rgba(50, 50, 50, 0.4);}
+.pull_left{margin-left: -31px;}
 
 
 .heading{background-color: #441B4B; padding: 5px 0; text-align: center; color: #fdf6e3; font-weight: 700; z-index: 500000; position: relative; font-size: .9em;}
@@ -276,6 +273,11 @@ box-shadow:         3px 2px 8px 0px rgba(50, 50, 50, 0.4);}
     cursor: pointer;
 }
 
+.x-drag{position: absolute;
+margin-top: -54px;
+margin-left: 143px;
+z-index: 100000;}
+
 .displaysecond{
     position: absolute!important;
     width: 480px!important;
@@ -323,6 +325,7 @@ ul{
 
 .methods{
     margin-top: 35px;
+    margin-left: -27px;
 }
 
 .methods ul{padding: 0 0 0 10px!important;}
@@ -449,10 +452,24 @@ canvas{
 .draggable {
     position: relative;
     z-index: 1000;
+    text-align: left!important;
+    background-color: rgba(49, 150, 101, .9)!important;
+    font-weight: 700!important;
+    margin-bottom: 20px!important;
 }
 
+.draggable:hover{background-color: rgba(49, 150, 101, 1)!important;}
+
 /* The effects/ learn more area */
-.learnMore{height: 500px; overflow-y: scroll; width: 120%}
+.learnMore{height: 500px; overflow-y: scroll; width: 94%}
+
+.methods .learnMore{background-color: #eee8d5;}
+.learnMore ul img{margin-right: 5px;}
+
+.learnMore .green{color: #319665;}
+.learnMore .blue{color: #3262EA;}
+.learnMore .purple{color: #AE40C1;}
+.learnMore .lightblue{color: #3BE2D6;}
 
 .heading .switch{cursor: pointer;}
 .heading .active{color: #D6BAE8;}
@@ -467,6 +484,9 @@ canvas{
 
 .learnMore .explanation{display: none; padding-left: 3px; font-size: .9em;}
 
+
+/* ----Code editor ----- */
+
 .cm-number:active{
     font-size: 1.6em;
     cursor: ew-resize;
@@ -477,6 +497,7 @@ canvas{
     cursor: ew-resize;
 }
 
+#tabs{margin-right: -28px; margin-left: 10px;}
 /* ==========================================================================
    Helper classes
    ========================================================================== */
