@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>VidCode Demo</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.9.2.custom.css">
+        <link rel="stylesheet" href="js/vendor/codemirror-3.22/lib/codemirror.css">
+        <link rel="stylesheet" href="js/vendor/codemirror-3.22/theme/solarized.css">
+        <link rel="stylesheet" href="css/codemirror-vidcode.css">
+        <link rel="stylesheet" href="css/contentflow.css">
+
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui-1.9.2.custom.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/contentflow.js"></script>
+        <script src="js/vendor/codemirror-3.22/lib/codemirror.js"></script>
+        <script src="js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
+        <script src="js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
+        <script src="Seriously/seriously.js"></script>
+        <script src="Seriously/effects/seriously.vignette.js"></script>
+        <script src="Seriously/effects/seriously.blur.js"></script>
+        <script src="Seriously/effects/seriously.filmgrain.js"></script>
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+
+        <!-- Add your site or application content here -->
+        <ul class="nav nav-tabs">
+            <li><a href="#"><img src="img/logo.png" id="image"></a></li>
+            <li class="pull-right">
+              <a class="small" href="http://vidcode.io/" target="_blank">
+              <span class="glyphicon glyphicon-star"></span>About & Updates
+            </a>
+            </li>
+
+        </ul>
+
+
+          <div class="ContentFlow hidden">
+            <div class="loadIndicator">
+              <div class="indicator">
+              </div>
+            </div>
+            <div class="flow">
+                <img class="film" src="img/filmstrip.png" title="filmstrip"/>
+                <!-- Add as many items as you like. -->
+            </div>
+            <div class="globalCaption"></div>
+            <div class="scrollbar">
+              <div class="slider">
+                <div class="position">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="container-fluid">
+
+            <div class="popup hidden">
+                Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" />
+                <button class="btn btn-primary uploadbtn" data-toggle="modal" data-target="#play">Upload</button>
+
+            </div>
+            <div class="row hidden">
+                <div clsas="col-md-4">
+                    <h3>Get Started</h3>
+                    <button class="large-button layer1"><img class="checkbtn"  src="img/checked.png">Hello World</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Filters</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Motion</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Editing</button>
+                    <button class="large-button layer1"><img class="checkbtn" src="img/unchecked.png">Advanced Graphics</button>
+                </div>
+            </div>
+
+            <div class="row">
+              <div class="heading_bg">
+
+              <div class="col-md-5">
+                <div class="heading">video</div>
+                <div class="overlay">
+
+
+
+                  <video class="video1 hidden" id="myvideo" autoplay loop>
+                      <source src="vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                  </video>
+
+                  <canvas class="video2 hidden" id="canvas"></canvas>
+
+                  <div class="buttons">
+                        <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
+                    <button type="button" class="btn btn-primary uploadfirst">Import a Video</button>
+                 <!--    <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
+                      <input type="file" name="file" value="Choose a file" />
+                      <input type="submit" value="Upload" />
+
+                    </form> -->
+                  </div>
+                  <button type="button" class="runbtn btn btn-danger pullRight hidden" >Play/Pause</button>
+                </div>
+              </div>
+
+              <div class="col-md-2 switch switchdiv">
+                <div class="heading">
+                  <span class="switch switcheffect">add effects</span> / <span class="switch active switchlearn">learn more</span>
+                </div>
+
+                <div class="methods">
+                  <ul>
+                    <li id="filmdrag" class="btn btn-method draggable">Film Grain</li><img class="xbtn x-drag" id="filmgrainx" src="img/xbtn_drag.png">
+
+                    <li id="blurdrag" class="btn btn-method draggable">Blur</li><img class="xbtn x-drag" id="blurx" src="img/xbtn_drag.png">
+
+                    <li id="vigdrag" class="btn btn-method draggable">Vignette</li><img class="xbtn x-drag" id="vignettex" src="img/xbtn_drag.png">
+                  </ul>
+                </div>
+
+
+
+
+
+                <div class="learnMore">
+                  <h4>What's in your VidCode?</h4>
+                  <ul>
+                    <li class="firstly arrowli green">
+                      <img class="btnright" src="img/btnright.png">Objects
+                    </li>
+                      <li class="explanation">
+                        A object in javascript can be anything!
+
+                        In the case of our VidCode these words, such as “movie”, are containers to allow instructions to be applied to the “movie”.
+
+                        We will cover this again and again!  For now just get used to the word and where objects are placed within the code.
+                      </li>
+
+                    <li class="secondary arrowli green"><img src="img/btnright.png">movie</li>
+                      <li class="explanation">
+                        movie is an object that uses the canvas element in HTML5 to play your video.
+                      </li>
+
+                    <li class="secondary arrowli green"><img src="img/btnright.png">effects</li>
+                      <li class="explanation">
+                        effects is an object within the seriously library.  It contains all the effects.
+
+                        By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
+                      </li>
+
+                    <li class="secondary arrowli green"><img src="img/btnright.png">seriously</li>
+                      <li class="explanation">
+                        seriously is a library which is represented by this object.
+
+                        By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
+
+                        There is a lot of code in that library!  You just cant see it ;)
+                      </li>
+
+                    <li class="secondary arrowli green"><img src="img/btnright.png">filmgrain</li>
+                      <li class="explanation">
+                        film grain is an object within the effects object.  It’s accessed via a "." dot notation.
+                      </li>
+
+                    <li class="firstly arrowli green">
+                      <img src="img/btnright.png">Functions
+                    </li>
+                      <li class="explanation">
+                        A function is a set of
+                        arguments or intructions
+                        to run on a block of code.
+                      </li>
+
+                    <li class="secondary arrowli green"><img src="img/btnright.png">showEffect</li>
+                      <li class="explanation">
+                        The "showeffect" function consists of  the arguments listed within the function’s brackets {  }.
+                        In the same way as you are your body which consists of  many processes.
+                      </li>
+
+                    <li class="firstly arrowli blue">
+                      <img src="img/btnright.png">Methods
+                    </li>
+                      <li class="explanation">
+                        A method is an argument (identical to a function) which is applied to a object using a "."
+                      </li>
+                    <li class="secondary arrowli blue"><img src="img/btnright.png">play</li>
+                      <li class="explanation">
+                        is method which effects the "movie" object
+                      </li>
+                    <li class="secondary arrowli blue"><img src="img/btnright.png">interval</li>
+                      <li class="explanation">
+                        is a method which effects the "movie" object and it has two "parameters"
+                      </li>
+
+                    <li class="firstly arrowli purple">
+                      <img src="img/btnright.png">Parameters
+                    </li>
+                      <li class="explanation">
+                        A parameter is "value" which is passed from one function to another.
+                      </li>
+
+                    <li class="firstly arrowli lightblue">
+                      <img src="img/btnright.png">Values
+                    </li>
+                      <li class="explanation">
+                        A "value" in javascript can be any of the following:
+                          -number
+                          -true or false
+                          -"string"(i.e. a word in quotes)
+                      </li>
+
+                  </ul>
+                  There is more than one right answer!
+
+                  <a href="bit.ly/1oRCFfu">check explainations from others, and add your own</a>
+                </div>
+
+              </div>
+
+
+
+
+
+              <div class="col-md-5 pull_left">
+                <div class="heading">code</div>
+                  <div id="tabs">
+
+                    <div class="tabs-2">
+                      <textarea id="codemirror">
+                      No Code To Show Yet!</textarea>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="modal fade" id="greeting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                   <div class="modal-dialog">
+                    <div class="modal-content">
+                   <div class="modal-header instruct-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="img/xbtn.png"></button>
+                   <h4 class="modal-title">Welcome!</h4>
+                  </div>
+                    <div class="modal-body instruct-body">
+                   <p>Welcome to VidCode! We'll step you through this process. Let's start by importing a video.</p>
+                   <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+                   </div>
+                    </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+              <div class="modal fade" id="play" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+               <div class="modal-content">
+               <div class="modal-header instruct-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="img/xbtn.png"></button>
+               <h4 class="modal-title">Great!</h4>
+               </div>
+               <div class="modal-body instruct-body">
+               <p>Now let's get coding! Select an effect from the tool bar to the right and drag it into the code editor.</p>
+               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+                     </div>
+                   </div><!-- /.modal-content -->
+                 </div><!-- /.modal-dialog -->
+               </div><!-- /.modal -->
+
+
+            </div>
+
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+
+
+    </body>
+</html>
