@@ -96,7 +96,7 @@ seriously.go();
                 for (var e=0; e< activeEffects.length; e++){
                   $("pre:contains('effects."+activeEffects[e]+".amount')")
                       .addClass('scrub-'+activeEffects[e]);
-                  $(".scrub-"+activeEffects[e]).find('.cm-number').attr('id','num-'+activeEffects[e]); 
+                  $(".scrub-"+activeEffects[e]).find('.cm-number').attr('id','num-'+activeEffects[e]);
                 }
 
               var matches = document.querySelectorAll(".cm-number");
@@ -114,7 +114,7 @@ seriously.go();
                  } else if ($(match).attr('id')=='num-blur'){
                   effects.blur.amount = parseInt($('#num-blur').text())/100;
                  }else if ($(match).attr('id')=='num-vignette'){
-                  effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));              
+                  effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));
               }
             }
 
@@ -156,15 +156,15 @@ var VigArr = {
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
           if (init_code) {myCodeMirror.setValue(editor_text);}
-          init_code = 0;          
+          init_code = 0;
           var eff = ui.draggable.attr("id");
           eff = eff.slice(0,-4);
             myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 0;',CodeMirror.Pos(myCodeMirror.lastLine()));
-            myCodeMirror.markText({line:myCodeMirror.lastLine(),ch:0},CodeMirror.Pos(myCodeMirror.lastLine()),{className:"cm-"+eff});                         
+            myCodeMirror.markText({line:myCodeMirror.lastLine(),ch:0},CodeMirror.Pos(myCodeMirror.lastLine()),{className:"cm-"+eff});
             GetScrubVals();
 
-            $( ".scrub-"+eff).effect("highlight",2000);          
-            
+            $( ".scrub-"+eff).effect("highlight",2000);
+
           //   if(ui.draggable.attr("id") =="vigdrag"){
           //   myCodeMirror.replaceRange('\n\    effects.vignette.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));
           //   GetScrubVals();
@@ -273,4 +273,15 @@ var VigArr = {
     $( "ul, li" ).disableSelection();
     GetScrubVals();
        },delay)
+
+
+    //Homepage where you pick your selection of filters
+    $('.filterSelect').click(function(){
+      if ($(this).hasClass('active')){
+        $(this).removeClass('active');
+      }
+      else{
+        $(this).addClass('active');
+      }
+    });
 });
