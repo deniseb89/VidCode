@@ -99,10 +99,8 @@
                 <div class="heading">video</div>
                 <div class="overlay">
 
-
-
-                  <video class="video1 hidden" id="myvideo" autoplay loop>
-                      <source src="vid/vine.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                  <video class="video1 hidden" id="myvideo" loop>
+                      <source src="vid/vine.mp4" id="vidSource" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
                   </video>
 
                   <canvas class="video2 hidden" id="canvas"></canvas>
@@ -116,7 +114,7 @@
 
                     </form> -->
                   </div>
-                  <button type="button" class="runbtn btn btn-danger pullRight hidden" >Play/Pause</button>
+                  <button type="button" class="runbtn btn btn-danger pullRight hidden" >Play</button>
                 </div>
               </div>
 
@@ -126,18 +124,12 @@
                 </div>
 
                 <div class="methods">
-                  <ul>
-                    <li id="filmdrag" class="btn btn-method draggable">Film Grain</li><img class="xbtn x-drag" id="filmgrainx" src="img/xbtn_drag.png">
 
-                    <li id="blurdrag" class="btn btn-method draggable">Blur</li><img class="xbtn x-drag" id="blurx" src="img/xbtn_drag.png">
+                  <ul><li id="filmgraindrag" class="btn btn-method draggable">Film Grain</li><img class="xbtn" id="filmgrainx" src="img/xbtn.png">
+                  <li id="blurdrag" class="btn btn-method draggable">Blur</li><img class="xbtn" id="blurx" src="img/xbtn.png">
+                  <li id="vignettedrag" class="btn btn-method draggable">Vignette</li><img class="xbtn" id="vignettex" src="img/xbtn.png"></ul>
 
-                    <li id="vigdrag" class="btn btn-method draggable">Vignette</li><img class="xbtn x-drag" id="vignettex" src="img/xbtn_drag.png">
-                  </ul>
                 </div>
-
-
-
-
 
                 <div class="learnMore">
                   <h4>What's in your VidCode?</h4>
