@@ -284,4 +284,46 @@ var VigArr = {
         $(this).addClass('active');
       }
     });
+
+    //hover state of learn more section
+    $('.object').hover(function(){
+      $('pre:contains("movie")').css("background-color", "rgba(49, 150, 101, .4)" );
+    }, function(){
+      $('pre:contains("movie")').css("background", "none" );
+    });
+    $('.movie').hover(function(){
+      $('pre:contains("movie")').css("background-color", "rgba(49, 150, 101, .4)" );
+    }, function(){
+      $('pre:contains("movie")').css("background", "none" );
+    });
+    $('.effects').hover(function(){
+      $('pre:contains("effect")').css("background-color", "rgba(49, 150, 101, .4)" );
+    }, function(){
+      $('pre:contains("effect")').css("background", "none" );
+    });
+    $('.filmgrain').hover(function(){
+      $('pre:contains("filmgrain")').css("background-color", "rgba(49, 150, 101, .4)" );
+    }, function(){
+      $('pre:contains("filmgrain")').css("background", "none" );
+    });
+    $('.functions').hover(function(){
+      $('pre:contains("function")').css("background-color", "rgba(49, 150, 101, .4)" );
+    }, function(){
+      $('pre:contains("function")').css("background", "none" );
+    });
+    $('.showeffect').hover(function(){
+      $('pre:contains("showEffect")').css("background-color", "rgba(49, 150, 101, .4)" );
+    }, function(){
+      $('pre:contains("showEffect")').css("background", "none" );
+    });
+    $('.play').hover(function(){
+      $('pre:contains("play")').css("background-color", "rgba(49, 150, 101, .4)" );
+    }, function(){
+      $('pre:contains("play")').css("background", "none" );
+    });
+    $('.interval').hover(function(){
+      $('pre:contains("interval")').css("background-color", "rgba(49, 150, 101, .4)" );
+    }, function(){
+      $('pre:contains("interval")').css("background", "none" );
+    });
 });
