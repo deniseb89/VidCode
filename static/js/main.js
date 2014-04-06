@@ -30,7 +30,6 @@ seriously.go();
   \n\
   function showEffect() {\n\
     movie.play();\n\
-    movie.interval(1000, blackAndWhiteProcessing);\n\
   }\n\
   \n\
   effects = {\n\
@@ -133,7 +132,7 @@ seriously.go();
 var VigArr = {
 
     init : function ( element ) {
-      element.node.dataset.value =  4;
+      // element.node.dataset.value =  4;
     },
 
     start : function ( element ){
@@ -150,7 +149,9 @@ var VigArr = {
       if ((valin>=0)&&(valin%20)==0) {GetScrubVals()};
     },
 
-    end : function () {}
+    end : function (element) {
+        GetScrubVals();
+    }
 };
 
     $(".tabs-2").droppable({
@@ -159,7 +160,7 @@ var VigArr = {
           init_code = 0;
           var eff = ui.draggable.attr("id");
           eff = eff.slice(0,-4);
-            myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 0;',CodeMirror.Pos(myCodeMirror.lastLine()));
+            myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
             myCodeMirror.markText({line:myCodeMirror.lastLine(),ch:0},CodeMirror.Pos(myCodeMirror.lastLine()),{className:"cm-"+eff});
             GetScrubVals();
 
