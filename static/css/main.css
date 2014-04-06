@@ -284,8 +284,8 @@ textarea {
     cursor: pointer;
 }
 
-.x-drag{position: absolute;
-margin-top: -54px;
+.x-drag{position: relative;
+margin-top: -96px;
 margin-left: 143px;
 z-index: 100000;}
 
