@@ -272,7 +272,20 @@ textarea {
     background-color: #7B4085!important;
 }
 
-.btn-info-green{background-color: magenta!important; border: none;}
+.green-btn{background-color: #319665!important;}
+.green-btn:hover{background-color: #1E754B!important;}
+
+.pink-btn{background-color: #dd39a9!important;}
+.pink-btn:hover{background-color: #AD1D80!important;}
+
+.blue-btn{background-color: #3262EA!important;}
+.blue-btn:hover{background-color: #2044A8!important;}
+
+.purple-btn{background-color: #AE40C1!important;}
+.purple-btn:hover{background-color: #7D248C!important;}
+
+.cyan-btn{background-color: #3BE2D6!important;}
+.cyan-btn:hover{background-color: #24ADA4!important;}
 
 
 .runbtn{
@@ -476,6 +489,9 @@ canvas{
 
 /* The effects/ learn more area */
 .learnMore{height: 500px; overflow-y: scroll; width: 94%}
+.learnMore .btn{font-size: .9em; width: 92%; color: #fff; text-align: center; padding: 2px;}
+.learnMore .btn:hover{color: #fff!important;}
+.learnMore .bold{font-weight: 700;}
 
 .methods .learnMore{background-color: #eee8d5;}
 .learnMore ul img{margin-right: 5px;}

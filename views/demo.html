@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.9.2.custom.css">
                  <!--     /* Attach the Joyride CSS file */ -->
-        <link rel="stylesheet" type="text/css" href="css/jquery.joyride-2.1.css"> 
+        <link rel="stylesheet" type="text/css" href="css/jquery.joyride-2.1.css">
         <link rel="stylesheet" href="js/vendor/codemirror-3.22/lib/codemirror.css">
         <link rel="stylesheet" href="js/vendor/codemirror-3.22/theme/solarized.css">
         <link rel="stylesheet" href="css/codemirror-vidcode.css">
@@ -27,9 +27,9 @@
         <script src="js/jquery.js"></script>
         <script src="js/jquery-ui-1.9.2.custom.min.js"></script>
         <script src="js/bootstrap.js"></script>
-         
-      
-      
+
+
+
         <script src="js/vendor/codemirror-3.22/lib/codemirror.js"></script>
         <script src="js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
         <script src="js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
@@ -144,86 +144,53 @@
                 <div class="learnMore">
                   <h4>What's in your VidCode?</h4>
                   <ul>
-                    <li class="firstly arrowli green object">
-                      <img class="btnright" src="img/btnright.png">Objects
-                    </li>
 
-                      <li class="explanation object">
-
-                      <button type="button" id="object" class=" btn btn-success btn-sm object">What's a object?</button>
+                      <li class="object">
+                        <button type="button" id="object" class="btn green-btn object bold">What's an object?</button>
                       </li>
 
-                    <li class="secondary arrowli green movie"><img src="img/btnright.png">movie</li>
-                      <li class="explanation movie">
-                        movie is an object that uses the canvas element in HTML5 to play your video.
+
+                      <li class="movie">
+                        <button type="button" id="movie" class="btn green-btn movie">movies</button>
                       </li>
 
-                    <li class="secondary arrowli green effects"><img src="img/btnright.png">effects</li>
-                      <li class="explanation effects">
-                        effects is an object within the seriously library.  It contains all the effects.
-
-                        By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
+                      <li class="effects">
+                        <button type="button" id="effects" class="btn green-btn effects">effects</button>
                       </li>
 
-                    <li class="secondary arrowli green"><img src="img/btnright.png">seriously</li>
-                      <li class="explanation">
-                        seriously is a library which is represented by this object.
-
-                        By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
-
-                        There is a lot of code in that library!  You just cant see it ;)
+                      <li class="seriously">
+                        <button type="button" id="seriously" class="btn green-btn seriously">effects</button>
                       </li>
 
-                    <li class="secondary arrowli green filmgrain"><img src="img/btnright.png">filmgrain</li>
-                      <li class="explanation filmgrain">
-                        film grain is an object within the effects object.  It’s accessed via a "." dot notation.
+                      <li class="filmgrain">
+                        <button type="button" id="filmgrain" class="btn green-btn filmgrain">filmgrain</button>
                       </li>
 
-                    <li class="firstly arrowli pink functions">
-                      <img src="img/btnright.png">Functions
-                    </li>
-                      <li class="explanation Functions">
-                        A function is a set of
-                        arguments or intructions
-                        to run on a block of code.
+                      <li class="function">
+                        <button type="button" id="function" class="btn pink-btn function bold">What's an function?</button>
                       </li>
 
-                    <li class="secondary arrowli pink showeffect"><img src="img/btnright.png">showEffect</li>
-                      <li class="explanation showeffect">
-                        The "showeffect" function consists of  the arguments listed within the function’s brackets {  }.
-                        In the same way as you are your body which consists of  many processes.
+                      <li class="showeffect">
+                        <button type="button" id="showeffect" class="btn pink-btn showeffect">showEffect</button>
                       </li>
 
-                    <li class="firstly arrowli blue">
-                      <img src="img/btnright.png">Methods
-                    </li>
-                      <li class="explanation">
-                        A method is an argument (similar to a function) which is applied to a object using a "."
-                      </li>
-                    <li class="secondary arrowli blue play"><img src="img/btnright.png">play</li>
-                      <li class="explanation play">
-                        is method which effects the "movie" object
-                      </li>
-                    <li class="secondary arrowli blue interval"><img src="img/btnright.png">interval</li>
-                      <li class="explanation interval">
-                        is a method which effects the "movie" object and it has two "parameters"
+                      <li class="methods">
+                        <button type="button" id="methods" class="btn blue-btn methods bold">What are methods?</button>
                       </li>
 
-                    <li class="firstly arrowli purple">
-                      <img src="img/btnright.png">Parameters
-                    </li>
-                      <li class="explanation">
-                        A parameter is "value" which is passed from one function to another.
+                       <li class="play">
+                        <button type="button" id="play" class="btn blue-btn play">play</button>
+                      </li>
+                      <li class="interval">
+                        <button type="button" id="interval" class="btn blue-btn interval">interval</button>
                       </li>
 
-                    <li class="firstly arrowli lightblue">
-                      <img src="img/btnright.png">Values
-                    </li>
-                      <li class="explanation">
-                        A "value" in javascript can be any of the following:
-                          -number
-                          -true or false
-                          -"string"(i.e. a word in quotes)
+                     <li class="parameters">
+                        <button type="button" id="parameters" class="btn purple-btn parameters bold">What are parameters?</button>
+                      </li>
+
+                     <li class="values">
+                        <button type="button" id="values" class="btn cyan-btn values bold">What are values?</button>
                       </li>
 
                   </ul>
@@ -289,7 +256,7 @@
           <ol id="chooseID">
           <!--   /* data-id needs to be the same as the parent it will attach to */ -->
             <li data-id="object">Tip content...</li>
-<!-- 
+<!--
             /* This tip will be display as a modal */ -->
             <li>Tip content...</li>
 
@@ -334,7 +301,7 @@
                 'tipLocation': 'bottom',         // 'top' or 'bottom' in relation to parent
                 'nubPosition': 'auto',           // override on a per tooltip bases
                 'scrollSpeed': 300,              // Page scrolling speed in ms
-                'timer': 2000,                   // 0 = off, all other numbers = time(ms) 
+                'timer': 2000,                   // 0 = off, all other numbers = time(ms)
                 'startTimerOnClick': true,       // true/false to start timer on first click
                 'nextButton': true,              // true/false for next button visibility
                 'tipAnimation': 'pop',           // 'pop' or 'fade' in each tip
@@ -353,7 +320,7 @@
         </script>
 
 
-    
+
 
 
     </body>
