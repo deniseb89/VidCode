@@ -23,11 +23,14 @@ app.get("/", function(req, res) {
   res.render('index.html');
 });
 
-app.get("/demo", function(req, res) {
-  res.render('demo.html');
+
+app.get("/demo", function (req, res) {
+	res.render('demo.html');
 });
 
+
 app.post("/upload", function (req, res) {
+
 	//get the file name
 	console.log(req.files.length);
 	var filename=req.files.file.name;
