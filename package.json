@@ -9,7 +9,9 @@
   "dependencies": {
     "express": "3.5",
     "consolidate": "~0.10.0",
-    "mustache": "~0.8.1"
+    "mustache": "~0.8.1",
+    "fileupload": "~0.3.0",
+    "crx": "~0.4.1"
   },
   "engines": {
     "node": "0.8.x",
@@ -26,6 +28,7 @@
   "devDependencies": {
     "grunt-cli": "~0.1.13",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-express-server": "~0.4.13"
+    "grunt-express-server": "~0.4.13",
+    "grunt": "~0.4.4"
   }
 }
