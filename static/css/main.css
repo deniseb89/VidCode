@@ -285,8 +285,8 @@ textarea {
 }
 
 .x-drag{position: relative;
-margin-top: -96px;
-margin-left: 143px;
+margin-top: -57px;
+margin-left: 148px;
 z-index: 100000;}
 
 .displaysecond{
@@ -355,7 +355,7 @@ ul{
 .buttons{
     padding: 150px;
     display: block;
-    width: 100px;
+
     z-index: 100;
     position: relative;
 }
@@ -377,7 +377,7 @@ ul{
     }
 
 .btn{
-    display: block;
+    display: block!important;
     margin: 10px auto;
     width: 180px;
 }
@@ -466,7 +466,7 @@ canvas{
     text-align: left!important;
     background-color: rgba(49, 150, 101, .9)!important;
     font-weight: 700!important;
-    margin-bottom: 20px!important;
+    margin-left: 4px;
 }
 
 .draggable:hover{background-color: rgba(49, 150, 101, 1)!important;}
