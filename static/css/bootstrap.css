@@ -5125,6 +5125,13 @@ button.close {
   width: auto;
   margin: 10px;
 }
+
+.modal-dialog2 {
+  position: relative;
+  width: auto;
+  margin: 10px;
+  float: left;
+}
 .modal-content {
   position: relative;
   background-color: #fff;

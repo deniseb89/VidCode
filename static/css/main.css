@@ -131,6 +131,10 @@ textarea {
 .nav a:hover{color: #1B4F33; margin-bottom: -1px;}
 .nav > li > a {padding: 3px 15px!important;}
 
+.allietext{
+    text-align: center;
+}
+
 /* First and Second Video */
 
 .video1{
