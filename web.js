@@ -23,7 +23,11 @@ app.get("/", function(req, res) {
   res.render('index.html');
 });
 
-app.post("/upload", function (req, res) { 
+app.get("/demo", function(req, res) {
+  res.render('demo.html');
+});
+
+app.post("/upload", function (req, res) {
 	//get the file name
 	console.log(req.files.length);
 	var filename=req.files.file.name;
@@ -34,7 +38,7 @@ app.post("/upload", function (req, res) {
 
 	// get the temporary location of the file
     var tmp_path = req.files.file.path;
-    
+
 	// set where the file should actually exists - in this case it is in the "images" directory
     var target_path = __dirname +'/upload/' + req.files.file.name;
 
@@ -44,13 +48,13 @@ app.post("/upload", function (req, res) {
         if (err) throw err;
         // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
 			fs.unlink(tmp_path, function() {
-				if (err) throw err; 
+				if (err) throw err;
 			});
 		});
 	}else{
 	// delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
 		fs.unlink(tmp_path, function(err) {
-            if (err) throw err; 
+            if (err) throw err;
         });
 		msg="File upload failed.File extension not allowed and size must be less than "+maxSizeOfFile;
 	}
