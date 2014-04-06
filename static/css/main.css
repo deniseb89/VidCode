@@ -272,6 +272,9 @@ textarea {
     background-color: #7B4085!important;
 }
 
+.btn-info-green{background-color: magenta!important; border: none;}
+
+
 .runbtn{
     margin: 0 30%!important;
 }

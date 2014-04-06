@@ -16,6 +16,8 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.9.2.custom.css">
+                 <!--     /* Attach the Joyride CSS file */ -->
+        <link rel="stylesheet" type="text/css" href="css/jquery.joyride-2.1.css"> 
         <link rel="stylesheet" href="js/vendor/codemirror-3.22/lib/codemirror.css">
         <link rel="stylesheet" href="js/vendor/codemirror-3.22/theme/solarized.css">
         <link rel="stylesheet" href="css/codemirror-vidcode.css">
@@ -25,7 +27,9 @@
         <script src="js/jquery.js"></script>
         <script src="js/jquery-ui-1.9.2.custom.min.js"></script>
         <script src="js/bootstrap.js"></script>
-        <script src="js/contentflow.js"></script>
+         
+      
+      
         <script src="js/vendor/codemirror-3.22/lib/codemirror.js"></script>
         <script src="js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
         <script src="js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
@@ -131,18 +135,22 @@
 
                 </div>
 
+
+              <!--   /* Joyride can be attached to any element with a unique ID or class, in any order */ -->
+                <h3 id="yourHeaderID"></h3>
+                <p class="your-paragraph-class"></p>
+                <a id="yourAnchorID" href="#url"></a>
+
                 <div class="learnMore">
                   <h4>What's in your VidCode?</h4>
                   <ul>
                     <li class="firstly arrowli green object">
                       <img class="btnright" src="img/btnright.png">Objects
                     </li>
+
                       <li class="explanation object">
-                        A object in javascript can be anything!
 
-                        In the case of our VidCode these words, such as “movie”, are containers to allow instructions to be applied to the “movie”.
-
-                        We will cover this again and again!  For now just get used to the word and where objects are placed within the code.
+                      <button type="button" id="object" class=" btn btn-success btn-sm object">What's a object?</button>
                       </li>
 
                     <li class="secondary arrowli green movie"><img src="img/btnright.png">movie</li>
@@ -221,10 +229,11 @@
                   </ul>
                   There is more than one right answer!
 
-                  <a href="http://bit.ly/1oRCFfu">check explainations from others, and add your own</a>
+                  <a href="bit.ly/1oRCFfu">check explainations from others, and add your own</a>
                 </div>
 
               </div>
+
 
 
 
@@ -273,6 +282,25 @@
                </div><!-- /.modal -->
 
 
+             <!--    joyride begin -->
+
+           <!--  /* Each tip is set within this <ol>. */ -->
+        <!--   /* This creates the order the tips are displayed */ -->
+          <ol id="chooseID">
+          <!--   /* data-id needs to be the same as the parent it will attach to */ -->
+            <li data-id="object">Tip content...</li>
+<!-- 
+            /* This tip will be display as a modal */ -->
+            <li>Tip content...</li>
+
+            <!-- /* using 'data-button' lets you have custom button text */ -->
+            <li data-class="parent-element-class" data-options="tipLocation:top;tipAnimation:fade" data-button="Second Button">Content...</li>
+
+            <!-- /* you can put a class for custom styling */ -->
+            <li data-id="parentElementID" class="custom-class">Content...</li>
+          </ol>
+
+
             </div>
 
         <script src="js/plugins.js"></script>
@@ -287,6 +315,45 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>
+
+
+
+
+      <!-- /* Then attach the Joyride plugin */ -->
+      <script src="js/vendor/jquery.joyride-2.1.js"></script>
+
+
+
+       <!--  /* Launching joyride when to page is loaded */ -->
+        <script>
+          $(window).load(function() {
+            $("#chooseID").joyride({
+              /* Options will go here */
+                /* Setting your options to override the defaults */
+              $('#contentID').joyride({
+                'tipLocation': 'bottom',         // 'top' or 'bottom' in relation to parent
+                'nubPosition': 'auto',           // override on a per tooltip bases
+                'scrollSpeed': 300,              // Page scrolling speed in ms
+                'timer': 2000,                   // 0 = off, all other numbers = time(ms) 
+                'startTimerOnClick': true,       // true/false to start timer on first click
+                'nextButton': true,              // true/false for next button visibility
+                'tipAnimation': 'pop',           // 'pop' or 'fade' in each tip
+                'pauseAfter': [],                // array of indexes where to pause the tour after
+                'tipAnimationFadeSpeed': 300,    // if 'fade'- speed in ms of transition
+                'cookieMonster': true,           // true/false for whether cookies are used
+                'cookieName': 'JoyRide',         // choose your own cookie name
+                'cookieDomain': false,           // set to false or yoursite.com
+                'tipContainer': body,            // Where the tip be attached if not inline
+                'postRideCallback': $noop,       // a method to call once the tour closes
+                'postStepCallback': $noop        // A method to call after each step
+              });
+
+            });
+          });
+        </script>
+
+
+    
 
 
     </body>
