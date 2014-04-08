@@ -2,11 +2,11 @@
 	res.render('index', { title: 'VidCode' });
 };
 
-exports.demo = function (dbconn, db) {
+exports.demo = function (db) {
 	return function (req, res) {
 		var collection = db.get('samples');
 		collection.find({}, {}, function (e, docs) {
-			res.render('demo', { dbconn: dbconn, samples: docs });
+			res.render('demo', { samples: docs });
 		});
 	};
 };
