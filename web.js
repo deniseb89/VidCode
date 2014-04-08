@@ -6,7 +6,8 @@ var path = require('path');
 // create mongodb
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
+var dbconn = process.env.MONGOHQ_URL || 'localhost:27017/vidcode';
+var db = monk(dbconn);
 
 // configure express
 var app = express();
@@ -26,7 +27,7 @@ app.set('view engine', 'html');
 // configure express routes
 var routes = require('./routes');
 app.get('/', routes.index);
-app.get('/demo', routes.demo);
+app.get('/demo', routes.demo(dbconn, db));
 app.post('/upload', routes.upload);
 
 // create server

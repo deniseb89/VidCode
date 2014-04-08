@@ -2,8 +2,13 @@
 	res.render('index', { title: 'VidCode' });
 };
 
-exports.demo = function (req, res) {
-	res.render('demo', { title: 'VidCode demo' });
+exports.demo = function (dbconn, db) {
+	return function (req, res) {
+		var collection = db.get('samples');
+		collection.find({}, {}, function (e, docs) {
+			res.render('demo', { dbconn: dbconn, samples: docs });
+		});
+	};
 };
 
 exports.upload = function (req, res) {
