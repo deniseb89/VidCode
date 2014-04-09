@@ -156,12 +156,13 @@ var VigArr = {
 
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
-          if (init_code) {myCodeMirror.setValue(editor_text);}
+        	if (init_code) { myCodeMirror.setValue(editor_text); myCodeMirror.save();}
           init_code = 0;
           var eff = ui.draggable.attr("id");
           eff = eff.slice(0,-4);
             myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
-            myCodeMirror.markText({line:myCodeMirror.lastLine(),ch:0},CodeMirror.Pos(myCodeMirror.lastLine()),{className:"cm-"+eff});
+            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+            myCodeMirror.save();
             GetScrubVals();
 
             $( ".scrub-"+eff).effect("highlight",2000);
@@ -187,7 +188,8 @@ var VigArr = {
               if (tm.className=="cm-"+eff){
                 myCodeMirror.removeLine(tm.find().to.line);
               }
-            }
+             }
+             myCodeMirror.save();
 
             // $(".scrub-"+eff).remove();
 
