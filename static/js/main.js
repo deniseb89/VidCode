@@ -9,19 +9,22 @@ var media = document.getElementById('myvideo');
     seriously = new Seriously(),
     video = seriously.source('#myvideo'), // get video element by CSS selector
     target = seriously.target('#canvas'), // output canvas
-    effects = {
-    vignette: seriously.effect('vignette'),
-    blur: seriously.effect('blur'),
-    filmgrain: seriously.effect('filmgrain')
-    };
-var init_code = 1;
-effects.vignette.source = video;
-effects.blur.source = effects.vignette;
-effects.filmgrain.source = effects.blur;
-effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = 0;
-target.source = effects.filmgrain;
-activeEffects = ["filmgrain","blur","vignette"];
-seriously.go();
+    init_code = 1,
+    //temp solution to homepage filter selection
+    effects={},
+    activeEffects = ["filmgrain","blur","vignette","noise","exposure","sepia"],
+    effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
+    eval("effects."+activeEffects[0]+".source = video");
+    
+    for (var i=1;i<activeEffects.length;i++){
+      effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
+      eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
+    }
+      effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.exposure.exposure = effects.noise.amount = 0;
+      // effects.hue-saturation.hue = effects.hue-saturation.saturation = 0;
+    eval("target.source = effects."+activeEffects[activeEffects.length-1]);
+
+      seriously.go();
 
    $(".runbtn").text(media.paused ? "Play" : "Pause");
 
@@ -114,20 +117,23 @@ seriously.go();
                   effects.blur.amount = parseInt($('#num-blur').text())/100;
                  }else if ($(match).attr('id')=='num-vignette'){
                   effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));
-              }
+                } else if ($(match).attr('id')=='num-exposure'){
+                  effects.exposure.exposure = parseInt($('#num-exposure').text())/25;
+                } else if ($(match).attr('id')=='num-hue'){
+                  effects.hue-saturation.hue = parseInt($('#num-hue').text())/100;
+                } else if ($(match).attr('id')=='num-saturation'){
+                  effects.hue-saturation.saturation = parseInt($('#num-saturation').text())/20;
+                } else if ($(match).attr('id')=='num-tone'){
+                  effects.tone.toned = parseInt($('#num-tone').text())/10;
+                } else if ($(match).attr('id')=='num-noise'){
+                  effects.noise.amount = parseInt($('#num-noise').text())/10;
+                } 
             }
 
             }
 
 
  $("#image").hover($('#greeting').modal());
-  // $("#play").hover(function () {
-  // $('#code').modal()
-  // });
-
-//$("#play").hover($('#pause').modal());
-
-//$("#image").hover($('#greeting').modal());
 
 var VigArr = {
 
@@ -160,29 +166,48 @@ var VigArr = {
           init_code = 0;
           var eff = ui.draggable.attr("id");
           eff = eff.slice(0,-4);
+
             myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
             myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
             myCodeMirror.save();
             GetScrubVals();
-
             $( ".scrub-"+eff).effect("highlight",2000);
-
-          //   if(ui.draggable.attr("id") =="vigdrag"){
-          //   myCodeMirror.replaceRange('\n\    effects.vignette.amount = 0;', CodeMirror.Pos(myCodeMirror.lastLine()));
-          //   GetScrubVals();
-          //   $( ".scrub-vignette" ).effect("highlight",2000);
-          // }
-
         }
       });
+
+    var methodItems = [];
+    for (var e=0; e<activeEffects.length; e++) {
+      methodItems.push("<li id='"+activeEffects[e]+"drag' class='btn btn-method draggable'>"+activeEffects[e]+"</li><img class='x-drag xbtn' id='"+activeEffects[e]+"x' src='img/xbtn_drag.png'/>");
+    }
+
+    $('#methodList').append(methodItems.join(' '));
+    $('#methodList li').each(function(){
+      $(this).draggable({
+        helper: "clone",
+        revert: "invalid"
+    });
+    });
+
 
     $(".xbtn").click(function(){
       var eff = ($(this).attr('id'));
       eff = eff.slice(0,-1);
-            eval("effects."+eff+".amount = 0");
+            // eval("effects."+eff+".amount = 0");
+            // eval("effects."+eff+".exposure = 0"); 
+    effects={},
+    activeEffects = ["filmgrain","blur","vignette","exposure", "noise"],
+    effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
+    eval("effects."+activeEffects[0]+".source = video");
+    
+    for (var i=1;i<activeEffects.length;i++){
+      effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
+      eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
+    }
+      effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.noise.amount = effects.exposure.exposure = 0;
+   // effects.hue-saturation.hue = effects.hue-saturation.saturation = 0;
+    eval("target.source = effects."+activeEffects[activeEffects.length-1]); 
 
              var allTM = myCodeMirror.getAllMarks();
-             console.log(allTM.length);
              for (var m=0; m<allTM.length; m++){
               var tm = allTM[m];
               if (tm.className=="cm-"+eff){
@@ -191,17 +216,8 @@ var VigArr = {
              }
              myCodeMirror.save();
 
-            // $(".scrub-"+eff).remove();
-
       });
-
-    for (var e=0; e<activeEffects.length; e++) {
-    $( "#"+activeEffects[e]+"drag" ).draggable({
-       helper: "clone",
-       revert: "invalid"
-    });
-    }
-
+  
     $(".tab2").click(function(){
         $(".tabs-2").removeClass("hidden");
     });
