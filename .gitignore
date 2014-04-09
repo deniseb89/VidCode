@@ -1,4 +1,6 @@
-vids
-
 .DS_Store
+
 node_modules
+npm-debug.oog
+
+vids
