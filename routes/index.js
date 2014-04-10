@@ -1,4 +1,4 @@
-﻿var fs = require('fs');
+var fs = require('fs');
 var vid_file = "";
 
 exports.index = function (req, res) {
@@ -7,7 +7,6 @@ exports.index = function (req, res) {
 
 exports.demo = function (db) {
 	return function (req, res) {
-
 		var token = req.params.token;
 
 		if (!token) {
@@ -44,16 +43,13 @@ exports.save = function (db, crypto) {
 			token = generateToken(crypto);
 			save(db, token, token, code);
 		}
-		
+
 		res.redirect('/demo/' + token);
 	};
 };
 
 exports.upload = function (req, res) {
->>>>>>> 6c60b4a9c01de208452bcc1e2f0bce654987a65e
-
-exports.upload = function (req, res, cb) {
-	var filename = req.files.file.name;
+var filename = req.files.file.name;
 	var extensionAllowed = [".mp4", ".mov"];
 	var maxSizeOfFile = 10000000;
 	var msg = "";
@@ -78,11 +74,9 @@ exports.upload = function (req, res, cb) {
 		});
 		msg = "File upload failed.File extension not allowed and size must be less than " + maxSizeOfFile;
 	}
-	// res.status(302);
-	// res.setHeader("Location", "/demo");
+
 	vid_file = filename;
-	// res.end("null");
-	res.end('upload complete');
+	res.end('upload complete');	
 };
 
 function generateToken(crypto) {

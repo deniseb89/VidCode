@@ -150,17 +150,6 @@ var VigArr = {
       eff = eff.slice(0,-1);
             eval("effects."+eff+".amount = 0");
             eval("effects."+eff+".exposure = 0"); 
-    // effects={},
-    // activeEffects = ["filmgrain","blur","vignette","exposure", "noise"],
-    // effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
-    // eval("effects."+activeEffects[0]+".source = video");
-    
-    // for (var i=1;i<activeEffects.length;i++){
-    //   effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
-    //   eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
-    // }
-    //   effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.noise.amount = effects.exposure.exposure = 0;
-    // eval("target.source = effects."+activeEffects[activeEffects.length-1]); 
 
              var allTM = myCodeMirror.getAllMarks();
              for (var m=0; m<allTM.length; m++){
