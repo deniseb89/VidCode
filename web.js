@@ -28,7 +28,7 @@ app.set('view engine', 'html');
 // configure express routes
 var routes = require('./routes');
 app.get('/', routes.index);
-app.get('/demo/:token?', routes.demo(db, crypto));
+app.get('/demo/:token?', routes.demo(db));
 app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
 

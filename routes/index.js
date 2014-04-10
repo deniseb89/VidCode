@@ -2,16 +2,23 @@
 	res.render('index', { title: 'VidCode' });
 };
 
-exports.demo = function (db, crypto) {
+exports.demo = function (db) {
 	return function (req, res) {
 		var token = req.params.token;
-		var doc = {};
 
 		if (!token) {
-			doc = get(db, token);
+			res.render('demo', { code: "No Code To Show Yet!" });
+			return;
 		}
 
-		res.render('demo', { samples: doc });
+		var vc = db.get('vidcode');
+		vc.findOne({ token: token }, function (err, doc) {
+			if (!doc) {
+				res.status(404);
+			}
+
+			res.render('demo', { code: doc.code });
+		});
 	};
 };
 
@@ -75,22 +82,29 @@ function generateToken(crypto) {
 
 function save(db, token, video, code) {
 	var vc = db.get('vidcode');
-	var existing = vc.findOne({ token: token });
-	if (existing) {
-		if (video) {
-			existing.video = video;
-		}
-		if (code) {
-			existing.code = code;
-		}
-	}
-}
+	vc.findOne({ token: token }, function (err, doc) {
+		if (!doc) {
+			doc = { token: token };
+			if (video) {
+				doc.video = video;
+			}
+			if (code) {
+				doc.code = code;
+			}
 
-function get(db, token) {
-	var vc = db.get('vidcode');
-	return vc.findOne({ token: token });
-}
+			vc.insert(doc);
+		} else {
+			if (video) {
+				doc.video = video;
+			}
+			if (code) {
+				doc.code = code;
+			}
 
+			vc.update(doc);
+		}
+	});
+}
 
 function oc(a) {
 	var o = {};

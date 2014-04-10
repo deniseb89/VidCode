@@ -57,7 +57,6 @@ var media = document.getElementById('myvideo');
             };
 
             var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
-                  value: "function myScript(){return 100;}\n",
                   mode:  "javascript",
                   theme: "solarized light",
                   readOnly: true,
