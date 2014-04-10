@@ -2,12 +2,30 @@
 	res.render('index', { title: 'VidCode' });
 };
 
-exports.demo = function (db) {
+exports.demo = function (db, crypto) {
 	return function (req, res) {
-		var collection = db.get('samples');
-		collection.find({}, {}, function (e, docs) {
-			res.render('demo', { samples: docs });
-		});
+		var token = req.params.token;
+		var doc = {};
+
+		if (!token) {
+			doc = get(db, token);
+		}
+
+		res.render('demo', { samples: doc });
+	};
+};
+
+exports.save = function (db, crypto) {
+	return function (req, res) {
+		var code = req.body.codemirror;
+		var token = req.body.token;
+
+		if (!token) {
+			token = generateToken(crypto);
+			save(db, token, token, code);
+		}
+		
+		res.redirect('/demo/' + token);
 	};
 };
 
@@ -47,6 +65,32 @@ exports.upload = function (req, res) {
 	res.setHeader("Location", "/");
 	res.end();
 };
+
+function generateToken(crypto) {
+	var tokenLength = 10;
+	var buf = crypto.randomBytes(Math.ceil(tokenLength * 3 / 4));
+	var token = buf.toString('base64').slice(0, tokenLength).replace(/\+/g, '0').replace(/\//g, '0');
+	return token;
+}
+
+function save(db, token, video, code) {
+	var vc = db.get('vidcode');
+	var existing = vc.findOne({ token: token });
+	if (existing) {
+		if (video) {
+			existing.video = video;
+		}
+		if (code) {
+			existing.code = code;
+		}
+	}
+}
+
+function get(db, token) {
+	var vc = db.get('vidcode');
+	return vc.findOne({ token: token });
+}
+
 
 function oc(a) {
 	var o = {};
