@@ -2,6 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
+var crypto = require('crypto');
 
 // create mongodb
 var mongo = require('mongodb');
@@ -15,6 +16,7 @@ app.use(express.static(__dirname + '/static'));
 app.use(express.static(__dirname + '/vids'));
 app.use(express.bodyParser({ keepExtensions: true, limit: '10mb', uploadDir: __dirname +'/vids' }));
 app.use(express.urlencoded());
+app.use(express.json());
 app.use(express.methodOverride());
 app.use(app.router);
 
@@ -27,9 +29,14 @@ app.set('view engine', 'html');
 // configure express routes
 var routes = require('./routes');
 app.get('/', routes.index);
+<<<<<<< HEAD
 app.get('/demo', routes.demo(db));
 app.get('/sendVid', routes.video);
+=======
+app.get('/demo/:token?', routes.demo(db));
+>>>>>>> 6c60b4a9c01de208452bcc1e2f0bce654987a65e
 app.post('/upload', routes.upload);
+app.post('/save', routes.save(db, crypto));
 
 // create server
 http.createServer(app).listen(app.get('port'),function(){

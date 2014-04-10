@@ -7,9 +7,21 @@ exports.index = function (req, res) {
 
 exports.demo = function (db) {
 	return function (req, res) {
-		var collection = db.get('samples');
-		collection.find({}, {}, function (e, docs) {
-			res.render('demo', { samples: docs});
+
+		var token = req.params.token;
+
+		if (!token) {
+			res.render('demo', { code: "No Code To Show Yet!" });
+			return;
+		}
+
+		var vc = db.get('vidcode');
+		vc.findOne({ token: token }, function (err, doc) {
+			if (!doc) {
+				res.status(404);
+			}
+
+			res.render('demo', { code: doc.code });
 		});
 	};
 };
@@ -22,6 +34,23 @@ exports.video = function(req,res){
 		res.sendfile('vids/'+vid_file);
 	}
 }
+
+exports.save = function (db, crypto) {
+	return function (req, res) {
+		var code = req.body.codemirror;
+		var token = req.body.token;
+
+		if (!token) {
+			token = generateToken(crypto);
+			save(db, token, token, code);
+		}
+		
+		res.redirect('/demo/' + token);
+	};
+};
+
+exports.upload = function (req, res) {
+>>>>>>> 6c60b4a9c01de208452bcc1e2f0bce654987a65e
 
 exports.upload = function (req, res, cb) {
 	var filename = req.files.file.name;
@@ -55,6 +84,39 @@ exports.upload = function (req, res, cb) {
 	// res.end("null");
 	res.end('upload complete');
 };
+
+function generateToken(crypto) {
+	var tokenLength = 10;
+	var buf = crypto.randomBytes(Math.ceil(tokenLength * 3 / 4));
+	var token = buf.toString('base64').slice(0, tokenLength).replace(/\+/g, '0').replace(/\//g, '0');
+	return token;
+}
+
+function save(db, token, video, code) {
+	var vc = db.get('vidcode');
+	vc.findOne({ token: token }, function (err, doc) {
+		if (!doc) {
+			doc = { token: token };
+			if (video) {
+				doc.video = video;
+			}
+			if (code) {
+				doc.code = code;
+			}
+
+			vc.insert(doc);
+		} else {
+			if (video) {
+				doc.video = video;
+			}
+			if (code) {
+				doc.code = code;
+			}
+
+			vc.update(doc);
+		}
+	});
+}
 
 function oc(a) {
 	var o = {};
