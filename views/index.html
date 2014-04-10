@@ -82,8 +82,6 @@
           </div>
           <br>
           
-
-
           <div class="col-md-3">
             <div class="filterSelect" id="blur">
               <img src="img/effect-options/blur.gif">
@@ -107,7 +105,12 @@
           </div>
 
           <div class="col-md-12">
-            <a href="demo"><button class="btn btn-primary btn-purple">Next ></button></a>
+            <form method="GET" action="/demo">
+            <input type="hidden" name="filters" value=["filmgrain, blur"] />
+            <input type="submit" value="Next" class="btn btn-primary btn-purple"></button>
+          </form>
+ 
+            <!-- <a href="demo"><button class="btn btn-primary btn-purple">Next </button></a>  -->
           </div>
 
 

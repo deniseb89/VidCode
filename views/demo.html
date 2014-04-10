@@ -86,9 +86,13 @@
         <div class="container-fluid">
 
             <div class="popup hidden">
-                Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" />
-                <button class="btn btn-primary uploadbtn" data-toggle="modal" data-target="#play">Upload</button>
-
+                                <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
+                      <input type="file" name="file" value="Select a File" />
+                      <button class="btn btn-primary uploadbtn uploadfile">Upload</button>
+                      <!-- <input type="submit" class="btn btn-primary uploadfile" value="Upload" /> -->
+                    </form>
+                <!-- Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" /> -->
+                </form>
             </div>
             <div class="row hidden">
                 <div clsas="col-md-4">
@@ -108,21 +112,15 @@
                 <div class="heading">video</div>
                 <div class="overlay">
 
-                  <video class="video1 hidden" id="myvideo" autoplay loop>
-                      <source src="vid/vine.mp4" id="vidSource" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+              <video class="video1 hidden" id="myvideo" src="./img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'autoplay loop>
                   </video>
-
                   <canvas class="video2 hidden" id="canvas"></canvas>
 
                   <div class="buttons">
                         <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
-                    <button type="button" class="btn btn-primary uploadfirst">Import a Video</button>
-                 <!--    <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
-                      <input type="file" name="file" value="Choose a file" />
-                      <input type="submit" value="Upload" />
-
-                    </form> -->
-                  </div>
+                    <button type="button" class="btn btn-primary uploaddemo uploadbtn">Import a Sample Video</button>
+                    <button type="button" class="btn btn-primary uploadfirst">Import Your Own Video</button>
+                    </div>
                   <button type="button" class="runbtn btn btn-danger pullRight hidden" ></button>
                 </div>
               </div>
@@ -132,16 +130,7 @@
                   <span class="switch switcheffect">add effects</span> / <span class="switch active switchlearn">learn more</span>
                 </div>
 
-                <div class="methods">
-
-                  <ul id="methodList">
-<!--                   <li id="filmgraindrag" class="btn btn-method draggable">Film Grain</li><img class="x-drag xbtn" id="filmgrainx" src="img/xbtn_drag.png">
-                  <li id="blurdrag" class="btn btn-method draggable">Blur</li><img class="xbtn x-drag" id="blurx" src="img/xbtn_drag.png">
-                  <li id="vignettedrag" class="btn btn-method draggable">Vignette</li><img class="xbtn x-drag" id="vignettex" src="img/xbtn_drag.png"> -->
-                  </ul>
-
-                </div>
-
+                <div class="methods"><ul id="methodList"></ul></div>
 
               <!--   /* Joyride can be attached to any element with a unique ID or class, in any order */ -->
                 <h3 id="yourHeaderID"></h3>

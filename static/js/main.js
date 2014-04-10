@@ -5,26 +5,23 @@ $( document ).ready(function() {
 
     var delay=1000//1 seconds
     setTimeout(function(){
-var media = document.getElementById('myvideo');
-    seriously = new Seriously(),
-    video = seriously.source('#myvideo'), // get video element by CSS selector
-    target = seriously.target('#canvas'), // output canvas
+    var media = document.getElementById('myvideo'),
     init_code = 1,
-    //temp solution to homepage filter selection
-    effects={},
-    activeEffects = ["filmgrain","blur","vignette","noise","exposure","sepia"],
+
+    effects = {};
+    activeEffects = ["filmgrain","blur","vignette","noise","exposure"];
+    var seriously = new Seriously();
+    var video = seriously.source("#myvideo");
+    var target = seriously.target('#canvas');
     effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
     eval("effects."+activeEffects[0]+".source = video");
-    
     for (var i=1;i<activeEffects.length;i++){
       effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
       eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
     }
       effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.exposure.exposure = effects.noise.amount = 0;
-      // effects.hue-saturation.hue = effects.hue-saturation.saturation = 0;
     eval("target.source = effects."+activeEffects[activeEffects.length-1]);
-
-      seriously.go();
+    seriously.go();
 
    $(".runbtn").text(media.paused ? "Play" : "Pause");
 
@@ -38,23 +35,11 @@ var media = document.getElementById('myvideo');
   effects = {\n\
       blur: seriously.effect('blur'),\n\
       vignette: seriously.effect('vignette'),\n\
-      filmgrain: seriously.effect('filmgrain')\n\
+      filmgrain: seriously.effect('filmgrain'),\n\
+      vignette: seriously.effect('noise'),\n\
+      filmgrain: seriously.effect('exposure')\n\
       };\n\
     ";
-
-            var glossary = {
-                'function':
-'In vidcode, a function is a block of code which executes a certain behavior.\
- * You can \"call\" on a function to complete its behavior in other parts of your code (and as many times as you want).\
- * Our vidcode has 3 functions: pixelate(), blackandWhiteProcessing(), and scrubProcessing().',
-                'play' :
-' * \"Play\" is a function which can be applied to an object.  In our code the object is \"movie\".\
- * To apply a function to an object you place it directly after the object with a period in between.',
-                'foreach' :
-' * foreach allows you to cycle through all the pixels in your video.  The computer reads each of your pixels in list form (a really loooong list), then paints them on the screen.  This is the secret to video processing!',
-                'effects' :
-' * effects is an object that contains information about each filter you add to your video.'
-            };
 
             var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
                   value: "function myScript(){return 100;}\n",
@@ -66,34 +51,6 @@ var media = document.getElementById('myvideo');
                 });
 
             function GetScrubVals(){
-
-            $(".cm-keyword:contains('function')")
-                .addClass('vc-glossary')
-                .attr('title', glossary.function)
-                .data('toggle', 'tooltip')
-                .data('placement', 'right')
-                .tooltip();
-
-            $(".cm-variable:contains('foreach')")
-                .addClass('vc-glossary')
-                .attr('title', glossary.foreach)
-                .data('toggle', 'tooltip')
-                .data('placement', 'bottom')
-                .tooltip();
-
-            $(".cm-variable:contains('play()')")
-                .addClass('vc-glossary')
-                .attr('title', glossary.play)
-                .data('toggle', 'tooltip')
-                .data('placement', 'right')
-                .tooltip();
-
-            $(".cm-variable:contains('effects')")
-                .addClass('vc-glossary')
-                .attr('title', glossary.effects)
-                .data('toggle', 'tooltip')
-                .data('placement', 'right')
-                .tooltip();
 
                 for (var e=0; e< activeEffects.length; e++){
                   $("pre:contains('effects."+activeEffects[e]+".amount')")
@@ -138,7 +95,7 @@ var media = document.getElementById('myvideo');
 var VigArr = {
 
     init : function ( element ) {
-      // element.node.dataset.value =  4;
+      element.node.dataset.value =  0;
     },
 
     start : function ( element ){
@@ -192,20 +149,19 @@ var VigArr = {
     $(".xbtn").click(function(){
       var eff = ($(this).attr('id'));
       eff = eff.slice(0,-1);
-            // eval("effects."+eff+".amount = 0");
-            // eval("effects."+eff+".exposure = 0"); 
-    effects={},
-    activeEffects = ["filmgrain","blur","vignette","exposure", "noise"],
-    effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
-    eval("effects."+activeEffects[0]+".source = video");
+            eval("effects."+eff+".amount = 0");
+            eval("effects."+eff+".exposure = 0"); 
+    // effects={},
+    // activeEffects = ["filmgrain","blur","vignette","exposure", "noise"],
+    // effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
+    // eval("effects."+activeEffects[0]+".source = video");
     
-    for (var i=1;i<activeEffects.length;i++){
-      effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
-      eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
-    }
-      effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.noise.amount = effects.exposure.exposure = 0;
-   // effects.hue-saturation.hue = effects.hue-saturation.saturation = 0;
-    eval("target.source = effects."+activeEffects[activeEffects.length-1]); 
+    // for (var i=1;i<activeEffects.length;i++){
+    //   effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
+    //   eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
+    // }
+    //   effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.noise.amount = effects.exposure.exposure = 0;
+    // eval("target.source = effects."+activeEffects[activeEffects.length-1]); 
 
              var allTM = myCodeMirror.getAllMarks();
              for (var m=0; m<allTM.length; m++){
@@ -235,18 +191,41 @@ var VigArr = {
         $(".tabs-1").removeClass("hidden");
     });
 
-    $(".uploadfirst").click(function(){
-        $(".popup").removeClass("hidden");
+    $(".uploadform").submit(function(e) {
+      var formObj = $(this);
+      var formURL = formObj.attr("action");
+      var formData = new FormData(this);
+      $.ajax({
+          url: formURL,
+      type: 'POST',
+          data:  formData,
+      mimeType:"multipart/form-data",
+      contentType: false,
+          cache: false,
+          processData:false,
+      success: function(data, textStatus, jqXHR){ media.src="/sendVid"; },
+       error: function(jqXHR, textStatus, errorThrown) 
+       {console.log('error posting ')}          
+      });
+      e.preventDefault();
     });
 
     $(".uploadbtn").click(function(){
         $(".popup").addClass("hidden");
-        $(".video2").removeClass("hidden");
         $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
         $(".buttons").addClass("hidden");
         $(".runbtn").removeClass("hidden");
+        $(".video2").removeClass("hidden");
     });
+
+    $(".uploadfirst").click(function(){
+        $(".popup").removeClass("hidden");
+    });
+
+    $(".uploaddemo").click(function(){
+        media.src="/sendVid";
+      });
 
     $(".runbtn").click(function(){
         $(".video2").removeClass("hidden");

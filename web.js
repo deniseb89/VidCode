@@ -12,6 +12,7 @@ var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 var app = express();
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
+app.use(express.static(__dirname + '/vids'));
 app.use(express.bodyParser({ keepExtensions: true, limit: '10mb', uploadDir: __dirname +'/vids' }));
 app.use(express.urlencoded());
 app.use(express.methodOverride());
@@ -27,6 +28,7 @@ app.set('view engine', 'html');
 var routes = require('./routes');
 app.get('/', routes.index);
 app.get('/demo', routes.demo(db));
+app.get('/sendVid', routes.video);
 app.post('/upload', routes.upload);
 
 // create server
