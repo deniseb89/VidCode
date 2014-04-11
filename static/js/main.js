@@ -133,7 +133,7 @@ var VigArr = {
 
     var methodItems = [];
     for (var e=0; e<activeEffects.length; e++) {
-      methodItems.push("<li id='"+activeEffects[e]+"drag' class='btn btn-method draggable'>"+activeEffects[e]+"</li><img class='x-drag xbtn' id='"+activeEffects[e]+"x' src='img/xbtn_drag.png'/>");
+      methodItems.push("<li id='"+activeEffects[e]+"drag' class='btn btn-method draggable'>"+activeEffects[e]+"</li><img class='x-drag xbtn' id='"+activeEffects[e]+"x' src='/img/xbtn_drag.png'/>");
     }
 
     $('#methodList').append(methodItems.join(' '));
