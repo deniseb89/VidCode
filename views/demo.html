@@ -86,13 +86,14 @@
         <div class="container-fluid">
 
             <div class="popup hidden">
-                                <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
-                      <input type="file" name="file" value="Select a File" />
-                      <button class="btn btn-primary uploadbtn uploadfile">Upload</button>
+              <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
+                10 mb max file size
+                <input type="file" name="file" value="Select a File" />
+                <button class="btn btn-primary uploadbtn uploadfile">Upload</button>
                       <!-- <input type="submit" class="btn btn-primary uploadfile" value="Upload" /> -->
                     </form>
                 <!-- Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" /> -->
-                </form>
+              </form>
             </div>
             <div class="row hidden">
                 <div clsas="col-md-4">
@@ -226,7 +227,7 @@
                       <form method="post" action="/save">
                         <textarea id="codemirror" name="codemirror">{{code}}</textarea>
                         <div class="pull-right">
-                          <input type="submit" value="Save" class="btn btn-primary" style="margin-right:20px;margin-top:10px;" />
+                          <input type="submit" value="Save" class="btn btn-primary savebtn" style="margin-right:20px;"/>
                         </div>
                       </form>
 
@@ -235,36 +236,6 @@
                 </div>
 
 
-                <div class="modal fade" id="greeting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                   <div class="modal-dialog">
-                    <div class="modal-content">
-                   <div class="modal-header instruct-header">
-                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-                   <h4 class="modal-title">Welcome!</h4>
-                  </div>
-                    <div class="modal-body instruct-body">
-                   <p>Welcome to VidCode! We'll step you through this process. Let's start by importing a video.</p>
-                   <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                   </div>
-                    </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-
-
-              <div class="modal fade" id="play" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">Great!</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p>Now let's get coding! Select an effect from the tool bar to the right and drag it into the code editor.</p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
 
                  <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog2">
@@ -536,26 +507,32 @@
         <h2>Object</h2>
         <p>It works right aligned.</p>
       </li> -->
-      <li data-class="so-awesome" data-text="Next" class="custom">
-        <h2>Stop #1</h2>
-        <p>You can control all the details for you tour stop. Any valid HTML will work inside of Joyride.</p>
+
+
+
+      <li data-class="uploadfirst" data-text="Next" class="custom">
+        <h2>Welcome!</h2>
+        <p>Welcome to VidCode! We'll step you through this process. Let's start by importing a video.</p>
       </li>
-      <li data-id="numero2" data-button="Next" data-options="tipLocation:top;tipAnimation:fade">
-        <h2>Stop #2</h2>
-        <p>Get the details right by styling Joyride with a custom stylesheet!</p>
+
+
+      <li data-class="switcheffect" data-text="Next" class="custom">
+        <p>Now drag and drop filters from the center column into the code editor.</p>
       </li>
-     <!--  <li data-button="Next">
-        <h2>Stop #4</h2>
-        <p>It works as a modal too!</p>
-      </li> -->
-      <li data-class="someclass" data-button="Next" data-options="tipLocation:right">
-        <h2>Stop #4.5</h2>
-        <p>It works with classes, and only on the first visible element with that class.</p>
+
+
+      <li data-class="cm-number" data-text="Next" class="custom">
+        <p>Next, in the code editor, slide between values by hovering over the red number then holding down as your pushing left or right.</p>
       </li>
-      <li data-id="numero5" data-button="Close">
-        <h2>Stop #5</h2>
-        <p>Now what are you waiting for? Add this to your projects and get the most out of your apps!</p>
+
+      <li data-id="filmgrainx" data-text="Next" class="custom" data-options="tipLocation:top">
+        <p>Mix, match, and remove filters by clicking the "x" on the green effects button.</p>
       </li>
+
+      <li data-class="savebtn" data-options="tipLocation:left" data-button="Close">
+        <p>Then, when you're done, save your file by clicking the button below.  Copy and paste the url which is created and save it for future reference.</p>
+      </li>
+
     </ol>
 
 
