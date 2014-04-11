@@ -191,15 +191,24 @@ var VigArr = {
       contentType: false,
           cache: false,
           processData:false,
-      success: function(data, textStatus, jqXHR){ media.src="/sendVid"; },
+      success: function(data, textStatus, jqXHR){
+        media.src="/sendVid"; 
+        $(".popup").addClass("hidden");
+        $(".uploadfirst").addClass("hidden");
+        $(".clearHover").addClass("hidden");
+        $(".buttons").addClass("hidden");
+        $(".runbtn").removeClass("hidden");
+        $(".video2").removeClass("hidden");
+      },
        error: function(jqXHR, textStatus, errorThrown) 
-       {console.log('error posting ')}          
+       {
+        $(".uploadform").append('File upload failed.');
+              }          
       });
       e.preventDefault();
     });
 
     $(".uploadbtn").click(function(){
-        $(".popup").addClass("hidden");
         $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
         $(".buttons").addClass("hidden");
@@ -212,7 +221,7 @@ var VigArr = {
     });
 
     $(".uploaddemo").click(function(){
-        media.src="/sendVid";
+        // media.src="/sendVid";
       });
 
     $(".runbtn").click(function(){

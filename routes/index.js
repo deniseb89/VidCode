@@ -20,7 +20,7 @@ exports.demo = function (db) {
         res.status(404);
       }
 
-      res.render('demo', { code: doc.code });
+        res.render('demo', { code: doc.code });
     });
   };
 };
@@ -65,18 +65,18 @@ exports.upload = function (req, res) {
       // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
       fs.unlink(tmp_path, function () {
         if (err) throw err;
-      });
+      }); 
     });
+    vid_file = filename;
+    res.end("upload complete");
   } else {
-    // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
+      // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
     fs.unlink(tmp_path, function (err) {
       if (err) throw err;
     });
-    msg = "File upload failed.File extension not allowed and size must be less than " + maxSizeOfFile;
+    msg = "File upload failed. File extension must be "+extensionAllowed[0]+" or "+extensionAllowed[1]+" and size must be less than " + maxSizeOfFile;    
+   res.end(msg);    
   }
-
-  vid_file = filename;
-  res.end('upload complete');  
 };
 
 function generateToken(crypto) {
