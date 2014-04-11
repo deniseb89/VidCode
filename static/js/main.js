@@ -221,7 +221,7 @@ var VigArr = {
     });
 
     $(".uploaddemo").click(function(){
-        // media.src="/sendVid";
+        media.src="/sendVid";
       });
 
     $(".runbtn").click(function(){
