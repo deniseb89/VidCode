@@ -118,7 +118,7 @@ var VigArr = {
 
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
-        	if (init_code) { myCodeMirror.setValue(editor_text); myCodeMirror.save();}
+          if (init_code) { myCodeMirror.setValue(editor_text); myCodeMirror.save();}
           init_code = 0;
           var eff = ui.draggable.attr("id");
           eff = eff.slice(0,-4);
