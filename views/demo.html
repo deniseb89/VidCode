@@ -1,571 +1,391 @@
-﻿<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>VidCode Demo</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="container-fluid">
+  <div class="popup hidden">
+    <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
+      10 mb max file size
+      <input type="file" name="file" value="Select a File" />
+      <button class="btn btn-primary uploadfile">Upload</button>
+    </form>
+  </div>
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <div class="row hidden">
+    <div clsas="col-md-4">
+      <h3>Get Started</h3>
+      <button class="large-button layer1"><img class="checkbtn" src="/img/checked.png">Hello World</button>
+      <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Filters</button>
+      <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Motion</button>
+      <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Editing</button>
+      <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Advanced Graphics</button>
+    </div>
+  </div>
 
-        <link rel="stylesheet" href="/css/normalize.css">
-        <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/custom-theme/jquery-ui-1.9.2.custom.css">
-                 <!--     /* Attach the Joyride CSS file */ -->
-        <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
-        <link rel="stylesheet" href="/js/vendor/codemirror-3.22/lib/codemirror.css">
-        <link rel="stylesheet" href="/js/vendor/codemirror-3.22/theme/solarized.css">
-        <link rel="stylesheet" href="/css/codemirror-vidcode.css">
-        <link rel="stylesheet" href="/css/contentflow.css">
+  <div class="row">
+    <div class="heading_bg">
 
-        <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="/js/jquery.js"></script>
-        <script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
-        <script src="/js/bootstrap.js"></script>
+      <div class="col-md-5">
+        <div class="heading">video</div>
+        <div class="overlay">
+          <video class="video1 hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+          <canvas class="video2 hidden" id="canvas"></canvas>
+          <div class="buttons">
+            <button type="button" class="btn btn-primary uploaddemo uploadbtn">Import a Sample Video</button>
+            <button type="button" class="btn btn-primary uploadbtn uploadfirst">Import Your Own Video</button>
+          </div>
+          <button type="button" class="runbtn btn btn-danger pullRight hidden"></button>
+        </div>
+      </div>
 
+      <div class="col-md-2 switch switchdiv">
+        <div class="heading">
+          <span class="switch switcheffect">add effects</span> / <span class="switch active switchlearn">learn more</span>
+        </div>
 
+        <div class="methods">
+          <button class="btn btn-primary switch active switchlearn">Learn more about what <br />these are doing!</button>
+          <br>
+          <ul id="methodList"></ul>
+        </div>
 
-        <script src="/js/vendor/codemirror-3.22/lib/codemirror.js"></script>
-        <script src="/js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
-        <script src="/js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
-        <script src="/Seriously/seriously.js"></script>
-        <script src="/Seriously/effects/seriously.vignette.js"></script>
-        <script src="/Seriously/effects/seriously.blur.js"></script>
-        <script src="/Seriously/effects/seriously.filmgrain.js"></script>
-        <script src="/Seriously/effects/seriously.exposure.js"></script>
-        <script src="/Seriously/effects/seriously.noise.js"></script>
-        <script src="/Seriously/effects/seriously.sepia.js"></script>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+        <!--   /* Joyride can be attached to any element with a unique ID or class, in any order */ -->
+        <h3 id="yourHeaderID"></h3>
+        <p class="your-paragraph-class"></p>
+        <a id="yourAnchorID" href="#url"></a>
 
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
-
-
-        <!-- Add your site or application content here -->
-        <ul class="nav nav-tabs">
-            <li><a href="/"><img src="/img/logo.png" id="image"></a></li>
-            <li class="pull-right">
-              <a class="small" href="http://vidcode.io/" target="_blank">
-              <span class="glyphicon glyphicon-star"></span>About & Updates
-            </a>
+        <div class="learnMore">
+          <h4>What's in your VidCode?</h4>
+          <ul>
+            <li class="object">
+              <button type="button" class="btn green-btn object bold" data-toggle="modal" data-target="#object222">What's an object?</button>
             </li>
 
-        </ul>
+            <li class="movie">
+              <button type="button" id="movie" class="btn green-btn movie" data-toggle="modal" data-target="#movies222">movies</button>
+            </li>
 
+            <li class="effects">
+              <button type="button" id="effects" class="btn green-btn effects" data-toggle="modal" data-target="#effects222">effects</button>
+            </li>
 
+            <li class="seriously">
+              <button type="button" id="seriously" class="btn green-btn seriously" data-toggle="modal" data-target="#seriously222">seriously</button>
+            </li>
 
+            <li class="filmgrain">
+              <button type="button" id="filmgrain" class="btn green-btn filmgrain" data-toggle="modal" data-target="#filmgrain222">filmgrain</button>
+            </li>
 
+            <li class="function">
+              <button type="button" id="function" class="btn pink-btn function bold" data-toggle="modal" data-target="#function222">What's an function?</button>
+            </li>
 
-          <div class="ContentFlow hidden">
-            <div class="loadIndicator">
-              <div class="indicator">
+            <li class="showeffect">
+              <button type="button" id="showeffect" class="btn pink-btn showeffect" data-toggle="modal" data-target="#showeffect222">showEffect</button>
+            </li>
+
+            <li class="methods">
+              <button type="button" id="methods" class="btn blue-btn methods bold" data-toggle="modal" data-target="#methods222">What are methods?</button>
+            </li>
+
+            <li class="play">
+              <button type="button" id="play" class="btn blue-btn play" data-toggle="modal" data-target="#play222">play</button>
+            </li>
+            <li class="interval">
+              <button type="button" id="interval" class="btn blue-btn interval" data-toggle="modal" data-target="#interval222">interval</button>
+            </li>
+
+            <!--   <li class="parameters">
+                <button type="button" id="parameters" class="btn purple-btn parameters bold" data-toggle="modal" data-target="#parameters222">What are parameters?</button>
+              </li>
+
+              <li class="values">
+                <button type="button" id="values" class="btn cyan-btn values bold" data-toggle="modal" data-target="#values222">What are values?</button>
+              </li> -->
+
+          </ul>
+          There is more than one right answer!
+
+          <a href="https://docs.google.com/spreadsheet/ccc?key=0AvGwqFvIRpKudF94Mnl2dnJrWHJZaGp4NVhDVUs0aWc&usp=drive_web#gid=0">check explainations from others, and add your own</a>
+        </div>
+      </div>
+
+      <div class="col-md-5 pull_left">
+        <div class="heading">code</div>
+        <div id="tabs">
+          <div class="tabs-2">
+            <form method="post" action="/save">
+              <textarea id="codemirror" name="codemirror">{{code}}</textarea>
+              <div class="pull-right">
+                <input type="submit" value="Save" class="btn btn-primary savebtn" style="margin-right:20px;" />
               </div>
-            </div>
-            <div class="flow">
-                <img class="film" src="/img/filmstrip.png" title="filmstrip"/>
-                <!-- Add as many items as you like. -->
-            </div>
-            <div class="globalCaption"></div>
-            <div class="scrollbar">
-              <div class="slider">
-                <div class="position">
-                </div>
-              </div>
-            </div>
+            </form>
           </div>
+        </div>
+      </div>
 
-        <div class="container-fluid">
-
-            <div class="popup hidden">
-              <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
-                10 mb max file size
-                <input type="file" name="file" value="Select a File" />
-                <button class="btn btn-primary uploadfile">Upload</button>
-                      <!-- <input type="submit" class="btn btn-primary uploadfile" value="Upload" /> -->
-                    </form>
-                <!-- Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" /> -->
-              </form>
+      <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Objects...</h4>
             </div>
-            <div class="row hidden">
-                <div clsas="col-md-4">
-                    <h3>Get Started</h3>
-                    <button class="large-button layer1"><img class="checkbtn"  src="/img/checked.png">Hello World</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Filters</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Motion</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Editing</button>
-                    <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Advanced Graphics</button>
-                </div>
-            </div>
-
-            <div class="row">
-              <div class="heading_bg">
-
-              <div class="col-md-5">
-                <div class="heading">video</div>
-                <div class="overlay">
-
-           <video class="video1 hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'autoplay loop></video>
-
-                  <canvas class="video2 hidden" id="canvas"></canvas>
-
-                  <div class="buttons">
-                        <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
-                    <button type="button" class="btn btn-primary uploaddemo uploadbtn">Import a Sample Video</button>
-                    <button type="button" class="btn btn-primary uploadbtn uploadfirst">Import Your Own Video</button>
-                    </div>
-                  <button type="button" class="runbtn btn btn-danger pullRight hidden" ></button>
-                </div>
-              </div>
-
-              <div class="col-md-2 switch switchdiv">
-                <div class="heading">
-                  <span class="switch switcheffect">add effects</span> / <span class="switch active switchlearn">learn more</span>
-                </div>
-
-                <div class="methods">
-                  <button class="btn btn-primary switch active switchlearn">Learn more about what <br />these are doing!</button>
-                  <br>
-                  <ul id="methodList">
-                  </ul>
-
-                </div>
-
-              <!--   /* Joyride can be attached to any element with a unique ID or class, in any order */ -->
-                <h3 id="yourHeaderID"></h3>
-                <p class="your-paragraph-class"></p>
-                <a id="yourAnchorID" href="#url"></a>
-
-                <div class="learnMore">
-                  <h4>What's in your VidCode?</h4>
-                  <ul>
-                      <li class="object">
-                        <button type="button" class="btn green-btn object bold" data-toggle="modal" data-target="#object222">What's an object?</button>
-                      </li>
-
-
-                      <li class="movie">
-                        <button type="button" id="movie" class="btn green-btn movie" data-toggle="modal" data-target="#movies222">movies</button>
-                      </li>
-
-                      <li class="effects">
-                        <button type="button" id="effects" class="btn green-btn effects" data-toggle="modal" data-target="#effects222">effects</button>
-                      </li>
-
-                      <li class="seriously">
-                        <button type="button" id="seriously" class="btn green-btn seriously" data-toggle="modal" data-target="#seriously222">seriously</button>
-                      </li>
-
-                      <li class="filmgrain">
-                        <button type="button" id="filmgrain" class="btn green-btn filmgrain" data-toggle="modal" data-target="#filmgrain222">filmgrain</button>
-                      </li>
-
-                      <li class="function">
-                        <button type="button" id="function" class="btn pink-btn function bold" data-toggle="modal" data-target="#function222">What's an function?</button>
-                      </li>
-
-                      <li class="showeffect">
-                        <button type="button" id="showeffect" class="btn pink-btn showeffect" data-toggle="modal" data-target="#showeffect222">showEffect</button>
-                      </li>
-
-                      <li class="methods">
-                        <button type="button" id="methods" class="btn blue-btn methods bold" data-toggle="modal" data-target="#methods222">What are methods?</button>
-                      </li>
-
-                       <li class="play">
-                        <button type="button" id="play" class="btn blue-btn play" data-toggle="modal" data-target="#play222">play</button>
-                      </li>
-                      <li class="interval">
-                        <button type="button" id="interval" class="btn blue-btn interval" data-toggle="modal" data-target="#interval222">interval</button>
-                      </li>
-
-                   <!--   <li class="parameters">
-                        <button type="button" id="parameters" class="btn purple-btn parameters bold" data-toggle="modal" data-target="#parameters222">What are parameters?</button>
-                      </li>
-
-                     <li class="values">
-                        <button type="button" id="values" class="btn cyan-btn values bold" data-toggle="modal" data-target="#values222">What are values?</button>
-                      </li> -->
-
-                  </ul>
-                  There is more than one right answer!
-
-                  <a href="https://docs.google.com/spreadsheet/ccc?key=0AvGwqFvIRpKudF94Mnl2dnJrWHJZaGp4NVhDVUs0aWc&usp=drive_web#gid=0">check explainations from others, and add your own</a>
-                </div>
-
-              </div>
-
-
-
-
-
-              <div class="col-md-5 pull_left">
-                <div class="heading">code</div>
-                  <div id="tabs">
-
-                    <div class="tabs-2">
-                      <form method="post" action="/save">
-                        <textarea id="codemirror" name="codemirror">{{code}}</textarea>
-                        <div class="pull-right">
-                          <input type="submit" value="Save" class="btn btn-primary savebtn" style="margin-right:20px;"/>
-                        </div>
-                      </form>
-
-                    </div>
-                  </div>
-                </div>
-
-
-
-                 <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">Objects...</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p> A object in javascript can be anything!
-               <br>
+            <div class="modal-body instruct-body">
+              <p>
+                A object in javascript can be anything!
+                <br>
                 <br>
                 In the case of our VidCode these words, such as “movie”, are containers to allow instructions to be applied to the “movie”.
                 <br>
-                 <br>
-                We will cover this again and again!  For now just get used to the word and where objects are placed within the code.  .</p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-
-                 <div class="modal fade" id="movies222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">Your movie!</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p>The word "movie" is an object that uses the canvas element in HTML5 to play your video.
-               <br>
-               <br>
-               Remember, an object is just a word that contains data under the hood.
-               <br>
-               <br>
-               With code, and computers, there are many things happening "behind the scenes" which we don't see.
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-
-
-                 <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">So many effects!</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p>The word "effects" is an object that contains ALL the effects.
-               <br>
-               <br>
-               You have three effects in your demo.
-               <br>
-               <br>
-               These live in a hidden "list" within the "effects" object.
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-
-
-                 <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">So many effects!</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p>The word "effects" is an object that contains ALL the effects.
-               <br>
-               <br>
-               You have three effects in your demo.
-               <br>
-               <br>
-               These live in a hidden "list" within the "effects" object.
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-
-              <div class="modal fade" id="seriously222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">It's gettin' serious!</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p>"seriously" is a library which is represented by this object, which is represented by this word, "seriously"!  ;)
-               <br>
-               <br>
-                By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
-               <br>
-               <br>
-               There is a lot of code in that library!  You just cant see it....magic!
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-              <div class="modal fade" id="filmgrain222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">Effects within the "effects"!</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p>Sooo, "film grain" is an object <em>within</em> the "effects" object.  It’s accessed via a "." dot notation.
-               <br>
-               <br>
-                Objects, within objects, within objects!  So crazy.
-               <br>
-               <br>
-               The dot notation lets you pull a "child" object out of a "parent" object.
-               <br>
-               <br>
-               Just think of it like a box within a box, but these boxes are lists of data you can't see.....
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-
-                <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">Functions are actions</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p>Functions are a HUGE piece of the computer programming pie.
-               <br>
-               <br>
-                A function is a set of arguments or intructions to run on a block of code.
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-                <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">Functions are actions</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p>Functions are a HUGE piece of the computer programming pie.
-               <br>
-               <br>
-                A function is a set of arguments or intructions to run on a block of code.
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-
-                <div class="modal fade" id="showeffect222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">"showEffect" is a function</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p> The "showEffect" is a function name representing the arguments listed within the function’s brackets {  }.
-               <br>
-               <br>
-                In the same way as you are your body which consists of  many processes.
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-
-
-                <div class="modal fade" id="play222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">"play" is a function...</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p> ...but it's called a <em>method</em>.
-               <br>
-               <br>
-                It tells the movie object to play.  It's called a method, not a function, because it is applied <em>directly</em> to a object via the dot "." thing.
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-               <div class="modal fade" id="interval222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-               <h4 class="modal-title">"interval" is also a method</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p> It tells the movie object how many times a second to be processed.
-               <br>
-               <br>
-                The number "1000" is in milliseconds.  So it is processing your video 1,000 times a second!  That's a lot of work!
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-                     </div>
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-<!--
-               <div class="modal fade" id="parameters222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog2">
-               <div class="modal-content">
-               <div class="modal-header instruct-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="img/xbtn.png"></button>
-               <h4 class="modal-title">I think of parameters like backpacks....</h4>
-               </div>
-               <div class="modal-body instruct-body">
-               <p> They hold information being passed from function to function.
-               <br>
-               <br>
-                It tells the movie object to play.  It's called a method, not a function, because it is applied <em>directly</em> to a object via the dot "." thing.
-               </p>
-               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button> -->
-                     </div>
-
-                   </div><!-- /.modal-content -->
-                 </div><!-- /.modal-dialog -->
-               </div><!-- /.modal -->
-
-
-
-             <!--    joyride begin -->
-
-
-    <!-- Tip Content -->
-    <ol id="joyRideTipContent">
-  <!--   <li data-id="object222">
-        <h2>Object</h2>
-        <p>It works right aligned.</p>
-      </li> -->
-
-
-
-      <li data-class="uploadfirst" data-text="Next" class="custom">
-        <h2>Welcome!</h2>
-        <p>Welcome to VidCode! We'll step you through this process. Let's start by importing a video.</p>
-      </li>
-
-
-      <li data-class="switcheffect" data-text="Next" class="custom">
-        <p>Now drag and drop filters from the center column into the code editor.</p>
-      </li>
-
-
-      <li data-class="cm-number" data-text="Next" class="custom">
-        <p>Next, in the code editor, slide between values by hovering over the red number then holding down as your pushing left or right.</p>
-      </li>
-
-      <li data-id="filmgrainx" data-text="Next" class="custom" data-options="tipLocation:top">
-        <p>Mix, match, and remove filters by clicking the "x" on the green effects button.</p>
-      </li>
-
-      <li data-class="savebtn" data-options="tipLocation:left" data-button="Close">
-        <p>Then, when you're done, save your file by clicking the button below.  Copy and paste the url which is created and save it for future reference.</p>
-      </li>
-
-    </ol>
-
-
-
+                <br>
+                We will cover this again and again!  For now just get used to the word and where objects are placed within the code.  .
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
             </div>
+          </div>
+        </div>
+      </div>
 
-        <script src="/js/plugins.js"></script>
-        <script src="/js/main.js"></script>
+      <div class="modal fade" id="movies222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Your movie!</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The word "movie" is an object that uses the canvas element in HTML5 to play your video.
+                <br>
+                <br>
+                Remember, an object is just a word that contains data under the hood.
+                <br>
+                <br>
+                With code, and computers, there are many things happening "behind the scenes" which we don't see.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
+      <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">So many effects!</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The word "effects" is an object that contains ALL the effects.
+                <br>
+                <br>
+                You have three effects in your demo.
+                <br>
+                <br>
+                These live in a hidden "list" within the "effects" object.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">So many effects!</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The word "effects" is an object that contains ALL the effects.
+                <br>
+                <br>
+                You have three effects in your demo.
+                <br>
+                <br>
+                These live in a hidden "list" within the "effects" object.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="modal fade" id="seriously222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">It's gettin' serious!</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                "seriously" is a library which is represented by this object, which is represented by this word, "seriously"!  ;)
+                <br>
+                <br>
+                By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
+                <br>
+                <br>
+                There is a lot of code in that library!  You just cant see it....magic!
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="modal fade" id="filmgrain222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Effects within the "effects"!</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Sooo, "film grain" is an object <em>within</em> the "effects" object.  It’s accessed via a "." dot notation.
+                <br>
+                <br>
+                Objects, within objects, within objects!  So crazy.
+                <br>
+                <br>
+                The dot notation lets you pull a "child" object out of a "parent" object.
+                <br>
+                <br>
+                Just think of it like a box within a box, but these boxes are lists of data you can't see.....
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <!-- /* Then attach the Joyride plugin */ -->
-      <script src="/js/vendor/jquery.joyride-2.1.js"></script>
+      <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Functions are actions</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Functions are a HUGE piece of the computer programming pie.
+                <br>
+                <br>
+                A function is a set of arguments or intructions to run on a block of code.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Functions are actions</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Functions are a HUGE piece of the computer programming pie.
+                <br>
+                <br>
+                A function is a set of arguments or intructions to run on a block of code.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-         <script>
-      $(window).load(function() {
-        $('#joyRideTipContent').joyride({
-          autoStart : true,
-          postStepCallback : function (index, tip) {
-          if (index == 2) {
-            $(this).joyride('set_li', false, 1);
-          }
-        },
-        modal:true,
-        expose: true
-        });
-      });
-    </script>
+      <div class="modal fade" id="showeffect222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">"showEffect" is a function</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The "showEffect" is a function name representing the arguments listed within the function’s brackets {  }.
+                <br>
+                <br>
+                In the same way as you are your body which consists of  many processes.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="modal fade" id="play222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">"play" is a function...</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                ...but it's called a <em>method</em>.
+                <br>
+                <br>
+                It tells the movie object to play.  It's called a method, not a function, because it is applied <em>directly</em> to a object via the dot "." thing.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="modal fade" id="interval222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">"interval" is also a method</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                It tells the movie object how many times a second to be processed.
+                <br>
+                <br>
+                The number "1000" is in milliseconds.  So it is processing your video 1,000 times a second!  That's a lot of work!
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- joyride begin -->
+<!-- Tip Content -->
+<ol id="joyRideTipContent">
+  <li data-class="uploadfirst" data-text="Next" class="custom">
+    <h2>Welcome!</h2>
+    <p>Welcome to VidCode! We'll step you through this process. Let's start by importing a video.</p>
+  </li>
 
+  <li data-class="switcheffect" data-text="Next" class="custom">
+    <p>Now drag and drop filters from the center column into the code editor.</p>
+  </li>
 
+  <li data-class="cm-number" data-text="Next" class="custom">
+    <p>Next, in the code editor, slide between values by hovering over the red number then holding down as your pushing left or right.</p>
+  </li>
 
-    </body>
-</html>
+  <li data-id="filmgrainx" data-text="Next" class="custom" data-options="tipLocation:top">
+    <p>Mix, match, and remove filters by clicking the "x" on the green effects button.</p>
+  </li>
+
+  <li data-class="savebtn" data-options="tipLocation:left" data-button="Close">
+    <p>Then, when you're done, save your file by clicking the button below.  Copy and paste the url which is created and save it for future reference.</p>
+  </li>
+</ol>

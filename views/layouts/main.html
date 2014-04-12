@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+ <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>VidCode Demo</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/custom-theme/jquery-ui-1.9.2.custom.css">
+  <link rel="stylesheet" href="/js/vendor/codemirror-3.22/lib/codemirror.css">
+  <link rel="stylesheet" href="/js/vendor/codemirror-3.22/theme/solarized.css">
+  <link rel="stylesheet" href="/css/codemirror-vidcode.css">
+  <link rel="stylesheet" href="/css/contentflow.css">
+  <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
+
+  <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
+  <script src="/js/jquery.js"></script>
+  <script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script src="/js/contentflow.js"></script>
+  <script src="/js/vendor/codemirror-3.22/lib/codemirror.js"></script>
+  <script src="/js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
+  <script src="/js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
+  <script src="/Seriously/seriously.js"></script>
+  <script src="/Seriously/effects/seriously.vignette.js"></script>
+  <script src="/Seriously/effects/seriously.blur.js"></script>
+  <script src="/Seriously/effects/seriously.filmgrain.js"></script>
+  <script src="/Seriously/effects/seriously.exposure.js"></script>
+  <script src="/Seriously/effects/seriously.noise.js"></script>
+  <script src="/Seriously/effects/seriously.sepia.js"></script>
+  <script src="/js/vendor/jquery.joyride-2.1.js"></script>
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <ul class="nav nav-tabs">
+    <li><a href="/"><img src="/img/logo.png" id="image"></a></li>
+    <li class="pull-right">
+      <a class="small" href="http://vidcode.io/" target="_blank">
+        <span class="glyphicon glyphicon-star"></span>About & Updates
+      </a>
+    </li>
+  </ul>
+
+  <div class="ContentFlow hidden">
+    <div class="loadIndicator">
+      <div class="indicator">
+      </div>
+    </div>
+    <div class="flow">
+      <img class="film" src="/img/filmstrip.png" title="filmstrip" />
+      <!-- Add as many items as you like. -->
+    </div>
+    <div class="globalCaption"></div>
+    <div class="scrollbar">
+      <div class="slider">
+        <div class="position">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>{{{body}}}</div>
+
+  <script src="/js/plugins.js"></script>
+  <script src="/js/main.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='//www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-XXXXX-X');ga('send','pageview');
+  </script>
+
+</body>
+</html>

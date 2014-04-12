@@ -20,10 +20,10 @@ app.use(express.methodOverride());
 app.use(app.router);
 
 // configure express template engine
-var engines = require('consolidate');
+var exphbs = require('express3-handlebars');
 app.set('views', __dirname + '/views');
-app.engine('html', engines.mustache);
-app.set('view engine', 'html');
+app.engine('.html', exphbs({ defaultLayout: 'main', extname: '.html' }));
+app.set('view engine', '.html');
 
 // configure express routes
 var routes = require('./routes');
