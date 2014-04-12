@@ -119,7 +119,7 @@ img.filterSelect.active {opacity: .5;}
    ========================================================================== */
 /*Header */
 .nav{background-color: #e8f4ed;}
-.nav li a:hover{background-color: #e8f4ed!important; border: 1px solid transparent!important;}
+.nav li a:hover{background-color: #e8f4ed!important; }
 .nav a{
     font-family: 'Open Sans', sans-serif!important;
     font-weight: 700;
@@ -127,7 +127,7 @@ img.filterSelect.active {opacity: .5;}
     color: #319665;
 }
 .nav .small{margin-top: 6px;}
-.nav a:hover{color: #1B4F33; margin-bottom: -1px;}
+.nav a:hover{color: #1B4F33; }
 .nav > li > a {padding: 3px 15px!important;}
 
 .allietext{
