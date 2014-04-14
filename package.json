@@ -13,7 +13,8 @@
     "fileupload": "~0.3.0",
     "crx": "~0.4.1",
     "monk": "~0.8.1",
-    "mongodb": "~1.4.0"
+    "mongodb": "~1.4.0",
+    "request": "~2.27.0"
   },
   "engines": {
     "node": "0.8.x",

@@ -120,9 +120,7 @@ var VigArr = {
         drop: function( event, ui ) {
           if (init_code) { myCodeMirror.setValue(editor_text); myCodeMirror.save();}
           init_code = 0;
-          var eff = ui.draggable.attr("id");
-          eff = eff.slice(0,-4);
-
+          var eff = ui.draggable.attr("name");
             myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
             myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
             myCodeMirror.save();
@@ -130,13 +128,7 @@ var VigArr = {
             $( ".scrub-"+eff).effect("highlight",2000);
         }
       });
-
-    var methodItems = [];
-    for (var e=0; e<activeEffects.length; e++) {
-      methodItems.push("<li id='"+activeEffects[e]+"drag' class='btn btn-method draggable'>"+activeEffects[e]+"</li><img class='x-drag xbtn' id='"+activeEffects[e]+"x' src='/img/xbtn_drag.png'/>");
-    }
-
-    $('#methodList').append(methodItems.join(' '));
+    
     $('#methodList li').each(function(){
       $(this).draggable({
         helper: "clone",
@@ -146,20 +138,18 @@ var VigArr = {
 
 
     $(".xbtn").click(function(){
-      var eff = ($(this).attr('id'));
-      eff = eff.slice(0,-1);
-            eval("effects."+eff+".amount = 0");
-            eval("effects."+eff+".exposure = 0"); 
+      var eff = ($(this).attr('name'));
+      eval("effects."+eff+".amount = 0");
+      eval("effects."+eff+".exposure = 0"); 
 
-             var allTM = myCodeMirror.getAllMarks();
-             for (var m=0; m<allTM.length; m++){
-              var tm = allTM[m];
-              if (tm.className=="cm-"+eff){
-                myCodeMirror.removeLine(tm.find().to.line);
-              }
-             }
-             myCodeMirror.save();
-
+      var allTM = myCodeMirror.getAllMarks();
+      for (var m=0; m<allTM.length; m++){
+        var tm = allTM[m];
+        if (tm.className=="cm-"+eff){
+          myCodeMirror.removeLine(tm.find().to.line);
+        }
+      }
+      myCodeMirror.save();
       });
   
     $(".tab2").click(function(){
@@ -191,29 +181,26 @@ var VigArr = {
       contentType: false,
           cache: false,
           processData:false,
-      success: function(data, textStatus, jqXHR){
-        media.src="/sendVid"; 
+      success: function(data, textStatus, jqXHR){        
+        $.get("/sendVid",function(body){
+           media.src="data:video/mp4;base64,"+body;
+           media.addEventListener("playing", displayVid, false);
+        });
+        function displayVid(){   
         $(".popup").addClass("hidden");
         $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
         $(".buttons").addClass("hidden");
         $(".runbtn").removeClass("hidden");
         $(".video2").removeClass("hidden");
-      },
-       error: function(jqXHR, textStatus, errorThrown) 
-       {
-        $(".uploadform").append('File upload failed.');
-              }          
+        };
+             },
+       error: function(jqXHR, textStatus, errorThrown){
+        $(".uploadform p").text(errorThrown);
+       }
+
       });
       e.preventDefault();
-    });
-
-    $(".uploadbtn").click(function(){
-        $(".uploadfirst").addClass("hidden");
-        $(".clearHover").addClass("hidden");
-        $(".buttons").addClass("hidden");
-        $(".runbtn").removeClass("hidden");
-        $(".video2").removeClass("hidden");
     });
 
     $(".uploadfirst").click(function(){
@@ -221,7 +208,14 @@ var VigArr = {
     });
 
     $(".uploaddemo").click(function(){
-        media.src="/sendVid";
+        media.src="/img/demo.mp4";
+        $(".popup").addClass("hidden");      
+        $(".uploadfirst").addClass("hidden");
+        $(".clearHover").addClass("hidden");
+        $(".buttons").addClass("hidden");
+        $(".runbtn").removeClass("hidden");
+        $(".video2").removeClass("hidden");
+
       });
 
     $(".runbtn").click(function(){
@@ -272,14 +266,18 @@ var VigArr = {
 
     //Homepage where you pick your selection of filters
     $('.filterSelect').click(function(){
+      var id = $(this).attr('id');
       if ($(this).hasClass('active')){
         $(this).removeClass('active');
+        $('.formNext input[value='+id+']').remove();
       }
       else{
         $(this).addClass('active');
+        $('.formNext').append("<input type='hidden' name='filter' value='"+id+"' />");
       }
-    });
+      }) ;
 
+    
     //hover state of learn more section
     $('.object').hover(function(){
       $('pre:contains("movie")').css("background-color", "rgba(49, 150, 101, .4)" );

@@ -90,9 +90,9 @@
                 10 mb max file size
                 <input type="file" name="file" value="Select a File" />
                 <button class="btn btn-primary uploadfile">Upload</button>
+                <p></p>
                       <!-- <input type="submit" class="btn btn-primary uploadfile" value="Upload" /> -->
                     </form>
-                <!-- Video URL: <input class="pops" placeholder="www.vidcode.io/demo.mp4" type="text" /> -->
               </form>
             </div>
             <div class="row hidden">
@@ -119,8 +119,8 @@
 
                   <div class="buttons">
                         <!-- <button type="button" class="btn btn-primary uploadfirst">Take a Video</button> -->
-                    <button type="button" class="btn btn-primary uploaddemo uploadbtn">Import a Sample Video</button>
-                    <button type="button" class="btn btn-primary uploadbtn uploadfirst">Import Your Own Video</button>
+                    <button type="button" class="btn btn-primary uploaddemo">Import a Sample Video</button>
+                    <button type="button" class="btn btn-primary uploadfirst">Import Your Own Video</button>
                     </div>
                   <button type="button" class="runbtn btn btn-danger pullRight hidden" ></button>
                 </div>
@@ -135,8 +135,10 @@
                   <button class="btn btn-primary switch active switchlearn">Learn more about what <br />these are doing!</button>
                   <br>
                   <ul id="methodList">
+                  {{#filters}}
+                    <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+                  {{/filters}}
                   </ul>
-
                 </div>
 
               <!--   /* Joyride can be attached to any element with a unique ID or class, in any order */ -->
@@ -532,12 +534,12 @@
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
+            // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            // e.src='//www.google-analytics.com/analytics.js';
+            // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            // ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>
 
 

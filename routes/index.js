@@ -8,9 +8,9 @@ exports.index = function (req, res) {
 exports.demo = function (db) {
   return function (req, res) {
     var token = req.params.token;
-
+    var filters = req.query.filter;
     if (!token) {
-      res.render('demo', { code: "No Code To Show Yet!" });
+      res.render('demo', { code: "No Code To Show Yet!", filters:filters});
       return;
     }
 
@@ -20,17 +20,19 @@ exports.demo = function (db) {
         res.status(404);
       }
 
-        res.render('demo', { code: doc.code });
+        res.render('demo', { code: doc.code , filters: filters});
     });
   };
 };
 
 exports.video = function(req,res){
-
   if (vid_file == ""){
     res.sendfile('vids/demo.mp4');
   } else {
-    res.sendfile('vids/'+vid_file);
+    fs.readFile('vids/'+vid_file,function(err,data){
+    var base64Image = data.toString('base64');
+      res.send(base64Image);
+   });
   }
 }
 
@@ -59,6 +61,7 @@ exports.upload = function (req, res) {
   var tmp_path = req.files.file.path;
   var target_path = './vids/' + filename;
   var file_extension = (i < 0) ? '' : filename.substr(i);
+
   if ((file_extension in oc(extensionAllowed)) && ((req.files.file.size / 1024) < maxSizeOfFile)) {
     fs.rename(tmp_path, target_path, function (err) {
       if (err) throw err;
