@@ -1,129 +1,35 @@
-﻿<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>VidCode Demo</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="container-fluid stepone">
+  <div class="allietext">
+    <h4>Let's customize filters, videos, and learn about code!</h4>
+    <p> Vidcode is a learning playground where you can create video art through programming</p>
+    <h4>Pick the filters you'd like to use on your video below:</h4>
+  </div>
+  
+  <div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <img src="/img/effect-options/blur.gif" class="filterSelect" id="blur">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <img src="/img/effect-options/filmgrain.gif" class="filterSelect" id="filmgrain">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <img src="/img/effect-options/vignette.gif" class="filterSelect" id="vignette">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <img src="/img/effect-options/exposure.gif" class="filterSelect" id="exposure">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <img src="/img/effect-options/noise.gif" class="filterSelect" id="noise">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <img src="/img/effect-options/sepia.gif" class="filterSelect" id="sepia">
+    </div>
+  </div>
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <div class="col-md-12">
+    <form method="GET" action="/demo">
+      <input type="submit" value="Next" class="btn btn-primary btn-purple" />
+    </form>
+  </div>
 
-        <link rel="stylesheet" href="/css/normalize.css">
-        <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/custom-theme/jquery-ui-1.9.2.custom.css">
-        <link rel="stylesheet" href="/js/vendor/codemirror-3.22/lib/codemirror.css">
-        <link rel="stylesheet" href="/js/vendor/codemirror-3.22/theme/solarized.css">
-        <link rel="stylesheet" href="/css/codemirror-vidcode.css">
-        <link rel="stylesheet" href="/css/contentflow.css">
-
-        <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="/js/jquery.js"></script>
-        <script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
-        <script src="/js/bootstrap.js"></script>
-        <script src="/js/contentflow.js"></script>
-        <script src="/js/vendor/codemirror-3.22/lib/codemirror.js"></script>
-        <script src="/js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
-        <script src="/js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
-        <script src="/Seriously/seriously.js"></script>
-        <script src="/Seriously/effects/seriously.vignette.js"></script>
-        <script src="/Seriously/effects/seriously.blur.js"></script>
-        <script src="/Seriously/effects/seriously.filmgrain.js"></script>
-
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
-
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
-
-
-        <!-- Add your site or application content here -->
-        <ul class="nav nav-tabs">
-            <li><a href="/"><img src="/img/logo.png" id="image"></a></li>
-            <li class="pull-right">
-              <a class="small" href="http://vidcode.io/" target="_blank">
-              <span class="glyphicon glyphicon-star"></span>About & Updates
-            </a>
-            </li>
-
-        </ul>
-
-
-          <div class="ContentFlow hidden">
-            <div class="loadIndicator">
-              <div class="indicator">
-              </div>
-            </div>
-            <div class="flow">
-                <img class="film" src="/img/filmstrip.png" title="filmstrip"/>
-                <!-- Add as many items as you like. -->
-            </div>
-            <div class="globalCaption"></div>
-            <div class="scrollbar">
-              <div class="slider">
-                <div class="position">
-                </div>
-              </div>
-            </div>
-          </div>
-
-        <div class="container-fluid stepone">
-
-        <div class= "allietext">
-          <h4>Let's customize filters, videos, and learn about code!</h4>
-          <p> Vidcode is a learning playground where you can create video art through programming</p>
-          <h4>Pick the filters you'd like to use on your video below:</h4>
-          </div>
-          <br>
-
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <img src="/img/effect-options/blur.gif" class="filterSelect" id="blur">
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <img src="/img/effect-options/filmgrain.gif" class="filterSelect" id="filmgrain">
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <img src="/img/effect-options/vignette.gif" class="filterSelect" id="vignette">
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <img src="/img/effect-options/exposure.gif" class="filterSelect" id="exposure">
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <img src="/img/effect-options/noise.gif" class="filterSelect" id="noise">
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <img src="/img/effect-options/sepia.gif" class="filterSelect" id="sepia">
-            </div>
-
-            <div class="col-md-12">
-              <form class="formNext" method="GET" action="/demo">
-                <input type="submit" value="Next" class="btn btn-primary btn-purple" />
-              </form>
-            </div>
-
-        </div>
-
-        <script src="/js/plugins.js"></script>
-        <script src="/js/main.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            // e.src='//www.google-analytics.com/analytics.js';
-            // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            // ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
-
-
-    </body>
-</html>
+</div>

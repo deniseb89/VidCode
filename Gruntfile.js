@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
     watch: {
       express: {
-        files:  [ '**/*.js', '!**/node_modules/**', '!/static/js/vendor/**' ],
+        files:  [ '**/*.js', '!**/node_modules/**', '!**/static/js/vendor/**' ],
         tasks:  [ 'express:dev' ],
         options: {
           spawn: false
@@ -13,7 +13,7 @@ module.exports = function(grunt) {
       },
 
       reload: {
-        files: [ '**/*', '!**/node_modules/**', '!/static/js/vendor/**' ],
+        files: [ '**/*', '!**/node_modules/**' ],
         options: {
           livereload: true
         }

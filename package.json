@@ -6,28 +6,22 @@
   "scripts": {
     "start": "node web.js"
   },
-  "dependencies": {
-    "express": "3.5",
-    "consolidate": "~0.10.0",
-    "mustache": "~0.8.1",
-    "fileupload": "~0.3.0",
-    "crx": "~0.4.1",
-    "monk": "~0.8.1",
-    "mongodb": "~1.4.0",
-    "request": "~2.27.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vidcode/vidcode"
   },
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vidcode/vidcode"
+  "dependencies": {
+    "express": "3.5",
+    "express3-handlebars": "~0.5.0",
+    "fileupload": "~0.3.0",
+    "crx": "~0.4.1",
+    "monk": "~0.8.1",
+    "mongodb": "~1.4.0"
   },
-  "keywords": [
-    "node",
-    "heroku"
-  ],
   "devDependencies": {
     "grunt-cli": "~0.1.13",
     "grunt-contrib-watch": "~0.6.1",
