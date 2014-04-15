@@ -1,11 +1,25 @@
 <div class="container-fluid stepone">
+
+
+<div class="col-md-12">
+
+
   <div class="allietext">
-    <h4>Let's customize filters, videos, and learn about code!</h4>
-    <p> Vidcode is a learning playground where you can create video art through programming</p>
-    <h4>Pick the filters you'd like to use on your video below:</h4>
+    <h4>Let's customize our own filters for video and learn about code!</h4>
+
+    <p>Pick the filters you'd like to play with, then click "next":</p>
   </div>
-  
-  <div>
+
+<!-- 
+<div class="alliebutton"> -->
+
+    <form class="formNext" method="GET" action="/demo">
+      <input type="submit" value="Next" id="allie2" class="btn btn-primary btn-purple" />
+     </form>
+     </div>
+      <div>
+
+
     <div class="col-lg-4 col-md-6 col-sm-12">
       <img src="/img/effect-options/blur.gif" class="filterSelect" id="blur">
     </div>
@@ -15,6 +29,11 @@
     <div class="col-lg-4 col-md-6 col-sm-12">
       <img src="/img/effect-options/vignette.gif" class="filterSelect" id="vignette">
     </div>
+
+
+
+
+
     <div class="col-lg-4 col-md-6 col-sm-12">
       <img src="/img/effect-options/exposure.gif" class="filterSelect" id="exposure">
     </div>
@@ -26,10 +45,5 @@
     </div>
   </div>
 
-  <div class="col-md-12">
-    <form class="formNext" method="GET" action="/demo">
-      <input type="submit" value="Next" class="btn btn-primary btn-purple" />
-    </form>
-  </div>
 
 </div>
