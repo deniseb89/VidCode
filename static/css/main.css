@@ -134,6 +134,12 @@ img.filterSelect.active {opacity: .5;}
     text-align: center;
 }
 
+.alliebutton{
+    float: right;
+
+
+}
+
 /* First and Second Video */
 
 .video1{
@@ -183,6 +189,11 @@ img.filterSelect.active {opacity: .5;}
     -moz-border-radius: 8px;
     border-radius: 8px;
     }
+
+
+#allie2{
+    float: right;
+}
 
 
 /* Getting started (first) */
