@@ -182,6 +182,10 @@ var VigArr = {
         $(".tabs-1").removeClass("hidden");
     });
 
+
+    $(".uploadfile").click(function(){
+        $(".uploadform p").text('Video loading...'); 
+    });
     $(".uploadform").submit(function(e) {
       var formObj = $(this);
       var formURL = formObj.attr("action");
@@ -195,7 +199,7 @@ var VigArr = {
           cache: false,
           processData:false,
       success: function(data, textStatus, jqXHR){
-        $(".uploadform p").text('Video loading...');                
+        $(".uploadform p").text('Video buffering...');                
         $.get("/sendVid",function(body){
            media.src="data:video/mp4;base64,"+body;
            media.addEventListener("playing", displayVid, false);
@@ -281,6 +285,7 @@ var VigArr = {
     //Homepage where you pick your selection of filters
     $('.filterSelect').click(function(){
       var id = $(this).attr('id');
+      if (id!='sepia'){
       if ($(this).hasClass('active')){
         $(this).removeClass('active');
         $('.formNext input[value='+id+']').remove();
@@ -289,6 +294,7 @@ var VigArr = {
         $(this).addClass('active');
         $('.formNext').append("<input type='hidden' name='filter' value='"+id+"' />");
       }
+    }
       }) ;
 
     
