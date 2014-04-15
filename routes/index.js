@@ -10,7 +10,7 @@ exports.demo = function (db) {
     var token = req.params.token;
     var filters = req.query.filter;
     if (!filters){
-      filters = ['expsoure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
+      filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
     };
     if (!token) {
       res.render('demo', { code: "No Code To Show Yet!", filters:filters});
