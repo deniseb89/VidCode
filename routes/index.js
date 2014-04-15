@@ -9,6 +9,9 @@ exports.demo = function (db) {
   return function (req, res) {
     var token = req.params.token;
     var filters = req.query.filter;
+    if (!filters){
+      filters = ['expsoure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
+    };
     if (!token) {
       res.render('demo', { code: "No Code To Show Yet!", filters:filters});
       return;
@@ -19,7 +22,7 @@ exports.demo = function (db) {
       if (!doc) {
         res.status(404);
       }
-
+      filters = ['expsoure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
         res.render('demo', { code: doc.code , filters: filters});
     });
   };

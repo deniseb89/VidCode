@@ -194,7 +194,8 @@ var VigArr = {
       contentType: false,
           cache: false,
           processData:false,
-      success: function(data, textStatus, jqXHR){        
+      success: function(data, textStatus, jqXHR){
+        $(".uploadform p").text('Video loading...');                
         $.get("/sendVid",function(body){
            media.src="data:video/mp4;base64,"+body;
            media.addEventListener("playing", displayVid, false);
@@ -209,7 +210,7 @@ var VigArr = {
         };
              },
        error: function(jqXHR, textStatus, errorThrown){
-        $(".uploadform p").text(errorThrown);
+        $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
        }
 
       });
