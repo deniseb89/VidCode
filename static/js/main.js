@@ -251,6 +251,14 @@ var VigArr = {
     }
 
 
+    var downloadLink = $('#video3 a[download]');
+
+    //downloadLink.href = url;
+
+
+
+
+
     $('#stop-me').click(stop);
       
 
