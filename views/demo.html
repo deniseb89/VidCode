@@ -8,16 +8,7 @@
     </form>
   </div>
 
-  <div class="row hidden">
-    <div clsas="col-md-4">
-      <h3>Get Started</h3>
-      <button class="large-button layer1"><img class="checkbtn" src="/img/checked.png">Hello World</button>
-      <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Filters</button>
-      <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Motion</button>
-      <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Editing</button>
-      <button class="large-button layer1"><img class="checkbtn" src="/img/unchecked.png">Advanced Graphics</button>
-    </div>
-  </div>
+
 
   <div class="row">
     <div class="heading_bg">
@@ -25,8 +16,12 @@
       <div class="col-md-5">
         <div class="heading">video</div>
         <div class="overlay">
+
+     <!--    object that gets changes -->
           <video class="video1 hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+         <!--  more the seriously object, gets the effects -->
           <canvas class="video2 hidden" id="canvas"></canvas>
+
           <div class="buttons">
             <button type="button" class="btn btn-primary uploaddemo">Import a Sample Video</button>
             <button type="button" class="btn btn-primary uploadfirst">Import Your Own Video</button>
@@ -119,12 +114,16 @@
             <form method="post" action="/save">
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
               <div class="pull-right">
-                <input type="submit" value="Save" class="btn btn-primary savebtn" style="margin-right:20px;" />
+                <input type="submit" value="Save code" class="btn btn-primary savebtn" style="margin-right:20px;" />
               </div>
             </form>
           </div>
         </div>
       </div>
+
+      <button id="export" class="btn btn-primary allie4">Export video</button>
+
+         <button id="stop-me" class="btn btn-primary allie4">Stop video</button>
 
       <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog2">

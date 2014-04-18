@@ -134,10 +134,14 @@ img.filterSelect.active {opacity: .5;}
     text-align: center;
 }
 
-.alliebutton{
+.alliebutton{   
     float: right;
+    margin-left: 30px;
+}
 
-
+.allie4{
+    float: left;
+    padding-left: 300px;
 }
 
 /* First and Second Video */

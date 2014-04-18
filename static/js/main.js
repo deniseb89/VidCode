@@ -221,6 +221,45 @@ var VigArr = {
       e.preventDefault();
     });
 
+
+
+
+    //whammy section
+    var canvas = document.getElementById('canvas');
+    var rafId;
+    var frames = [];
+    var CANVAS_WIDTH = 300;
+    var CANVAS_HEIGHT = 150;
+
+    function drawVideoFrame(time) {
+      rafId = requestAnimationFrame(drawVideoFrame);
+      frames.push(canvas.toDataURL('image/webp', 1));
+    };
+
+
+    function stop() {
+      console.log("the button was clicked");
+
+      cancelAnimationFrame(rafId);
+      var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+      var video3 = document.createElement('video');
+      video3.src = window.URL.createObjectURL(webmBlob);
+
+      document.body.appendChild(video3);
+      video3.play();
+      console.log(video3.src);
+    }
+
+
+    $('#stop-me').click(stop);
+      
+
+    $("#export").click(function(){
+          rafId = requestAnimationFrame(drawVideoFrame);
+        });
+
+
+
     $(".uploadfirst").click(function(){
         $(".popup").removeClass("hidden");
     });
