@@ -27,6 +27,15 @@
             <button type="button" class="btn btn-primary uploadfirst">Import Your Own Video</button>
           </div>
           <button type="button" class="runbtn btn btn-danger pullRight hidden"></button>
+
+          <div class="centerObject">
+
+            <button id="export" class="btn btn-primary allie4">Export video</button>
+
+            <button id="stop-me" class="btn btn-primary allie4">Stop video</button>
+
+            <button class="btn btn-primary allie4"><a download="capture.webm" title="Download your .webm video" href="blob:http%3A//html5-demos.appspot.com/bd5d36cd-0391-42b2-90cc-d4a0d597c198">Download video</a></button>
+          </div>
         </div>
       </div>
 
@@ -36,15 +45,15 @@
         </div>
 
         <div class="methods">
-          <button class="btn btn-primary switch active switchlearn">Learn more about what <br />these are doing!</button>
+          <button class="btn btn-primary btn-purple switch active switchlearn">Learn more about what <br />these are doing!</button>
           <br>
           <ul id="methodList">
           {{#filters}}
             <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-          {{/filters}} 
+          {{/filters}}
           </ul>
         </div>
-       
+
         <!--   /* Joyride can be attached to any element with a unique ID or class, in any order */ -->
         <h3 id="yourHeaderID"></h3>
         <p class="your-paragraph-class"></p>
@@ -53,42 +62,42 @@
         <div class="learnMore">
           <h4>What's in your VidCode?</h4>
           <ul>
-            <li class="object">
+            <li class="js-object">
               <button type="button" class="btn green-btn object bold" data-toggle="modal" data-target="#object222">What's an object?</button>
             </li>
 
-            <li class="movie">
-              <button type="button" id="movie" class="btn green-btn movie" data-toggle="modal" data-target="#movies222">movies</button>
+            <li class="js-movie">
+              <button type="button" id="movie" class="btn green-btn movie" data-toggle="modal" data-target="#movies222">movie</button>
             </li>
 
-            <li class="effects">
+            <li class="js-effects">
               <button type="button" id="effects" class="btn green-btn effects" data-toggle="modal" data-target="#effects222">effects</button>
             </li>
 
-            <li class="seriously">
+            <li class="js-seriously">
               <button type="button" id="seriously" class="btn green-btn seriously" data-toggle="modal" data-target="#seriously222">seriously</button>
             </li>
 
-            <li class="filmgrain">
+            <li class="js-filmgrain">
               <button type="button" id="filmgrain" class="btn green-btn filmgrain" data-toggle="modal" data-target="#filmgrain222">filmgrain</button>
             </li>
 
-            <li class="function">
+            <li class="js-function">
               <button type="button" id="function" class="btn pink-btn function bold" data-toggle="modal" data-target="#function222">What's an function?</button>
             </li>
 
-            <li class="showeffect">
+            <li class="js-showeffect">
               <button type="button" id="showeffect" class="btn pink-btn showeffect" data-toggle="modal" data-target="#showeffect222">showEffect</button>
             </li>
 
-            <li class="methods">
+            <li class="js-methods">
               <button type="button" id="methods" class="btn blue-btn methods bold" data-toggle="modal" data-target="#methods222">What are methods?</button>
             </li>
 
-            <li class="play">
+            <li class="js-play">
               <button type="button" id="play" class="btn blue-btn play" data-toggle="modal" data-target="#play222">play</button>
             </li>
-            <li class="interval">
+            <li class="js-interval">
               <button type="button" id="interval" class="btn blue-btn interval" data-toggle="modal" data-target="#interval222">interval</button>
             </li>
 
@@ -108,24 +117,19 @@
       </div>
 
       <div class="col-md-5 pull_left">
-        <div class="heading">code</div>
+        <div class="heading"><span class="js-code-stop">code</span></div>
         <div id="tabs">
           <div class="tabs-2">
             <form method="post" action="/save">
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
               <div class="pull-right">
-                <input type="submit" value="Save code" class="btn btn-primary savebtn" style="margin-right:20px;" />
+                <input type="submit" value="Save code" class="btn btn-primary savebtn" />
               </div>
             </form>
           </div>
         </div>
       </div>
 
-      <button id="export" class="btn btn-primary allie4">Export video</button>
-
-         <button id="stop-me" class="btn btn-primary allie4">Stop video</button>
-
-         <a download="capture.webm" title="Download your .webm video" href="blob:http%3A//html5-demos.appspot.com/bd5d36cd-0391-42b2-90cc-d4a0d597c198">[ download video ]</a>
 
 
       <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -384,15 +388,15 @@
     <p>Now drag and drop filters from the center column into the code editor.</p>
   </li>
 
-  <li data-class="cm-number" data-text="Next" class="custom">
+  <li data-class="js-code-stop" data-text="Next" class="custom">
     <p>Next, in the code editor, slide between values by hovering over the red number then holding down as your pushing left or right.</p>
   </li>
 
-  <li data-id="filmgrainx" data-text="Next" class="custom" data-options="tipLocation:top">
+  <li data-id="filmgrainx" data-text="Next" class="custom" data-options="tipLocation:left">
     <p>Mix, match, and remove filters by clicking the "x" on the green effects button.</p>
   </li>
 
-  <li data-class="savebtn" data-options="tipLocation:left" data-button="Close">
+  <li data-class="savebtn" data-options="tipLocation:top" data-button="Close">
     <p>Then, when you're done, save your file by clicking the button below.  Copy and paste the url which is created and save it for future reference.</p>
   </li>
 </ol>

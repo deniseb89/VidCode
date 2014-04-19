@@ -32,8 +32,8 @@
       'localStorage'         : false,     // true or false to control whether localstorage is used
       'localStorageKey'      : 'joyride', // Keyname in localstorage
       'tipContainer'         : 'body',    // Where will the tip be attached
-      'modal'                : false,     // Whether to cover page with modal during the tour
-      'expose'               : false,     // Whether to expose the elements at each step in the tour (requires modal:true)
+      'modal'                : true,     // Whether to cover page with modal during the tour
+      'expose'               : true,     // Whether to expose the elements at each step in the tour (requires modal:true)
       'postExposeCallback'   : $.noop,    // A method to call after an element has been exposed
       'preRideCallback'      : $.noop,    // A method to call before the tour starts (passed index, tip, and cloned exposed element)
       'postRideCallback'     : $.noop,    // A method to call once the tour closes (canceled or complete)
@@ -75,7 +75,7 @@
             settings.attempts = 0;
 
             settings.tipLocationPatterns = {
-              top: ['bottom'],
+              top: ['top'],
               bottom: [], // bottom should not need to be repositioned
               left: ['right', 'top', 'bottom'],
               right: ['left', 'top', 'bottom']

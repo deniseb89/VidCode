@@ -214,6 +214,7 @@ body {
 }
 
 .joyride-modal-bg {
+  z-index:90000000;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -222,7 +223,7 @@ body {
   background: rgba(0,0,0, 0.5);
   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
-  opacity: 0.5;
+  opacity: 0.65;
   z-index: 100;
   display: none;
   top: 0;

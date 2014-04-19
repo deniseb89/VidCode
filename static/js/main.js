@@ -96,7 +96,7 @@ $( document ).ready(function() {
                   effects.tone.toned = parseInt($('#num-tone').text())/10;
                 } else if ($(match).attr('id')=='num-noise'){
                   effects.noise.amount = parseInt($('#num-noise').text())/10;
-                } 
+                }
             }
 
             }
@@ -131,17 +131,21 @@ var VigArr = {
 
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
+
           if (init_code) { myCodeMirror.setValue(editor_text); myCodeMirror.save();}
           init_code = 0;
           var eff = ui.draggable.attr("name");
-            myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
-            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-            myCodeMirror.save();
-            GetScrubVals();
-            $( ".scrub-"+eff).effect("highlight",2000);
+
+          $('[name='+eff+']').addClass("is-active");
+
+          myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+          myCodeMirror.save();
+          GetScrubVals();
+          $( ".scrub-"+eff).effect("highlight",2000);
         }
       });
-    
+
     $('#methodList li').each(function(){
       $(this).draggable({
         helper: "clone",
@@ -152,8 +156,11 @@ var VigArr = {
 
     $(".xbtn").click(function(){
       var eff = ($(this).attr('name'));
+
+      $('[name='+eff+']').removeClass("is-active");
+
       eval("effects."+eff+".amount = 0");
-      eval("effects."+eff+".exposure = 0"); 
+      eval("effects."+eff+".exposure = 0");
 
       var allTM = myCodeMirror.getAllMarks();
       for (var m=0; m<allTM.length; m++){
@@ -164,7 +171,7 @@ var VigArr = {
       }
       myCodeMirror.save();
       });
-  
+
     $(".tab2").click(function(){
         $(".tabs-2").removeClass("hidden");
     });
@@ -184,7 +191,7 @@ var VigArr = {
 
 
     $(".uploadfile").click(function(){
-        $(".uploadform p").text('Video loading...'); 
+        $(".uploadform p").text('Video loading...');
     });
     $(".uploadform").submit(function(e) {
       var formObj = $(this);
@@ -199,12 +206,12 @@ var VigArr = {
           cache: false,
           processData:false,
       success: function(data, textStatus, jqXHR){
-        $(".uploadform p").text('Video buffering...');                
+        $(".uploadform p").text('Video buffering...');
         $.get("/sendVid",function(body){
            media.src="data:video/mp4;base64,"+body;
            media.addEventListener("playing", displayVid, false);
         });
-        function displayVid(){   
+        function displayVid(){
         $(".popup").addClass("hidden");
         $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
@@ -260,7 +267,7 @@ var VigArr = {
 
 
     $('#stop-me').click(stop);
-      
+
 
     $("#export").click(function(){
           rafId = requestAnimationFrame(drawVideoFrame);
@@ -274,7 +281,7 @@ var VigArr = {
 
     $(".uploaddemo").click(function(){
         media.src="/img/demo.mp4";
-        $(".popup").addClass("hidden");      
+        $(".popup").addClass("hidden");
         $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
         $(".buttons").addClass("hidden");
@@ -344,46 +351,61 @@ var VigArr = {
     }
       }) ;
 
-    
+
     //hover state of learn more section
-    $('.object').hover(function(){
-      $('pre:contains("movie")').css("background-color", "rgba(49, 150, 101, .4)" );
+    $('.js-object').hover(function(){
+      showInfo("movie", "rgba(49, 150, 101, .4)");
     }, function(){
-      $('pre:contains("movie")').css("background", "none" );
+      removeInfo("movie");
     });
-    $('.movie').hover(function(){
-      $('pre:contains("movie")').css("background-color", "rgba(49, 150, 101, .4)" );
+    $('.js-movie').hover(function(){
+      showInfo("movie", "rgba(49, 150, 101, .4)");
     }, function(){
-      $('pre:contains("movie")').css("background", "none" );
+      removeInfo("movie");
     });
-    $('.effects').hover(function(){
-      $('pre:contains("effect")').css("background-color", "rgba(49, 150, 101, .4)" );
+    $('.js-effects').hover(function(){
+      showInfo("effect", "rgba(49, 150, 101, .4)");
     }, function(){
-      $('pre:contains("effect")').css("background", "none" );
+      removeInfo("effect");
     });
-    $('.filmgrain').hover(function(){
-      $('pre:contains("filmgrain")').css("background-color", "rgba(49, 150, 101, .4)" );
+    $('.js-seriously').hover(function(){
+      showInfo("seriously", "rgba(49, 150, 101, .4)");
     }, function(){
-      $('pre:contains("filmgrain")').css("background", "none" );
+      removeInfo("seriously");
     });
-    $('.functions').hover(function(){
-      $('pre:contains("function")').css("background-color", "rgba(221, 57, 169, .4)" );
+    $('.js-filmgrain').hover(function(){
+      showInfo("filmgrain", "rgba(49, 150, 101, .4)");
     }, function(){
-      $('pre:contains("function")').css("background", "none" );
+      removeInfo("filmgrain");
     });
-    $('.showeffect').hover(function(){
-      $('pre:contains("showEffect")').css("background-color", "rgba(221, 57, 169, .4)" );
+    $('.js-function').hover(function(){
+      showInfo("function", "rgba(221, 57, 169, .4)");
     }, function(){
-      $('pre:contains("showEffect")').css("background", "none" );
+      removeInfo("function");
     });
-    $('.play').hover(function(){
-      $('pre:contains("play")').css("background-color", "rgba(50, 98, 234, 0.4)" );
+    $('.js-showeffect').hover(function(){
+      showInfo("showEffect", "rgba(221, 57, 169, .4)");
     }, function(){
-      $('pre:contains("play")').css("background", "none" );
+      removeInfo("showEffect");
     });
-    $('.interval').hover(function(){
-      $('pre:contains("interval")').css("background-color", "rgba(50, 98, 234, 0.4)" );
+    $('.js-play').hover(function(){
+      showInfo("play", "rgba(50, 98, 234, 0.4)");
     }, function(){
-      $('pre:contains("interval")').css("background", "none" );
+      removeInfo("play");
     });
+    $('.js-interval').hover(function(){
+      showInfo("interval", "rgba(50, 98, 234, 0.4)");
+    }, function(){
+      removeInfo("interval");
+    });
+
+    var showInfo = function(term, color){
+      $('pre:contains('+term+')').css("background-color", color );
+    };
+
+    var removeInfo = function(term){
+      $('pre:contains('+term+')').css("background", "none" );
+    };
+
+
 });

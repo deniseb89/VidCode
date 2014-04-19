@@ -134,7 +134,7 @@ img.filterSelect.active {opacity: .5;}
     text-align: center;
 }
 
-.alliebutton{   
+.alliebutton{
     float: right;
     margin-left: 30px;
 }
@@ -142,6 +142,15 @@ img.filterSelect.active {opacity: .5;}
 .allie4{
     float: left;
     padding-left: 300px;
+    width: 130px!important;
+}
+
+.allie4 a{color: #fff; text-decoration: none;}
+.allie4 a:hover{color: #fff; text-decoration: none;}
+
+.centerObject{
+    margin: 0 auto;
+    width: 400px;
 }
 
 /* First and Second Video */
@@ -214,6 +223,7 @@ img.filterSelect.active {opacity: .5;}
     margin-left: auto!important;
 }
 
+.savebtn{right:200px; margin-top: -45px!important; position: absolute!important;}
 
 
 /* second screen that animates under edit menu */
@@ -400,11 +410,17 @@ ul{
     background-color: #319665;
     color: #fff;
     margin-right: 15px!important;
-    }
+}
+
 .btn-method:hover{
     color: #fff!important;
     background-color: #2A7A5D;
 }
+
+.btn-method.is-active{opacity: .5;}
+
+.xbtn{opacity: 0}
+.xbtn.is-active{opacity: 1}
 
 .leftspace{
     margin-left: 25px!important;
