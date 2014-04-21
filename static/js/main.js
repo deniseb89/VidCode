@@ -245,7 +245,6 @@ var VigArr = {
 
 
     function stop() {
-      console.log("the button was clicked");
 
       cancelAnimationFrame(rafId);
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
@@ -255,27 +254,11 @@ var VigArr = {
 
       document.body.appendChild(video3);
       video3.play();
-      console.log(video3.src);
-
-
-
-        url = video3.src;
-		var downloadLink = $('.allie4 > a');
-		console.log(downloadLink.href);
-    	downloadLink.href = url;
-
-
-    	console.log(url);
-    	console.log(downloadLink);
+   
+      var url = video3.src;
+      $('#dLink').attr('href', url);
   
     }
-
-
-
-
-
-
-
 
 
     $('#stop-me').click(stop);
@@ -284,8 +267,6 @@ var VigArr = {
     $("#export").click(function(){
           rafId = requestAnimationFrame(drawVideoFrame);
         });
-
-
 
     $(".uploadfirst").click(function(){
         $(".popup").removeClass("hidden");
