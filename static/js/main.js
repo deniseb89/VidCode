@@ -272,7 +272,6 @@ var VigArr = {
       frames.push(canvas.toDataURL('image/webp', 1));
     };
 
-
     function stop() {
       cancelAnimationFrame(rafId);
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
@@ -281,12 +280,11 @@ var VigArr = {
       video3.src = url;
       document.body.appendChild(video3);
       video3.play();
-      // var downloadLink = document.getElementById('#dlLink');
-    	$('#dLink').attr('href',url);
+      var url = video3.src;
+      $('#dLink').attr('href', url);
     }
 
     $('#stop-me').click(stop);
-
 
     $("#export").click(function(){
           rafId = requestAnimationFrame(drawVideoFrame);
