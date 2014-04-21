@@ -252,15 +252,27 @@ var VigArr = {
       var video3 = document.createElement('video');
       video3.src = window.URL.createObjectURL(webmBlob);
 
+
       document.body.appendChild(video3);
       video3.play();
       console.log(video3.src);
+
+
+
+        url = video3.src;
+		var downloadLink = $('.allie4 > a');
+		console.log(downloadLink.href);
+    	downloadLink.href = url;
+
+
+    	console.log(url);
+    	console.log(downloadLink);
+  
     }
 
 
-    var downloadLink = $('#video3 a[download]');
 
-    //downloadLink.href = url;
+
 
 
 
