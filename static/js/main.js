@@ -1,3 +1,9 @@
+    var movie = document.getElementById('myvideo');
+    var seriously,
+    video,
+    target,
+    activeEffects,
+    effects = {};
 
 $(window).load(function() {
     $('#joyRideTipContent').joyride({
@@ -16,51 +22,71 @@ $( document ).ready(function() {
 
   $('.learnMore').hide();
 
-    var delay=1000//1 seconds
-    setTimeout(function(){
-    var media = document.getElementById('myvideo'),
-    init_code = 1,
+    var init_code = 1;
+    var activeEffects = ["filmgrain","blur","vignette","noise","exposure"];
+    var editor_text =
+  "\
+    \n\
+    function showEffect() {\n\
+      effects = {\n\
+        blur: seriously.effect('blur'),\n\
+        vignette: seriously.effect('vignette'),\n\
+        filmgrain: seriously.effect('filmgrain'),\n\
+        vignette: seriously.effect('noise'),\n\
+        filmgrain: seriously.effect('exposure')\n\
+      };\n\
+    }    \n\
+    movie.play();\n\
+    //This line of code makes your movie play!\n\
+    //See what happens when you type movie.pause();\n\
+    \n\
+    //The code below lets you add, remove, and alter your video filters.\n\
+    //Change the numbers and observe the effects on your video.\n\
+    ";
 
-    effects = {};
+    function InitSeriously(){
+    seriously = new Seriously();
+    video = seriously.source("#myvideo");
+    target = seriously.target('#canvas');
     activeEffects = ["filmgrain","blur","vignette","noise","exposure"];
-    var seriously = new Seriously();
-    var video = seriously.source("#myvideo");
-    var target = seriously.target('#canvas');
+
     effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
     eval("effects."+activeEffects[0]+".source = video");
+    
     for (var i=1;i<activeEffects.length;i++){
       effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
       eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
     }
-      effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.exposure.exposure = effects.noise.amount = 0;
+
+    effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.exposure.exposure = effects.noise.amount = 0;
     eval("target.source = effects."+activeEffects[activeEffects.length-1]);
     seriously.go();
+  };
 
-   $(".runbtn").text(media.paused ? "Play" : "Pause");
+    var delay=1000//1 seconds
+    setTimeout(InitSeriously,delay);
 
-        var editor_text =
-"\
-  \n\
-  function showEffect() {\n\
-    movie.play();\n\
-  }\n\
-  \n\
-  effects = {\n\
-      blur: seriously.effect('blur'),\n\
-      vignette: seriously.effect('vignette'),\n\
-      filmgrain: seriously.effect('filmgrain'),\n\
-      vignette: seriously.effect('noise'),\n\
-      filmgrain: seriously.effect('exposure')\n\
-      };\n\
-    ";
+    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
+          mode:  "javascript",
+          theme: "solarized light",
+          lineWrapping: true,
+          lineNumbers: true
+        });
 
-            var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
-                  mode:  "javascript",
-                  theme: "solarized light",
-                  readOnly: true,
-                  lineWrapping: true,
-                  lineNumbers: true
-                });
+    var codeDelay;
+    myCodeMirror.on("change", function() {
+              clearTimeout(codeDelay);
+              codeDelay = setTimeout(updatePreview, 300);
+      });
+      
+    function updatePreview() {
+      var scriptOld = document.getElementById('codeScript')
+      if (scriptOld) { scriptOld.remove();}
+      var scriptNew   = document.createElement('script');
+      scriptNew.id = 'codeScript';
+      scriptNew.text = myCodeMirror.getValue();
+      document.body.appendChild(scriptNew);
+    }
 
             function GetScrubVals(){
 
@@ -189,6 +215,9 @@ var VigArr = {
         $(".tabs-1").removeClass("hidden");
     });
 
+    //video events
+
+   $(".runbtn").text(movie.paused ? "Play" : "Pause");
 
     $(".uploadfile").click(function(){
         $(".uploadform p").text('Video loading...');
@@ -208,8 +237,8 @@ var VigArr = {
       success: function(data, textStatus, jqXHR){
         $(".uploadform p").text('Video buffering...');
         $.get("/sendVid",function(body){
-           media.src="data:video/mp4;base64,"+body;
-           media.addEventListener("playing", displayVid, false);
+           movie.src="data:video/mp4;base64,"+body;
+           movie.addEventListener("playing", displayVid, false);
         });
         function displayVid(){
         $(".popup").addClass("hidden");
@@ -245,38 +274,16 @@ var VigArr = {
 
 
     function stop() {
-      console.log("the button was clicked");
-
       cancelAnimationFrame(rafId);
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
       var video3 = document.createElement('video');
-      video3.src = window.URL.createObjectURL(webmBlob);
-
-
+      var url = window.URL.createObjectURL(webmBlob);
+      video3.src = url;
       document.body.appendChild(video3);
       video3.play();
-      console.log(video3.src);
-
-
-
-        url = video3.src;
-		var downloadLink = $('.allie4 > a');
-		console.log(downloadLink.href);
-    	downloadLink.href = url;
-
-
-    	console.log(url);
-    	console.log(downloadLink);
-  
+      // var downloadLink = document.getElementById('#dlLink');
+    	$('#dLink').attr('href',url);
     }
-
-
-
-
-
-
-
-
 
     $('#stop-me').click(stop);
 
@@ -285,14 +292,12 @@ var VigArr = {
           rafId = requestAnimationFrame(drawVideoFrame);
         });
 
-
-
     $(".uploadfirst").click(function(){
         $(".popup").removeClass("hidden");
     });
 
     $(".uploaddemo").click(function(){
-        media.src="/img/demo.mp4";
+        movie.src="/img/demo.mp4";
         $(".popup").addClass("hidden");
         $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
@@ -305,11 +310,11 @@ var VigArr = {
     $(".runbtn").click(function(){
         $(".video2").removeClass("hidden");
         $(".buttons").addClass("hidden");
-         if (media.paused) {
-          media.play();
+         if (movie.paused) {
+          movie.play();
           $(this).text('Pause');
         } else {
-          media.pause();
+          movie.pause();
           $(this).text('Play');
       }
     });
@@ -342,27 +347,7 @@ var VigArr = {
       }
     });
 
-
     $( "ul, li" ).disableSelection();
-    GetScrubVals();
-       },delay)
-
-
-    //Homepage where you pick your selection of filters
-    $('.filterSelect').click(function(){
-      var id = $(this).attr('id');
-      if (id!='sepia'){
-      if ($(this).hasClass('active')){
-        $(this).removeClass('active');
-        $('.formNext input[value='+id+']').remove();
-      }
-      else{
-        $(this).addClass('active');
-        $('.formNext').append("<input type='hidden' name='filter' value='"+id+"' />");
-      }
-    }
-      }) ;
-
 
     //hover state of learn more section
     $('.js-object').hover(function(){
