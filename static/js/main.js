@@ -52,7 +52,7 @@ $( document ).ready(function() {
 
     effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
     eval("effects."+activeEffects[0]+".source = video");
-    
+
     for (var i=1;i<activeEffects.length;i++){
       effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
       eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
@@ -78,7 +78,7 @@ $( document ).ready(function() {
               clearTimeout(codeDelay);
               codeDelay = setTimeout(updatePreview, 300);
       });
-      
+
     function updatePreview() {
       var scriptOld = document.getElementById('codeScript')
       if (scriptOld) { scriptOld.remove();}
@@ -242,11 +242,11 @@ var VigArr = {
         });
         function displayVid(){
         $(".popup").addClass("hidden");
-        $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
-        $(".buttons").addClass("hidden");
+        $(".buttons").addClass("is-aware");
         $(".runbtn").removeClass("hidden");
         $(".video2").removeClass("hidden");
+        $(".js-appear").removeClass("hidden");
         };
              },
        error: function(jqXHR, textStatus, errorThrown){
@@ -297,17 +297,16 @@ var VigArr = {
     $(".uploaddemo").click(function(){
         movie.src="/img/demo.mp4";
         $(".popup").addClass("hidden");
-        $(".uploadfirst").addClass("hidden");
+        $(".buttons").addClass("is-aware");
         $(".clearHover").addClass("hidden");
-        $(".buttons").addClass("hidden");
         $(".runbtn").removeClass("hidden");
         $(".video2").removeClass("hidden");
-
+        $(".js-appear").removeClass("hidden");
       });
 
     $(".runbtn").click(function(){
         $(".video2").removeClass("hidden");
-        $(".buttons").addClass("hidden");
+        $(".buttons").addClass("is-aware");
          if (movie.paused) {
           movie.play();
           $(this).text('Pause');
