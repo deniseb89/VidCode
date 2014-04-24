@@ -27,17 +27,8 @@ $( document ).ready(function() {
     var editor_text =
   "\
     \n\
-    function showEffect() {\n\
-      effects = {\n\
-        blur: seriously.effect('blur'),\n\
-        vignette: seriously.effect('vignette'),\n\
-        filmgrain: seriously.effect('filmgrain'),\n\
-        vignette: seriously.effect('noise'),\n\
-        filmgrain: seriously.effect('exposure')\n\
-      };\n\
-    }    \n\
-    movie.play();\n\
     //This line of code makes your movie play!\n\
+    movie.play();\n\
     //See what happens when you type movie.pause();\n\
     \n\
     //The code below lets you add, remove, and alter your video filters.\n\
@@ -45,23 +36,21 @@ $( document ).ready(function() {
     ";
 
     function InitSeriously(){
-    seriously = new Seriously();
-    video = seriously.source("#myvideo");
-    target = seriously.target('#canvas');
-    activeEffects = ["filmgrain","blur","vignette","noise","exposure"];
-
-    effects[activeEffects[0]]=seriously.effect(activeEffects[0]);
-    eval("effects."+activeEffects[0]+".source = video");
-    
-    for (var i=1;i<activeEffects.length;i++){
-      effects[activeEffects[i]]=seriously.effect(activeEffects[i]);
-      eval("effects."+activeEffects[i]+".source = effects."+activeEffects[i-1]);
-    }
-
-    effects.filmgrain.amount = effects.blur.amount = effects.vignette.amount = effects.exposure.exposure = effects.noise.amount = 0;
-    eval("target.source = effects."+activeEffects[activeEffects.length-1]);
-    seriously.go();
-  };
+      seriously = new Seriously();
+      video = seriously.source("#myvideo");
+      target = seriously.target('#canvas');
+      var thisEffect;
+      effects[activeEffects[0]]= thisEffect = seriously.effect(activeEffects[0]);
+      effects[activeEffects[0]]["source"] = video;
+      thisEffect.amount = 0;
+      for (var i=1;i<activeEffects.length;i++){
+        effects[activeEffects[i]]= thisEffect = seriously.effect(activeEffects[i]);
+        effects[activeEffects[i]]["source"] = effects[activeEffects[i-1]];
+        thisEffect.amount = 0;
+      }
+      target.source = effects[activeEffects[activeEffects.length-1]];
+      seriously.go();
+    };
 
     var delay=1000//1 seconds
     setTimeout(InitSeriously,delay);
@@ -113,7 +102,7 @@ $( document ).ready(function() {
                  }else if ($(match).attr('id')=='num-vignette'){
                   effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));
                 } else if ($(match).attr('id')=='num-exposure'){
-                  effects.exposure.exposure = parseInt($('#num-exposure').text())/25;
+                  effects.exposure.amount = parseInt($('#num-exposure').text())/25;
                 } else if ($(match).attr('id')=='num-hue'){
                   effects.hue-saturation.hue = parseInt($('#num-hue').text())/100;
                 } else if ($(match).attr('id')=='num-saturation'){
@@ -123,12 +112,8 @@ $( document ).ready(function() {
                 } else if ($(match).attr('id')=='num-noise'){
                   effects.noise.amount = parseInt($('#num-noise').text())/10;
                 }
+              }
             }
-
-            }
-
-
- $("#image").hover($('#greeting').modal());
 
 var VigArr = {
 
@@ -186,7 +171,6 @@ var VigArr = {
       $('[name='+eff+']').removeClass("is-active");
 
       eval("effects."+eff+".amount = 0");
-      eval("effects."+eff+".exposure = 0");
 
       var allTM = myCodeMirror.getAllMarks();
       for (var m=0; m<allTM.length; m++){
@@ -217,8 +201,6 @@ var VigArr = {
 
     //video events
 
-   $(".runbtn").text(movie.paused ? "Play" : "Pause");
-
     $(".uploadfile").click(function(){
         $(".uploadform p").text('Video loading...');
     });
@@ -242,7 +224,6 @@ var VigArr = {
         });
         function displayVid(){
         $(".popup").addClass("hidden");
-        $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
         $(".buttons").addClass("hidden");
         $(".runbtn").removeClass("hidden");
@@ -257,9 +238,6 @@ var VigArr = {
       e.preventDefault();
     });
 
-
-
-
     //whammy section
     var canvas = document.getElementById('canvas');
     var rafId;
@@ -270,9 +248,16 @@ var VigArr = {
     function drawVideoFrame(time) {
       rafId = requestAnimationFrame(drawVideoFrame);
       frames.push(canvas.toDataURL('image/webp', 1));
+      if (frames.length>=76){
+        stop();
+      }
     };
 
     function stop() {
+      $('#export').text('Export video');
+      $("body").css("cursor", "auto");
+      $("#export").css("cursor", "auto");
+      $('#export').attr('disabled',false);
       cancelAnimationFrame(rafId);
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
       var video3 = document.createElement('video');
@@ -284,11 +269,18 @@ var VigArr = {
       $('#dLink').attr('href', url);
     }
 
-    $('#stop-me').click(stop);
-
     $("#export").click(function(){
+          frames=[];
           rafId = requestAnimationFrame(drawVideoFrame);
+          $(this).text('Exporting...');
+          $("body").css("cursor", "progress");
+          $(this).css("cursor","progress");
+          $(this).attr('disabled',true);
         });
+
+    $('#youtube').click(function(){
+      $('.YouTube').show();
+    });
 
     $(".uploadfirst").click(function(){
         $(".popup").removeClass("hidden");
@@ -297,25 +289,25 @@ var VigArr = {
     $(".uploaddemo").click(function(){
         movie.src="/img/demo.mp4";
         $(".popup").addClass("hidden");
-        $(".uploadfirst").addClass("hidden");
         $(".clearHover").addClass("hidden");
         $(".buttons").addClass("hidden");
         $(".runbtn").removeClass("hidden");
         $(".video2").removeClass("hidden");
-
       });
 
     $(".runbtn").click(function(){
         $(".video2").removeClass("hidden");
         $(".buttons").addClass("hidden");
-         if (movie.paused) {
-          movie.play();
-          $(this).text('Pause');
-        } else {
-          movie.pause();
-          $(this).text('Play');
-      }
+        movie.paused ? movie.play() : movie.pause();
     });
+
+    movie.addEventListener('playing',function(){
+         $(".runbtn").text('Pause');
+    });
+
+    movie.addEventListener('pause',function(){
+         $(".runbtn").text('Play');
+    });    
 
     $('.switchlearn').click(function(){
       $('.switchlearn').removeClass('active');

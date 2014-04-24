@@ -32,9 +32,42 @@
 
             <button id="export" class="btn btn-primary allie4">Export video</button>
 
-            <button id="stop-me" class="btn btn-primary allie4">Stop video</button>
-
             <button class="btn btn-primary allie4"><a id="dLink" download="vidcode.webm" title="Download your .webm video" href="">Download video</a></button>
+
+            <button id="youtube" class="btn btn-primary allie4">Share on YouTube</button>
+            
+          </div>
+
+          <!-- YouTube Upload -->
+          <div class="YouTube">
+          <button id="login-button" class="btn btn-primary hidden">Login to YouTube</button>
+          <div class="post-sign-in">
+      <div>
+        <img id="channel-thumbnail">
+        <span id="channel-name"></span>
+      </div>
+
+      <form id="upload-form">
+        <div>
+          <label for="title">Title:</label>
+          <input id="vidTitle" type="text" value="Your Video's Title!">
+        </div>
+        <div>
+          <input id="file" type="file">
+        </div>
+        <input id="submit" type="submit" value="Upload">
+      </form>
+
+      <div class="during-upload">
+        <p><span id="percent-transferred"></span>% done (<span id="bytes-transferred"></span>/<span id="total-bytes"></span> bytes)</p>
+        <progress id="upload-progress" max="1" value="0"></progress>
+      </div>
+
+      <div class="post-upload">
+        <p>Uploaded video. Polling for status...</p>
+        <ul id="post-upload-status"></ul>
+      </div>
+    </div>
           </div>
         </div>
       </div>
@@ -402,3 +435,5 @@
 </ol>
 
 <script src="/js/main.js"></script>
+<script src="/js/youtube.js"></script>
+<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>

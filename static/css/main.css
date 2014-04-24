@@ -153,6 +153,23 @@ img.filterSelect.active {opacity: .5;}
     width: 400px;
 }
 
+.YouTube {
+    display: none;
+    padding: 150px;
+}
+
+.post-sign-in {
+  display: none;
+}
+
+.during-upload {
+  display: none;
+}
+
+.post-upload {
+  display: none;
+}
+
 /* First and Second Video */
 
 .video1{

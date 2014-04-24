@@ -1,5 +1,6 @@
 var fs = require('fs');
 var vid_file = "";
+var finished_vid_file = "";
 
 exports.index = function (req, res) {
   res.render('index', { title: 'VidCode' });
@@ -22,7 +23,7 @@ exports.demo = function (db) {
       if (!doc) {
         res.status(404);
       }
-      filters = ['expsoure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
+      filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
         res.render('demo', { code: doc.code , filters: filters});
     });
   };

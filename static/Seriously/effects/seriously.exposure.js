@@ -58,7 +58,7 @@
 				uniform: 'source',
 				shaderDirty: false
 			},
-			exposure: {
+			amount: {
 				type: 'number',
 				uniform: 'exposure',
 				defaultValue: 0.6,
