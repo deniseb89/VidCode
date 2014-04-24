@@ -148,6 +148,7 @@ img.filterSelect.active {opacity: .5;}
 .allie4 a{color: #fff; text-decoration: none;}
 .allie4 a:hover{color: #fff; text-decoration: none;}
 
+
 .centerObject{
     margin: 0 auto;
     width: 400px;
@@ -421,6 +422,10 @@ ul{
     position: relative;
 }
 
+.buttons.is-aware{
+    padding: 10px 9%;
+    }
+
 
 
 .btn-method{
@@ -444,7 +449,7 @@ ul{
     }
 
 .btn{
-    display: block!important;
+    display: block;
     margin: 10px auto;
     width: 180px;
 }

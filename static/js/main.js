@@ -67,7 +67,7 @@ $( document ).ready(function() {
               clearTimeout(codeDelay);
               codeDelay = setTimeout(updatePreview, 300);
       });
-      
+
     function updatePreview() {
       var scriptOld = document.getElementById('codeScript')
       if (scriptOld) { scriptOld.remove();}
@@ -225,9 +225,10 @@ var VigArr = {
         function displayVid(){
         $(".popup").addClass("hidden");
         $(".clearHover").addClass("hidden");
-        $(".buttons").addClass("hidden");
+        $(".buttons").addClass("is-aware");
         $(".runbtn").removeClass("hidden");
         $(".video2").removeClass("hidden");
+        $(".js-appear").removeClass("hidden");
         };
              },
        error: function(jqXHR, textStatus, errorThrown){
@@ -289,10 +290,11 @@ var VigArr = {
     $(".uploaddemo").click(function(){
         movie.src="/img/demo.mp4";
         $(".popup").addClass("hidden");
+        $(".buttons").addClass("is-aware");
         $(".clearHover").addClass("hidden");
-        $(".buttons").addClass("hidden");
         $(".runbtn").removeClass("hidden");
         $(".video2").removeClass("hidden");
+        $(".js-appear").removeClass("hidden");
       });
 
     $(".runbtn").click(function(){
