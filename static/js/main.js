@@ -20,7 +20,6 @@ $(window).load(function() {
 
 $( document ).ready(function() {
 
-  $('.learnMore').hide();
 
     var init_code = 1;
     var activeEffects = ["filmgrain","blur","vignette","noise","exposure"];
@@ -180,7 +179,7 @@ var VigArr = {
     });
 
 
-    $(".xbtn").click(function(){
+    $(".draggable").click(function(){
       var eff = ($(this).attr('name'));
 
       $('[name='+eff+']').removeClass("is-active");

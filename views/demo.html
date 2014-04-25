@@ -14,13 +14,8 @@
     <div class="heading_bg">
 
       <div class="col-md-5">
-        <div class="heading">video</div>
+        <div class="heading margin-negs">video</div>
         <div class="overlay">
-
-     <!--    object that gets changes -->
-          <video class="video1 hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
-         <!--  more the seriously object, gets the effects -->
-          <canvas class="video2 hidden" id="canvas"></canvas>
 
           <div class="buttons">
             <button type="button" class="btn btn-primary uploaddemo">Import a Sample Video</button>
@@ -35,22 +30,43 @@
 
             <button class="btn btn-primary allie4 js-appear hidden"><a id="dLink" download="vidcode.webm" title="Download your .webm video" href="">Download video</a></button>
           </div>
+
+        <!--    object that gets changes -->
+          <video class="video1 hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+         <!--  more the seriously object, gets the effects -->
+          <canvas class="video2 hidden" id="canvas"></canvas>
+
+
+          <div class="methodsBox js-appear hidden clearfix">
+            <ul id="methodList">
+            {{#filters}}
+              <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+            {{/filters}}
+            </ul>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <div class="col-md-5 pull_left">
+        <div class="heading"><span class="js-code-stop">code</span></div>
+        <div id="tabs">
+          <div class="tabs-2">
+            <form method="post" action="/save">
+              <textarea id="codemirror" name="codemirror">{{code}}</textarea>
+              <div class="pull-right">
+                <input type="submit" value="Save code" class="btn btn-primary savebtn" />
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
       <div class="col-md-2 switch switchdiv">
         <div class="heading">
-          <span class="switch switcheffect">add effects</span> / <span class="switch active switchlearn">learn more</span>
-        </div>
-
-        <div class="methods">
-          <button class="btn btn-primary btn-purple switch active switchlearn">Learn more about what <br />these are doing!</button>
-          <br>
-          <ul id="methodList">
-          {{#filters}}
-            <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-          {{/filters}}
-          </ul>
+          <span>learn more</span>
         </div>
 
         <!--   /* Joyride can be attached to any element with a unique ID or class, in any order */ -->
@@ -112,20 +128,6 @@
           There is more than one right answer!
 
           <a href="https://docs.google.com/spreadsheet/ccc?key=0AvGwqFvIRpKudF94Mnl2dnJrWHJZaGp4NVhDVUs0aWc&usp=drive_web#gid=0">check explainations from others, and add your own</a>
-        </div>
-      </div>
-
-      <div class="col-md-5 pull_left">
-        <div class="heading"><span class="js-code-stop">code</span></div>
-        <div id="tabs">
-          <div class="tabs-2">
-            <form method="post" action="/save">
-              <textarea id="codemirror" name="codemirror">{{code}}</textarea>
-              <div class="pull-right">
-                <input type="submit" value="Save code" class="btn btn-primary savebtn" />
-              </div>
-            </form>
-          </div>
         </div>
       </div>
 
