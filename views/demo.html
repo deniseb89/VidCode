@@ -21,7 +21,7 @@
             <button type="button" class="btn btn-primary uploaddemo">Import a Sample Video</button>
             <button type="button" class="btn btn-primary uploadfirst">Import Your Own Video</button>
           </div>
-          <button type="button" class="runbtn btn btn-danger pullRight hidden"></button>
+
 
           <div class="centerObject">
 
@@ -65,7 +65,9 @@
         <!--    object that gets changes -->
           <video class="video1 hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
          <!--  more the seriously object, gets the effects -->
-          <canvas class="video2 hidden" id="canvas"></canvas>
+          <canvas class="video2 hidden" id="canvas">
+          </canvas>
+          <button type="button" class="runbtn btn btn-danger pullRight hidden"></button>
 
 
           <div class="methodsBox js-appear hidden clearfix">
@@ -87,10 +89,9 @@
           <div class="tabs-2">
             <form method="post" action="/save">
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
-              <div class="pull-right">
-                <button type="button" id="reset" class="btn btn-primary">Reset Code</button>
-                <input type="submit" value="Save code" class="btn btn-primary savebtn" />
-              </div>
+
+              <button type="button" id="reset" class="btn btn-primary">Reset Code</button>
+              <input type="submit" value="Save code" class="btn btn-primary savebtn" />
             </form>
           </div>
         </div>

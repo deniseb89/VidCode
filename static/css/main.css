@@ -189,6 +189,7 @@ img.filterSelect.active {opacity: .5;}
     width: 103%;
 }
 
+
 .pull_left{margin-left: -31px;}
 
 
@@ -243,7 +244,7 @@ img.filterSelect.active {opacity: .5;}
     margin-left: auto!important;
 }
 
-.savebtn{right:200px; margin-top: -45px!important; position: absolute!important;}
+.savebtn{}
 
 
 /* second screen that animates under edit menu */
@@ -337,8 +338,19 @@ img.filterSelect.active {opacity: .5;}
 
 
 .runbtn{
-    margin: 0 30%!important;
+    position: absolute;
+    margin: -50px 30% 0 30%!important;
+    opacity: 0;
 }
+
+#canvas:hover + .runbtn {
+    opacity: .8;
+}
+
+.runbtn:hover{
+    opacity: 1;
+}
+
 
 /* main screen and edit menu */
 
@@ -366,7 +378,7 @@ z-index: 100000;}
 
 .tabs-1{
     border: #BDBFBF solid 1px;
-    height: 500px;
+    height: 600px;
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
@@ -410,7 +422,7 @@ ul{
     bottom: 0;
     left: 0;
     right: 0;
-    height: 500px;
+    height: 600px;
     z-index: 3;
 }
 
@@ -458,7 +470,7 @@ ul{
     width: 105%;
     padding-right: 3px;
     margin-left: -15px;
-    height: 500px;
+    height: 600px;
     background: #81DBBA; /* Old browsers */
     background: -moz-linear-gradient(110deg, #81DBBA 15%, #7D43A3 50%, #81DBBA 80%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right bottom, color-stop(15%,#81DBBA), color-stop(50%,#7D43A3), color-stop(80%,#81DBBA)); /* Chrome,Safari4+ */
@@ -551,7 +563,7 @@ canvas{
     background-position: right;}
 
 /* The effects/ learn more area */
-.learnMore{height: 500px; overflow-y: scroll; width: 100%; padding-left: 15px;}
+.learnMore{height: 600px; overflow-y: scroll; width: 100%; padding-left: 15px;}
 .learnMore .btn{font-size: .9em; width: 92%; color: #fff; text-align: center; padding: 2px;}
 .learnMore .btn:hover{color: #fff!important;}
 .learnMore .bold{font-weight: 700;}
