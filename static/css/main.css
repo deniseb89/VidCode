@@ -579,12 +579,12 @@ canvas{
 }
 .cm-number:active{
     font-size: 2.4em;
-    cursor: ew-resize;
+    /*cursor: ew-resize;*/
 }
 
 .cm-number:hover{
     font-size: 2.4em;
-    cursor: ew-resize;
+    /*cursor: ew-resize;*/
 }
 
 #tabs{margin-right: -28px; margin-left: 10px;}

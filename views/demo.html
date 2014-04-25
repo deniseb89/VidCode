@@ -32,9 +32,9 @@
 
             <button id="export" class="btn btn-primary allie4 js-appear hidden">Export video</button>
 
-            <button class="btn btn-primary allie4 js-appear hidden"><a id="dLink" download="vidcode.webm" title="Download your .webm video" href="">Download video</a></button>
+            <button id="dLbtn" class="btn btn-primary allie4 js-appear hidden" disabled><a id="dLink" download="vidcode.webm" title="Download your .webm video" href="">Download video</a></button>
 
-            <button id="youtube" class="btn btn-primary allie4 js-appear hidden">Share on YouTube</button>
+            <button id="youtube" class="btn btn-primary allie4 js-appear hidden" disabled>Share on YouTube</button>
             
           </div>
 
@@ -43,7 +43,7 @@
           <button id="login-button" class="btn btn-primary hidden">Login to YouTube</button>
           <div class="post-sign-in">
       <div>
-        <img id="channel-thumbnail">
+        <!-- <img id="channel-thumbnail"> -->
         <span id="channel-name"></span>
       </div>
 
@@ -51,9 +51,6 @@
         <div>
           <label for="title">Title:</label>
           <input id="vidTitle" type="text" value="Your Video's Title!">
-        </div>
-        <div>
-          <input id="file" type="file">
         </div>
         <input id="submit" type="submit" value="Upload">
       </form>
@@ -155,15 +152,16 @@
           <div class="tabs-2">
             <form method="post" action="/save">
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
-              <div class="pull-right">
+              <div>
+                <button type="button" id="reset" class="btn btn-primary">Reset Code</button>              
+            </div>
+                          <div>
                 <input type="submit" value="Save code" class="btn btn-primary savebtn" />
               </div>
             </form>
           </div>
         </div>
       </div>
-
-
 
       <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog2">
@@ -422,7 +420,7 @@
   </li>
 
   <li data-class="js-code-stop" data-text="Next" class="custom">
-    <p>Next, in the code editor, slide between values by hovering over the red number then holding down as you're pushing left or right.</p>
+    <p>Next, in the code editor, change the values of the pink numbers and see what happens.</p>
   </li>
 
   <li data-id="filmgrainx" data-text="Next" class="custom" data-options="tipLocation:left">

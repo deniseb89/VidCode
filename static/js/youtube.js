@@ -74,7 +74,7 @@ function loadAPIClientInterfaces() {
         }
       }).done(function(response) {
         $('#channel-name').text(response.items[0].snippet.title);
-        $('#channel-thumbnail').attr('src', response.items[0].snippet.thumbnails.default.url);
+        // $('#channel-thumbnail').attr('src', response.items[0].snippet.thumbnails.default.url);
         $('.post-sign-in').show();
       });
     }
@@ -84,8 +84,14 @@ function loadAPIClientInterfaces() {
     e.preventDefault();
 
     // file won't be input but rather user's coded video
-    var file = $('#file').get(0).files[0];    
-    // console.log('file type: '+file.type +' / file size: '+file.size);
+    // var file = $('#file').get(0).files[0];  
+
+    var file = video_filtered;
+
+    // var file = document.getElementById('myvideo');
+    // file.type = $(file).attr('type');
+    // file.size = 10000000;
+    console.log('file type: '+file.type +' / file size: '+file.size);
     if (file) {
       $('#submit').attr('disabled', true);
 

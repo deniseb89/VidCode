@@ -1,6 +1,7 @@
     var movie = document.getElementById('myvideo');
     var seriously,
     video,
+    video_filtered,
     target,
     activeEffects,
     effects = {};
@@ -73,47 +74,68 @@ $( document ).ready(function() {
       if (scriptOld) { scriptOld.remove();}
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
-      scriptNew.text = myCodeMirror.getValue();
+      var cmScript = myCodeMirror.getValue();
+      
+      for (var e=0; e< activeEffects.length; e++){
+        $("pre:contains('effects."+activeEffects[e]+".amount')")
+            .addClass('scrub-'+activeEffects[e]);
+        $(".scrub-"+activeEffects[e]).find('.cm-number').attr('id','num-'+activeEffects[e]);
+      }
+
+      var matches = document.querySelectorAll(".cm-number");
+      var matchIDs = [];
+      for (var i = 0; i < matches.length; i++)
+      {
+        var match = matches[i];
+        var matchID = $(match).attr('id');
+        matchIDs.push(matchID);
+      }
+         if (matchIDs.indexOf('num-filmgrain')!=-1){
+          cmScript+="\n\ effects.filmgrain.amount = parseInt($('#num-filmgrain').text())/10;";
+         } else {
+          cmScript+="\n\ effects.filmgrain.amount = 0;";
+         }
+         if (matchIDs.indexOf('num-blur')!=-1){
+          cmScript+="\n\ effects.blur.amount = parseInt($('#num-blur').text())/100;";
+         }else {
+          cmScript+="\n\ effects.blur.amount = 0;";          
+         }
+        if (matchIDs.indexOf('num-vignette')!=-1){
+          cmScript+="\n\ effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));";
+        } else {
+          cmScript+="\n\ effects.vignette.amount = 0;";
+        }
+        if (matchIDs.indexOf('num-exposure')!=-1){
+          cmScript+="\n\ effects.exposure.amount = parseInt($('#num-exposure').text())/25;";
+        } else {
+          cmScript+="\n\ effects.exposure.amount = 0;";
+        }
+        // if ($(match).attr('id')=='num-hue'){
+        //   cmScript+="\n\ effects.hue-saturation.hue = parseInt($('#num-hue').text())/100;";
+        // } else if ($(match).attr('id')=='num-saturation'){
+        //   cmScript+="\n\ effects.hue-saturation.saturation = parseInt($('#num-saturation').text())/20;";
+        // } else if ($(match).attr('id')=='num-tone'){
+        //   cmScript+="\n\ effects.tone.toned = parseInt($('#num-tone').text())/10;";
+        // } 
+        if ($(match).attr('id')=='num-noise'){
+          cmScript+="\n\ effects.noise.amount = parseInt($('#num-noise').text())/10;";
+        } else {
+          cmScript+="\n\ effects.noise.amount = 0;";          
+        }    
+
+      scriptNew.text = cmScript;
       document.body.appendChild(scriptNew);
     }
 
-            function GetScrubVals(){
+    $('#reset').click(function (){
+      myCodeMirror.setValue(editor_text);
+      for (var i=0; i<activeEffects.length; i++) {
+        var eff = activeEffects[i];
+              $('[name='+eff+']').removeClass("is-active");
+      }
+    });
 
-                for (var e=0; e< activeEffects.length; e++){
-                  $("pre:contains('effects."+activeEffects[e]+".amount')")
-                      .addClass('scrub-'+activeEffects[e]);
-                  $(".scrub-"+activeEffects[e]).find('.cm-number').attr('id','num-'+activeEffects[e]);
-                }
-
-              var matches = document.querySelectorAll(".cm-number");
-
-              for (var i = 0; i < matches.length; i++)
-              {
-                var match = matches[i];
-                new Scrubbing (
-                  match, {adapter: VigArr, driver : [ Scrubbing.driver.Mouse,
-                   Scrubbing.driver.MouseWheel,
-                   Scrubbing.driver.Touch
-                   ]});
-                 if ($(match).attr('id')=='num-filmgrain'){
-                  effects.filmgrain.amount = parseInt($('#num-filmgrain').text())/10;
-                 } else if ($(match).attr('id')=='num-blur'){
-                  effects.blur.amount = parseInt($('#num-blur').text())/100;
-                 }else if ($(match).attr('id')=='num-vignette'){
-                  effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));
-                } else if ($(match).attr('id')=='num-exposure'){
-                  effects.exposure.amount = parseInt($('#num-exposure').text())/25;
-                } else if ($(match).attr('id')=='num-hue'){
-                  effects.hue-saturation.hue = parseInt($('#num-hue').text())/100;
-                } else if ($(match).attr('id')=='num-saturation'){
-                  effects.hue-saturation.saturation = parseInt($('#num-saturation').text())/20;
-                } else if ($(match).attr('id')=='num-tone'){
-                  effects.tone.toned = parseInt($('#num-tone').text())/10;
-                } else if ($(match).attr('id')=='num-noise'){
-                  effects.noise.amount = parseInt($('#num-noise').text())/10;
-                }
-              }
-            }
+            function GetScrubVals(){}
 
 var VigArr = {
 
@@ -255,12 +277,10 @@ var VigArr = {
     };
 
     function stop() {
-      $('#export').text('Export video');
-      $("body").css("cursor", "auto");
-      $("#export").css("cursor", "auto");
-      $('#export').attr('disabled',false);
       cancelAnimationFrame(rafId);
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+      video_filtered = webmBlob;
+      // console.log(webmBlob.type +' and '+webmBlob.size);
       var video3 = document.createElement('video');
       var url = window.URL.createObjectURL(webmBlob);
       video3.src = url;
@@ -268,6 +288,12 @@ var VigArr = {
       video3.play();
       var url = video3.src;
       $('#dLink').attr('href', url);
+      $('#export').text('Export video');
+      $("body").css("cursor", "auto");
+      $("#export").css("cursor", "auto");
+      $('#export').attr('disabled',false);
+      $('#dLbtn').attr('disabled',false);
+      $('#youtube').attr('disabled',false);
     }
 
     $("#export").click(function(){
@@ -299,7 +325,6 @@ var VigArr = {
 
     $(".runbtn").click(function(){
         $(".video2").removeClass("hidden");
-        $(".buttons").addClass("hidden");
         movie.paused ? movie.play() : movie.pause();
     });
 
