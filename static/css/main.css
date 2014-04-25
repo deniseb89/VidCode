@@ -154,6 +154,23 @@ img.filterSelect.active {opacity: .5;}
     width: 400px;
 }
 
+.YouTube {
+    display: none;
+    padding: 150px;
+}
+
+.post-sign-in {
+  display: none;
+}
+
+.during-upload {
+  display: none;
+}
+
+.post-upload {
+  display: none;
+}
+
 /* First and Second Video */
 
 .margin-negs{margin-left: -44px;}
@@ -569,12 +586,12 @@ canvas{
 }
 .cm-number:active{
     font-size: 2.4em;
-    cursor: ew-resize;
+    /*cursor: ew-resize;*/
 }
 
 .cm-number:hover{
     font-size: 2.4em;
-    cursor: ew-resize;
+    /*cursor: ew-resize;*/
 }
 
 #tabs{margin-right: -28px; margin-left: 10px;}
