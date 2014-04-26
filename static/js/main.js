@@ -133,7 +133,7 @@ $( document ).ready(function() {
       }
 
       var codeContents = $('.cm-property').text();
-      if(codeContents.indexOf('pause') >= 0 && step3 === 0){
+      if(codeContents.indexOf('pause') >= 0 && step3 === 0 && step2 === 1){
         $('.step2').addClass('hidden');
         $('.step3').removeClass('hidden');
         step3++;
@@ -410,6 +410,18 @@ var VigArr = {
       showInfo("interval", "rgba(50, 98, 234, 0.4)");
     }, function(){
       removeInfo("interval");
+    });
+
+    $('.runbtn').hover(function(){
+      showInfo("play", "rgba(212, 63, 58, 0.4)");
+    }, function(){
+      removeInfo("play");
+    });
+
+    $('.runbtn').hover(function(){
+      showInfo("pause", "rgba(212, 63, 58, 0.4)");
+    }, function(){
+      removeInfo("pause");
     });
 
     var showInfo = function(term, color){
