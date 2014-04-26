@@ -74,7 +74,7 @@ $( document ).ready(function() {
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
       var cmScript = myCodeMirror.getValue();
-      
+
       for (var e=0; e< activeEffects.length; e++){
         $("pre:contains('effects."+activeEffects[e]+".amount')")
             .addClass('scrub-'+activeEffects[e]);
@@ -97,7 +97,7 @@ $( document ).ready(function() {
          if (matchIDs.indexOf('num-blur')!=-1){
           cmScript+="\n\ effects.blur.amount = parseInt($('#num-blur').text())/100;";
          }else {
-          cmScript+="\n\ effects.blur.amount = 0;";          
+          cmScript+="\n\ effects.blur.amount = 0;";
          }
         if (matchIDs.indexOf('num-vignette')!=-1){
           cmScript+="\n\ effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));";
@@ -115,12 +115,12 @@ $( document ).ready(function() {
         //   cmScript+="\n\ effects.hue-saturation.saturation = parseInt($('#num-saturation').text())/20;";
         // } else if ($(match).attr('id')=='num-tone'){
         //   cmScript+="\n\ effects.tone.toned = parseInt($('#num-tone').text())/10;";
-        // } 
+        // }
         if ($(match).attr('id')=='num-noise'){
           cmScript+="\n\ effects.noise.amount = parseInt($('#num-noise').text())/10;";
         } else {
-          cmScript+="\n\ effects.noise.amount = 0;";          
-        }    
+          cmScript+="\n\ effects.noise.amount = 0;";
+        }
 
       scriptNew.text = cmScript;
       document.body.appendChild(scriptNew);
@@ -161,11 +161,19 @@ var VigArr = {
     }
 };
 
+  var timeshasdropped = 0;
+
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
 
           if (init_code) { myCodeMirror.setValue(editor_text); myCodeMirror.save();}
           init_code = 0;
+          if (timeshasdropped === 0){
+            $('.step1').removeClass('hidden');
+          }
+          timeshasdropped++;
+
+
           var eff = ui.draggable.attr("name");
 
           $('[name='+eff+']').addClass("is-active");
@@ -182,8 +190,9 @@ var VigArr = {
       $(this).draggable({
         helper: "clone",
         revert: "invalid"
+      });
     });
-    });
+
 
 
     $(".draggable").click(function(){
@@ -333,35 +342,9 @@ var VigArr = {
 
     movie.addEventListener('pause',function(){
          $(".runbtn").text('Play');
-    });    
-
-    $('.switchlearn').click(function(){
-      $('.switchlearn').removeClass('active');
-      $('.switcheffect').addClass('active');
-      $('.methods').hide();
-      $('.learnMore').fadeIn();
     });
 
-    $('.switcheffect').click(function(){
-      $('.switcheffect').removeClass('active');
-      $('.switchlearn').addClass('active');
-      $('.learnMore').hide();
-      $('.methods').fadeIn();
-    });
 
-    $('.arrowli').click(function(){
-      var img = $(this).find("img")
-      if( $(this).hasClass('active') ){
-        $(this).next().fadeOut();
-        $(this).removeClass('active');
-        img.attr("src","img/btnright.png");
-      }
-      else{
-        $(this).next().fadeIn();
-        $(this).addClass('active');
-        img.attr("src","img/btndown.png");
-      }
-    });
 
     $( "ul, li" ).disableSelection();
 
