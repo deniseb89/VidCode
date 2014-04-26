@@ -129,6 +129,12 @@ $( document ).ready(function() {
         $('.step2').removeClass('hidden');
       }
 
+      var codeContents = $('.cm-property').text();
+      if(codeContents.indexOf('pause') >= 0){
+        $('.step2').addClass('hidden');
+        $('.step3').removeClass('hidden');
+      }
+
 
       document.body.appendChild(scriptNew);
     }
