@@ -142,7 +142,7 @@ img.filterSelect.active {opacity: .5;}
 .allie4{
     float: left;
     padding-left: 300px;
-    width: 130px!important;
+    width: 148px!important;
 }
 
 .allie4 a{color: #fff; text-decoration: none;}
@@ -151,7 +151,7 @@ img.filterSelect.active {opacity: .5;}
 
 .centerObject{
     margin: 0 auto;
-    width: 400px;
+    width: 470px;
 }
 
 .YouTube {
@@ -594,8 +594,8 @@ canvas{
 /* ----Code editor ----- */
 
 .cm-number{
-
 }
+
 .cm-number:active{
     /*cursor: ew-resize;*/
 }
