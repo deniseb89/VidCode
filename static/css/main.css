@@ -594,15 +594,13 @@ canvas{
 /* ----Code editor ----- */
 
 .cm-number{
-    font-size: 1.6em;
+
 }
 .cm-number:active{
-    font-size: 2.4em;
     /*cursor: ew-resize;*/
 }
 
 .cm-number:hover{
-    font-size: 2.4em;
     /*cursor: ew-resize;*/
 }
 
