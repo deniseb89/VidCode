@@ -123,6 +123,13 @@ $( document ).ready(function() {
         }
 
       scriptNew.text = cmScript;
+
+      if(cmScript.indexOf(20) >= 0){
+        $('.step1').addClass('hidden');
+        $('.step2').removeClass('hidden');
+      }
+
+
       document.body.appendChild(scriptNew);
     }
 
