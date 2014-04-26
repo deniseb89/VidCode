@@ -21,6 +21,8 @@ $(window).load(function() {
 
 $( document ).ready(function() {
 
+    var step2 = 0;
+    var step3 = 0;
 
     var init_code = 1;
     var activeEffects = ["filmgrain","blur","vignette","noise","exposure"];
@@ -124,15 +126,17 @@ $( document ).ready(function() {
 
       scriptNew.text = cmScript;
 
-      if(cmScript.indexOf(20) >= 0){
+      if(cmScript.indexOf(20) >= 0 && step2 === 0){
         $('.step1').addClass('hidden');
         $('.step2').removeClass('hidden');
+        step2++;
       }
 
       var codeContents = $('.cm-property').text();
-      if(codeContents.indexOf('pause') >= 0){
+      if(codeContents.indexOf('pause') >= 0 && step3 === 0){
         $('.step2').addClass('hidden');
         $('.step3').removeClass('hidden');
+        step3++;
       }
 
 
