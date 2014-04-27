@@ -23,6 +23,7 @@ $( document ).ready(function() {
 
     var step2 = 0;
     var step3 = 0;
+    var step4 = 0;
 
     var init_code = 1;
     var activeEffects = ["filmgrain","blur","vignette","noise","exposure"];
@@ -139,6 +140,15 @@ $( document ).ready(function() {
         step3++;
       }
 
+      var cmProp = $('.cm-' + eff).text();
+      if(cmProp.indexOf(eff) >= 0){
+      }
+      else if(step4 === 0 && step3 === 1){
+        $('.step3').addClass('hidden');
+        $('.step4').removeClass('hidden');
+        step4++;
+      };
+
 
       document.body.appendChild(scriptNew);
     }
@@ -149,6 +159,10 @@ $( document ).ready(function() {
         var eff = activeEffects[i];
               $('[name='+eff+']').removeClass("is-active");
       }
+    });
+
+    $('.js-close-steps').click(function(){
+      $('.step4').addClass('hidden');
     });
 
             function GetScrubVals(){}
@@ -191,7 +205,7 @@ var VigArr = {
           timeshasdropped++;
 
 
-          var eff = ui.draggable.attr("name");
+          eff = ui.draggable.attr("name");
 
           $('[name='+eff+']').addClass("is-active");
 
@@ -200,6 +214,8 @@ var VigArr = {
           myCodeMirror.save();
           GetScrubVals();
           $( ".scrub-"+eff).effect("highlight",2000);
+
+
         }
       });
 
