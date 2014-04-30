@@ -120,8 +120,8 @@ img.filterSelect.active {opacity: .5;}
    ========================================================================== */
 
 .vidcodeIntro{text-align: center;}
-.vidcodeIntro h1{font-family: 'Copse', serif; color: #441B4B;}
-.vidcodeIntro p{font-size: 1.4em;}
+.vidcodeIntro h1{font-family: 'Copse', serif; color: #441B4B; padding: 25px 0 10px;}
+.vidcodeIntro p{font-size: 1.4em; padding-bottom: 10px;}
 
 .bg1{background: url(../img/transform.gif) no-repeat; background-size: 250px;}
 .bg2{background: url(../img/learn.png) no-repeat; background-size: 244px;}
