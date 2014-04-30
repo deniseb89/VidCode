@@ -114,6 +114,34 @@ img.filterSelect.active {opacity: .5;}
 
 .row{background-color: #fdf6e3;}
 
+
+/* ==========================================================================
+   Index Intro Page
+   ========================================================================== */
+
+.vidcodeIntro{text-align: center;}
+.vidcodeIntro h1{font-family: 'Copse', serif; color: #441B4B;}
+.vidcodeIntro p{font-size: 1.4em;}
+
+.bg1{background: url(../img/transform.gif) no-repeat; background-size: 250px;}
+.bg2{background: url(../img/learn.png) no-repeat; background-size: 244px;}
+.bg3{background: url(../img/share.jpg) no-repeat; background-size: 240px;}
+
+.circle{
+    margin: 15px 20px;
+    width: 230px;
+    height: 230px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    display: inline-block!important;
+}
+
+.img_crop{height: 226px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
 /* ==========================================================================
    VidCode custom styles
    ========================================================================== */
@@ -130,9 +158,7 @@ img.filterSelect.active {opacity: .5;}
 .nav a:hover{color: #1B4F33; }
 .nav > li > a {padding: 3px 15px!important;}
 
-.allietext{
-    text-align: center;
-}
+
 
 .alliebutton{
     float: right;
@@ -236,9 +262,8 @@ img.filterSelect.active {opacity: .5;}
     }
 
 
-#allie2{
-    float: right;
-}
+.right{float: right;}
+.left{float: left;}
 
 
 /* Getting started (first) */

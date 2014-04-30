@@ -17,9 +17,14 @@ $(window).load(function() {
         modal:true,
         expose: true
     });
+
+
 });
 
 $( document ).ready(function() {
+
+
+
 
     var step2 = 0;
     var step3 = 0;
@@ -447,6 +452,5 @@ var VigArr = {
     var removeInfo = function(term){
       $('pre:contains('+term+')').css("background", "none" );
     };
-
 
 });

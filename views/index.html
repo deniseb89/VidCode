@@ -1,51 +1,47 @@
-<div class="container-fluid stepone">
+<div class="container-fluid">
 
 
-<div class="col-md-12">
+  <div class="col-md-12 vidcodeIntro">
+    <div class="js-slide1">
+      <h1>Welcome to VidCode!</h1>
+      <p>Get ready to create your own awesome video filters to share with your friends!</p>
+      <div class="images-drop">
+        <div class="circle bg1 js-fade hidden"></div>
+        <div class="circle bg2 js-fade hidden"></div>
+        <div class="circle bg3 js-fade hidden"></div>
+      </div>
+
+      <div class="js-slide2-right btn btn-primary right">Next</div>
+    </div>
+
+    <div class="js-slide2 hidden">
+      <h1>First, pull functions into the code editor</h1>
+      <p>This will populate your text editor with text, getting you started!</p>
+      <div class="img_crop">
+
+        <img src="img/drag.gif">
+      </div>
+
+      <button class="btn btn-primary left js-slide1-left">Prev</button>
+      <button class="btn btn-primary right js-slide3-right">Next</button>
+    </div>
 
 
-  <div class="allietext">
-    <h4>Let's customize our own filters for video and learn about code!</h4>
+    <div class="js-slide3 hidden">
+      <h1>Next, head over to the learn more section</h1>
+      <p>There, you can learn more about the JavaScript that you're using to make your awesome video art.</p>
+      <div class="img_crop">
 
-    <p>Pick the filters you'd like to play with, then click "next":</p>
+        <img src="img/learnmore.gif">
+      </div>
+
+      <button class="btn btn-primary left js-slide2-left">Prev</button>
+      <a class="right" href="demo"><button class="btn btn-primary">Let's Get Started!</button></a>
+    </div>
+
+
+
   </div>
-
-<!-- 
-<div class="alliebutton"> -->
-
-    <form class="formNext" method="GET" action="/demo">
-      <input type="submit" value="Next" id="allie2" class="btn btn-primary btn-purple" />
-     </form>
-     </div>
-      <div>
-
-
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <img src="/img/effect-options/blur.gif" class="filterSelect" id="blur">
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <img src="/img/effect-options/filmgrain.gif" class="filterSelect" id="filmgrain">
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <img src="/img/effect-options/vignette.gif" class="filterSelect" id="vignette">
-    </div>
-
-
-
-
-
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <img src="/img/effect-options/exposure.gif" class="filterSelect" id="exposure">
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <img src="/img/effect-options/noise.gif" class="filterSelect" id="noise">
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <img src="/img/effect-options/sepia.gif" class="filterSelect" id="sepia">
-    </div>
-  </div>
-
-
 </div>
 
 <script>
@@ -64,3 +60,5 @@
     }
       }) ;
 </script>
+
+<script src="/js/indexpage.js"></script>
