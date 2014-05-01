@@ -11,6 +11,10 @@ $(document).ready(function () {
   	slideRight('.js-slide2', '.js-slide3');
   });
 
+  $('.js-slide4-right').click(function(){
+  	slideRight('.js-slide3', '.js-slide4');
+  });
+
 
   $('.js-slide1-left').click(function(){
   	slideLeft('.js-slide1', '.js-slide2');
@@ -18,6 +22,10 @@ $(document).ready(function () {
 
   $('.js-slide2-left').click(function(){
   	slideLeft('.js-slide2', '.js-slide3');
+  });
+
+  $('.js-slide3-left').click(function(){
+  	slideLeft('.js-slide3', '.js-slide4');
   });
 
 });

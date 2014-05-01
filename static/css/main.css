@@ -121,7 +121,7 @@ img.filterSelect.active {opacity: .5;}
 
 .vidcodeIntro{text-align: center;}
 .vidcodeIntro h1{font-family: 'Copse', serif; color: #441B4B; padding: 25px 0 10px;}
-.vidcodeIntro p{font-size: 1.4em; padding-bottom: 10px;}
+.vidcodeIntro p{font-size: 1.4em; padding-bottom: 20px;}
 
 .bg1{background: url(../img/transform.gif) no-repeat; background-size: 250px;}
 .bg2{background: url(../img/learn.png) no-repeat; background-size: 244px;}
@@ -137,10 +137,14 @@ img.filterSelect.active {opacity: .5;}
     display: inline-block!important;
 }
 
-.img_crop{height: 226px;
+.img_crop{
     overflow: hidden;
     margin-bottom: 30px;
 }
+
+.cropZero{height: 226px;}
+.cropOne{height: 257px;}
+.cropTwo{height: 280px;}
 
 /* ==========================================================================
    VidCode custom styles
