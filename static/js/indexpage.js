@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.js-fade').fadeIn(1000).removeClass('hidden');
+    $('.js-fade').fadeIn(1000).removeClass('is-hidden');
 
 
   //Intro Page Slider
@@ -35,16 +35,16 @@ var slideRight = function(oldSlide, newSlide){
     'margin-left': "-200px",
     opacity: 0
     }, function() {
-      $(oldSlide).addClass('hidden');
+      $(oldSlide).addClass('is-hidden');
     });
   setTimeout(function(){
-  	$(newSlide).removeClass('hidden');
+  	$(newSlide).removeClass('is-hidden');
   }, 500);
 }
 
 var slideLeft = function(oldSlide, newSlide){
-	$(newSlide).addClass('hidden');
-	$(oldSlide).removeClass('hidden');
+	$(newSlide).addClass('is-hidden');
+	$(oldSlide).removeClass('is-hidden');
 	$(oldSlide).animate({
     opacity: 1,
     'margin-left': "0px"

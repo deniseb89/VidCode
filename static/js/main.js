@@ -133,15 +133,15 @@ $( document ).ready(function() {
       scriptNew.text = cmScript;
 
       if(cmScript.indexOf(20) >= 0 && step2 === 0){
-        $('.step1').addClass('hidden');
-        $('.step2').removeClass('hidden');
+        $('.step1').addClass('is-hidden');
+        $('.step2').removeClass('is-hidden');
         step2++;
       }
 
       var codeContents = $('.cm-property').text();
       if(codeContents.indexOf('pause') >= 0 && step3 === 0 && step2 === 1){
-        $('.step2').addClass('hidden');
-        $('.step3').removeClass('hidden');
+        $('.step2').addClass('is-hidden');
+        $('.step3').removeClass('is-hidden');
         step3++;
       }
 
@@ -149,8 +149,8 @@ $( document ).ready(function() {
       if(cmProp.indexOf(eff) >= 0){
       }
       else if(step4 === 0 && step3 === 1){
-        $('.step3').addClass('hidden');
-        $('.step4').removeClass('hidden');
+        $('.step3').addClass('is-hidden');
+        $('.step4').removeClass('is-hidden');
         step4++;
       };
 
@@ -167,7 +167,7 @@ $( document ).ready(function() {
     });
 
     $('.js-close-steps').click(function(){
-      $('.step4').addClass('hidden');
+      $('.step4').addClass('is-hidden');
     });
 
             function GetScrubVals(){}
@@ -205,7 +205,7 @@ var VigArr = {
           if (init_code) { myCodeMirror.setValue(editor_text); myCodeMirror.save();}
           init_code = 0;
           if (timeshasdropped === 0){
-            $('.step1').removeClass('hidden');
+            $('.step1').removeClass('is-hidden');
           }
           timeshasdropped++;
 
@@ -251,12 +251,12 @@ var VigArr = {
       });
 
     $(".tab2").click(function(){
-        $(".tabs-2").removeClass("hidden");
+        $(".tabs-2").removeClass("is-hidden");
     });
 
     $(".tab1").click(function(){
-        $(".tabs-1").removeClass("hidden");
-        $(".tabs-2").addClass("hidden");
+        $(".tabs-1").removeClass("is-hidden");
+        $(".tabs-2").addClass("is-hidden");
     });
 
     $(".layer1").click(function(){
@@ -264,7 +264,7 @@ var VigArr = {
             "margin-left": 0}, "ease", function(){
                 $(".displayfirst").addClass("hidden2");
             });
-        $(".tabs-1").removeClass("hidden");
+        $(".tabs-1").removeClass("is-hidden");
     });
 
     //video events
@@ -291,12 +291,12 @@ var VigArr = {
            movie.addEventListener("playing", displayVid, false);
         });
         function displayVid(){
-        $(".popup").addClass("hidden");
-        $(".clearHover").addClass("hidden");
+        $(".popup").addClass("is-hidden");
+        $(".clearHover").addClass("is-hidden");
         $(".buttons").addClass("is-aware");
-        $(".runbtn").removeClass("hidden");
-        $(".video2").removeClass("hidden");
-        $(".js-appear").removeClass("hidden");
+        $(".runbtn").removeClass("is-hidden");
+        $(".video2").removeClass("is-hidden");
+        $(".js-appear").removeClass("is-hidden");
         };
              },
        error: function(jqXHR, textStatus, errorThrown){
@@ -364,16 +364,16 @@ var VigArr = {
 
     $(".uploaddemo").click(function(){
         movie.src="/img/demo.mp4";
-        $(".popup").addClass("hidden");
+        $(".popup").addClass("is-hidden");
         $(".buttons").addClass("is-aware");
-        $(".clearHover").addClass("hidden");
-        $(".runbtn").removeClass("hidden");
-        $(".video2").removeClass("hidden");
-        $(".js-appear").removeClass("hidden");
+        $(".clearHover").addClass("is-hidden");
+        $(".runbtn").removeClass("is-hidden");
+        $(".video2").removeClass("is-hidden");
+        $(".js-appear").removeClass("is-hidden");
       });
 
     $(".runbtn").click(function(){
-        $(".video2").removeClass("hidden");
+        $(".video2").removeClass("is-hidden");
         movie.paused ? movie.play() : movie.pause();
     });
 
