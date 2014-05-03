@@ -355,8 +355,11 @@ var VigArr = {
       $('.YouTube').show();
     });
 
-    $(".uploadfirst").click(function(){
-        $(".popup").removeClass("hidden");
+    $(".js-upload-video").click(function(){
+        $(".popup").removeClass("is-hidden");
+    });
+    $(".js-hide-upload").click(function(){
+        $(".popup").addClass("is-hidden");
     });
 
     $(".uploaddemo").click(function(){
