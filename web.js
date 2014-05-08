@@ -13,7 +13,7 @@ var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 var app = express();
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
-app.use(express.bodyParser({ keepExtensions: true, limit: '10mb', uploadDir: __dirname +'/vids' }));
+app.use(express.bodyParser({ keepExtensions: true, limit: '25mb', uploadDir: __dirname +'/vids' }));
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(express.methodOverride());
@@ -29,7 +29,7 @@ app.set('view engine', '.html');
 var routes = require('./routes');
 app.get('/', routes.index);
 app.get('/demo/:token?', routes.demo(db));
-app.get('/sendVid', routes.video);
+app.get('/demo2', routes.demo2);
 app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
 

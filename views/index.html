@@ -55,21 +55,4 @@
   </div>
 </div>
 
-<script>
-    //Homepage where you pick your selection of filters
-    $('.filterSelect').click(function(){
-      var id = $(this).attr('id');
-      if (id!='sepia'){
-      if ($(this).hasClass('active')){
-        $(this).removeClass('active');
-        $('.formNext input[value='+id+']').remove();
-      }
-      else{
-        $(this).addClass('active');
-        $('.formNext').append("<input type='hidden' name='filter' value='"+id+"' />");
-      }
-    }
-      }) ;
-</script>
-
 <script src="/js/indexpage.js"></script>
