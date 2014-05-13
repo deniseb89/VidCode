@@ -29,7 +29,7 @@ app.set('view engine', '.html');
 var routes = require('./routes');
 app.get('/', routes.index);
 app.get('/demo/:token?', routes.demo(db));
-app.get('/demo2', routes.demo2);
+app.get('/demo2', routes.demo2(db));
 app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
 

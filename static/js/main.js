@@ -3,6 +3,7 @@
     video,
     video_filtered,
     target,
+    allEffects,
     activeEffects,
     effects = {};
 
@@ -27,27 +28,23 @@ $( document ).ready(function() {
     var step3 = 0;
     var step4 = 0;
 
-    var init_code = 1;
-    var activeEffects = ["filmgrain","blur","vignette","noise","exposure"];
-    var editor_text =
-  "\
-    \n\
-    movie.play();";
-
+    allEffects = ["filmgrain","blur","vignette","noise","exposure","fader"];
+    activeEffects = [];
+    var editor_text = $('textarea').text();
     function InitSeriously(){
       seriously = new Seriously();
       video = seriously.source("#myvideo");
       target = seriously.target('#canvas');
       var thisEffect;
-      effects[activeEffects[0]]= thisEffect = seriously.effect(activeEffects[0]);
-      effects[activeEffects[0]]["source"] = video;
+      effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
+      effects[allEffects[0]]["source"] = video;
       thisEffect.amount = 0;
-      for (var i=1;i<activeEffects.length;i++){
-        effects[activeEffects[i]]= thisEffect = seriously.effect(activeEffects[i]);
-        effects[activeEffects[i]]["source"] = effects[activeEffects[i-1]];
+      for (var i=1;i<allEffects.length;i++){
+        effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
+        effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
         thisEffect.amount = 0;
       }
-      target.source = effects[activeEffects[activeEffects.length-1]];
+      target.source = effects[allEffects[allEffects.length-1]];
       seriously.go();
     };
 
@@ -61,6 +58,7 @@ $( document ).ready(function() {
           lineNumbers: true
         });
 
+    $('.CodeMirror-code').addClass('is-hidden');
     var codeDelay;
     myCodeMirror.on("change", function() {
               clearTimeout(codeDelay);
@@ -73,7 +71,7 @@ $( document ).ready(function() {
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
       var cmScript = myCodeMirror.getValue();
-
+      GetScrubVals();
       //catch script errors before moving updating doc script e.g. Reference Errors
 
       var matches = document.querySelectorAll(".cm-number");
@@ -108,9 +106,11 @@ $( document ).ready(function() {
         //   cmScript+="\n\ effects.hue-saturation.hue = parseInt($('#num-hue').text())/100;";
         // } else if ($(match).attr('id')=='num-saturation'){
         //   cmScript+="\n\ effects.hue-saturation.saturation = parseInt($('#num-saturation').text())/20;";
-        // } else if ($(match).attr('id')=='num-tone'){
-        //   cmScript+="\n\ effects.tone.toned = parseInt($('#num-tone').text())/10;";
-        // }
+        if ($(match).attr('id')=='num-fader'){
+          cmScript+="\n\ effects.fader.amount = parseInt($('#num-fader').text())/20;";
+        } else {
+          cmScript+="\n\ effects.fader.amount = 0;";
+        }
         if (matchIDs.indexOf('num-noise')!=-1){
           cmScript+="\n\ effects.noise.amount = parseInt($('#num-noise').text())/10;";
         } else {
@@ -120,6 +120,7 @@ $( document ).ready(function() {
       scriptNew.text = cmScript;
 
       if(cmScript.indexOf(20) >= 0 && step2 === 0){
+        console.log('showing step2');
         $('.step1').addClass('is-hidden');
         $('.step2').removeClass('is-hidden');
         step2++;
@@ -131,15 +132,17 @@ $( document ).ready(function() {
         $('.step3').removeClass('is-hidden');
         step3++;
       }
+      try {
+        var cmProp = $('.cm-' + eff).text();
+        if(cmProp.indexOf(eff) >= 0){
+        }
+        else if(step4 === 0 && step3 === 1){
+          $('.step3').addClass('is-hidden');
+          $('.step4').removeClass('is-hidden');
+          step4++;
+        };
+      } catch(e) {console.log(e+': probably no effects code in the editor')};
 
-      var cmProp = $('.cm-' + eff).text();
-      if(cmProp.indexOf(eff) >= 0){
-      }
-      else if(step4 === 0 && step3 === 1){
-        $('.step3').addClass('is-hidden');
-        $('.step4').removeClass('is-hidden');
-        step4++;
-      };
       document.body.appendChild(scriptNew);
     }
 
@@ -156,10 +159,10 @@ $( document ).ready(function() {
     });
 
     function GetScrubVals(){
-      for (var e=0; e< activeEffects.length; e++){
-        $("pre:contains('effects."+activeEffects[e]+".amount')")
-            .addClass('scrub-'+activeEffects[e]);
-        $(".scrub-"+activeEffects[e]).find('.cm-number').attr('id','num-'+activeEffects[e]);
+      for (var e=0; e< allEffects.length; e++){
+        $("pre:contains('effects."+allEffects[e]+".amount')")
+            .addClass('scrub-'+allEffects[e]);
+        $(".scrub-"+allEffects[e]).find('.cm-number').attr('id','num-'+allEffects[e]);
       }          
     }
 
@@ -192,19 +195,21 @@ var VigArr = {
 
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
-
-          if (init_code) { myCodeMirror.setValue(editor_text); myCodeMirror.save();}
-          init_code = 0;
           if (timeshasdropped === 0){
+            $('.step0').addClass('is-hidden');
             $('.step1').removeClass('is-hidden');
           }
           timeshasdropped++;
 
           eff = ui.draggable.attr("name");
-
           $('[name='+eff+']').addClass("is-active");
 
-          myCodeMirror.replaceRange('\n\    effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
+          // var thisEffect = seriously.effect(eff);
+
+          myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
+          if (eff=="fader") {
+            myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "white";',CodeMirror.Pos(myCodeMirror.lastLine()));            
+          }
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
           myCodeMirror.save();
           $( ".cm-"+eff).effect("highlight",2000);
@@ -216,6 +221,7 @@ var VigArr = {
         helper: "clone",
         revert: "invalid"
       });
+      activeEffects.push($(this).attr("name"));
     });
 
     $(".draggable").click(function(){
@@ -254,6 +260,17 @@ var VigArr = {
 
     //video events
 
+    function showVid(){
+      $(".popup").addClass("is-hidden");
+      $(".clearHover").addClass("is-hidden");
+      $(".buttons").addClass("is-aware");
+      $(".runbtn").removeClass("is-hidden");
+      $(".video2").removeClass("is-hidden");
+      $(".js-appear").removeClass("is-hidden");
+      $('.CodeMirror-code').removeClass('is-hidden');
+      $('.step0').removeClass('is-hidden');
+    };
+
     $(".uploadfile").click(function(){
         $(".uploadform p").text('Video loading...');
     });
@@ -273,22 +290,11 @@ var VigArr = {
         // add a progress bar instead of "loading/buffering" text
         $(".uploadform p").text('Video buffering...');
            movie.src="data:video/mp4;base64,"+data;
-           movie.addEventListener("playing", displayVid, false);
-
-           function displayVid(){
-            $(".popup").addClass("is-hidden");
-            $(".clearHover").addClass("is-hidden");
-            $(".buttons").addClass("is-aware");
-            $(".runbtn").removeClass("is-hidden");
-            $(".video2").removeClass("is-hidden");
-            $(".js-appear").removeClass("is-hidden");
-          };
-             },
+           movie.addEventListener("loadeddata", showVid, false);
+         },
        error: function(jqXHR, textStatus, errorThrown){
-        // $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
-        $(".uploadform p").text('Error: '+errorThrown);        
+        $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
        }
-
       });
       e.preventDefault();
     });
@@ -350,12 +356,7 @@ var VigArr = {
 
     $(".uploaddemo").click(function(){
         movie.src="/img/demo.mp4";
-        $(".popup").addClass("is-hidden");
-        $(".buttons").addClass("is-aware");
-        $(".clearHover").addClass("is-hidden");
-        $(".runbtn").removeClass("is-hidden");
-        $(".video2").removeClass("is-hidden");
-        $(".js-appear").removeClass("is-hidden");
+        showVid();
       });
 
     $(".runbtn").click(function(){

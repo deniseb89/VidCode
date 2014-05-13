@@ -7,12 +7,10 @@ exports.index = function (req, res) {
 exports.demo = function (db) {
   return function (req, res) {
     var token = req.params.token;
-    var filters = req.query.filter;
-    if (!filters){
-      filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
-    };
+    var filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
+
     if (!token) {
-      res.render('demo', { code: "No Code To Show Yet!", filters:filters});
+      res.render('demo', { code: " movie.play();", filters:filters});
       return;
     }
 
@@ -29,9 +27,10 @@ exports.demo = function (db) {
 exports.demo2 = function (db) {
   return function (req, res) {
     var token = req.params.token;
+    var filters = ['hue', 'saturation', 'fader', 'sepia'];
 
     if (!token) {
-      res.render('demo', { code: "No Code To Show Yet!" });
+      res.render('demo2', { code: " movie.play();\n\ movie.playbackRate = 1.0;", filters:filters });
       return;
     }
 
@@ -40,7 +39,7 @@ exports.demo2 = function (db) {
       if (!doc) {
         res.status(404);
       }
-        res.render('demo', { code: doc.code });
+        res.render('demo2', { code: doc.code });
     });
   };
 };
@@ -74,21 +73,26 @@ exports.upload = function (req, res) {
   if ((file_extension in oc(extensionAllowed)) && ((req.files.file.size / 1024) < maxSizeOfFile)) {
     // deal with renaming file
     fs.rename(tmp_path, target_path, function (err) {
-      if (err) throw err;
+      if (err) {
+       throw (err);
+      }
       // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
       fs.unlink(tmp_path, function () {
         if (err) throw err;
-      }); 
-    });
+      });
 
-    fs.readFile(target_path,function(err,data){
-      // if (err) throw err;
-      var base64Image = data.toString('base64');
-      res.send(base64Image);
+      fs.readFile(target_path,function(err,data){
+      if (err){
+        throw ('cannot read '+target_path);     
+      } else {
+        var base64Image = data.toString('base64');
+        res.send(base64Image);
+    }
+    });
    });
 
   } else {
-      // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
+  // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
     fs.unlink(tmp_path, function (err) {
       if (err) throw err;
     });

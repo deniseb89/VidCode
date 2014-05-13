@@ -89,50 +89,27 @@
         <div id="tabs">
           <div class="tabs-2">
             <div class="steps step0 is-hidden">
-              <h2>Your movie is ready for coding!</h2>
+              <h2>Speed up and slow down</h2>
 
-              <p>That movie.play() line is what is making your video automatically play.</p>
-
-              <p>Want to change the look of the video? <strong>Start by dragging one of the green filters into the code editor below.</strong>
-              </p>
+              <p>You can now control the speed of your video! It is currently set at 1.0</p>
+              <p><strong>Change the number of the <i>playbackRate</i> property to 2.0 or 0.5 to see what changes.</strong></p>
             </div>
 
             <div class="steps step1 is-hidden">
-              <h2>You've pulled an effect onto the code editor and magic appeared, congrats!</h2>
-
-              <p>You are now processing your video pixel by pixel to give it that effect.</p>
-
-              <p>Now it's time for you to control that magic.</p>
-
-              <p>You can change the intensity of your effect by replacing the number with a value between 0-20. <strong>Change the number to 20 and see what happens.</strong>
-              </p>
+              <h2>Effects with no inputs</h2>
             </div>
 
             <div class="steps step2 is-hidden">
-              <h2>Good job! Now we are going to <i>write</i> some code!</h2>
-
-              <p>Javascript has many built in "methods" which, at times, make sense literally.</p>
-
-              <p>Writing the method can be as easy as replacing one word with another.</p>
-
-              <p><strong>So, knowing this is the case, what might you write to pause the video?</strong></p>
+              <h2>Effects with multiple inputs</h2>
+              <p>Fader has two properties controlling it: amount and color.</p>
+              <p><strong>Change the value of the fader color from "white" to "red"</strong></p>
             </div>
 
             <div class="steps step3 is-hidden">
-              <h2>Awesome!</h2>
+              <h2>Congrats!</h2>
 
-              <p> Let's see what's possible in terms of writing code for the "effects" object. </p>
-
-              <p><strong>What happens when you change the name of the effect object?</strong></p>
-            </div>
-
-            <div class="steps step4 is-hidden">
-              <h2>You've learned to write code in all three sections of this code block!  Congrats!</h2>
-
-              <p><strong>Write down a method you would invent to manipulate your video!</strong></p>
-
-              <p>Now we're off to chapter 2 to discover what other video methods are available from the seriously.js library :)</p>
-              <a href="/demo2"><button class="js-close-steps btn btn-danger btn-close-steps">Next Lesson</button></a>
+              <button class="js-close-steps btn btn-danger btn-close-steps">Close</button>
+              <a href="demo2"><button class="btn btn-primary">Next Lesson</button></a>
             </div>
             <form method="post" action="/save">
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
