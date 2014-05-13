@@ -51,7 +51,7 @@
 			amount: {
 				type: 'number',
 				uniform: 'amount',
-				defaultValue: 0.5,
+				defaultValue: .5,
 				min: 0,
 				max: 1
 			}

@@ -31,8 +31,9 @@ $( document ).ready(function() {
     allEffects = ["filmgrain","blur","vignette","noise","exposure","fader"];
     activeEffects = [];
     var editor_text = $('textarea').text();
+    seriously = new Seriously();
+    
     function InitSeriously(){
-      seriously = new Seriously();
       video = seriously.source("#myvideo");
       target = seriously.target('#canvas');
       var thisEffect;
@@ -45,8 +46,9 @@ $( document ).ready(function() {
         thisEffect.amount = 0;
       }
       target.source = effects[allEffects[allEffects.length-1]];
-      seriously.go();
     };
+    
+    seriously.go();
 
     var delay=1000//1 seconds
     setTimeout(InitSeriously,delay);
@@ -71,7 +73,7 @@ $( document ).ready(function() {
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
       var cmScript = myCodeMirror.getValue();
-      GetScrubVals();
+      labelLines();
       //catch script errors before moving updating doc script e.g. Reference Errors
 
       var matches = document.querySelectorAll(".cm-number");
@@ -102,12 +104,8 @@ $( document ).ready(function() {
         } else {
           cmScript+="\n\ effects.exposure.amount = 0;";
         }
-        // if ($(match).attr('id')=='num-hue'){
-        //   cmScript+="\n\ effects.hue-saturation.hue = parseInt($('#num-hue').text())/100;";
-        // } else if ($(match).attr('id')=='num-saturation'){
-        //   cmScript+="\n\ effects.hue-saturation.saturation = parseInt($('#num-saturation').text())/20;";
         if ($(match).attr('id')=='num-fader'){
-          cmScript+="\n\ effects.fader.amount = parseInt($('#num-fader').text())/20;";
+          cmScript+="\n\ effects.fader.amount = parseInt($('#num-fader').text())/25;";
         } else {
           cmScript+="\n\ effects.fader.amount = 0;";
         }
@@ -117,28 +115,41 @@ $( document ).ready(function() {
           cmScript+="\n\ effects.noise.amount = 0;";
         }
 
+        if (cmScript.indexOf('effects.sepia')>=0) {
+          if (allEffects.indexOf('sepia')<0) {
+            allEffects.push('sepia');
+            InitSeriously();
+          }
+        } else {
+          var si = allEffects.indexOf('sepia');
+          if (si>=0) {
+            allEffects.splice(si,1);
+            InitSeriously();
+          }
+        }        
+
       scriptNew.text = cmScript;
 
       if(cmScript.indexOf(20) >= 0 && step2 === 0){
-        console.log('showing step2');
-        $('.step1').addClass('is-hidden');
-        $('.step2').removeClass('is-hidden');
+        $('.step1.ch1').addClass('is-hidden');
+        $('.step2.ch1').removeClass('is-hidden');
         step2++;
       }
 
       var codeContents = $('.cm-property').text();
       if(codeContents.indexOf('pause') >= 0 && step3 === 0 && step2 === 1){
-        $('.step2').addClass('is-hidden');
-        $('.step3').removeClass('is-hidden');
+        $('.step2.ch1').addClass('is-hidden');
+        $('.step3.ch1').removeClass('is-hidden');
         step3++;
       }
+
       try {
         var cmProp = $('.cm-' + eff).text();
         if(cmProp.indexOf(eff) >= 0){
         }
         else if(step4 === 0 && step3 === 1){
-          $('.step3').addClass('is-hidden');
-          $('.step4').removeClass('is-hidden');
+          $('.step3.ch1').addClass('is-hidden');
+          $('.step4.ch1').removeClass('is-hidden');
           step4++;
         };
       } catch(e) {console.log(e+': probably no effects code in the editor')};
@@ -155,14 +166,14 @@ $( document ).ready(function() {
     });
 
     $('.js-close-steps').click(function(){
-      $('.step4').addClass('is-hidden');
+      $('.step4.ch1').addClass('is-hidden');
     });
 
-    function GetScrubVals(){
+    function labelLines(){
       for (var e=0; e< allEffects.length; e++){
-        $("pre:contains('effects."+allEffects[e]+".amount')")
-            .addClass('scrub-'+allEffects[e]);
-        $(".scrub-"+allEffects[e]).find('.cm-number').attr('id','num-'+allEffects[e]);
+        $("pre:contains('effects."+allEffects[e]+"')").addClass('line-'+allEffects[e]);
+        $(".line-"+allEffects[e]).find('.cm-number').attr('id','num-'+allEffects[e]);         
+        $(".line-"+allEffects[e]).find('span').addClass('cm-'+allEffects[e]);
       }          
     }
 
@@ -183,11 +194,11 @@ var VigArr = {
       valout = valout < 10 ? valout : 10;
       element.node.dataset.value = valout;
       element.node.textContent = valout;
-      if ((valin>=0)&&(valin%20)==0) {GetScrubVals()};
+      if ((valin>=0)&&(valin%20)==0) {labelLines()};
     },
 
     end : function (element) {
-        GetScrubVals();
+        labelLines();
     }
 };
 
@@ -196,8 +207,8 @@ var VigArr = {
     $(".tabs-2").droppable({
         drop: function( event, ui ) {
           if (timeshasdropped === 0){
-            $('.step0').addClass('is-hidden');
-            $('.step1').removeClass('is-hidden');
+            $('.step0.ch1').addClass('is-hidden');
+            $('.step1.ch1').removeClass('is-hidden');
           }
           timeshasdropped++;
 
@@ -205,14 +216,28 @@ var VigArr = {
           $('[name='+eff+']').addClass("is-active");
 
           // var thisEffect = seriously.effect(eff);
-
-          myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
-          if (eff=="fader") {
-            myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "white";',CodeMirror.Pos(myCodeMirror.lastLine()));            
+          //generalize for all effect inputs
+          if (eff!="sepia"){
+            myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
+            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+            if (eff=="fader") {
+              myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
+              myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+              $('.step0.ch2').addClass('is-hidden');
+              $('.step2.ch2').addClass('is-hidden');
+              $('.step1.ch2').removeClass('is-hidden');            
+            }
+          } else {
+            myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
+            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+            $('.step0.ch2').addClass('is-hidden');
+            $('.step1.ch2').addClass('is-hidden');
+            $('.step2.ch2').removeClass('is-hidden');
           }
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+
           myCodeMirror.save();
-          $( ".cm-"+eff).effect("highlight",2000);
+          labelLines();
+          $(".line-"+eff).effect("highlight",2000);
         }
       });
 
@@ -228,8 +253,6 @@ var VigArr = {
       var eff = ($(this).attr('name'));
 
       $('[name='+eff+']').removeClass("is-active");
-
-      eval("effects."+eff+".amount = 0");
 
       var allTM = myCodeMirror.getAllMarks();
       for (var m=0; m<allTM.length; m++){
@@ -318,7 +341,6 @@ var VigArr = {
       cancelAnimationFrame(rafId);
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
       video_filtered = webmBlob;
-      // console.log(webmBlob.type +' and '+webmBlob.size);
       var video3 = document.createElement('video');
       var url = window.URL.createObjectURL(webmBlob);
       video3.src = url;

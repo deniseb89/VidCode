@@ -27,7 +27,7 @@ exports.demo = function (db) {
 exports.demo2 = function (db) {
   return function (req, res) {
     var token = req.params.token;
-    var filters = ['hue', 'saturation', 'fader', 'sepia'];
+    var filters = [ 'sepia','fader'];
 
     if (!token) {
       res.render('demo2', { code: " movie.play();\n\ movie.playbackRate = 1.0;", filters:filters });

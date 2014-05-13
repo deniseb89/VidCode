@@ -88,28 +88,30 @@
         <div class="heading"><span class="js-code-stop">code</span></div>
         <div id="tabs">
           <div class="tabs-2">
-            <div class="steps step0 is-hidden">
+            <div class="steps step0 ch2 is-hidden">
               <h2>Speed up and slow down</h2>
 
-              <p>You can now control the speed of your video! It is currently set at 1.0</p>
+              <p>You can now control the speed of your video! It is currently set at 1.0.</p>
               <p><strong>Change the number of the <i>playbackRate</i> property to 2.0 or 0.5 to see what changes.</strong></p>
             </div>
 
-            <div class="steps step1 is-hidden">
-              <h2>Effects with no inputs</h2>
-            </div>
-
-            <div class="steps step2 is-hidden">
+            <div class="steps step1 ch2 is-hidden">
               <h2>Effects with multiple inputs</h2>
               <p>Fader has two properties controlling it: amount and color.</p>
-              <p><strong>Change the value of the fader color from "white" to "red"</strong></p>
+              <p><strong>Change the value of the fader color from "red" to "blue"</strong></p>
             </div>
 
-            <div class="steps step3 is-hidden">
+            <div class="steps step2 ch2 is-hidden">
+              <h2>Effects with no inputs</h2>
+              <p>Sepia is a <i>binary</i> effect, meaning it only has two options: on or off.</p>
+              <p><strong>To remove sepia, simply delete the line of code from the code editor.</strong>
+            </div>
+
+            <div class="steps step3 ch2 is-hidden">
               <h2>Congrats!</h2>
 
               <button class="js-close-steps btn btn-danger btn-close-steps">Close</button>
-              <a href="demo2"><button class="btn btn-primary">Next Lesson</button></a>
+              <button class="btn btn-primary">Next Lesson</button></a>
             </div>
             <form method="post" action="/save">
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
