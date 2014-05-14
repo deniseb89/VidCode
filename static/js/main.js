@@ -17,7 +17,7 @@ $( document ).ready(function() {
     activeEffects = [];
     var editor_text = $('textarea').text();
     seriously = new Seriously();
-    
+
     function InitSeriously(){
       video = seriously.source("#myvideo");
       target = seriously.target('#canvas');
@@ -32,7 +32,7 @@ $( document ).ready(function() {
       }
       target.source = effects[allEffects[allEffects.length-1]];
     };
-    
+
     seriously.go();
 
     var delay=1000//1 seconds
@@ -111,7 +111,7 @@ $( document ).ready(function() {
             allEffects.splice(si,1);
             InitSeriously();
           }
-        }        
+        }
 
       scriptNew.text = cmScript;
 
@@ -157,9 +157,9 @@ $( document ).ready(function() {
     function labelLines(){
       for (var e=0; e< allEffects.length; e++){
         $("pre:contains('effects."+allEffects[e]+"')").addClass('line-'+allEffects[e]);
-        $(".line-"+allEffects[e]).find('.cm-number').attr('id','num-'+allEffects[e]);         
+        $(".line-"+allEffects[e]).find('.cm-number').attr('id','num-'+allEffects[e]);
         $(".line-"+allEffects[e]).find('span').addClass('cm-'+allEffects[e]);
-      }          
+      }
     }
 
 var VigArr = {
@@ -210,7 +210,7 @@ var VigArr = {
               myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
               $('.step0.ch2').addClass('is-hidden');
               $('.step2.ch2').addClass('is-hidden');
-              $('.step1.ch2').removeClass('is-hidden');            
+              $('.step1.ch2').removeClass('is-hidden');
             }
           } else {
             myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
@@ -357,11 +357,16 @@ var VigArr = {
     $(".js-upload-video").click(function(){
         $(".popup").removeClass("is-hidden");
     });
+
+    $(".js-instagram-import").click(function(){
+      $(".instagram-form").removeClass("is-hidden");
+    });
+
     $(".js-hide-upload").click(function(){
         $(".popup").addClass("is-hidden");
     });
 
-    $(".uploaddemo").click(function(){
+    $(".js-uploaddemo").click(function(){
         movie.src="/img/demo.mp4";
         showVid();
       });
@@ -377,6 +382,22 @@ var VigArr = {
 
     movie.addEventListener('pause',function(){
          $(".runbtn").text('Play');
+    });
+
+    $('.js-submit-username').click(function(){
+      var username = ($('.js-username').val());
+
+      $.ajax({
+        type: "GET",
+        dataType: "jsonp",
+        cache: false,
+        url: "https://api.instagram.com/v1/users/" + username + "/media/recent/?callback=?&amp;client_id=310c36ab78e54519b7834323d06d08ba",
+        success: function(data){
+
+          console.log(data);
+
+        }
+      });
     });
 
 
