@@ -97,6 +97,29 @@ textarea {
     resize: vertical;
 }
 
+
+.instagram-form input, textarea {
+    padding: 9px;
+    border: solid 1px #E5E5E5;
+    outline: 0;
+    font: normal 13px/100% Verdana, Tahoma, sans-serif;
+    width: 200px;
+    background: #FFFFFF url('bg_form.png') left top repeat-x;
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
+    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    }
+
+
+
+input:hover, textarea:hover,
+input:focus, textarea:focus {
+    border-color: #C9C9C9;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px;
+    }
+
 .stepone h4{font-weight: 600; color: #441B4B; text-align: center; padding-top:45px; padding-bottom: 25px;}
 img.filterSelect { cursor: pointer; width: 90%; height: 90%; max-width: 500px; margin: 10px auto; display:block; }
 img.filterSelect.active {opacity: .5;}
@@ -247,7 +270,7 @@ img.filterSelect.active {opacity: .5;}
     margin-right: 25px!important;
     }
 
-.popup{
+.popup, .instagram-form{
     margin: 200px 0 0 300px;
     position: fixed;
     height: 50px;
@@ -264,6 +287,9 @@ img.filterSelect.active {opacity: .5;}
     -moz-border-radius: 8px;
     border-radius: 8px;
     }
+.instagram-form input{margin-left:15px;}
+.instagram-form{padding-top: 32px;
+padding-bottom: 101px;}
 
 
 .right{float: right;}
