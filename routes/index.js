@@ -10,7 +10,19 @@ exports.demo = function (db) {
     var filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
 
     if (!token) {
-      res.render('demo', { code: " movie.play();", filters:filters});
+
+    var codeText = 
+"\
+ \n\
+ //This line of code makes your movie play!\n\
+ movie.play();\n\
+ //See what happens when you type movie.pause();\n\
+\n\
+ //The code below lets you add, remove, and alter your video filters.\n\
+ //Change the numbers and make your video all your own!\n\
+    ";
+
+      res.render('demo', { code: codeText, filters:filters});
       return;
     }
 
@@ -27,10 +39,20 @@ exports.demo = function (db) {
 exports.demo2 = function (db) {
   return function (req, res) {
     var token = req.params.token;
-    var filters = [ 'sepia','fader'];
+    var filters = [ 'fader','sepia'];
 
     if (!token) {
-      res.render('demo2', { code: " movie.play();\n\ movie.playbackRate = 1.0;", filters:filters });
+      var codeText = 
+"\
+ \n\
+ //Remember this?\n\
+ movie.play();\n\
+\n\
+ //playbackRate controls the speed of your video. The \"rate\" tells how fast your frames per second (FPS) are going.\n\
+ movie.playbackRate = 1.0;\n\
+ //\"fader\" is a cool way to add a layer of color over y our effect. You can change how \"see through\" this color is with the \"amount\".\n\
+    ";
+      res.render('demo2', { code: codeText, filters:filters });
       return;
     }
 
