@@ -624,7 +624,9 @@ canvas{
     float: left;
 }
 
-.draggable:hover{background-color: rgba(49, 150, 101, 1)!important;}
+.draggable:hover{background-color: rgba(49, 150, 101, 1)!important; cursor: -webkit-grab; cursor: -moz-grab;}
+.draggable:active{cursor: -webkit-grabbing; cursor: -moz-grabbing;}
+
 
 .draggable.is-active{
     background-image: url(../img/xbtn_drag.png)!important;
