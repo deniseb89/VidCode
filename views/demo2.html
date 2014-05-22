@@ -44,35 +44,6 @@
 
           </div>
 
-          <!-- YouTube Upload -->
-          <div class="YouTube">
-          <button id="login-button" class="btn btn-primary is-hidden">Login to YouTube</button>
-          <div class="post-sign-in">
-      <div>
-        <!-- <img id="channel-thumbnail"> -->
-        <span id="channel-name"></span>
-      </div>
-
-      <form id="upload-form">
-        <div>
-          <label for="title">Title:</label>
-          <input id="vidTitle" type="text" value="Your Video's Title!">
-        </div>
-        <input id="submit" type="submit" value="Upload">
-      </form>
-
-      <div class="during-upload">
-        <p><span id="percent-transferred"></span>% done (<span id="bytes-transferred"></span>/<span id="total-bytes"></span> bytes)</p>
-        <progress id="upload-progress" max="1" value="0"></progress>
-      </div>
-
-      <div class="post-upload">
-        <p>Uploaded video. Polling for status...</p>
-        <ul id="post-upload-status"></ul>
-      </div>
-    </div>
-          </div>
-
         <!--    object that gets changes -->
           <video class="video1 is-hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
          <!--  more the seriously object, gets the effects -->
@@ -204,6 +175,42 @@
         </div>
       </div>
 
+          <div class="col-md-4 post-export is-hidden">
+            <div class="progress progress-striped progressDiv">            
+              <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              </div>
+            </div>
+              <video id="video-dl"></video>
+          </div>
+
+          <!-- YouTube Upload -->
+          <div class="col-md-4 YouTube is-hidden">
+          <button id="login-button" class="btn btn-primary is-hidden">Login to YouTube</button>
+          <div class="post-sign-in">
+      <div>
+        <img id="channel-thumbnail">
+        <span id="channel-name"></span>
+      </div>
+
+      <form id="upload-form">
+        <div>
+          <label for="title">Title:</label>
+          <input id="vidTitle" type="text" value="Your Video's Title!">
+        </div>
+        <input id="submit" type="submit" value="Upload">
+      </form>
+
+      <div class="during-upload">
+        <p><span id="percent-transferred"></span>% done</p>
+        <progress id="upload-progress" max="1" value="0"></progress>
+      </div>
+
+      <div class="post-upload">
+        <p>Uploaded video. Polling for status...</p>
+        <ul id="post-upload-status"></ul>
+      </div>
+    </div>
+          </div>         
 
 
       <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

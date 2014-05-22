@@ -2,6 +2,7 @@
     var seriously,
     video,
     video_filtered,
+    vidLen,
     target,
     allEffects,
     activeEffects,
@@ -122,7 +123,7 @@ $( document ).ready(function() {
       }
 
       var codeContents = $('.cm-property').text();
-      if(codeContents.indexOf('pause') >= 0 && step3 === 0 && step2 === 1){
+      if(codeContents.indexOf('pause') >= 0 && step3 === 0 && step2 === 1){or
         $('.step2.ch1').addClass('is-hidden');
         $('.step3.ch1').removeClass('is-hidden');
         step3++;
@@ -137,7 +138,7 @@ $( document ).ready(function() {
           $('.step4.ch1').removeClass('is-hidden');
           step4++;
         };
-      } catch(e) {console.log(e+': probably no effects code in the editor')};
+      } catch(e) {};
 
       document.body.appendChild(scriptNew);
     }
@@ -277,6 +278,7 @@ var VigArr = {
       $(".js-appear").removeClass("is-hidden");
       $('.CodeMirror-code').removeClass('is-hidden');
       $('.step0').removeClass('is-hidden');
+      vidLen = Math.round(this.duration);
     };
 
     $(".uploadfile").click(function(){
@@ -311,27 +313,28 @@ var VigArr = {
     var canvas = document.getElementById('canvas');
     var rafId;
     var frames = [];
-    var CANVAS_WIDTH = 300;
-    var CANVAS_HEIGHT = 150;
-
+    var capture;
+    
     function drawVideoFrame(time) {
+      $('.post-export').removeClass('is-hidden');
       rafId = requestAnimationFrame(drawVideoFrame);
+      capture = frames.length*60/1000;
+      captureTxt = Math.floor(100*capture/vidLen)+'%';
+      $('.dl-progress').css('width',captureTxt);
+      $('.dl-progress').text(captureTxt);
       frames.push(canvas.toDataURL('image/webp', 1));
-      if (frames.length>=76){
-        stop();
-      }
+      if (capture>=vidLen){ stopDL();}
     };
 
-    function stop() {
+    function stopDL() {
       cancelAnimationFrame(rafId);
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
       video_filtered = webmBlob;
-      var video3 = document.createElement('video');
+      var videoDL = document.getElementById('video-dl');    
       var url = window.URL.createObjectURL(webmBlob);
-      video3.src = url;
-      document.body.appendChild(video3);
-      video3.play();
-      var url = video3.src;
+      videoDL.src = url;
+      videoDL.controls = true;
+      videoDL.load(); 
       $('#dLink').attr('href', url);
       $('#export').text('Export video');
       $("body").css("cursor", "auto");
@@ -351,7 +354,7 @@ var VigArr = {
         });
 
     $('#youtube').click(function(){
-      $('.YouTube').show();
+      $('.YouTube').removeClass('is-hidden');
     });
 
     $(".js-upload-video").click(function(){
@@ -368,7 +371,7 @@ var VigArr = {
 
     $(".js-uploaddemo").click(function(){
         movie.src="/img/demo.mp4";
-        showVid();
+        movie.addEventListener("loadeddata", showVid, false);
       });
 
     $(".runbtn").click(function(){
@@ -377,10 +380,12 @@ var VigArr = {
     });
 
     movie.addEventListener('playing',function(){
+      //also update movie.___() line in code editor
          $(".runbtn").text('Pause');
     });
 
     movie.addEventListener('pause',function(){
+      //also update movie.___() line in code editor
          $(".runbtn").text('Play');
     });
 

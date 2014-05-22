@@ -207,11 +207,6 @@ img.filterSelect.active {opacity: .5;}
     width: 470px;
 }
 
-.YouTube {
-    display: none;
-    padding: 150px;
-}
-
 .post-sign-in {
   display: none;
 }
@@ -222,6 +217,10 @@ img.filterSelect.active {opacity: .5;}
 
 .post-upload {
   display: none;
+}
+
+.progressDiv {
+   width: 300px; 
 }
 
 /* First and Second Video */

@@ -39,7 +39,7 @@ function handleAuthResult(authResult) {
     $('.post-auth').show();
     oauth2Callback();
   } else {
-    $('#login-button').removeClass('hidden');    
+    $('#login-button').removeClass('is-hidden');    
     $('#login-button').click(function() {
       gapi.auth.authorize({
         client_id: OAUTH2_CLIENT_ID,
@@ -74,24 +74,16 @@ function loadAPIClientInterfaces() {
         }
       }).done(function(response) {
         $('#channel-name').text(response.items[0].snippet.title);
-        // $('#channel-thumbnail').attr('src', response.items[0].snippet.thumbnails.default.url);
+        $('#channel-thumbnail').attr('src', response.items[0].snippet.thumbnails.default.url);
         $('.post-sign-in').show();
       });
     }
   };
 
   function initiateUpload(e) {
-    e.preventDefault();
-
-    // file won't be input but rather user's coded video
-    // var file = $('#file').get(0).files[0];  
-
+    e.preventDefault();  
     var file = video_filtered;
 
-    // var file = document.getElementById('myvideo');
-    // file.type = $(file).attr('type');
-    // file.size = 10000000;
-    console.log('file type: '+file.type +' / file size: '+file.size);
     if (file) {
       $('#submit').attr('disabled', true);
 
@@ -201,7 +193,7 @@ function loadAPIClientInterfaces() {
         }, waitForNextPoll);
       } else {
         if (uploadStatus == 'processed') {
-        $('#post-upload-status').append('<li>Your video has been uploaded. Go to wwww.YouTube.com to see it!</li>');          
+        $('#post-upload-status').append('<li>Your video has been uploaded. Go to www.YouTube.com to see it!</li>');          
           // $('#player').append(response.items[0].player.embedHtml);
         }
 
