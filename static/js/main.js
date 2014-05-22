@@ -123,7 +123,7 @@ $( document ).ready(function() {
       }
 
       var codeContents = $('.cm-property').text();
-      if(codeContents.indexOf('pause') >= 0 && step3 === 0 && step2 === 1){or
+      if(codeContents.indexOf('pause') >= 0 && step3 === 0 && step2 === 1){
         $('.step2.ch1').addClass('is-hidden');
         $('.step3.ch1').removeClass('is-hidden');
         step3++;
@@ -342,10 +342,10 @@ var VigArr = {
       $('#export').attr('disabled',false);
       $('#dLbtn').attr('disabled',false);
       $('#youtube').attr('disabled',false);
-    }
+    };
 
     $("#export").click(function(){
-          frames=[];
+      //restart video from 1
           rafId = requestAnimationFrame(drawVideoFrame);
           $(this).text('Exporting...');
           $("body").css("cursor", "progress");
