@@ -22,7 +22,7 @@ exports.demo = function (db) {
  //Change the numbers and make your video all your own!\n\
     ";
 
-      res.render('demo', { code: codeText, filters:filters});
+      res.render('demo', { layout: 'lesson', code: codeText, filters:filters});
       return;
     }
 
@@ -31,7 +31,7 @@ exports.demo = function (db) {
       if (!doc) {
         res.status(404);
       }
-        res.render('demo', { code: doc.code , filters: filters});
+        res.render('demo', { layout: 'lesson', code: doc.code , filters: filters});
     });
   };
 };
@@ -50,9 +50,9 @@ exports.demo2 = function (db) {
 \n\
  //playbackRate controls the speed of your video. The \"rate\" tells how fast your frames per second (FPS) are going.\n\
  movie.playbackRate = 1.0;\n\
- //\"fader\" is a cool way to add a layer of color over y our effect. You can change how \"see through\" this color is with the \"amount\".\n\
+ //\"fader\" is a cool way to add a layer of color over your effect. You can change how \"see through\" this color is with the \"amount\".\n\
     ";
-      res.render('demo2', { code: codeText, filters:filters });
+      res.render('demo2', { layout: 'lesson', code: codeText, filters:filters });
       return;
     }
 
@@ -61,7 +61,7 @@ exports.demo2 = function (db) {
       if (!doc) {
         res.status(404);
       }
-        res.render('demo2', { code: doc.code });
+        res.render('demo2', { layout:'lesson', code: doc.code });
     });
   };
 };

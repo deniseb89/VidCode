@@ -50,18 +50,18 @@ $( document ).ready(function() {
     var codeDelay;
     myCodeMirror.on("change", function() {
               clearTimeout(codeDelay);
-              codeDelay = setTimeout(updatePreview, 300);
+              codeDelay = setTimeout(updateScript, 300);
       });
 
-    function updatePreview() {
+    function updateScript() {
       var scriptOld = document.getElementById('codeScript')
       if (scriptOld) { scriptOld.remove();}
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
       var cmScript = myCodeMirror.getValue();
+      var adjScript = "";
+      var textScript = "\n\ try {\n\ "+cmScript;
       labelLines();
-      //catch script errors before moving updating doc script e.g. Reference Errors
-
       var matches = document.querySelectorAll(".cm-number");
       var matchIDs = [];
       for (var i = 0; i < matches.length; i++)
@@ -70,38 +70,39 @@ $( document ).ready(function() {
         var matchID = $(match).attr('id');
         matchIDs.push(matchID);
       }
+
          if (matchIDs.indexOf('num-filmgrain')!=-1){
-          cmScript+="\n\ effects.filmgrain.amount = parseInt($('#num-filmgrain').text())/10;";
+          adjScript+="\n\ effects.filmgrain.amount = parseInt($('#num-filmgrain').text())/10;";
          } else {
-          cmScript+="\n\ effects.filmgrain.amount = 0;";
+          adjScript+="\n\ effects.filmgrain.amount = 0;";
          }
          if (matchIDs.indexOf('num-blur')!=-1){
-          cmScript+="\n\ effects.blur.amount = parseInt($('#num-blur').text())/100;";
+          adjScript+="\n\ effects.blur.amount = parseInt($('#num-blur').text())/100;";
          }else {
-          cmScript+="\n\ effects.blur.amount = 0;";
+          adjScript+="\n\ effects.blur.amount = 0;";
          }
         if (matchIDs.indexOf('num-vignette')!=-1){
-          cmScript+="\n\ effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));";
+          adjScript+="\n\ effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));";
         } else {
-          cmScript+="\n\ effects.vignette.amount = 0;";
+          adjScript+="\n\ effects.vignette.amount = 0;";
         }
         if (matchIDs.indexOf('num-exposure')!=-1){
-          cmScript+="\n\ effects.exposure.amount = parseInt($('#num-exposure').text())/25;";
+          adjScript+="\n\ effects.exposure.amount = parseInt($('#num-exposure').text())/25;";
         } else {
-          cmScript+="\n\ effects.exposure.amount = 0;";
+          adjScript+="\n\ effects.exposure.amount = 0;";
         }
         if ($(match).attr('id')=='num-fader'){
-          cmScript+="\n\ effects.fader.amount = parseInt($('#num-fader').text())/25;";
+          adjScript+="\n\ effects.fader.amount = parseInt($('#num-fader').text())/25;";
         } else {
-          cmScript+="\n\ effects.fader.amount = 0;";
+          adjScript+="\n\ effects.fader.amount = 0;";
         }
         if (matchIDs.indexOf('num-noise')!=-1){
-          cmScript+="\n\ effects.noise.amount = parseInt($('#num-noise').text())/10;";
+          adjScript+="\n\ effects.noise.amount = parseInt($('#num-noise').text())/10;";
         } else {
-          cmScript+="\n\ effects.noise.amount = 0;";
+          adjScript+="\n\ effects.noise.amount = 0;";
         }
 
-        if (cmScript.indexOf('effects.sepia')>=0) {
+        if (textScript.indexOf('effects.sepia')>=0) {
           if (allEffects.indexOf('sepia')<0) {
             allEffects.push('sepia');
             InitSeriously();
@@ -114,7 +115,9 @@ $( document ).ready(function() {
           }
         }
 
-      scriptNew.text = cmScript;
+      textScript+=adjScript;
+      textScript+="\n\ } catch(e){"+ adjScript +"\n\ }";
+      scriptNew.text = textScript;
 
       if(cmScript.indexOf(20) >= 0 && step2 === 0){
         $('.step1.ch1').addClass('is-hidden');
@@ -129,25 +132,23 @@ $( document ).ready(function() {
         step3++;
       }
 
-      try {
-        var cmProp = $('.cm-' + eff).text();
-        if(cmProp.indexOf(eff) >= 0){
-        }
-        else if(step4 === 0 && step3 === 1){
-          $('.step3.ch1').addClass('is-hidden');
-          $('.step4.ch1').removeClass('is-hidden');
-          step4++;
-        };
-      } catch(e) {};
+      var cmProp = $('.cm-' + eff).text();
+      if(cmProp.indexOf(eff) >= 0){
+      }
+      else if(step4 === 0 && step3 === 1){
+        $('.step3.ch1').addClass('is-hidden');
+        $('.step4.ch1').removeClass('is-hidden');
+        step4++;
+      };
 
       document.body.appendChild(scriptNew);
     }
 
     $('.js-reset-code').click(function (){
       myCodeMirror.setValue(editor_text);
-      for (var i=0; i<activeEffects.length; i++) {
-        var eff = activeEffects[i];
-              $('[name='+eff+']').removeClass("is-active");
+      for (var i=0; i<allEffects.length; i++) {
+        var eff = allEffects[i];
+        $('[name='+eff+']').removeClass("is-active");
       }
     });
 
@@ -156,6 +157,8 @@ $( document ).ready(function() {
     });
 
     function labelLines(){
+      //this function should take an input for the relevant effect, not brute force for all
+      //also take note of whats active and whats not here (filters as well video-related code lines)
       for (var e=0; e< allEffects.length; e++){
         $("pre:contains('effects."+allEffects[e]+"')").addClass('line-'+allEffects[e]);
         $(".line-"+allEffects[e]).find('.cm-number').attr('id','num-'+allEffects[e]);
@@ -222,6 +225,7 @@ var VigArr = {
           }
 
           myCodeMirror.save();
+          //labelLines(eff);
           labelLines();
           $(".line-"+eff).effect("highlight",2000);
         }
@@ -232,7 +236,6 @@ var VigArr = {
         helper: "clone",
         revert: "invalid"
       });
-      activeEffects.push($(this).attr("name"));
     });
 
     $(".draggable").click(function(){
