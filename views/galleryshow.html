@@ -1,0 +1,41 @@
+  <link rel="stylesheet" href="/js/vendor/codemirror-3.22/lib/codemirror.css">
+  <link rel="stylesheet" href="/js/vendor/codemirror-3.22/theme/solarized.css">
+
+
+<div class="row galleryshow">
+	<div class="col-md-12 gallery-info">
+		<a href="gallery"><img class="backimg" src="img/back-btn.png"> <span class="backbtn">Back to Gallery</span></a>
+		<h2>Videoname</h2>
+		<p class="info">by <span class="username">username</span></p>
+	</div>
+	<div class="col-md-6">
+		<img class="video" src="img/effect-options/blur.gif">
+	</div>
+	<div class="col-md-6">
+		<form>
+			<textarea id="codemirror" name="codemirror">
+movie.play();
+
+effects.blur.amount = 7;
+
+	    </textarea>
+  	</form>
+
+	</div>
+</div>
+
+<script src="/js/vendor/codemirror-3.22/lib/codemirror.js"></script>
+<script src="/js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
+
+
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+
+    theme : 'solarized light'
+  });
+
+
+</script>

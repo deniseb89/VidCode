@@ -1,4 +1,4 @@
-/*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
+fg/*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
 
 /*
  * What follows is the result of much research on cross-browser styling.
@@ -135,8 +135,7 @@ img.filterSelect.active {opacity: .5;}
     padding: 0.2em 0;
 }
 
-.row{background-color: #fdf6e3;}
-
+h2{font-family: 'Copse', serif!important; color: #441B4B!important;}
 
 /* ==========================================================================
    Index Intro Page
@@ -309,7 +308,6 @@ padding-bottom: 101px;}
     margin-left: auto!important;
 }
 
-.savebtn{}
 
 .btn-close-steps{margin-bottom: 7px!important; width: 100px!important;}
 
@@ -356,7 +354,6 @@ padding-bottom: 101px;}
     color: #fff;
     font-size: 1.4em;
     font-weight: 600;
-
 }
 
 
@@ -376,12 +373,9 @@ padding-bottom: 101px;}
 
   /* Opera 11.10+ */
   background: -o-linear-gradient(top, #44A682, #44A682);
-
 }
 
-.btn-group{
-    margin-top: 20px;
-}
+.btn-group{margin-top: 20px;}
 
 .btn-purple{
     background-color: #441B4B!important; border: 0px!important;}
@@ -675,6 +669,29 @@ canvas{
 }
 
 #tabs{margin-right: -28px; margin-left: 10px;}
+
+
+
+/* =============    Gallery Page    ======== */
+.galleryheader{margin: 20px 0 15px 15px;}
+
+.gallery{margin: 20px 0;}
+.gallery .video{width:92%; margin: 0 auto; display: block; cursor: pointer;}
+.gallery .likes{width:auto; cursor: pointer; display: inline; margin:10px 8px 35px 0; float:left;}
+.gallery .hover-change:hover{opacity: .75;}
+.gallery .info{float:left;}
+.gallery .vid-row{width:92%; margin: 8px auto;}
+.gallery .title{margin: 10px 0 0 3px; font-weight:600; color:#441B4B; cursor: pointer; font-size:1.2em;}
+.gallery .username{color: #333; margin: -6px 0 0 3px; font-size:.9em; cursor: pointer; font-weight: 600;}
+
+.galleryshow{padding: 0 25px;}
+.galleryshow .backbtn{color: #441B4B; font-weight: 600; margin-top:20px; display:inline-block;}
+.galleryshow .backimg{margin-top:-5px;}
+.galleryshow .username{font-weight: 600;}
+.galleryshow .info{margin-top:-10px;}
+.galleryshow .video{width: 100%;}
+.galleryshow .gallery-info{margin-bottom: 20px;}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */

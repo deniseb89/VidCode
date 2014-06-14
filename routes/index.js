@@ -8,6 +8,10 @@ exports.gallery = function (req, res) {
   res.render('gallery', {title: 'VidCode Gallery' });
 };
 
+exports.galleryshow = function (req, res) {
+  res.render('galleryshow', {title: 'VidCode Gallery' });
+};
+
 exports.demo = function (db) {
   return function (req, res) {
     var token = req.params.token;

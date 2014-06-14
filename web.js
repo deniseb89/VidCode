@@ -31,6 +31,7 @@ app.get('/', routes.index);
 app.get('/demo/:token?', routes.demo(db));
 app.get('/demo2', routes.demo2(db));
 app.get('/gallery', routes.gallery);
+app.get('/galleryshow', routes.galleryshow);
 app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
 

@@ -166,6 +166,7 @@ $( document ).ready(function() {
       }
     }
 
+
 var VigArr = {
 
     init : function ( element ) {
@@ -317,7 +318,7 @@ var VigArr = {
     var rafId;
     var frames = [];
     var capture;
-    
+
     function drawVideoFrame(time) {
       $('.post-export').removeClass('is-hidden');
       rafId = requestAnimationFrame(drawVideoFrame);
@@ -333,11 +334,11 @@ var VigArr = {
       cancelAnimationFrame(rafId);
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
       video_filtered = webmBlob;
-      var videoDL = document.getElementById('video-dl');    
+      var videoDL = document.getElementById('video-dl');
       var url = window.URL.createObjectURL(webmBlob);
       videoDL.src = url;
       videoDL.controls = true;
-      videoDL.load(); 
+      videoDL.load();
       $('#dLink').attr('href', url);
       $('#export').text('Export video');
       $("body").css("cursor", "auto");
