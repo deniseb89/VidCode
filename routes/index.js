@@ -4,6 +4,10 @@ exports.index = function (req, res) {
   res.render('index', { title: 'VidCode' });
 };
 
+exports.gallery = function (req, res) {
+  res.render('gallery', {title: 'VidCode Gallery' });
+};
+
 exports.demo = function (db) {
   return function (req, res) {
     var token = req.params.token;
@@ -11,7 +15,7 @@ exports.demo = function (db) {
 
     if (!token) {
 
-    var codeText = 
+    var codeText =
 "\
  \n\
  //This line of code makes your movie play!\n\
@@ -42,7 +46,7 @@ exports.demo2 = function (db) {
     var filters = [ 'fader','sepia'];
 
     if (!token) {
-      var codeText = 
+      var codeText =
 "\
  \n\
  //Remember this?\n\
@@ -105,7 +109,7 @@ exports.upload = function (req, res) {
 
       fs.readFile(target_path,function(err,data){
       if (err){
-        throw ('cannot read '+target_path);     
+        throw ('cannot read '+target_path);
       } else {
         var base64Image = data.toString('base64');
         res.send(base64Image);
@@ -118,8 +122,8 @@ exports.upload = function (req, res) {
     fs.unlink(tmp_path, function (err) {
       if (err) throw err;
     });
-    msg = "File upload failed. File extension must be "+extensionAllowed[0]+" or "+extensionAllowed[1]+" and size must be less than " + maxSizeOfFile;    
-   res.send(msg);    
+    msg = "File upload failed. File extension must be "+extensionAllowed[0]+" or "+extensionAllowed[1]+" and size must be less than " + maxSizeOfFile;
+   res.send(msg);
   }
 };
 

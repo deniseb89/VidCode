@@ -29,7 +29,7 @@ html {
 body{
     font-family: 'Open Sans', sans-serif!important;
     height: 100%;
-    background-color: #fdf6e3!important;
+    background-color: #FCFAF5!important;
 }
 
 h3{
@@ -220,7 +220,7 @@ img.filterSelect.active {opacity: .5;}
 }
 
 .progressDiv {
-   width: 300px; 
+   width: 300px;
 }
 
 /* First and Second Video */
