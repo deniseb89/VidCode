@@ -31,7 +31,7 @@ exports.demo = function (db) {
  //Change the numbers and make your video all your own!\n\
     ";
 
-      res.render('demo', { layout: 'lesson', code: codeText, filters: filters, user: req.user});
+      res.render('demo', {code: codeText, filters: filters, user: req.user});
       return;
     }
 
@@ -40,7 +40,7 @@ exports.demo = function (db) {
       if (!doc) {
         res.status(404);
       }
-        res.render('demo', { layout: 'lesson', code: doc.code , filters: filters});
+        res.render('demo', {code: doc.code , filters: filters});
     });
   };
 };
@@ -62,7 +62,7 @@ exports.demo2 = function (db) {
  movie.playbackRate = 1.0;\n\
  //\"fader\" is a cool way to add a layer of color over your effect. You can change how \"see through\" this color is with the \"amount\".\n\
     ";
-      res.render('demo2', { layout: 'lesson', code: codeText, filters:filters, user:req.user});
+      res.render('demo2', {code: codeText, filters:filters, user:req.user});
       return;
     }
 
@@ -71,7 +71,7 @@ exports.demo2 = function (db) {
       if (!doc) {
         res.status(404);
       }
-        res.render('demo2', { layout:'lesson', code: doc.code });
+        res.render('demo2', {code: doc.code });
     });
   };
 };
