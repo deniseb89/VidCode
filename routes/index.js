@@ -6,11 +6,11 @@ exports.index = function (req, res) {
 
 exports.demo = function (db) {
   return function (req, res) {
+    var user = req.user;
     var token = req.params.token;
     var filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
 
     if (!token) {
-
     var codeText = 
 "\
  \n\
@@ -22,7 +22,7 @@ exports.demo = function (db) {
  //Change the numbers and make your video all your own!\n\
     ";
 
-      res.render('demo', { layout: 'lesson', code: codeText, filters:filters});
+      res.render('demo', { layout: 'lesson', code: codeText, filters: filters, user: req.user});
       return;
     }
 
@@ -38,6 +38,7 @@ exports.demo = function (db) {
 
 exports.demo2 = function (db) {
   return function (req, res) {
+    var user = req.user;
     var token = req.params.token;
     var filters = [ 'fader','sepia'];
 
@@ -52,7 +53,7 @@ exports.demo2 = function (db) {
  movie.playbackRate = 1.0;\n\
  //\"fader\" is a cool way to add a layer of color over your effect. You can change how \"see through\" this color is with the \"amount\".\n\
     ";
-      res.render('demo2', { layout: 'lesson', code: codeText, filters:filters });
+      res.render('demo2', { layout: 'lesson', code: codeText, filters:filters, user:req.user});
       return;
     }
 
@@ -121,6 +122,10 @@ exports.upload = function (req, res) {
     msg = "File upload failed. File extension must be "+extensionAllowed[0]+" or "+extensionAllowed[1]+" and size must be less than " + maxSizeOfFile;    
    res.send(msg);    
   }
+};
+
+exports.instCB = function(req, res) {
+  res.redirect('/demo',{user: req.user});
 };
 
 function generateToken(crypto) {

@@ -20,7 +20,9 @@
     "fileupload": "~0.3.0",
     "crx": "~0.4.1",
     "monk": "~0.8.1",
-    "mongodb": "~1.4.0"
+    "mongodb": "~1.4.0",
+    "passport": ">= 0.0.0",
+    "passport-instagram": ">= 0.0.0"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.13",

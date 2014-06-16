@@ -46,6 +46,11 @@
   <ul class="nav nav-tabs">
     <li><a href="/"><img src="/img/logo.png" id="image"></a></li>
     <li class="pull-right">
+      {{#if user}}
+      <a class="small">Hey, {{user.username}}!</p>
+      {{else}}
+      <a class="small" href="/auth/instagram">Log In with Instagram</a>   
+      {{/if}}
       <a class="small" href="http://vidcode.io/" target="_blank">
         <span class="glyphicon glyphicon-star"></span>About & Updates
       </a>
@@ -80,10 +85,11 @@
 
           <div class="buttons">
             <button type="button" class="btn btn-primary js-uploaddemo">Import a Sample Video</button>
-
-            <button type="button" class="btn btn-primary js-instagram-import is-hidden">Import from Instagram</button>
-
             <button type="button" class="btn btn-primary js-upload-video">Upload Your Own Video</button>
+            {{#if user}}
+            <button type="button" class="btn btn-primary js-instagram-import">Import from Instagram</button>
+            {{/if}}
+
           </div>
 
 
@@ -481,17 +487,6 @@
   </div>
 </div>
 
-<script src="/js/main.js"></script>
-<script src="/js/youtube.js"></script>
-<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
-<script src="/js/vendor/modernizr-2.6.2.min.js"></script>
-<script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="/js/bootstrap.js"></script>
-<script src="/js/contentflow.js"></script>
-<script src="/js/vendor/codemirror-3.22/lib/codemirror.js"></script>
-<script src="/js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
-<script src="/js/vendor/whammy.min.js"></script>
-<script src="/js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
 <script src="/Seriously/seriously.js"></script>
 <script src="/Seriously/effects/seriously.vignette.js"></script>
 <script src="/Seriously/effects/seriously.blur.js"></script>
@@ -501,7 +496,17 @@
 <script src="/Seriously/effects/seriously.sepia.js"></script>
 <script src="/Seriously/effects/seriously.hue-saturation.js"></script>
 <script src="/Seriously/effects/seriously.fader.js"></script>
+<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+<script src="/js/vendor/modernizr-2.6.2.min.js"></script>
+<script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/contentflow.js"></script>
+<script src="/js/vendor/codemirror-3.22/lib/codemirror.js"></script>
+<script src="/js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
+<script src="/js/vendor/whammy.min.js"></script>
+<script src="/js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
 <script src="/js/plugins.js"></script>
-
+<script src="/js/main.js"></script>
+<script src="/js/youtube.js"></script>
 </body>
 </html>

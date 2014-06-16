@@ -46,7 +46,7 @@
 			color: {
 				type: 'color',
 				uniform: 'color',
-				defaultValue: 'red'
+				defaultValue: [0, 0, 0, 1]
 			},
 			amount: {
 				type: 'number',

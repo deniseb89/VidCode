@@ -364,9 +364,9 @@ var VigArr = {
         $(".popup").removeClass("is-hidden");
     });
 
-    $(".js-instagram-import").click(function(){
-      $(".instagram-form").removeClass("is-hidden");
-    });
+    // $(".js-instagram-import").click(function(){
+    //   $(".instagram-form").removeClass("is-hidden");
+    // });
 
     $(".js-hide-upload").click(function(){
         $(".popup").addClass("is-hidden");
