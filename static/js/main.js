@@ -313,6 +313,18 @@ var VigArr = {
       e.preventDefault();
     });
 
+    $(".js-instagram-import").click(function(){
+        $.ajax('/instagramVid',{
+          success: function(data, textStatus, jqXHR){
+            movie.src="data:video/mp4;base64,"+data;
+            movie.addEventListener("loadeddata", showVid, false);
+          },
+          error: function(data, textStatus, jqXHR){
+            alert("You don't have any Instagram videos :(");
+          }
+      });
+    });
+
     //whammy section
     var canvas = document.getElementById('canvas');
     var rafId;
@@ -364,10 +376,6 @@ var VigArr = {
     $(".js-upload-video").click(function(){
         $(".popup").removeClass("is-hidden");
     });
-
-    // $(".js-instagram-import").click(function(){
-    //   $(".instagram-form").removeClass("is-hidden");
-    // });
 
     $(".js-hide-upload").click(function(){
         $(".popup").addClass("is-hidden");

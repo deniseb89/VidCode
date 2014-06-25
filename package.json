@@ -22,7 +22,8 @@
     "monk": "~0.8.1",
     "mongodb": "~1.4.0",
     "passport": ">= 0.0.0",
-    "passport-instagram": ">= 0.0.0"
+    "passport-instagram": ">= 0.0.0",
+    "request": "~2.27.0"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.13",

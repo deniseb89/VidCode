@@ -1,4 +1,5 @@
 var fs = require('fs');
+var request = require('request');
 
 exports.index = function (req, res) {
   res.render('index', { title: 'VidCode' });
@@ -114,14 +115,14 @@ exports.upload = function (req, res) {
       });
 
       fs.readFile(target_path,function(err,data){
-      if (err){
-        throw ('cannot read '+target_path);
-      } else {
-        var base64Image = data.toString('base64');
-        res.send(base64Image);
-    }
+        if (err){
+          throw ('cannot read '+target_path);
+        } else {
+          var base64Image = data.toString('base64');
+          res.send(base64Image);
+        }
+      });
     });
-   });
 
   } else {
   // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
@@ -133,8 +134,82 @@ exports.upload = function (req, res) {
   }
 };
 
-exports.instCB = function(req, res) {
-  res.redirect('/demo',{user: req.user});
+exports.igCB = function (req, res) {
+  if (req.user){
+    var user = req.user;
+    var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
+    var token = user.accessToken;
+    var media_json,
+        media,
+        url,
+        next_max_id="",
+        pages=1;
+
+    request.get(apiCall+token+"&max_id="+next_max_id, function(err, resp, body) {
+      if(!err){
+        pages++;
+        media_json= JSON.parse(body);
+        next_max_id = media_json.pagination.next_max_id;
+        media = media_json.data;
+        var item;
+        var filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
+        var codeText =
+    "\
+     \n\
+     //This line of code makes your movie play!\n\
+     movie.play();\n\
+     //See what happens when you type movie.pause();\n\
+    \n\
+     //The code below lets you add, remove, and alter your video filters.\n\
+     //Change the numbers and make your video all your own!\n\
+        ";
+            
+        for (var i=0; i < media.length; i++){
+          item = media[i];
+          if (item.hasOwnProperty("videos")) {
+            displayMedia = item;
+            url = item.videos.standard_resolution.url;
+            // request.get(url,function(e,r,vidData){
+            //   if(!e){
+            //     fs.writeFile(target_path,vidData,'binary',function(error){
+            //       if (error){ throw error};
+            //     });        
+            //   }
+            // });
+            var i = url.lastIndexOf('.');
+            var file_extension = (i < 0) ? '' : url.substr(i);
+            var target_path = './vids/instagram'+file_extension;            
+            request(url).pipe(fs.createWriteStream(target_path));
+            res.render('demo', {
+              code: codeText,
+              filters: filters,
+              user: user
+            });
+            return;                       
+          }
+            res.render('demo', {
+              code: codeText,
+              filters: filters,
+              user: user
+            });          
+        }
+      } else {
+        res.send('error with Instagram API');
+      }
+    });
+  }
+};
+
+exports.igGet = function(req,res){
+  fs.readFile("./vids/instagram.mp4",function(err,file){
+        if (err){
+          res.send(500);
+        } else {
+          // res.send(file);
+          var base64Image = file.toString('base64');
+          res.send(base64Image);
+        }
+      });
 };
 
 function generateToken(crypto) {
@@ -177,3 +252,8 @@ function oc(a) {
   }
   return o;
 }
+
+function ensureAuthenticated(user) {
+  console.log('authentication = '+ user);
+  return next();
+};

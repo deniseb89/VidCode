@@ -27,7 +27,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new InstagramStrategy({
     clientID: INSTAGRAM_CLIENT_ID,
     clientSecret: INSTAGRAM_CLIENT_SECRET,
-    callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
+    // callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
+    callbackURL: "http://localhost:8080/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -66,11 +67,9 @@ app.get('/galleryshow', routes.galleryshow);
 app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
-app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.demo(db));
-
+app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB);
+app.get('/instagramVid', routes.igGet);
 // create server
 http.createServer(app).listen(app.get('port'),function(){
   console.log("Listening on " + app.get('port'));
 });
-
-
