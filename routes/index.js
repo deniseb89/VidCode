@@ -149,7 +149,7 @@ exports.igCB = function (req, res) {
       if(!err){
         pages++;
         media_json= JSON.parse(body);
-        next_max_id = media_json.pagination.next_max_id;
+        // next_max_id = media_json.pagination.next_max_id;
         media = media_json.data;
         var item;
         var filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
