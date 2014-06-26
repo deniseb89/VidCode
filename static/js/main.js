@@ -6,7 +6,8 @@
     target,
     allEffects,
     activeEffects,
-    effects = {};
+    effects = {},
+    windowObjectReference = null;
 
 $( document ).ready(function() {
 
@@ -330,14 +331,14 @@ var VigArr = {
     var rafId;
     var frames = [];
     var capture;
+    var videoDLurl;
 
     function drawVideoFrame(time) {
-      $('.post-export').removeClass('is-hidden');
       rafId = requestAnimationFrame(drawVideoFrame);
       capture = frames.length*60/1000;
       captureTxt = Math.floor(100*capture/vidLen)+'%';
       $('.dl-progress').css('width',captureTxt);
-      $('.dl-progress').text(captureTxt);
+      $('.dl-progress').text(captureTxt+' complete');
       frames.push(canvas.toDataURL('image/webp', 1));
       if (capture>=vidLen){ stopDL();}
     };
@@ -347,27 +348,38 @@ var VigArr = {
       var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
       video_filtered = webmBlob;
       var videoDL = document.getElementById('video-dl');
-      var url = window.URL.createObjectURL(webmBlob);
-      videoDL.src = url;
+      videoDLurl = window.URL.createObjectURL(webmBlob);
+      videoDL.src = videoDLurl;
       videoDL.controls = true;
       videoDL.load();
-      $('#dLink').attr('href', url);
+      $('#dLink').attr('href', videoDLurl);
       $('#export').text('Export video');
       $("body").css("cursor", "auto");
       $("#export").css("cursor", "auto");
       $('#export').attr('disabled',false);
       $('#dLbtn').attr('disabled',false);
       $('#youtube').attr('disabled',false);
+      $('.dl-progress').text('All Finished!');      
+      $('.share-btn').removeClass('is-hidden');
     };
 
+    $("#gallery-share").click(function(){
+      windowObjectReference = window.open('/gallery?userVidURL='+videoDLurl,'GalleryPage','resizable,scrollbars');
+    });
+
+    $("#email-share").click(function(){
+      windowObjectReference = window.open('https://gmail.com');
+    });
+
     $("#export").click(function(){
-      //restart video from 1
-          rafId = requestAnimationFrame(drawVideoFrame);
-          $(this).text('Exporting...');
-          $("body").css("cursor", "progress");
-          $(this).css("cursor","progress");
-          $(this).attr('disabled',true);
-        });
+      //restart video from 1 and only retrieve frame when playing
+      $('.progressDiv').removeClass('is-hidden');
+      rafId = requestAnimationFrame(drawVideoFrame);
+      $(this).text('Exporting...');
+      $("body").css("cursor", "progress");
+      $(this).css("cursor","progress");
+      $(this).attr('disabled',true);
+    });
 
     $('#youtube').click(function(){
       $('.YouTube').removeClass('is-hidden');

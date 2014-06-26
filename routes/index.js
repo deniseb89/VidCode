@@ -6,7 +6,11 @@ exports.index = function (req, res) {
 };
 
 exports.gallery = function (req, res) {
-  res.render('gallery', {title: 'VidCode Gallery' });
+  var userVidURL = req.query.userVidURL;
+  if(userVidURL){
+    userVidURL = "blob:"+ userVidURL.substr(5).replace(/:/g,"%3A");
+  };
+  res.render('gallery', {title: 'VidCode Gallery', userVidURL:userVidURL});
 };
 
 exports.galleryshow = function (req, res) {
@@ -17,7 +21,7 @@ exports.demo = function (db) {
   return function (req, res) {
     var user = req.user;
     var token = req.params.token;
-    var filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
+    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia'];
 
     if (!token) {
       
@@ -144,38 +148,31 @@ exports.igCB = function (req, res) {
         url,
         next_max_id="",
         pages=1;
-
+    var filters = ['exposure', 'blur' ,'sepia' ,'noise' ,'vignette'];
+    var codeText =
+"\
+ \n\
+ //This line of code makes your movie play!\n\
+ movie.play();\n\
+ //See what happens when you type movie.pause();\n\
+\n\
+ //The code below lets you add, remove, and alter your video filters.\n\
+ //Change the numbers and make your video all your own!\n\
+    ";
+        
     request.get(apiCall+token+"&max_id="+next_max_id, function(err, resp, body) {
       if(!err){
-        pages++;
         media_json= JSON.parse(body);
+        console.log(media_json + " with accessToken: "+ token);
         // next_max_id = media_json.pagination.next_max_id;
         media = media_json.data;
         var item;
-        var filters = ['exposure', 'blur' ,'filmgrain' ,'noise' ,'vignette'];
-        var codeText =
-    "\
-     \n\
-     //This line of code makes your movie play!\n\
-     movie.play();\n\
-     //See what happens when you type movie.pause();\n\
-    \n\
-     //The code below lets you add, remove, and alter your video filters.\n\
-     //Change the numbers and make your video all your own!\n\
-        ";
-            
+
         for (var i=0; i < media.length; i++){
           item = media[i];
           if (item.hasOwnProperty("videos")) {
             displayMedia = item;
             url = item.videos.standard_resolution.url;
-            // request.get(url,function(e,r,vidData){
-            //   if(!e){
-            //     fs.writeFile(target_path,vidData,'binary',function(error){
-            //       if (error){ throw error};
-            //     });        
-            //   }
-            // });
             var i = url.lastIndexOf('.');
             var file_extension = (i < 0) ? '' : url.substr(i);
             var target_path = './vids/instagram'+file_extension;            

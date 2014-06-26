@@ -34,10 +34,6 @@
 
             <button id="export" class="btn btn-primary allie4 js-appear is-hidden">Export video</button>
 
-            <button id="dLbtn" class="btn btn-primary allie4 js-appear is-hidden" disabled><a id="dLink" download="vidcode.webm" title="Download your .webm video" href="">Download video</a></button>
-
-            <button id="youtube" class="btn btn-primary allie4 js-appear is-hidden" disabled>Share on YouTube</button>
-
           </div>
 
         <!--    object that gets changes -->
@@ -190,8 +186,12 @@
         </div>
       </div>
 
-          <div class="col-md-4 post-export is-hidden">
-            <div class="progress progress-striped progressDiv">
+          <div class="col-md-4 post-export">
+            <button type="button" id="gallery-share" class="btn btn-primary btn-purple share-btn is-hidden">Share In Our Gallery!</button>
+            <button id="dLbtn" class="btn btn-primary btn-purple share-btn is-hidden" disabled><a id="dLink" download="vidcode.webm" title="Download your .webm video" href="">Download Your Video</a></button>
+            <button type="button" id="email-share" class="btn btn-primary btn-purple share-btn is-hidden">Email Your Video</button>
+            <!-- <button id="youtube" class="btn btn-primary btn-purple share-btn is-hidden" disabled>Share on YouTube</button> -->
+            <div class="progress progress-striped progressDiv is-hidden">
               <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
               </div>
             </div>

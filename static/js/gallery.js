@@ -1,3 +1,4 @@
+
 $( document ).ready(function() {
   $('.js-heart-click').click(function(){
   	$(this).addClass('is-hidden');
@@ -8,4 +9,5 @@ $( document ).ready(function() {
   	$(this).addClass('is-hidden');
   	$(this).prev().removeClass('is-hidden');
   });
+  
 });

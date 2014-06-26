@@ -4,13 +4,17 @@
 <div class="row gallery">
 
 	<div class="col-md-4">
-		<a href='galleryshow'><video class="video" controls src="img/gallery-samples/org_blur.webm"></a>
+		{{#if userVidURL}}
+		<a><video class="video js-user-share" controls src={{userVidURL}}></a>
+		{{else}}
+		<a><video class="video js-user-share" controls src="img/gallery-samples/org_blur.webm"></a>
+		{{/if}}
 		<div class="vid-row">
 			<img class="js-heart-click hover-change likes" src="img/heart.png">
 			<img class="js-heart-clicked likes is-hidden" src="img/heart-selected.png">
 			<a href='galleryshow'>
 				<span class="info">
-					<p class="title">Origami Fuzz</p>
+					<p class="title">Your First Video!</p>
 					<p class="username">vidcoder</p>
 				</span>
 			</a>
