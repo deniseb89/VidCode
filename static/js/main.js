@@ -133,6 +133,7 @@ $( document ).ready(function() {
         step3++;
       }
 
+      try {
       var cmProp = $('.cm-' + eff).text();
       if(cmProp.indexOf(eff) >= 0){
       }
@@ -140,7 +141,7 @@ $( document ).ready(function() {
         $('.step3.ch1').addClass('is-hidden');
         $('.step4.ch1').removeClass('is-hidden');
         step4++;
-      };
+      }; } catch(e){};
 
       document.body.appendChild(scriptNew);
     }
@@ -353,7 +354,7 @@ var VigArr = {
       videoDL.controls = true;
       videoDL.load();
       $('#dLink').attr('href', videoDLurl);
-      $('#export').text('Export video');
+      $('#export').text('Save video');
       $("body").css("cursor", "auto");
       $("#export").css("cursor", "auto");
       $('#export').attr('disabled',false);
@@ -375,7 +376,7 @@ var VigArr = {
       //restart video from 1 and only retrieve frame when playing
       $('.progressDiv').removeClass('is-hidden');
       rafId = requestAnimationFrame(drawVideoFrame);
-      $(this).text('Exporting...');
+      $(this).text('Saving...');
       $("body").css("cursor", "progress");
       $(this).css("cursor","progress");
       $(this).attr('disabled',true);

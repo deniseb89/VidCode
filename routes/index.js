@@ -139,6 +139,7 @@ exports.upload = function (req, res) {
 };
 
 exports.igCB = function (req, res) {
+  fs.unlink('./vids/instagram.mp4', function () {});
   if (req.user){
     var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
@@ -147,7 +148,8 @@ exports.igCB = function (req, res) {
         media,
         url,
         next_max_id="",
-        pages=1;
+        pages=0;
+        urls=[];
     var filters = ['exposure', 'blur' ,'sepia' ,'noise' ,'vignette'];
     var codeText =
 "\
@@ -159,12 +161,13 @@ exports.igCB = function (req, res) {
  //The code below lets you add, remove, and alter your video filters.\n\
  //Change the numbers and make your video all your own!\n\
     ";
-        
-    request.get(apiCall+token+"&max_id="+next_max_id, function(err, resp, body) {
+ function igApiCall(next_page){
+  try{
+    request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
       if(!err){
+        pages++;
         media_json= JSON.parse(body);
-        console.log(media_json + " with accessToken: "+ token);
-        // next_max_id = media_json.pagination.next_max_id;
+        next_page= media_json.pagination.next_max_id;
         media = media_json.data;
         var item;
 
@@ -172,28 +175,35 @@ exports.igCB = function (req, res) {
           item = media[i];
           if (item.hasOwnProperty("videos")) {
             displayMedia = item;
-            url = item.videos.standard_resolution.url;
-            var i = url.lastIndexOf('.');
-            var file_extension = (i < 0) ? '' : url.substr(i);
-            var target_path = './vids/instagram'+file_extension;            
-            request(url).pipe(fs.createWriteStream(target_path));
-            res.render('demo', {
-              code: codeText,
-              filters: filters,
-              user: user
-            });
-            return;                       
+            urls.push(item.videos.standard_resolution.url);                    
           }
-            res.render('demo', {
-              code: codeText,
-              filters: filters,
-              user: user
-            });          
         }
+        if(urls.length>0){
+          url = urls[0];
+          var i = url.lastIndexOf('.');
+          var file_extension = (i < 0) ? '' : url.substr(i);
+          var target_path = './vids/instagram'+file_extension;            
+          request(url).pipe(fs.createWriteStream(target_path));
+        }      
       } else {
         res.send('error with Instagram API');
+        return;
       }
+    if(next_page){
+      console.log('paginating...');
+      igApiCall(next_page);
+    } else {
+      console.log('paginated all pages: '+pages);
+      res.render('demo', {
+        code: codeText,
+        filters: filters,
+        user: user
+      });        
+    }      
     });
+} catch (e){console.log(e)};
+}
+  igApiCall(next_max_id); 
   }
 };
 
