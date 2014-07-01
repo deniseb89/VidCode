@@ -162,11 +162,12 @@ exports.igCB = function (req, res) {
  //Change the numbers and make your video all your own!\n\
     ";
  function igApiCall(next_page){
-  try{
     request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
       if(!err){
         pages++;
         media_json= JSON.parse(body);
+        res.send(media_json);
+        return;
         next_page= media_json.pagination.next_max_id;
         media = media_json.data;
         var item;
@@ -201,7 +202,6 @@ exports.igCB = function (req, res) {
       });        
     }      
     });
-} catch (e){console.log(e)};
 }
   igApiCall(next_max_id); 
   }
