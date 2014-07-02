@@ -147,8 +147,6 @@ exports.igCB = function (req, res) {
   if (req.user){
     var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
-    // var token = user.accessToken;
-    var token = "272621949.f8348c5.0d7ba0f4788b4aa4b45db95cf00acc61";
     var media_json,
         media,
         url,
@@ -171,8 +169,8 @@ exports.igCB = function (req, res) {
       if(!err){
         pages++;
         media_json= JSON.parse(body);
-        res.send(media_json);
-        return;
+        // res.send(media_json);
+        // return;
         next_page= media_json.pagination.next_max_id;
         media = media_json.data;
         var item;
