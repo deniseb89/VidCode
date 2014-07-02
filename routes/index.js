@@ -147,6 +147,7 @@ exports.igCB = function (req, res) {
   if (req.user){
     var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
+    var token = user.accessToken;
     var media_json,
         media,
         url,
