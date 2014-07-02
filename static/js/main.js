@@ -7,6 +7,7 @@
     allEffects,
     activeEffects,
     effects = {},
+    videoSamples = {},
     windowObjectReference = null;
 
 $( document ).ready(function() {
@@ -14,7 +15,8 @@ $( document ).ready(function() {
     var step2 = 0;
     var step3 = 0;
     var step4 = 0;
-
+    videoSamples["flower"] = "/img/demo.mp4";
+    videoSamples["origami"] = "/img/wha_color.mp4";
     allEffects = ["filmgrain","blur","vignette","noise","exposure","fader"];
     activeEffects = [];
     var editor_text = $('textarea').text();
@@ -394,8 +396,13 @@ var VigArr = {
         $(".popup").addClass("is-hidden");
     });
 
-    $(".js-uploaddemo").click(function(){
+    $(".js-uploadOrig").click(function(){
         movie.src="/img/demo.mp4";
+        movie.addEventListener("loadeddata", showVid, false);
+      });
+
+    $(".js-uploadFlwr").click(function(){
+        movie.src="/img/wha_color.mp4";
         movie.addEventListener("loadeddata", showVid, false);
       });
 
@@ -413,24 +420,6 @@ var VigArr = {
       //also update movie.___() line in code editor
          $(".runbtn").text('Play');
     });
-
-    $('.js-submit-username').click(function(){
-      var username = ($('.js-username').val());
-
-      $.ajax({
-        type: "GET",
-        dataType: "jsonp",
-        cache: false,
-        url: "https://api.instagram.com/v1/users/" + username + "/media/recent/?callback=?&amp;client_id=310c36ab78e54519b7834323d06d08ba",
-        success: function(data){
-
-          console.log(data);
-
-        }
-      });
-    });
-
-
 
     $( "ul, li" ).disableSelection();
 

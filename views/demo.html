@@ -23,10 +23,12 @@
         <div class="overlay">
 
           <div class="buttons">
-            <button type="button" class="btn btn-primary js-uploaddemo">Import a Sample Video</button>
-            <button type="button" class="btn btn-primary js-upload-video">Upload Your Own Video</button>
+            <button type="button" class="btn btn-primary js-uploadOrig">Use Our Origami Video</button>
+            <button type="button" class="btn btn-primary js-uploadFlwr">Use Our Flower Video</button>
+<!--             <button type="button" class="btn btn-primary js-uploaddemo">Import a Sample Video</button>            
+ -->            <button type="button" class="btn btn-primary js-upload-video">Upload Your Own Video</button>
             {{#if user}}
-            <button type="button" class="btn btn-primary js-instagram-import">Import from Instagram</button>
+            <button type="button" class="btn btn-primary js-instagram-import">Use Your Instagram Video</button>
             {{/if}}
           </div>
 
@@ -34,7 +36,7 @@
 
           </div>
 
-        <!--    object that gets changes -->
+           <!-- object that gets changes -->
          <video class="video1 is-hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
          <!--  more the seriously object, gets the effects -->
           <canvas class="video2 is-hidden" id="canvas">
@@ -110,9 +112,9 @@
 
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
               <button type="button" class="js-reset-code btn btn-primary">Reset Code</button>
-              <button id="export" class="btn btn-primary btn-warning js-appear is-hidden">Save video</button>
               <!-- <input type="submit" value="Save code" class="btn btn-primary savebtn" /> -->
-<!--               <a href="/demo2"><button type="button" class="js-close-steps btn btn-danger btn-close-steps2">Next Lesson</button></a> -->
+              <a href="/codeAlone"><button type="button" class="js-close-steps btn btn-primary btn-danger">Try Another Exercise</button></a>
+              <button id="export" class="btn btn-warning js-appear is-hidden">Save video</button>
             </form>
           </div>
         </div>

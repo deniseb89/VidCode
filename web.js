@@ -33,7 +33,7 @@ passport.use(new InstagramStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      
+            console.log('Successfully calling IG using token: '+accessToken);
       return done(null, profile);
     });
   }
@@ -64,6 +64,7 @@ app.get('/demo/:token?', routes.demo(db));
 app.get('/demo2', routes.demo2(db));
 app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
+app.get('/codeAlone', routes.codeAlone);
 app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});

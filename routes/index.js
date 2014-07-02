@@ -17,11 +17,15 @@ exports.galleryshow = function (req, res) {
   res.render('galleryshow', {title: 'VidCode Gallery' });
 };
 
+exports.codeAlone = function (req, res) {
+  res.render('codeAlone', {title: 'VidCode Gallery' });
+};
+
 exports.demo = function (db) {
   return function (req, res) {
     var user = req.user;
     var token = req.params.token;
-    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia'];
+    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
 
     if (!token) {
       
@@ -54,7 +58,7 @@ exports.demo2 = function (db) {
   return function (req, res) {
     var user = req.user;
     var token = req.params.token;
-    var filters = [ 'fader','sepia'];
+    var filters = [];
 
     if (!token) {
       var codeText =
@@ -143,7 +147,8 @@ exports.igCB = function (req, res) {
   if (req.user){
     var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
-    var token = user.accessToken;
+    // var token = user.accessToken;
+    var token = "272621949.f8348c5.0d7ba0f4788b4aa4b45db95cf00acc61";
     var media_json,
         media,
         url,
