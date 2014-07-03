@@ -33,7 +33,7 @@ passport.use(new InstagramStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-            console.log('Successfully calling IG using token: '+accessToken);
+    console.log('Successfully called IG using token: '+accessToken);
       return done(null, profile);
     });
   }

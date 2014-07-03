@@ -147,15 +147,14 @@ exports.igCB = function (req, res) {
   if (req.user){
     var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
-    // var token = user.accessToken;
-    var token = "272621949.f8348c5.0d7ba0f4788b4aa4b45db95cf00acc61";
+    var token = user.accessToken;
     var media_json,
         media,
         url,
         next_max_id="",
         pages=0;
         urls=[];
-    var filters = ['exposure', 'blur' ,'sepia' ,'noise' ,'vignette'];
+    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
     var codeText =
 "\
  \n\
@@ -167,6 +166,7 @@ exports.igCB = function (req, res) {
  //Change the numbers and make your video all your own!\n\
     ";
  function igApiCall(next_page){
+    console.log('Calling IG using token: '+token);  
     request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
       if(!err){
         pages++;
@@ -180,7 +180,6 @@ exports.igCB = function (req, res) {
         for (var i=0; i < media.length; i++){
           item = media[i];
           if (item.hasOwnProperty("videos")) {
-            displayMedia = item;
             urls.push(item.videos.standard_resolution.url);                    
           }
         }
