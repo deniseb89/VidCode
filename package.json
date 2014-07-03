@@ -22,6 +22,8 @@
     "monk": "~0.8.1",
     "mongodb": "~1.4.0",
     "passport": ">= 0.0.0",
+    "pkginfo": "0.2.x",
+    "passport-oauth": "0.1.x",   
     "request": "~2.27.0"
   },
   "devDependencies": {
