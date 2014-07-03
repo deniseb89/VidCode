@@ -5,7 +5,7 @@ var path = require('path');
 var crypto = require('crypto');
 var util = require('util');
 var passport = require('passport');
-var InstagramStrategy = require('passport-instagram').Strategy;
+var InstagramStrategy = require('./models/passport-instagram').Strategy;
 
 // create mongodb
 var mongo = require('mongodb');

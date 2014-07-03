@@ -22,7 +22,6 @@
     "monk": "~0.8.1",
     "mongodb": "~1.4.0",
     "passport": ">= 0.0.0",
-    "passport-instagram": "git://github.com/vidcode/passport-instagram.git#65e5c45cda713d8935a53d28cd266f53c2c0b6e1",
     "request": "~2.27.0"
   },
   "devDependencies": {
