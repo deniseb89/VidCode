@@ -34,7 +34,6 @@ exports.demo = function (db) {
  \n\
  //This line of code makes your movie play!\n\
  movie.play();\n\
- //See what happens when you type movie.pause();\n\
 \n\
  //The code below lets you add, remove, and alter your video filters.\n\
  //Change the numbers and make your video all your own!\n\
@@ -154,19 +153,17 @@ exports.igCB = function (req, res) {
         next_max_id="",
         pages=0;
         urls=[];
-    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
+    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];      
     var codeText =
 "\
  \n\
  //This line of code makes your movie play!\n\
  movie.play();\n\
- //See what happens when you type movie.pause();\n\
 \n\
  //The code below lets you add, remove, and alter your video filters.\n\
  //Change the numbers and make your video all your own!\n\
     ";
  function igApiCall(next_page){
-    console.log('Calling IG using token: '+token);  
     request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
       if(!err){
         pages++;

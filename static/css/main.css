@@ -293,6 +293,11 @@ h2{font-family: 'Copse', serif!important; color: #441B4B!important;}
 .instagram-form{padding-top: 32px;
 padding-bottom: 101px;}
 
+.loader {
+    margin: 100px 0 0 275px;
+    position: fixed;
+    z-index: 10000000000;
+    }
 
 .right{float: right;}
 .left{float: left;}
@@ -379,7 +384,7 @@ padding-bottom: 101px;}
   background: -o-linear-gradient(top, #44A682, #44A682);
 }
 
-.btn-group{margin-top: 20px;}
+/*.btn-group{margin-top: 20px;}*/
 
 .btn-purple{
     background-color: #441B4B!important; border: 0px!important;}

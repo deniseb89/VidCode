@@ -278,6 +278,7 @@ var VigArr = {
     //video events
 
     function showVid(){
+      $('.loader').addClass('is-hidden');
       $(".popup").addClass("is-hidden");
       $(".clearHover").addClass("is-hidden");
       $(".buttons").addClass("is-aware");
@@ -290,7 +291,7 @@ var VigArr = {
     };
 
     $(".uploadfile").click(function(){
-        $(".uploadform p").text('Video loading...');
+        $('.loader').removeClass('is-hidden');
     });
     $(".uploadform").submit(function(e) {
       var formObj = $(this);
@@ -305,10 +306,8 @@ var VigArr = {
           cache: false,
           processData:false,
       success: function(data, textStatus, jqXHR){
-        // add a progress bar instead of "loading/buffering" text
-        $(".uploadform p").text('Video buffering...');
-           movie.src="data:video/mp4;base64,"+data;
-           movie.addEventListener("loadeddata", showVid, false);
+        movie.src="data:video/mp4;base64,"+data;
+        movie.addEventListener("loadeddata", showVid, false);
          },
        error: function(jqXHR, textStatus, errorThrown){
         $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
@@ -318,6 +317,7 @@ var VigArr = {
     });
 
     $(".js-instagram-import").click(function(){
+        $('.loader').removeClass('is-hidden');
         $.ajax('/instagramVid',{
           success: function(data, textStatus, jqXHR){
             movie.src="data:video/mp4;base64,"+data;
@@ -396,14 +396,13 @@ var VigArr = {
         $(".popup").addClass("is-hidden");
     });
 
-    $(".js-uploadOrig").click(function(){
-        movie.src="/img/demo.mp4";
-        movie.addEventListener("loadeddata", showVid, false);
-      });
-
-    $(".js-uploadFlwr").click(function(){
-        movie.src="/img/wha_color.mp4";
-        movie.addEventListener("loadeddata", showVid, false);
+    $(".js-choose-sample").change(function(){
+        var sampleVid = {"origami":"/img/demo.mp4","flower":"/img/wha_color.mp4"};
+        var sample = $(this).val();
+        if (sample){
+          movie.src=sampleVid[sample];
+          movie.addEventListener("loadeddata", showVid, false);
+        }
       });
 
     $(".runbtn").click(function(){

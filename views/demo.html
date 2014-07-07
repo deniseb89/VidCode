@@ -14,6 +14,7 @@
     <input class="js-username">
     <button class="btn btn-primary js-submit-username right">Upload</button>
   </div>
+  <div class="loader is-hidden"><img src="/img/loader.gif"></div>
 
   <div class="row">
     <div class="heading_bg">
@@ -21,10 +22,25 @@
       <div class="col-md-5">
         <div class="heading margin-negs">video</div>
         <div class="overlay">
-
           <div class="buttons">
-            <button type="button" class="btn btn-primary js-uploadOrig">Use Our Origami Video</button>
-            <button type="button" class="btn btn-primary js-uploadFlwr">Use Our Flower Video</button>
+              <select class="js-choose-sample btn btn-primary">
+                <option value="">Use A Sample Video <span class="caret"></span></option>
+                <option value="origami">Origami</option>
+                <option value="flower">Flower</option>
+              </select>
+<!--             <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Use A Sample Video <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu js-choose-sample" role="menu">
+                <li>Origami</li>
+                <li class="divider"></li>
+                <li>Flower</li>
+              </ul>
+            </div> -->
+
+<!--             <button type="button" class="btn btn-primary js-uploadOrig">Use Our Origami Video</button>
+            <button type="button" class="btn btn-primary js-uploadFlwr">Use Our Flower Video</button> -->
 <!--             <button type="button" class="btn btn-primary js-uploaddemo">Import a Sample Video</button>            
  -->            <button type="button" class="btn btn-primary js-upload-video">Upload Your Own Video</button>
             {{#if user}}
@@ -33,7 +49,6 @@
           </div>
 
           <div class="centerObject">
-
           </div>
 
            <!-- object that gets changes -->
@@ -109,12 +124,11 @@
 </div>
 
             <form method="post" action="/save">
-
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
               <button type="button" class="js-reset-code btn btn-primary">Reset Code</button>
               <!-- <input type="submit" value="Save code" class="btn btn-primary savebtn" /> -->
-              <a href="/codeAlone"><button type="button" class="js-close-steps btn btn-primary btn-danger">Try Another Exercise</button></a>
               <button id="export" class="btn btn-warning js-appear is-hidden">Save video</button>
+              <a href="/gallery"><button type="button" class="js-close-steps btn btn-primary btn-danger">View Gallery</button></a>
             </form>
           </div>
         </div>
@@ -144,33 +158,14 @@
               <button type="button" id="effects" class="btn green-btn effects" data-toggle="modal" data-target="#effects222">effects</button>
             </li>
 
-            <li class="js-seriously">
-              <button type="button" id="seriously" class="btn green-btn seriously" data-toggle="modal" data-target="#seriously222">seriously</button>
-            </li>
-
-            <li class="js-filmgrain">
-              <button type="button" id="filmgrain" class="btn green-btn filmgrain" data-toggle="modal" data-target="#filmgrain222">filmgrain</button>
-            </li>
-
             <li class="js-function">
               <button type="button" id="function" class="btn pink-btn function bold" data-toggle="modal" data-target="#function222">What's a function?</button>
-            </li>
-
-            <li class="js-showeffect">
-              <button type="button" id="showeffect" class="btn pink-btn showeffect" data-toggle="modal" data-target="#showeffect222">showEffect</button>
-            </li>
-
-            <li class="js-methods">
-              <button type="button" id="methods" class="btn blue-btn methods bold" data-toggle="modal" data-target="#methods222">What are methods?</button>
             </li>
 
             <li class="js-play">
               <button type="button" id="play" class="btn blue-btn play" data-toggle="modal" data-target="#play222">play</button>
             </li>
-            <li class="js-interval">
-              <button type="button" id="interval" class="btn blue-btn interval" data-toggle="modal" data-target="#interval222">interval</button>
-            </li>
-
+            
             <!--   <li class="parameters">
                 <button type="button" id="parameters" class="btn purple-btn parameters bold" data-toggle="modal" data-target="#parameters222">What are parameters?</button>
               </li>
@@ -320,55 +315,6 @@
         </div>
       </div>
 
-      <div class="modal fade" id="seriously222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog2">
-          <div class="modal-content">
-            <div class="modal-header instruct-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">It's gettin' serious!</h4>
-            </div>
-            <div class="modal-body instruct-body">
-              <p>
-                "seriously" is a library which is represented by this object, which is represented by this word, "seriously"!  ;)
-                <br>
-                <br>
-                By typing seriously.effect('blur'), we are pulling the “blur” effect out of the library.
-                <br>
-                <br>
-                There is a lot of code in that library!  You just cant see it....magic!
-              </p>
-              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="filmgrain222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog2">
-          <div class="modal-content">
-            <div class="modal-header instruct-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">Effects within the "effects"!</h4>
-            </div>
-            <div class="modal-body instruct-body">
-              <p>
-                Sooo, "film grain" is an object <em>within</em> the "effects" object.  It’s accessed via a "." dot notation.
-                <br>
-                <br>
-                Objects, within objects, within objects!  So crazy.
-                <br>
-                <br>
-                The dot notation lets you pull a "child" object out of a "parent" object.
-                <br>
-                <br>
-                Just think of it like a box within a box, but these boxes are lists of data you can't see.....
-              </p>
-              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog2">
           <div class="modal-content">
@@ -402,26 +348,6 @@
                 <br>
                 <br>
                 A function is a set of arguments or intructions to run on a block of code.
-              </p>
-              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="showeffect222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog2">
-          <div class="modal-content">
-            <div class="modal-header instruct-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">"showEffect" is a function</h4>
-            </div>
-            <div class="modal-body instruct-body">
-              <p>
-                The "showEffect" is a function name representing the arguments listed within the function’s brackets {  }.
-                <br>
-                <br>
-                In the same way as you are your body which consists of  many processes.
               </p>
               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
             </div>
