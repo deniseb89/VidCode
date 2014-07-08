@@ -310,6 +310,7 @@ var VigArr = {
         movie.addEventListener("loadeddata", showVid, false);
          },
        error: function(jqXHR, textStatus, errorThrown){
+        $('.loader').addClass('is-hidden');
         $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
        }
       });
@@ -324,6 +325,7 @@ var VigArr = {
             movie.addEventListener("loadeddata", showVid, false);
           },
           error: function(data, textStatus, jqXHR){
+            $('.loader').addClass('is-hidden');
             alert("You don't have any Instagram videos :(");
           }
       });
@@ -393,6 +395,7 @@ var VigArr = {
     });
 
     $(".js-hide-upload").click(function(){
+        $('.loader').addClass('is-hidden');
         $(".popup").addClass("is-hidden");
     });
 
