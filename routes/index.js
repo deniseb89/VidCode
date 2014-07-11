@@ -170,7 +170,7 @@ exports.igCB = function (req, res) {
         media_json= JSON.parse(body);
         // res.send(media_json);
         // return;
-        next_page= media_json.pagination.next_max_id;
+        next_page = media_json.pagination.next_max_id;
         media = media_json.data;
         var item;
 
@@ -191,7 +191,7 @@ exports.igCB = function (req, res) {
         res.send('error with Instagram API');
         return;
       }
-    if(next_page){
+    if(next_page && (pages<5)){
       console.log('paginating...');
       igApiCall(next_page);
     } else {
@@ -218,6 +218,31 @@ exports.igGet = function(req,res){
           res.send(base64Image);
         }
       });
+};
+
+exports.awsUpload = function(req,res){
+  var userVidURL = req.query.userVidURL;
+  // userVidURL = "blob:"+ userVidURL.substr(5).replace(/:/g,"%3A");
+  console.log(userVidURL);
+  var AWS = require('aws-sdk');
+  AWS.config.loadFromPath('./config.json');
+  var s3 = new AWS.S3();  
+  request.get(userVidURL, function(err,data){
+    if (!err){
+      var userVid = data;
+      var bucketName = 'vidcode';
+      var keyName = 'test.mp4';
+      var params = {Bucket: bucketName, Key: keyName, Body: userVid, ACL: 'public-read'};
+      s3.putObject(params, function(err, data) {
+        if (err)
+          console.log(err);
+        else
+          console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
+        });
+        } else {
+          console.log(err);
+        }
+    });
 };
 
 function generateToken(crypto) {

@@ -70,6 +70,7 @@ app.post('/save', routes.save(db, crypto));
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
 app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB);
 app.get('/instagramVid', routes.igGet);
+app.get('/awsUpload', routes.awsUpload);
 // create server
 http.createServer(app).listen(app.get('port'),function(){
   console.log("Listening on " + app.get('port'));

@@ -7,7 +7,6 @@
     allEffects,
     activeEffects,
     effects = {},
-    videoSamples = {},
     windowObjectReference = null;
 
 $( document ).ready(function() {
@@ -15,8 +14,6 @@ $( document ).ready(function() {
     var step2 = 0;
     var step3 = 0;
     var step4 = 0;
-    videoSamples["flower"] = "/img/demo.mp4";
-    videoSamples["origami"] = "/img/wha_color.mp4";
     allEffects = ["filmgrain","blur","vignette","noise","exposure","fader"];
     activeEffects = [];
     var editor_text = $('textarea').text();
@@ -57,7 +54,7 @@ $( document ).ready(function() {
       });
 
     function updateScript() {
-      var scriptOld = document.getElementById('codeScript')
+      var scriptOld = document.getElementById('codeScript');
       if (scriptOld) { scriptOld.remove();}
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
@@ -298,22 +295,22 @@ var VigArr = {
       var formURL = formObj.attr("action");
       var formData = new FormData(this);
       $.ajax({
-          url: formURL,
-      type: 'POST',
-          data:  formData,
-      mimeType:"multipart/form-data",
-      contentType: false,
-          cache: false,
-          processData:false,
-      success: function(data, textStatus, jqXHR){
-        movie.src="data:video/mp4;base64,"+data;
-        movie.addEventListener("loadeddata", showVid, false);
-         },
-       error: function(jqXHR, textStatus, errorThrown){
-        $('.loader').addClass('is-hidden');
-        $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
-       }
-      });
+        url: formURL,
+        type: 'POST',
+        data:  formData,
+        mimeType:"multipart/form-data",
+        contentType: false,
+        cache: false,
+        processData:false,
+        success: function(data, textStatus, jqXHR){
+          movie.src="data:video/mp4;base64,"+data;
+          movie.addEventListener("loadeddata", showVid, false);
+           },
+         error: function(jqXHR, textStatus, errorThrown){
+          $('.loader').addClass('is-hidden');
+          $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
+         }
+       });
       e.preventDefault();
     });
 
@@ -366,6 +363,15 @@ var VigArr = {
       $('#youtube').attr('disabled',false);
       $('.dl-progress').text('All Finished!');      
       $('.share-btn').removeClass('is-hidden');
+      //save to AWS S3
+      $.ajax('/awsUpload?userVidURL='+videoDLurl,{
+        success: function(data, textStatus, jqXHR){
+          console.log('Successfully uploaded to AWS');
+        },
+        error: function(data, textStatus, jqXHR){
+          console.log('Failed to upload to AWS');
+        }
+      });
     };
 
     $("#gallery-share").click(function(){
@@ -400,10 +406,10 @@ var VigArr = {
     });
 
     $(".js-choose-sample").change(function(){
-        var sampleVid = {"origami":"/img/demo.mp4","flower":"/img/wha_color.mp4"};
+        var sampleVids = {"origami":"/img/demo.mp4","flower":"/img/wha_color.mp4"};
         var sample = $(this).val();
         if (sample){
-          movie.src=sampleVid[sample];
+          movie.src=sampleVids[sample];
           movie.addEventListener("loadeddata", showVid, false);
         }
       });
