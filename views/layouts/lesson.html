@@ -15,8 +15,8 @@
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
   <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="/css/custom-theme/jquery-ui-1.9.2.custom.css">
   <link rel="stylesheet" href="/js/vendor/codemirror-3.22/lib/codemirror.css">
   <link rel="stylesheet" href="/js/vendor/codemirror-3.22/theme/solarized.css">
@@ -47,9 +47,9 @@
     <li><a href="/"><img src="/img/logo.png" id="image"></a></li>
     <li class="pull-right">
       {{#if user}}
-      <a class="small">Hey, {{user.username}}!</p>
+      <a href="#" class="small">Hey, {{user.username}}!</a>
       {{else}}
-      <a class="small" href="/auth/instagram">Log In with Instagram</a>   
+      <a class="small" href="/auth/instagram">Log In with Instagram</a>
       {{/if}}
       <a class="small" href="http://vidcode.io/" target="_blank">
         <span class="glyphicon glyphicon-star"></span>About & Updates
