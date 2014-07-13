@@ -60,8 +60,8 @@ app.set('view engine', '.html');
 // configure express routes
 var routes = require('./routes');
 app.get('/', routes.index);
-app.get('/demo/:token?', routes.demo(db));
-app.get('/demo2', routes.demo2(db));
+app.get('/filters/:token?', routes.filters(db));
+app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
 app.get('/codeAlone', routes.codeAlone);

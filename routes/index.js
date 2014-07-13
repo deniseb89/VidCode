@@ -21,7 +21,7 @@ exports.codeAlone = function (req, res) {
   res.render('codeAlone', {title: 'VidCode Gallery' });
 };
 
-exports.demo = function (db) {
+exports.filters = function (db) {
   return function (req, res) {
     var user = req.user;
     var token = req.params.token;
@@ -39,7 +39,7 @@ exports.demo = function (db) {
  //Change the numbers and make your video all your own!\n\
     ";
 
-      res.render('demo', {code: codeText, filters: filters, user: req.user});
+      res.render('filters', {code: codeText, filters: filters, user: req.user});
       return;
     }
 
@@ -48,16 +48,15 @@ exports.demo = function (db) {
       if (!doc) {
         res.status(404);
       }
-        res.render('demo', {code: doc.code , filters: filters});
+        res.render('filters', {code: doc.code , filters: filters});
     });
   };
 };
 
-exports.demo2 = function (db) {
+exports.scrubbing = function (db) {
   return function (req, res) {
     var user = req.user;
     var token = req.params.token;
-    var filters = [];
 
     if (!token) {
       var codeText =
@@ -68,9 +67,8 @@ exports.demo2 = function (db) {
 \n\
  //playbackRate controls the speed of your video. The \"rate\" tells how fast your frames per second (FPS) are going.\n\
  movie.playbackRate = 1.0;\n\
- //\"fader\" is a cool way to add a layer of color over your effect. You can change how \"see through\" this color is with the \"amount\".\n\
     ";
-      res.render('demo2', {code: codeText, filters:filters, user:req.user});
+      res.render('scrubbing', {code: codeText, user:req.user});
       return;
     }
 
@@ -79,7 +77,7 @@ exports.demo2 = function (db) {
       if (!doc) {
         res.status(404);
       }
-        res.render('demo2', {code: doc.code });
+        res.render('scrubbing', {code: doc.code });
     });
   };
 };
@@ -94,7 +92,7 @@ exports.save = function (db, crypto) {
       save(db, token, token, code);
     }
 
-    res.redirect('/demo/' + token);
+    res.redirect('/filters/' + token);
   };
 };
 
@@ -196,7 +194,7 @@ exports.igCB = function (req, res) {
       igApiCall(next_page);
     } else {
       console.log('paginated all pages: '+pages);
-      res.render('demo', {
+      res.render('filters', {
         code: codeText,
         filters: filters,
         user: user

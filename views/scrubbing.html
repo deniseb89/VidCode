@@ -28,21 +28,7 @@
                 <option value="origami">Origami</option>
                 <option value="flower">Flower</option>
               </select>
-<!--             <div class="btn-group">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                Use A Sample Video <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu js-choose-sample" role="menu">
-                <li>Origami</li>
-                <li class="divider"></li>
-                <li>Flower</li>
-              </ul>
-            </div> -->
-
-<!--             <button type="button" class="btn btn-primary js-uploadOrig">Use Our Origami Video</button>
-            <button type="button" class="btn btn-primary js-uploadFlwr">Use Our Flower Video</button> -->
-<!--             <button type="button" class="btn btn-primary js-uploaddemo">Import a Sample Video</button>            
- -->            <button type="button" class="btn btn-primary js-upload-video">Upload Your Own Video</button>
+              <button type="button" class="btn btn-primary js-upload-video">Upload Your Own Video</button>
             {{#if user}}
             <button type="button" class="btn btn-primary js-instagram-import">Upload from Instagram</button>
             {{/if}}
@@ -75,41 +61,13 @@
           <div class="tabs-2">
 
 <div>
-  <div class="steps step0 ch1 is-hidden">
-    <h2>Your movie is ready for coding!</h2>
+  <div class="steps step0 ch2 is-hidden">
+    <h2>Speed it up and slow it down!</h2>
 
-    <p>That movie.play() line is what is making your video automatically play.</p>
+    <p>Now you can control the speed of your video :)</p>
 
-    <p>Want to change the look of the video? <strong>Start by dragging one of the green filters into the code editor below.</strong>
-    </p>
-  </div>
-
-  <div class="steps step1 ch1 is-hidden">
-    <h2>You've pulled an effect onto the code editor and magic appeared, congrats!</h2>
-
-    <p>You are now processing your video pixel by pixel to give it that effect.</p>
-
-    <p>Now it's time for you to control that magic.</p>
-<!-- 
-    <p>You can change the intensity of your effect by replacing the number with a value between 0-20. <strong>Change the number to 20 and see what happens.</strong></p> -->
-  </div>
-
-  <div class="steps step2 ch1 is-hidden">
-    <h2>Good job! Now we are going to <i>write</i> some code!</h2>
-
-    <p>Javascript has many built in "methods" which, at times, make sense literally.</p>
-
-    <p>Writing the method can be as easy as replacing one word with another.</p>
-
-    <p><strong>So, knowing this is the case, what might you write to pause the video?</strong></p>
-  </div>
-
-  <div class="steps step3 ch1 is-hidden">
-    <h2>Awesome!</h2>
-
-    <p> Let's see what's possible in terms of writing code for the "effects" object. </p>
-
-    <p><strong>What happens when you change the name of the effect object?</strong></p>
+    <p>Do you want to make your video go in <i>slow</i> motion? Orrrr would you rather have it speed up like an insane hypnotic mess?!</p>
+    <p><strong>Go ahead and try adjusting the values to make your masterpiece!</strong></p>
   </div>
 
   <div class="steps step4 ch1 is-hidden">
@@ -118,7 +76,7 @@
     <p><strong>Write down a method you would invent to manipulate your video!</strong></p>
 
     <p>Now we're off to chapter 2 to discover what other video methods are available from the seriously.js library :)</p>
-    <a href="/demo2"><button class="js-close-steps btn btn-danger btn-close-steps">Next Lesson</button></a>
+    <a href=""><button class="js-close-steps btn btn-danger btn-close-steps">Next Lesson</button></a>
   </div>
 
 </div>
@@ -399,5 +357,5 @@
 </div>
 
 <script src="/js/main.js"></script>
-<script src="/js/youtube.js"></script>
+<script src="/js/codeUpdate.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
