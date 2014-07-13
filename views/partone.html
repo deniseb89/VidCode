@@ -1,0 +1,115 @@
+<div class="set-container lesson-page clearfix">
+	<div class="progress-set">
+		<h2>Scrubbing Lesson Path</h2>
+		<span class="progress-num progress-active">
+			1
+		</span>
+		<span class="progress-num">
+			2
+		</span>
+		<span class="progress-num">
+			3
+		</span>
+		<span class="progress-num">
+			4
+		</span>
+	</div>
+
+	<span class="next-progress-btn">
+		Next ▸
+	</span>
+
+	<div class="lesson-container">
+		<div class="col-md-4">
+			<span class="js-active-vid active-vid">
+				<img class="js-current-vid" src="../img/effect-options/blur.gif">
+			</span>
+			<div class="video-container">
+				<p>Your Videos</p>
+				<img class="js-vid-click" src="../img/effect-options/exposure.gif">
+				<img class="js-vid-click" src="../img/effect-options/vignette.gif">
+				<img class="js-vid-click" src="../img/effect-options/noise.gif">
+				<img class="js-vid-click js-selected-video" src="../img/effect-options/blur.gif">
+			</div>
+		</div>
+
+
+		<div class="col-md-6">
+			<form>
+				<textarea id="codemirror" name="codemirror">
+mouse.scrub = time();
+
+movie.playbackRate = 1.0;
+
+		    </textarea>
+	  	</form>
+  	</div>
+
+  	<div class="col-md-2">
+				<div class="learnMore">
+          <h4>What's Going On?</h4>
+          <ul>
+            <li class="js-object">
+              <button type="button" class="btn green-btn object bold" data-toggle="modal" data-target="#object222">What's an object?</button>
+            </li>
+
+            <li class="js-movie">
+              <button type="button" id="movie" class="btn green-btn movie" data-toggle="modal" data-target="#movies222">movie</button>
+            </li>
+
+            <li class="js-effects">
+              <button type="button" id="effects" class="btn green-btn effects" data-toggle="modal" data-target="#effects222">effects</button>
+            </li>
+
+            <li class="js-function">
+              <button type="button" id="function" class="btn pink-btn function bold" data-toggle="modal" data-target="#function222">What's a function?</button>
+            </li>
+
+            <li class="js-play">
+              <button type="button" id="play" class="btn blue-btn play" data-toggle="modal" data-target="#play222">play</button>
+            </li>
+
+            <!--   <li class="parameters">
+                <button type="button" id="parameters" class="btn purple-btn parameters bold" data-toggle="modal" data-target="#parameters222">What are parameters?</button>
+              </li>
+
+              <li class="values">
+                <button type="button" id="values" class="btn cyan-btn values bold" data-toggle="modal" data-target="#values222">What are values?</button>
+              </li> -->
+
+          </ul>
+          There is more than one right answer!
+
+          <a href="https://docs.google.com/spreadsheet/ccc?key=0AvGwqFvIRpKudF94Mnl2dnJrWHJZaGp4NVhDVUs0aWc&usp=drive_web#gid=0">check explainations from others, and add your own</a>
+        </div>
+      </div>
+  	</div>
+
+
+	</div>
+
+
+
+	</div>
+
+</div>
+
+
+<script src="../js/lessons.js"></script>
+
+
+<script src="../js/vendor/codemirror-3.22/lib/codemirror.js"></script>
+<script src="../js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
+
+
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+
+    theme : 'solarized light'
+  });
+
+
+</script>

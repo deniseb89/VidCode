@@ -41,7 +41,7 @@
 
 <!--             <button type="button" class="btn btn-primary js-uploadOrig">Use Our Origami Video</button>
             <button type="button" class="btn btn-primary js-uploadFlwr">Use Our Flower Video</button> -->
-<!--             <button type="button" class="btn btn-primary js-uploaddemo">Import a Sample Video</button>            
+<!--             <button type="button" class="btn btn-primary js-uploaddemo">Import a Sample Video</button>
  -->            <button type="button" class="btn btn-primary js-upload-video">Upload Your Own Video</button>
             {{#if user}}
             <button type="button" class="btn btn-primary js-instagram-import">Upload from Instagram</button>
@@ -90,7 +90,7 @@
     <p>You are now processing your video pixel by pixel to give it that effect.</p>
 
     <p>Now it's time for you to control that magic.</p>
-<!-- 
+<!--
     <p>You can change the intensity of your effect by replacing the number with a value between 0-20. <strong>Change the number to 20 and see what happens.</strong></p> -->
   </div>
 
@@ -125,10 +125,10 @@
 
             <form method="post" action="/save">
               <textarea id="codemirror" name="codemirror">{{code}}</textarea>
-              <button type="button" class="js-reset-code btn btn-primary">Reset Code</button>
+              <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
               <!-- <input type="submit" value="Save code" class="btn btn-primary savebtn" /> -->
-              <button id="export" class="btn btn-warning js-appear is-hidden">Save video</button>
-              <a href="/gallery"><button type="button" class="js-close-steps btn btn-primary btn-danger">View Gallery</button></a>
+              <button id="export" class="sm-btn show-inline btn btn-warning js-appear is-hidden">Save video</button>
+              <a href="/gallery"><button type="button" class="sm-btn show-inline js-close-steps btn btn-primary btn-danger">View Gallery</button></a>
             </form>
           </div>
         </div>
@@ -165,7 +165,7 @@
             <li class="js-play">
               <button type="button" id="play" class="btn blue-btn play" data-toggle="modal" data-target="#play222">play</button>
             </li>
-            
+
             <!--   <li class="parameters">
                 <button type="button" id="parameters" class="btn purple-btn parameters bold" data-toggle="modal" data-target="#parameters222">What are parameters?</button>
               </li>
