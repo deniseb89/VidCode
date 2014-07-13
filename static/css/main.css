@@ -703,8 +703,8 @@ canvas{
     font-size: 1.3em;}
 .lesson-page .progress-set .progress-active{color: #fff; background-color: #441B4B;}
 
-.lesson-page .next-progress-btn{font-weight: bold; color: #441B4B; float: right; margin: -55px 35px 0 0; font-size: 1.2em;}
-.lesson-page .previous-progress-btn{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
+.lesson-page .next-progress-btn a{font-weight: bold; color: #441B4B; float: right; margin: -55px 35px 0 0; font-size: 1.2em;}
+.lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
 
 .lesson-page .active-vid img{width: 96%;}
 .lesson-page .video-container img{width: 44%; margin: 2%; cursor: pointer;}
@@ -716,13 +716,14 @@ canvas{
 .lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin-bottom: 25px;}
 
 .lesson-page .arrow-smaller{font-size: .9em;}
-.lesson-page .links-holder{display: inline-block;}
+.lesson-page .links-holder{text-align: center;}
 .lesson-page .links-holder a{display: block; font-weight: bold; font-size: 1.2em; margin: 10px;}
 .lesson-page .links-holder .link-one{color: #441B4B;}
 .lesson-page .links-holder .link-two{color: #319665;}
 .lesson-page .links-holder .link-three{color: #684770;}
 
-.centered-lesson{ margin: 0 auto 45px; width: 745px;}
+.centered-lesson{ margin: 0 auto 45px;}
+.centered-lesson img{display: block; margin: 0 auto;}
 /* =============    Gallery Page    ======== */
 .galleryheader{margin: 20px 0 15px 15px;}
 
