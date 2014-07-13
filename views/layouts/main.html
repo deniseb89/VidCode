@@ -45,16 +45,16 @@
 
 
   <ul class="nav nav-tabs">
-    <li><a href="/"><img src="/img/logo.png" id="image"></a></li>
+    <li><a class="show-inline" href="/"><img src="/img/logo.png" id="image"></a>
+      <a class="small nudge-left show-inline" href="http://vidcode.io/" target="_blank">
+        <span class="glyphicon glyphicon-star"></span>About & Updates
+      </a></li>
     <li class="pull-right">
       {{#if user}}
       <a href="#" class="small">Hey, {{user.username}}!</a>
       {{else}}
       <a class="small" href="/auth/instagram">Log In with Instagram</a>
       {{/if}}
-      <a class="small" href="http://vidcode.io/" target="_blank">
-        <span class="glyphicon glyphicon-star"></span>About & Updates
-      </a>
     </li>
   </ul>
 

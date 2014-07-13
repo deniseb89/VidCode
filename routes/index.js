@@ -17,6 +17,23 @@ exports.galleryshow = function (req, res) {
   res.render('galleryshow', {title: 'VidCode Gallery' });
 };
 
+exports.partone = function (req, res) {
+  res.render('partone', {title: 'VidCode Lesson' });
+};
+
+exports.parttwo = function (req, res) {
+  res.render('parttwo', {title: 'VidCode Lesson' });
+};
+
+exports.partthree = function (req, res) {
+  res.render('partthree', {title: 'VidCode Lesson' });
+};
+
+
+exports.partfour = function (req, res) {
+  res.render('partfour', {title: 'VidCode Lesson' });
+};
+
 exports.codeAlone = function (req, res) {
   res.render('codeAlone', {title: 'VidCode Gallery' });
 };
@@ -28,7 +45,7 @@ exports.filters = function (db) {
     var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
 
     if (!token) {
-      
+
     var codeText =
 "\
  \n\
@@ -151,7 +168,7 @@ exports.igCB = function (req, res) {
         next_max_id="",
         pages=0;
         urls=[];
-    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];      
+    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
     var codeText =
 "\
  \n\
@@ -175,16 +192,16 @@ exports.igCB = function (req, res) {
         for (var i=0; i < media.length; i++){
           item = media[i];
           if (item.hasOwnProperty("videos")) {
-            urls.push(item.videos.standard_resolution.url);                    
+            urls.push(item.videos.standard_resolution.url);
           }
         }
         if(urls.length>0){
           url = urls[0];
           var i = url.lastIndexOf('.');
           var file_extension = (i < 0) ? '' : url.substr(i);
-          var target_path = './vids/instagram'+file_extension;            
+          var target_path = './vids/instagram'+file_extension;
           request(url).pipe(fs.createWriteStream(target_path));
-        }      
+        }
       } else {
         res.send('error with Instagram API');
         return;
@@ -198,11 +215,11 @@ exports.igCB = function (req, res) {
         code: codeText,
         filters: filters,
         user: user
-      });        
-    }      
+      });
+    }
     });
 }
-  igApiCall(next_max_id); 
+  igApiCall(next_max_id);
   }
 };
 
@@ -224,7 +241,7 @@ exports.awsUpload = function(req,res){
   console.log(userVidURL);
   var AWS = require('aws-sdk');
   AWS.config.loadFromPath('./config.json');
-  var s3 = new AWS.S3();  
+  var s3 = new AWS.S3();
   request.get(userVidURL, function(err,data){
     if (!err){
       var userVid = data;

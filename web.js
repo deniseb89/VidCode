@@ -64,6 +64,13 @@ app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
+
+//------lesson template ----------//
+app.get('/lesson/1', routes.partone);
+app.get('/lesson/2', routes.parttwo);
+app.get('/lesson/3', routes.partthree);
+app.get('/lesson/4', routes.partfour);
+
 app.get('/codeAlone', routes.codeAlone);
 app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
