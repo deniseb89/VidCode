@@ -703,7 +703,9 @@ canvas{
     font-size: 1.3em;}
 .lesson-page .progress-set .progress-active{color: #fff; background-color: #441B4B;}
 
-.lesson-page .next-progress-btn a{font-weight: bold; color: #441B4B; float: right; margin: -55px 35px 0 0; font-size: 1.2em;}
+.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -55px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
+
 .lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
 
 .lesson-page .active-vid img{width: 96%;}
@@ -719,7 +721,10 @@ canvas{
 .lesson-page .links-holder{text-align: center;}
 .lesson-page .links-holder a{display: block; font-weight: bold; font-size: 1.2em; margin: 10px;}
 .lesson-page .links-holder .link-one{color: #441B4B;}
-.lesson-page .links-holder .link-two{color: #319665;}
+
+.lesson-page .links-holder .link-two{background-color: #319665; color: #fff; padding: 6px; border-radius: 4px; width: 195px; margin: 15px auto;}
+.lesson-page .links-holder .link-two:hover{text-decoration: none; background-color: #50BA87;}
+
 .lesson-page .links-holder .link-three{color: #684770;}
 
 .centered-lesson{ margin: 0 auto 45px;}
