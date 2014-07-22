@@ -31,7 +31,9 @@ $( document ).ready(function() {
         mode:  "javascript",
         theme: "solarized light",
         lineWrapping: true,
-        lineNumbers: true
+        lineNumbers: true,
+        styleActiveLine: true,
+        matchBrackets: true
       });
   
   $('.CodeMirror-code').addClass('is-hidden');
@@ -71,7 +73,7 @@ $( document ).ready(function() {
          },
        error: function(jqXHR, textStatus, errorThrown){
         $('.loader').addClass('is-hidden');
-        $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
+        $(".uploadform p").text('Video is larger than 25MB. Select a smaller video and try again!');
        }
      });
     e.preventDefault();
@@ -79,7 +81,7 @@ $( document ).ready(function() {
 
   $(".js-instagram-import").click(function(){
       $('.loader').removeClass('is-hidden');
-      $.ajax('/instagramVid',{
+      $.ajax('/instagram/vid',{
         success: function(data, textStatus, jqXHR){
           movie.src="data:video/mp4;base64,"+data;
           movie.addEventListener("loadeddata", showVid, false);
@@ -112,9 +114,9 @@ $( document ).ready(function() {
     video_filtered = webmBlob;
     var videoDL = document.getElementById('video-dl');
     videoDLurl = window.URL.createObjectURL(webmBlob);
-    videoDL.src = videoDLurl;
-    videoDL.controls = true;
-    videoDL.load();
+    // videoDL.src = videoDLurl;
+    // videoDL.controls = true;
+    // videoDL.load();
     $('#dLink').attr('href', videoDLurl);
     $('#export').text('Save video');
     $("body").css("cursor", "auto");
@@ -124,6 +126,7 @@ $( document ).ready(function() {
     $('#youtube').attr('disabled',false);
     $('.dl-progress').text('All Finished!');      
     $('.share-btn').removeClass('is-hidden');
+    // windowObjectReference = window.open('/gallery?userVidURL='+videoDLurl,'GalleryPage','resizable,scrollbars');
     //save to AWS S3
     $.ajax('/awsUpload?userVidURL='+videoDLurl,{
       success: function(data, textStatus, jqXHR){
@@ -291,6 +294,25 @@ $( document ).ready(function() {
     $('pre:contains('+term+')').css("background", "none" );
   };
 
+  function fetchIG(el){
+    var type = el.tagName;
+    console.log(el);
+    $.ajax('/instagram/'+type,{
+      success: function(data, textStatus, jqXHR){
+        el.src="data:video/mp4;base64,"+data;
+      },
+      error: function(data, textStatus, jqXHR){
+        $('.loader').addClass('is-hidden');
+      }
+    });
+  }
+
+  var tn1 = document.getElementById("js-fetch-vid");
+  if (tn1) { fetchIG(tn1); }
+
+  var tn2 = document.getElementById("js-fetch-img");
+  if (tn2) { fetchIG(tn2); }
+
 //filters page
   var timeshasdropped = 0;
 
@@ -354,36 +376,24 @@ $( document ).ready(function() {
   });
 
 //scrubbing page
-  var scrubInterval;
-  canvas.addEventListener('mouseover', function( e ) {
-    mouseHold(e);
-    // canvas.addEventListener('mouseover', function ( ev ) {
-    // scrubInterval = setInterval(mouseHold,250);
-    // });
-  });
-
-  function mouseHold(ev){
-      labelLines();
-      var x = ev.pageX/100;
-      var y = ev.pageY/100;
-      // var x = mouseX;
-      // var y = mouseY;
-      // console.log('x coor: '+ x + '/ y coor: '+ y);
-      myCodeMirror.eachLine( function(l){
-        var lineNum = myCodeMirror.getLineNumber(l);
-        var lineText=l.text;
-        if (lineText.indexOf("movie.playbackRate")!=-1) {
-          myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
-        }
-      });
-      myCodeMirror.save();
-      labelLines();
-      $(".line-speed").effect("highlight",2000);
-    }
-
-  canvas.addEventListener('mouseup', function( ev ) {
-    clearInterval(scrubInterval);
-  });
+  
+  $('#mouseScrubber').draggable({
+      drag: function (event, ui){
+          labelLines();
+          var x = Math.max(0,ui.position.left/100);
+          var y = Math.max(0,ui.position.top/100);
+          myCodeMirror.eachLine( function(l){
+            var lineNum = myCodeMirror.getLineNumber(l);
+            var lineText=l.text;
+            if (lineText.indexOf("movie.playbackRate")!=-1) {
+              myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
+              myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
+            }
+          });
+          myCodeMirror.save();
+          labelLines();
+          $(".line-speed").effect("highlight",2000);
+      }
+    });
 
 });

@@ -33,7 +33,6 @@ passport.use(new InstagramStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-    console.log('Successfully called IG using token: '+accessToken);
       return done(null, profile);
     });
   }
@@ -66,7 +65,7 @@ app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
 
 //------lesson template ----------//
-app.get('/lesson/1', routes.partone);
+app.get('/lesson/1', routes.partone(db));
 app.get('/lesson/2', routes.parttwo);
 app.get('/lesson/3', routes.partthree);
 app.get('/lesson/4', routes.partfour);
@@ -76,8 +75,9 @@ app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
 app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB);
-app.get('/instagramVid', routes.igGet);
+app.get('/instagram/:media', routes.igGet);
 app.get('/awsUpload', routes.awsUpload);
+
 // create server
 http.createServer(app).listen(app.get('port'),function(){
   console.log("Listening on " + app.get('port'));

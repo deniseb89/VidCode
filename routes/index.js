@@ -17,8 +17,28 @@ exports.galleryshow = function (req, res) {
   res.render('galleryshow', {title: 'VidCode Gallery' });
 };
 
-exports.partone = function (req, res) {
-  res.render('partone', {title: 'VidCode Lesson' });
+exports.partone = function (db) {
+   return function (req, res) {
+    var user = req.user;
+    var token = req.params.token;
+    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
+ 
+    if (!token) {
+
+    var codeText =
+"\
+ \n\
+ //This line of code makes your movie play!\n\
+ movie.play();\n\
+\n\
+ //The code below lets you add, remove, and alter your video filters.\n\
+ //Change the numbers and make your video all your own!\n\
+    ";
+
+      res.render('partone', {code: codeText, filters: filters, user: req.user});
+      return;
+    }
+  };
 };
 
 exports.parttwo = function (req, res) {
@@ -122,7 +142,7 @@ exports.upload = function (req, res) {
 
   // get the temporary location of the file
   var tmp_path = req.files.file.path;
-  var target_path = './vids/' + filename;
+  var target_path = './video/' + filename;
   var file_extension = (i < 0) ? '' : filename.substr(i);
 
   if ((file_extension in oc(extensionAllowed)) && ((req.files.file.size / 1024) < maxSizeOfFile)) {
@@ -157,7 +177,20 @@ exports.upload = function (req, res) {
 };
 
 exports.igCB = function (req, res) {
-  fs.unlink('./vids/instagram.mp4', function () {});
+  fs.readdir('./video/', function(err, files){
+    if (err) {console.log(err);}
+    for (var i=0; i<files.length; i++) {
+      fs.unlink('./video/'+files[i]);
+    }    
+  });
+
+  fs.readdir('./img/', function(err, files){ 
+    if (err) {console.log(err);}
+    for (var i=0; i<files.length; i++) {
+      fs.unlink('./img/'+files[i]);
+    }
+  });
+
   if (req.user){
     var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
@@ -165,9 +198,12 @@ exports.igCB = function (req, res) {
     var media_json,
         media,
         url,
+        target_path,
         next_max_id="",
         pages=0;
         urls=[];
+        urlsVid=[];
+        urlsImg=[];
     var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
     var codeText =
 "\
@@ -188,19 +224,15 @@ exports.igCB = function (req, res) {
         next_page = media_json.pagination.next_max_id;
         media = media_json.data;
         var item;
+        var i = 0;
 
         for (var i=0; i < media.length; i++){
           item = media[i];
-          if (item.hasOwnProperty("videos")) {
-            urls.push(item.videos.standard_resolution.url);
+          if (item.hasOwnProperty("videos")&&(urlsVid.length<4)) {
+            urlsVid.push(item.videos.standard_resolution.url);
+          } else if (item.hasOwnProperty("images")&&(urlsImg.length<4)){
+            urlsImg.push(item.images.standard_resolution.url);
           }
-        }
-        if(urls.length>0){
-          url = urls[0];
-          var i = url.lastIndexOf('.');
-          var file_extension = (i < 0) ? '' : url.substr(i);
-          var target_path = './vids/instagram'+file_extension;
-          request(url).pipe(fs.createWriteStream(target_path));
         }
       } else {
         res.send('error with Instagram API');
@@ -210,12 +242,32 @@ exports.igCB = function (req, res) {
       console.log('paginating...');
       igApiCall(next_page);
     } else {
-      console.log('paginated all pages: '+pages);
-      res.render('filters', {
-        code: codeText,
-        filters: filters,
-        user: user
+      console.log('# of pages found: '+pages);
+      urls = urlsVid.concat(urlsImg);
+      for (var i=0; i<urls.length; i++) {
+        url = urls[i];
+        var ix = url.lastIndexOf('.');
+        var file_extension = (ix < 0) ? '' : url.substr(ix);
+        if(file_extension == '.jpg'){
+          target_path = './img/i_'+i+file_extension;
+        } else if (file_extension == '.mp4'){
+          target_path = './video/i_'+i+file_extension;
+        }
+        var ws = fs.createWriteStream(target_path);
+        request(url).pipe(ws);
+        // error catch
+      }
+
+      ws.end('this is the end\n');
+      ws.on('close', function() {
+        console.log('all writes are now complete.');
+        res.render('partone', {
+          code: codeText,
+          filters: filters,
+          user: user
+        });
       });
+
     }
     });
 }
@@ -223,25 +275,54 @@ exports.igCB = function (req, res) {
   }
 };
 
-exports.igGet = function(req,res){
-  fs.readFile("./vids/instagram.mp4",function(err,file){
-        if (err){
-          res.send(500);
-        } else {
-          // res.send(file);
-          var base64Image = file.toString('base64');
-          res.send(base64Image);
-        }
-      });
+// exports.getThumb = function(req,res){
+//   var files = fs.readdirSync('./video/');
+//   var rs = fs.createReadStream('./video/'+files[0]);
+//   rs.on('end', function() {
+//     console.log('no more data.');
+//     rs.pipe(res);
+//   });
+// };
+
+exports.igGet = function(req,res) {
+  var type = req.params.media;
+  // var files = fs.readdir('./'+type+'/');  
+  if (type.toLowerCase()=="video"){
+
+    fs.readFile('./vid/i_0.mp4', function(err,file){
+      if (err){
+        console.log(err+' reading file ');
+        res.send(500);
+      } else {
+        console.log('sending file ');
+        var base64Image = file.toString('base64');
+        res.send(base64Image);
+      }
+    });
+
+  } else if (type.toLowerCase()=="img") {
+
+    fs.readFile('./img/i_0.jpg', function(err,file){
+      if (err){
+        console.log(err+' reading file ');
+        res.send(500);
+      } else {
+        console.log('sending file ');
+        var base64Image = file.toString('base64');
+        res.send(base64Image);
+      }
+    });
+  };
 };
 
 exports.awsUpload = function(req,res){
   var userVidURL = req.query.userVidURL;
-  // userVidURL = "blob:"+ userVidURL.substr(5).replace(/:/g,"%3A");
+  userVidURL = "blob:"+ userVidURL.substr(5).replace(/:/g,"%3A");
   console.log(userVidURL);
   var AWS = require('aws-sdk');
   AWS.config.loadFromPath('./config.json');
   var s3 = new AWS.S3();
+  // request(url).pipe(fs.createWriteStream('./video/aws.webm'));  
   request.get(userVidURL, function(err,data){
     if (!err){
       var userVid = data;
@@ -250,12 +331,12 @@ exports.awsUpload = function(req,res){
       var params = {Bucket: bucketName, Key: keyName, Body: userVid, ACL: 'public-read'};
       s3.putObject(params, function(err, data) {
         if (err)
-          console.log(err);
+          console.log('aws error:'+err);
         else
           console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
         });
         } else {
-          console.log(err);
+          console.log('request error: '+err);
         }
     });
 };

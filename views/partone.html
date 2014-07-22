@@ -1,5 +1,5 @@
 
-  <link rel="stylesheet" href="../css/jquery.joyride-2.1.css">
+  <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
 
 <div class="set-container lesson-page clearfix">
 	<div class="progress-set">
@@ -19,32 +19,34 @@
 	</div>
 
 	<span class="next-progress-btn">
+        <!-- <button id="export" class="sm-btn show-inline btn btn-warning js-appear is-hidden">I'm Finished!</button>	 -->
 		<a href="2">Next ▸</a>
 	</span>
 
 	<div class="lesson-container">
 		<div class="col-md-4">
+		  <div class="loader is-hidden"><img src="/img/loader.gif"></div>
 			<span class="js-active-vid active-vid">
-				<img class="js-current-vid" src="../img/effect-options/blur.gif">
+		        <video class="video1 is-hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+		        <canvas class="video2 is-hidden" id="canvas">
+		          </canvas>
+		        <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 			</span>
 			<div class="video-container">
 				<p>Your Videos</p>
-				<img class="js-vid-click" src="../img/effect-options/exposure.gif">
-				<img class="js-vid-click" src="../img/effect-options/vignette.gif">
-				<img class="js-vid-click" src="../img/effect-options/noise.gif">
-				<img id="tooltip-stop-1" class="js-vid-click js-selected-video" src="../img/effect-options/blur.gif">
+				<video class="js-vid-click sample-vid" src="/img/wha_color.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video>
+				<video class="js-vid-click sample-vid" src="/img/what_bw.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video>
+				{{#if user}}
+				<video class="js-vid-click" id="js-fetch-vid" src=""></video>
+				<img class="js-vid-click" id="js-fetch-img" src=""></video>
+	            {{/if}}				
 			</div>
 		</div>
 
 
 		<div class="col-md-6">
 			<form>
-				<textarea id="codemirror" name="codemirror">
-mouse.scrub = time();
-
-movie.playbackRate = 1.0;
-
-		    </textarea>
+				<textarea id="codemirror" name="codemirror">{{code}}</textarea>
 	  	</form>
   	</div>
 
@@ -102,30 +104,15 @@ movie.playbackRate = 1.0;
 
 </ol>
 
-<script src="../js/lessons.js"></script>
-
-
-<script src="../js/vendor/codemirror-3.22/lib/codemirror.js"></script>
-<script src="../js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
-
-
+<script src="/js/main.js"></script>
+<script src="/js/filters.js"></script>
+<script src="/js/lessons.js"></script>
 
 <script>
-  var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
-    lineNumbers: true,
-    styleActiveLine: true,
-    matchBrackets: true,
-
-    theme : 'solarized light'
-  });
-
-
 	$(window).load(function() {
 	  $("#joyRideTipContent").joyride({
 	  	autoStart: true
 	  });
 	});
-
-
 
 </script>
