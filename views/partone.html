@@ -1,7 +1,7 @@
 
   <link rel="stylesheet" href="../css/jquery.joyride-2.1.css">
 
-<div class="set-container lesson-page clearfix">
+<div class="set-container lesson-page clearfix js-slide-1">
 	<div class="progress-set">
 		<h2>Scrubbing Lesson Path</h2>
 		<span class="progress-num progress-active">
@@ -19,7 +19,7 @@
 	</div>
 
 	<span class="next-progress-btn">
-		<a href="2">I'm Finished! ▸</a>
+		<a class="js-slide-right-final" href="#">I'm Finished!▸</a>
 	</span>
 
 	<div class="lesson-container">
@@ -92,10 +92,53 @@ movie.playbackRate = 1.0;
 	</div>
 
 
+</div>
+
+
+<div class="set-container lesson-page clearfix is-hidden js-slide-final">
+
+	<span class="previous-progress-btn">
+		<a class="js-slide-left-first" href="#"><span class="arrow-smaller">◄</span> Previous</a>
+	</span>
+	<div class="progress-set">
+		<h2>Scrubbing Lesson Path</h2>
+		<span class="progress-num">
+			1
+		</span>
+		<span class="progress-num">
+			2
+		</span>
+		<span class="progress-num">
+			3
+		</span>
+		<span class="progress-num progress-active">
+			4
+		</span>
+	</div>
+
+
+
+	<div class="lesson-prompt">
+		Looks Amazing!
+	</div>
+
+	<div class="lesson-container centered-lesson">
+
+		<img src="../img/effect-options/blur.gif">
+		<div class="links-holder">
+			<a class="link-two" href="#">Share Your Video</a>
+			<a class="link-one" href="#">Continue to Edit Your Video</a>
+			<a class="link-three" href="#">Choose Another Lesson Path</a>
+
+		</div>
+
+
 
 	</div>
 
 </div>
+
+
 
 <ol id="joyRideTipContent">
   <li data-id="tooltip-stop-1">To begin, choose one of your videos.</li>

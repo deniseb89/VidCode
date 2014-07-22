@@ -728,7 +728,7 @@ canvas{
 .lesson-page .links-holder .link-three{color: #684770;}
 
 .centered-lesson{ margin: 0 auto 45px;}
-.centered-lesson img{display: block; margin: 0 auto;}
+.centered-lesson img{display: block; margin: 0 auto; width: 80%;}
 /* =============    Gallery Page    ======== */
 .galleryheader{margin: 20px 0 15px 15px;}
 
