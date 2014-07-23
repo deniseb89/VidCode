@@ -79,7 +79,7 @@ $( document ).ready(function() {
 
   $('.js-slide-right-final').click(function(){
   	slideRight('.js-slide-1', '.js-slide-final');
-  	// $('.lesson-prompt').text('Wait just a moment as we save your video creation...');
+  	$('.lesson-prompt').text('Wait just a moment as we save your awesome video creation...');
   	movie.play();
   	rafId = requestAnimationFrame(drawVideoFrame);
   	$("body").css("cursor", "progress");
