@@ -185,13 +185,13 @@ exports.upload = function (req, res) {
 };
 
 exports.igCB = function (req, res) {
-  fs.mkdir('./video/', function () {
+  // fs.mkdir('./video/', function () {
     fs.readdir('./video/', function(err, files){
       for (var i=0; i<files.length; i++) {
         fs.unlink('./video/'+files[i]);
       }    
     });
-  });
+  // });
 
   fs.mkdir('./img/', function (){
     fs.readdir('./img/', function(err, files){ 
@@ -301,6 +301,7 @@ exports.igGet = function(req,res) {
         // console.log(err+' reading file ');
         res.send(500);
       } else {
+        // console.log('sending');
         var base64Image = file.toString('base64');
         res.send(base64Image);
       }

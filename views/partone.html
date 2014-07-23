@@ -31,15 +31,21 @@
 		          </canvas>
 		        <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 			</span>
-			<div class="video-container">
-				<p>Choose a Video</p>
-
+			<div class="video-container" id="tooltip-stop-1">
+				<p>Sample Videos</p>
 					<div class="i-vid-container">
-						<video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
+						<video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
 					</div>
 					<div class="i-vid-container">
 						<video class="js-vid-click sample-vid" src="/img/lego.mp4"></video>
 					</div>
+					<div class="i-vid-container">
+						<video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
+					</div>
+			</div>
+			<div class="spacer"></div>
+			<div class="video-container">
+        <p>Instagram Videos</p>
 				{{#if user}}
 				<div class="i-vid-container">
 					<video class="js-vid-click js-fetch-vid" name="0" src=""></video>
@@ -47,23 +53,27 @@
 				<div class="i-vid-container">				
 					<video class="js-vid-click js-fetch-vid" name="1" src=""></video>
 				</div>
-	            {{else}}
-	           <span class="insta-thumbnails">
-	           	<a href="/auth/instagram">Or Upload from Instagram</a>
-	           	</span>
-	            {{/if}}
+				<div class="i-vid-container">				
+					<video class="js-vid-click js-fetch-vid" name="2" src=""></video>
+				</div>				
+          {{else}}
+         <div class="insta-thumbnails">
+         		<a href="/auth/instagram">Upload</a>
+         	</div>
+          {{/if}}
 			</div>
 		</div>
 
 
 		<div class="col-md-6">
 			<div class="tabs-2">
-				<form id ="tooltip-stop-2">
+				<form>
 					<textarea id="codemirror" name="codemirror">{{code}}</textarea>
 		  	</form>
 		  	</div>
 	  	   <div class="methodsBox js-appear is-hidden clearfix">
-	  	    <p>Drag & drop the green buttons into the code editor above</p>
+	  	    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Drag & drop the green buttons into the code editor above</p>
+	  	    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You change the words and the numbers in the editor, too!</p>
             <ul id="methodList">
             {{#filters}}
               <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
@@ -96,18 +106,13 @@
               <button type="button" id="play" class="btn blue-btn play" data-toggle="modal" data-target="#play222">play</button>
             </li>
 
-            <!--   <li class="parameters">
-                <button type="button" id="parameters" class="btn purple-btn parameters bold" data-toggle="modal" data-target="#parameters222">What are parameters?</button>
-              </li>
-
-              <li class="values">
-                <button type="button" id="values" class="btn cyan-btn values bold" data-toggle="modal" data-target="#values222">What are values?</button>
-              </li> -->
-
           </ul>
-          There is more than one right answer!
+<!--           There is more than one right answer!
 
-          <a href="https://docs.google.com/spreadsheet/ccc?key=0AvGwqFvIRpKudF94Mnl2dnJrWHJZaGp4NVhDVUs0aWc&usp=drive_web#gid=0">check explainations from others, and add your own</a>
+          <a href="https://docs.google.com/spreadsheet/ccc?key=0AvGwqFvIRpKudF94Mnl2dnJrWHJZaGp4NVhDVUs0aWc&usp=drive_web#gid=0">check explainations from others, and add your own</a> -->
+          <!-- <div class="feedback"> -->
+          <a href="http://www.vidcode.io/contact">Feedback? Yes, Please!</a>
+          <!-- </div> -->
         </div>
       </div>
   	</div>
@@ -125,7 +130,7 @@
 		<a class="js-slide-left-first" href="#"><span class="arrow-smaller">◄</span> Previous</a>
 	</span>
 	<div class="progress-set">
-		<h2>Scrubbing Lesson Path</h2>
+<!-- 		<h2>Scrubbing Lesson Path</h2>
 		<span class="progress-num">
 			1
 		</span>
@@ -137,39 +142,207 @@
 		</span>
 		<span class="progress-num progress-active">
 			4
-		</span>
+		</span> -->
 	</div>
 
 
-
-	<div class="lesson-prompt">
-		Looks Amazing!
-	</div>
+    <div class="lesson-prompt">
+    Looks Amazing!
+  </div>
 
 	<div class="lesson-container centered-lesson">
 		<div class="links-holder">
-			<a class="link-two" href="/share">Share Your Video</a>
+			<a class="link-one" href="/share">Share Your Video</a>
 			<a class="link-two js-slide-left-first" href="/lesson/1">Try It Again</a>
-<!-- 			<a class="link-three" href="#">Choose Another Lesson Path</a>
- -->
+			<!-- <a class="link-three" href="#">Choose Another Lesson Path</a> -->
+
 		</div>
-		<!-- <img src="/img/effect-options/sepia.gif"></img> -->
 		<video id="vid-display" src=""></video>
-		<!-- <p class="displayWait">Wait just a moment as we save your video creation...</p> -->
 	</div>
 
 </div>
 
+      <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Objects...</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                A object in javascript can be anything!
+                <br>
+                <br>
+                In the case of our VidCode these words, such as “movie”, are containers to allow instructions to be applied to the “movie”.
+                <br>
+                <br>
+                We will cover this again and again!  For now just get used to the word and where objects are placed within the code.  .
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="movies222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Your movie!</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The word "movie" is an object that uses the canvas element in HTML5 to play your video.
+                <br>
+                <br>
+                Remember, an object is just a word that contains data under the hood.
+                <br>
+                <br>
+                With code, and computers, there are many things happening "behind the scenes" which we don't see.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+          </div>
+          </div>
+
+      <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">So many effects!</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The word "effects" is an object that contains ALL the effects.
+                <br>
+                <br>
+                You have three effects in your demo.
+                <br>
+                <br>
+                These live in a hidden "list" within the "effects" object.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">So many effects!</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The word "effects" is an object that contains ALL the effects.
+                <br>
+                <br>
+                You have three effects in your demo.
+                <br>
+                <br>
+                These live in a hidden "list" within the "effects" object.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Functions are actions</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Functions are a HUGE piece of the computer programming pie.
+                <br>
+                <br>
+                A function is a set of arguments or intructions to run on a block of code.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Functions are actions</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Functions are a HUGE piece of the computer programming pie.
+                <br>
+                <br>
+                A function is a set of arguments or intructions to run on a block of code.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="play222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">"play" is a function...</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                ...but it's called a <em>method</em>.
+                <br>
+                <br>
+                It tells the movie object to play.  It's called a method, not a function, because it is applied <em>directly</em> to a object via the dot "." thing.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="interval222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">"interval" is also a method</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                It tells the movie object how many times a second to be processed.
+                <br>
+                <br>
+                The number "1000" is in milliseconds.  So it is processing your video 1,000 times a second!  That's a lot of work!
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
 
 
 <ol id="joyRideTipContent">
-  <!-- <li data-id="tooltip-stop-1">Choose a video or use your own from Instagram</li> -->
-  <li data-id="tooltip-stop-2">Choose a video or use your own from Instagram</li>
+  <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
   <li data-id="tooltip-stop-3" data-options="tip_location:left">Click on the buttons to the right to "Learn More" about the code you're writing!</li>
 
-  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you are completely satisfied with your video creation, click "I'm Done!" and share your masterpiece!</li>
+  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, click "I'm Done!"</li>
 
-  <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own instagram content</li>
+  <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own Instagram content.</li>
 
 </ol>
 

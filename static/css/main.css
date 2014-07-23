@@ -703,11 +703,12 @@ canvas{
     font-size: 1.3em;}
 .lesson-page .progress-set .progress-active{color: #fff; background-color: #441B4B;}
 
-.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -55px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -30px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
-.lesson-page .insta-thumbnails a{font-weight: bold; background-color: #441B4B; float: right; margin: 0 220px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .insta-thumbnails a{font-weight: bold; background-color: #441B4B; float: left; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .insta-thumbnails a:hover{text-decoration: none; background-color: #652F6E;}
-
+.lesson-page .feedback a{font-weight: bold; background-color: #441B4B; float: right; margin: 250px 0 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .feedback a:hover{text-decoration: none; background-color: #652F6E;}
 .lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
 .lesson-page .active-vid img{width: 96%;}
 .lesson-page .video-container video{width: 100%; cursor: pointer;}
@@ -718,12 +719,16 @@ canvas{
 .lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
+.spacer {margin-top: 175px;}
+
 .lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin-bottom: 25px;}
 
 .lesson-page .arrow-smaller{font-size: .9em;}
 .lesson-page .links-holder{text-align: center;}
 .lesson-page .links-holder a{display: block; font-weight: bold; font-size: 1.2em; margin: 10px;}
-.lesson-page .links-holder .link-one{color: #441B4B;}
+
+.lesson-page .links-holder .link-one{background-color: #441B4B; color: #fff; padding: 6px; border-radius: 4px; width: 195px; margin: 15px auto;}
+.lesson-page .links-holder .link-one:hover{text-decoration: none; background-color: #652F6E;}
 
 .lesson-page .links-holder .link-two{background-color: #319665; color: #fff; padding: 6px; border-radius: 4px; width: 195px; margin: 15px auto;}
 .lesson-page .links-holder .link-two:hover{text-decoration: none; background-color: #50BA87;}
@@ -753,6 +758,8 @@ canvas{
 .galleryshow .gallery-info{margin-bottom: 20px;}
 
 .sm-btn{width: 146px;}
+
+.share-landing img{width: 75%; padding-left: 500px };
 
 /* ==========================================================================
    Helper classes

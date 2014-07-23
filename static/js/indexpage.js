@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $('.js-fade').fadeIn(1000).removeClass('is-hidden');
 
+    $('#chromeWarn').modal('show');
 
   //Intro Page Slider
   $('.js-slide2-right').click(function(){

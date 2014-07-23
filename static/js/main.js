@@ -313,6 +313,10 @@ $( document ).ready(function() {
     var n = thumbnail.attr("name");
     $.ajax('/instagram/'+n,{
         success: function(data, textStatus, jqXHR){
+          thumbnail.addEventListener("loadeddata", function(){
+            console.log('thumbnail data loaded');
+          }, false);         
+
           thumbnail.attr("src","data:video/mp4;base64,"+data);
         },
         error: function(data, textStatus, jqXHR){

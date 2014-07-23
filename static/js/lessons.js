@@ -26,22 +26,9 @@ $( document ).ready(function() {
 	    })		
 	});
 
-	// $('#js-fetch-vid1').click(function(){
-	// 	//go get video based on # in quadrant
-	// 	$.ajax('/instagram/1',{
-	//       success: function(data, textStatus, jqXHR){
-	//         movie.src="data:video/mp4;base64,"+data;
-	//       },
-	//       error: function(data, textStatus, jqXHR){
-	//         $('.loader').addClass('is-hidden');
-	//         // alert("You don't have any Instagram videos :(");
-	//       }
-	//     })		
-	// });
-
   $('.js-slide-right-final').click(function(){
   	slideRight('.js-slide-1', '.js-slide-final');
-  	$('.lesson-prompt').text('Wait just a moment as we save your video creation...');
+  	// $('.lesson-prompt').text('Wait just a moment as we save your video creation...');
   	movie.play();
   	rafId = requestAnimationFrame(drawVideoFrame);
   	$("body").css("cursor", "progress");
