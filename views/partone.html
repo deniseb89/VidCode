@@ -33,12 +33,17 @@
 			</span>
 			<div class="video-container">
 				<p>Choose a Video</p>
-				<video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
-				<video class="js-vid-click sample-vid" src="/img/lego.mp4"></video>
+
+					<div class="i-vid-container">
+						<video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
+					</div>
+					<div class="i-vid-container">
+						<video class="js-vid-click sample-vid" src="/img/lego.mp4"></video>
+					</div>
 				{{#if user}}
 				<video class="js-vid-click js-fetch-vid" name="0" src=""></video>
 				<video class="js-vid-click js-fetch-vid" name="1" src=""></video>
-	            {{/if}}				
+	            {{/if}}
 			</div>
 		</div>
 
