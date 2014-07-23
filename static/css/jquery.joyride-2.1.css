@@ -27,7 +27,7 @@ body {
 }
 
 .joyride-content-wrapper {
-  padding: 10px 10px 15px 15px;
+  padding: 30px 10px 30px 21px;
 }
 
 /* Mobile */
@@ -161,7 +161,8 @@ body {
 
 /* Button Style */
 .joyride-tip-guide .joyride-next-tip {
-  left: 218px;
+  left: 227px;
+  bottom: 10px;
   position: absolute;
   width: auto;
   padding: 4px 14px;
