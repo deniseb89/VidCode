@@ -58,8 +58,8 @@ app.set('view engine', '.html');
 
 // configure express routes
 var routes = require('./routes');
-app.get('/', routes.index);
-//app.get('/intro',routes.intro);
+app.get('/',routes.index);
+app.get('/intro', routes.intro);
 app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);

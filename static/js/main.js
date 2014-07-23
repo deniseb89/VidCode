@@ -311,7 +311,6 @@ $( document ).ready(function() {
     //go get video based on # in quadrant
     var thumbnail = $(this);
     var n = thumbnail.attr("name");
-    console.log('fetching thumbnail '+n);
     $.ajax('/instagram/'+n,{
         success: function(data, textStatus, jqXHR){
           thumbnail.attr("src","data:video/mp4;base64,"+data);

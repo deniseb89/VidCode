@@ -2,7 +2,11 @@ var fs = require('fs');
 var request = require('request');
 
 exports.index = function (req, res) {
-  res.render('index', { title: 'VidCode' });
+  res.render('index', {layout:false , title: 'VidCode' });
+};
+
+exports.intro = function (req, res) {
+  res.render('intro', { title: 'VidCode' });
 };
 
 exports.gallery = function (req, res) {
@@ -181,18 +185,21 @@ exports.upload = function (req, res) {
 };
 
 exports.igCB = function (req, res) {
-  fs.readdir('./video/', function(err, files){
-    if (err) {console.log(err);}
-    for (var i=0; i<files.length; i++) {
-      fs.unlink('./video/'+files[i]);
-    }    
+  fs.mkdir('./video/', function () {
+    fs.readdir('./video/', function(err, files){
+      for (var i=0; i<files.length; i++) {
+        fs.unlink('./video/'+files[i]);
+      }    
+    });
   });
 
-  fs.readdir('./img/', function(err, files){ 
-    if (err) {console.log(err);}
-    for (var i=0; i<files.length; i++) {
-      fs.unlink('./img/'+files[i]);
-    }
+  fs.mkdir('./img/', function (){
+    fs.readdir('./img/', function(err, files){ 
+      if (err) {console.log(err);}
+      for (var i=0; i<files.length; i++) {
+        fs.unlink('./img/'+files[i]);
+      }
+    });
   });
 
   if (req.user){
