@@ -27,8 +27,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new InstagramStrategy({
     clientID: INSTAGRAM_CLIENT_ID,
     clientSecret: INSTAGRAM_CLIENT_SECRET,
-    callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
-    // callbackURL: "http://localhost:8080/auth/instagram/cb"
+    // callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
+    callbackURL: "http://localhost:8080/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -59,10 +59,12 @@ app.set('view engine', '.html');
 // configure express routes
 var routes = require('./routes');
 app.get('/', routes.index);
+//app.get('/intro',routes.intro);
 app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
+app.get('/share', routes.share);
 
 //------lesson template ----------//
 app.get('/lesson/1', routes.partone(db));

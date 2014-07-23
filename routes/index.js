@@ -17,11 +17,15 @@ exports.galleryshow = function (req, res) {
   res.render('galleryshow', {title: 'VidCode Gallery' });
 };
 
+exports.share = function (req, res) {
+  res.render('share');
+};
+
 exports.partone = function (db) {
    return function (req, res) {
     var user = req.user;
     var token = req.params.token;
-    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
  
     if (!token) {
 
@@ -62,7 +66,7 @@ exports.filters = function (db) {
   return function (req, res) {
     var user = req.user;
     var token = req.params.token;
-    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
 
     if (!token) {
 
@@ -204,7 +208,7 @@ exports.igCB = function (req, res) {
         urls=[];
         urlsVid=[];
         urlsImg=[];
-    var filters = ['exposure', 'blur','noise' ,'vignette', 'sepia', 'fader'];
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure']; 
     var codeText =
 "\
  \n\
@@ -239,10 +243,8 @@ exports.igCB = function (req, res) {
         return;
       }
     if(next_page && (pages<5)){
-      console.log('paginating...');
       igApiCall(next_page);
     } else {
-      console.log('# of pages found: '+pages);
       urls = urlsVid.concat(urlsImg);
       for (var i=0; i<urls.length; i++) {
         url = urls[i];
@@ -260,7 +262,6 @@ exports.igCB = function (req, res) {
 
       ws.end('this is the end\n');
       ws.on('close', function() {
-        console.log('all writes are now complete.');
         res.render('partone', {
           code: codeText,
           filters: filters,
@@ -285,34 +286,18 @@ exports.igCB = function (req, res) {
 // };
 
 exports.igGet = function(req,res) {
-  var type = req.params.media;
-  // var files = fs.readdir('./'+type+'/');  
-  if (type.toLowerCase()=="video"){
-
-    fs.readFile('./vid/i_0.mp4', function(err,file){
+  // var type = req.params.media;
+  // var files = fs.readdir('./'+type+'/'); 
+  var n = req.params.media; 
+    fs.readFile('./video/i_'+n+'.mp4', function(err,file){
       if (err){
-        console.log(err+' reading file ');
+        // console.log(err+' reading file ');
         res.send(500);
       } else {
-        console.log('sending file ');
         var base64Image = file.toString('base64');
         res.send(base64Image);
       }
     });
-
-  } else if (type.toLowerCase()=="img") {
-
-    fs.readFile('./img/i_0.jpg', function(err,file){
-      if (err){
-        console.log(err+' reading file ');
-        res.send(500);
-      } else {
-        console.log('sending file ');
-        var base64Image = file.toString('base64');
-        res.send(base64Image);
-      }
-    });
-  };
 };
 
 exports.awsUpload = function(req,res){

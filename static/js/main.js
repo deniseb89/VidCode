@@ -8,6 +8,10 @@ var movie,
     target,
     effects = {},
     windowObjectReference = null;
+var rafId;
+var frames = [];
+var capture;
+var videoDLurl;
 
 var showVid = function() {
   $('.loader').addClass('is-hidden');
@@ -21,6 +25,55 @@ var showVid = function() {
   $('.step0').removeClass('is-hidden');
   labelLines();
   vidLen = Math.round(this.duration);
+};
+
+function drawVideoFrame(time) {
+  rafId = requestAnimationFrame(drawVideoFrame);
+  capture = frames.length*60/1000;
+  captureTxt = Math.floor(100*capture/vidLen)+'%';
+  $('.dl-progress').css('width',captureTxt);
+  $('.dl-progress').text(captureTxt+' complete');
+  frames.push(canvas.toDataURL('image/webp', 1));
+  if (capture>=vidLen){ stopDL();}
+};
+
+function stopDL() {
+  cancelAnimationFrame(rafId);
+  var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+  video_filtered = webmBlob;
+  var videoDL = document.getElementById('video-dl');
+  var videoDisplay = document.getElementById('vid-display');
+  videoDLurl = window.URL.createObjectURL(webmBlob);
+  //videoDL.src = videoDLurl;
+  //videoDL.controls = true;
+  //videoDL.load();
+  videoDisplay.src = videoDLurl;
+  videoDisplay.controls = true;
+  videoDisplay.load();
+  videoDisplay.play();
+  $('.displayWait').addClass('is-hidden'); 
+  $('.lesson-prompt').text('Looks amazing!');  
+  $('.link-two').attr('disabled',false);  
+  $('#dLink').attr('href', videoDLurl);
+  $('#export').text('Save video');
+  $("body").css("cursor", "auto");
+  $("#export").css("cursor", "auto");
+  $('#export').attr('disabled',false);
+  $('#dLbtn').attr('disabled',false);
+  $('#youtube').attr('disabled',false);
+
+  $('.dl-progress').text('All Finished!');      
+  $('.share-btn').removeClass('is-hidden');
+  // windowObjectReference = window.open('/gallery?userVidURL='+videoDLurl,'GalleryPage','resizable,scrollbars');
+  //save to AWS S3
+  // $.ajax('/awsUpload?userVidURL='+videoDLurl,{
+  //   success: function(data, textStatus, jqXHR){
+  //     console.log('Successfully uploaded to AWS');
+  //   },
+  //   error: function(data, textStatus, jqXHR){
+  //     console.log('Failed to upload to AWS');
+  //   }
+  // });
 };
 
 $( document ).ready(function() {
@@ -97,46 +150,6 @@ $( document ).ready(function() {
   var frames = [];
   var capture;
   var videoDLurl;
-
-  function drawVideoFrame(time) {
-    rafId = requestAnimationFrame(drawVideoFrame);
-    capture = frames.length*60/1000;
-    captureTxt = Math.floor(100*capture/vidLen)+'%';
-    $('.dl-progress').css('width',captureTxt);
-    $('.dl-progress').text(captureTxt+' complete');
-    frames.push(canvas.toDataURL('image/webp', 1));
-    if (capture>=vidLen){ stopDL();}
-  };
-
-  function stopDL() {
-    cancelAnimationFrame(rafId);
-    var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-    video_filtered = webmBlob;
-    var videoDL = document.getElementById('video-dl');
-    videoDLurl = window.URL.createObjectURL(webmBlob);
-    // videoDL.src = videoDLurl;
-    // videoDL.controls = true;
-    // videoDL.load();
-    $('#dLink').attr('href', videoDLurl);
-    $('#export').text('Save video');
-    $("body").css("cursor", "auto");
-    $("#export").css("cursor", "auto");
-    $('#export').attr('disabled',false);
-    $('#dLbtn').attr('disabled',false);
-    $('#youtube').attr('disabled',false);
-    $('.dl-progress').text('All Finished!');      
-    $('.share-btn').removeClass('is-hidden');
-    // windowObjectReference = window.open('/gallery?userVidURL='+videoDLurl,'GalleryPage','resizable,scrollbars');
-    //save to AWS S3
-    $.ajax('/awsUpload?userVidURL='+videoDLurl,{
-      success: function(data, textStatus, jqXHR){
-        console.log('Successfully uploaded to AWS');
-      },
-      error: function(data, textStatus, jqXHR){
-        console.log('Failed to upload to AWS');
-      }
-    });
-  };
 
   movie.addEventListener('playing',function(){
     //also update movie.___() line in code editor
@@ -294,24 +307,23 @@ $( document ).ready(function() {
     $('pre:contains('+term+')').css("background", "none" );
   };
 
-  function fetchIG(el){
-    var type = el.tagName;
-    console.log(el);
-    $.ajax('/instagram/'+type,{
-      success: function(data, textStatus, jqXHR){
-        el.src="data:video/mp4;base64,"+data;
-      },
-      error: function(data, textStatus, jqXHR){
-        $('.loader').addClass('is-hidden');
-      }
-    });
-  }
-
-  var tn1 = document.getElementById("js-fetch-vid");
-  if (tn1) { fetchIG(tn1); }
-
-  var tn2 = document.getElementById("js-fetch-img");
-  if (tn2) { fetchIG(tn2); }
+  $('.js-fetch-vid').each(function(){
+    //go get video based on # in quadrant
+    var thumbnail = $(this);
+    var n = thumbnail.attr("name");
+    console.log('fetching thumbnail '+n);
+    $.ajax('/instagram/'+n,{
+        success: function(data, textStatus, jqXHR){
+          thumbnail.attr("src","data:video/mp4;base64,"+data);
+        },
+        error: function(data, textStatus, jqXHR){
+          $('.loader').addClass('is-hidden');
+            if (n==0){
+              alert("You don't have any Instagram videos :(");            
+            }
+        }
+      })    
+  });  
 
 //filters page
   var timeshasdropped = 0;

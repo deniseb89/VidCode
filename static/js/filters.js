@@ -2,7 +2,7 @@
     var step2 = 0;
     var step3 = 0;
     var step4 = 0;
-    var allEffects = ["noise"];
+    var allEffects = [];
 
     var labelLines = function() {
       //this function should take an input for the relevant effect, not brute force for all
@@ -15,7 +15,6 @@
     }
 
     var InitSeriously = function(){
-      console.log('initiating seriously with ' + allEffects);
       video = seriously.source("#myvideo");
       target = seriously.target('#canvas');
       var thisEffect;
