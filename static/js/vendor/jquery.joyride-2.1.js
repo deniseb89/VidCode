@@ -13,7 +13,7 @@
 
   var defaults = {
       'version'              : '2.1',
-      'tipLocation'          : 'bottom',  // 'top' or 'bottom' in relation to parent
+      'tipLocation'          : 'left',  // 'top' or 'bottom' in relation to parent
       'nubPosition'          : 'auto',    // override on a per tooltip bases
       'scroll'               : true,      // whether to scroll to tips
       'scrollSpeed'          : 300,       // Page scrolling speed in milliseconds
@@ -40,7 +40,7 @@
       'preStepCallback'      : $.noop,    // A method to call before each step
       'postStepCallback'     : $.noop,    // A method to call after each step
       'template' : { // HTML segments for tip layout
-        'link'    : '<a href="#close" class="joyride-close-tip">X</a>',
+        'link'    : '<a href="#close" class="joyride-close-tip"><img src="../img/joyride-close.png"></a>',
         'timer'   : '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
         'tip'     : '<div class="joyride-tip-guide"><span class="joyride-nub"></span></div>',
         'wrapper' : '<div class="joyride-content-wrapper" role="dialog"></div>',
