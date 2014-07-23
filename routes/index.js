@@ -293,15 +293,11 @@ exports.igCB = function (req, res) {
 // };
 
 exports.igGet = function(req,res) {
-  // var type = req.params.media;
-  // var files = fs.readdir('./'+type+'/'); 
   var n = req.params.media; 
     fs.readFile('./video/i_'+n+'.mp4', function(err,file){
       if (err){
-        // console.log(err+' reading file ');
         res.send(500);
       } else {
-        // console.log('sending');
         var base64Image = file.toString('base64');
         res.send(base64Image);
       }

@@ -307,26 +307,51 @@ $( document ).ready(function() {
     $('pre:contains('+term+')').css("background", "none" );
   };
 
-  $('.js-fetch-vid').each(function(){
-    //go get video based on # in quadrant
-    var thumbnail = $(this);
-    var n = thumbnail.attr("name");
-    $.ajax('/instagram/'+n,{
-        success: function(data, textStatus, jqXHR){
-          thumbnail.addEventListener("loadeddata", function(){
-            console.log('thumbnail data loaded');
-          }, false);         
+  // var thumbnails = document.querySelectorAll('.js-fetch-vid');
+  // var tnExist = thumbnails[0];
+  // //go get video based on # in quadrant
+  // if(tnExist) {
+  //   $.ajax('/instagram/0',{
+  //     success: function(data, textStatus, jqXHR){
+  //       var thumbnail = document.getElementById('js-fetch-vid1');    
+  //       thumbnail.addEventListener("canplay", function(){
+  //         //
+  //         console.log('thumbnail data loaded from page load');
+  //         thumbnail.load();
+  //       }, false);         
+  //       thumbnail.src ="data:video/mp4;base64,"+data;
+  //     },
+  //     error: function(data, textStatus, jqXHR){
+  //       $('.loader').addClass('is-hidden');
+  //           alert("You don't have any Instagram videos :(");            
+  //     }
+  //   })
+  // }
 
-          thumbnail.attr("src","data:video/mp4;base64,"+data);
-        },
-        error: function(data, textStatus, jqXHR){
-          $('.loader').addClass('is-hidden');
-            if (n==0){
-              alert("You don't have any Instagram videos :(");            
-            }
-        }
-      })    
-  });  
+  // $.ajax('/instagram/1',{
+  //     success: function(data, textStatus, jqXHR){
+
+  //       thumbnail.addEventListener("loadeddata", function(){
+  //         console.log('thumbnail data loaded from page load');
+  //       }, false);         
+  //       thumbnail.src ="data:video/mp4;base64,"+data;
+  //     },
+  //     error: function(data, textStatus, jqXHR){
+  //       $('.loader').addClass('is-hidden');
+  //     }
+  //   })    
+
+  // $.ajax('/instagram/2',{
+  //     success: function(data, textStatus, jqXHR){
+  //       thumbnail.addEventListener("loadeddata", function(){
+  //         console.log('thumbnail data loaded from page load');
+  //       }, false);         
+  //       thumbnail.src ="data:video/mp4;base64,"+data;
+  //     },
+  //     error: function(data, textStatus, jqXHR){
+  //       $('.loader').addClass('is-hidden');
+  //     }
+  //   })    
 
 //filters page
   var timeshasdropped = 0;

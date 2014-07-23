@@ -45,18 +45,19 @@
 			</div>
 			<div class="spacer"></div>
 			<div class="video-container">
+      
         <p>Instagram Videos</p>
-				{{#if user}}
+        {{#if user}}
 				<div class="i-vid-container">
-					<video class="js-vid-click js-fetch-vid" name="0" src=""></video>
+					<video class="js-vid-click js-fetch-vid" id="js-fetch-vid0" name="0" src=""></video>
 				</div>
 				<div class="i-vid-container">				
-					<video class="js-vid-click js-fetch-vid" name="1" src=""></video>
+					<video class="js-vid-click js-fetch-vid" id="js-fetch-vid1" name="1" src=""></video>
 				</div>
 				<div class="i-vid-container">				
-					<video class="js-vid-click js-fetch-vid" name="2" src=""></video>
+					<video class="js-vid-click js-fetch-vid" id="js-fetch-vid2" name="2" src=""></video>
 				</div>				
-          {{else}}
+        {{else}}
          <div class="insta-thumbnails">
          		<a href="/auth/instagram">Upload</a>
          	</div>
@@ -79,6 +80,7 @@
               <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
             {{/filters}}
             </ul>
+            <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
           </div>
   	</div>
 

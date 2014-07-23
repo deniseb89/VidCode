@@ -719,7 +719,7 @@ canvas{
 .lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
-.spacer {margin-top: 175px;}
+.spacer {margin-top: 175px !important;}
 
 .lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin-bottom: 25px;}
 
@@ -757,7 +757,7 @@ canvas{
 .galleryshow .video{width: 100%;}
 .galleryshow .gallery-info{margin-bottom: 20px;}
 
-.sm-btn{width: 146px;}
+.sm-btn{width: 146px; margin-left: 236px};
 
 .share-landing img{width: 75%; padding-left: 500px };
 

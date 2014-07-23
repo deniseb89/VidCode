@@ -13,7 +13,7 @@ var monk = require('monk');
 var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
 // passport-instagram auth
-var INSTAGRAM_CLIENT_ID = "f8348c57bbdb4f25bfd7b0776a84f09b"
+var INSTAGRAM_CLIENT_ID = "f8348c57bbdb4f25bfd7b0776a84f09b";
 var INSTAGRAM_CLIENT_SECRET = "3fcbb0b63c094ca798d9430a81fe123a";
 
 passport.serializeUser(function(user, done) {
