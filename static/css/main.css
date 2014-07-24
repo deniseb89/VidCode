@@ -370,7 +370,7 @@ padding-bottom: 101px;}
     font-weight: 600;
 }
 
-
+.is-inactive{display: none; margin-left: 165px;}
 
 .large-button:hover{
   /* Safari 4-5, Chrome 1-9 */
