@@ -746,6 +746,8 @@ canvas{vertical-align: bottom;}
 .lesson-page .vid-placeholder{background-color: blue; width: 381px; height: 222px; margin: -20px 0 0 0;}
 .lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 99px; font-size: 1.7em!important;}
 
+.lesson-page .vidtip{font-size: 1em;}
+
 .i-error{text-align: center; font-weight: bold;}
 
 .centered-lesson{ margin: 0 auto 45px;}

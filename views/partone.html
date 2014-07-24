@@ -62,14 +62,17 @@
 			</div>
 
 	  	<div class="methodsBox js-appear is-hidden clearfix">
-	  	  <p>Drag & drop the buttons into the code editor on the right. Change the numbers to customize the filters!</p>
-        <ul id="methodList">
-          {{#filters}}
-          <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-          {{/filters}}
-        </ul>
-        <button type="button" class="sm-btn show-inline js-switch-videos btn purple-btn-main">Switch Video</button>
-        <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
+	  	  <p class="vidtip">Drag & drop the buttons into the code editor on the right. Change the numbers to customize the filters!</p>
+  			<div class="clearfix">
+	        <ul id="methodList">
+	          {{#filters}}
+	          <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+	          {{/filters}}
+	        </ul>
+	      </div>
+	      <div class="clearfix">
+	        <button type="button" class="sm-btn show-inline js-switch-videos btn purple-btn-main">Switch Video</button>
+	        <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
 	      </div>
       </div>
 
