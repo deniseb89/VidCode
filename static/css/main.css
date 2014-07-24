@@ -721,7 +721,7 @@ canvas{vertical-align: bottom;}
 .lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
 .lesson-page .active-vid img{width: 96%;}
 .lesson-page .video-container video{width: 100%; cursor: pointer;}
-.lesson-page .video-container .i-vid-container{float: left; overflow: hidden; width: 170px; height: 93px; margin: 5px;}
+.lesson-page .video-container .i-vid-container{float: left; overflow: hidden; width: 150px; height: 93px; margin: 5px;}
 .lesson-page .video-container img{width: 44%; margin: 2%; cursor: pointer;}
 .lesson-page .video-container .js-selected-video{border: 2px solid #441B4B;}
 .lesson-page .video-container p{font-weight: bold; font-size: 1.2em; margin-top: 15px; color: #441B4B;}
@@ -777,6 +777,8 @@ canvas{vertical-align: bottom;}
 .share-landing p{margin: 20px auto; width: 600px;}
 .share-landing a{font-weight: bold; float: none; margin-bottom:30px;}
 .share-landing a:hover{color: #fff; background-color: #50BA87;}
+
+.greentext{color: #319665!important;}
 
 /* ==========================================================================
    Helper classes
