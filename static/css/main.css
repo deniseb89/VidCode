@@ -665,7 +665,7 @@ canvas{vertical-align: bottom;}
 .heading .switch{cursor: pointer;}
 .heading .active{color: #D6BAE8;}
 
-.learnMore h4{font-weight: 700; color: #441B4B; font-size: 1.1em;}
+.learnMore h4{font-weight: 700; color: #441B4B; font-size: 1.1em; margin-top: -3px;}
 .learnMore ul{padding: 0;}
 .learnMore .firstly, .learnMore .secondary{cursor: pointer;font-weight: 700; padding-top: 8px;}
 .learnMore .firstly{padding-left: 6px; font-size: 1.1em;}
@@ -743,7 +743,7 @@ canvas{vertical-align: bottom;}
 .lesson-page .links-holder .link-two:hover{text-decoration: none; background-color: #50BA87;}
 
 .lesson-page .links-holder .link-three{color: #684770;}
-.lesson-page .vid-placeholder{background-color: blue; width: 381px; height: 222px; margin-left: 0;}
+.lesson-page .vid-placeholder{background-color: blue; width: 381px; height: 222px; margin: -20px 0 0 0;}
 .lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 99px; font-size: 1.7em!important;}
 
 .i-error{text-align: center; font-weight: bold;}
