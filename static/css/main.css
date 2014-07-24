@@ -665,7 +665,7 @@ canvas{vertical-align: bottom;}
 .heading .switch{cursor: pointer;}
 .heading .active{color: #D6BAE8;}
 
-.learnMore h4{font-weight: 700; color: #441B4B; font-size: 1.1em;}
+.learnMore h4{font-weight: 700; color: #441B4B; font-size: 1.1em; margin-top: -3px;}
 .learnMore ul{padding: 0;}
 .learnMore .firstly, .learnMore .secondary{cursor: pointer;font-weight: 700; padding-top: 8px;}
 .learnMore .firstly{padding-left: 6px; font-size: 1.1em;}
