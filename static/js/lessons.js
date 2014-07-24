@@ -63,6 +63,7 @@ $( document ).ready(function() {
 	});
 
 	$('.js-fetch-vid').click(function(){
+    $('.vid-placeholder').addClass('is-hidden');    
 		$('.loader').removeClass('is-hidden');
     $(this).addClass('js-selected-video');
 		//go get video based on # in quadrant
