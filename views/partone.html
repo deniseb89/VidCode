@@ -62,7 +62,7 @@
 			</div>
 
 	  	<div class="methodsBox js-appear is-hidden clearfix">
-	  	  <p>Drag & drop the buttons to the code editor on the right. Change the numbers to customize the filters!</p>
+	  	  <p>Drag & drop the buttons into the code editor on the right. Change the numbers to customize the filters!</p>
         <ul id="methodList">
           {{#filters}}
           <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
@@ -70,6 +70,7 @@
         </ul>
         <button type="button" class="sm-btn show-inline js-switch-videos btn purple-btn-main">Switch Video</button>
         <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
+	      </div>
       </div>
 
 		</div>
@@ -88,14 +89,14 @@
           <h4>What's Going On?</h4>
           <ul>
             <li class="js-object">
-              <button type="button" class="btn green-btn object bold" data-toggle="modal" data-target="#object222">What's an object?</button>
+              <button type="button" id="objectLM" class="btn green-btn object bold" data-toggle="modal" data-target="#object222">What's an object?</button>
             </li>
 
             <li class="js-movie">
               <button type="button" id="movie" class="btn green-btn movie" data-toggle="modal" data-target="#movies222">movie</button>
             </li>
 
-            <li class="js-effects">
+            <li class="js-effects is-inactive">
               <button type="button" id="effects" class="btn green-btn effects" data-toggle="modal" data-target="#effects222">effects</button>
             </li>
 
@@ -165,7 +166,7 @@
                 In the case of our VidCode these words, such as “movie”, are containers to allow instructions to be applied to the “movie”.
                 <br>
                 <br>
-                We will cover this again and again!  For now just get used to the word and where objects are placed within the code.  .
+                We will cover this again and again!  For now just get used to the word and where objects are placed within the code.
               </p>
               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
             </div>
@@ -345,8 +346,14 @@
 	  });
 	});
 
-    mixpanel.track_links("#mix-share", "Share clicked", {
-        "referrer": document.referrer
-    });
+    mixpanel.track_links("#mix-share", "Share clicked" );
     mixpanel.track_links("#mix-again", "Try It Again clicked" );
+    mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
+    mixpanel.track_links("#tooltip-stop-4", "I'm Done clicked" );
+    // mixpanel.track_links("#objectsLM", "Movie Learn More clicked" );
+    // mixpanel.track_links("#movie", "Movie Learn More clicked" );
+    // mixpanel.track_links("#effects", "Effects Learn More clicked" );
+    // mixpanel.track_links("#function", "Function Learn More clicked" );
+    // mixpanel.track_links("#play", "Play Learn More clicked" );
+
 </script>

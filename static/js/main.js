@@ -359,6 +359,9 @@ $( document ).ready(function() {
 
   $(".tabs-2").droppable({
       drop: function( event, ui ) {
+
+        lessonIsActive(".js-effects");
+
         if (timeshasdropped === 0){
           $('.step0.ch1').addClass('is-hidden');
           $('.step1.ch1').removeClass('is-hidden');
@@ -438,3 +441,12 @@ $( document ).ready(function() {
     });
 
 });
+
+var lessonIsActive = function(newLesson){
+  $(newLesson).show();
+  $(newLesson).animate({
+    margin: "0px"
+  }, 350);
+}
+
+
