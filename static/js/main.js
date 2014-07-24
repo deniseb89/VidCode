@@ -101,8 +101,8 @@ $( document ).ready(function() {
   seriously = new Seriously();
   seriously.go();
 
-  var delay=1000//1 seconds
-  setTimeout(InitSeriously,delay);
+  var delay=2000;
+  setTimeout(InitSeriously,delay);      
 
   // video events section
   $(".uploadfile").click(function(){
