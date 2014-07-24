@@ -5095,10 +5095,10 @@ button.close {
 }
 .modal {
   position: fixed;
-  top: 0;
+  top: 60px;
   right: 0;
   bottom: 0;
-  left: 0;
+  left: 21%;
   z-index: 50000000000000;
   display: none;
   overflow: auto;

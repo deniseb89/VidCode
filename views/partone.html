@@ -15,45 +15,63 @@
 		  <div class="loader is-hidden"><img src="/img/loader.gif"></div>
 			<span class="js-active-vid active-vid">
 						<div class="vid-placeholder overlay">
-							<h3>Select a video below to edit</h3>
+							<h3>Select a video below</h3>
 						</div>
 		        <video class="video1 is-hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
 		        <canvas class="video2 is-hidden" id="canvas">
 		          </canvas>
 		        <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 			</span>
-			<div class="video-container clearfix" id="tooltip-stop-1">
-				<p>Sample Videos</p>
-					<div class="i-vid-container">
-						<video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
-					</div>
-					<div class="i-vid-container">
-						<video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
-					</div>
-					<div class="i-vid-container">
-						<video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
-					</div>
-			</div>
-			<div class="video-container clearfix">
 
-        <p>Instagram Videos</p>
-        <span class="i-error"></span>
-        {{#if user}}
-				<div class="i-vid-container">
-					<video class="js-vid-click js-fetch-vid" id="js-fetch-vid0" name="0" src=""></video>
+
+
+			<div class="js-switch-appear">
+				<div class="video-container clearfix">
+
+	        <p>Instagram Videos</p>
+	        <span class="i-error"></span>
+	        {{#if user}}
+					<div class="i-vid-container">
+						<video class="js-vid-click js-fetch-vid" id="js-fetch-vid0" name="0" src=""></video>
+					</div>
+					<div class="i-vid-container">
+						<video class="js-vid-click js-fetch-vid" id="js-fetch-vid1" name="1" src=""></video>
+					</div>
+					<div class="i-vid-container">
+						<video class="js-vid-click js-fetch-vid" id="js-fetch-vid2" name="2" src=""></video>
+					</div>
+	        {{else}}
+	        <div class="insta-thumbnails">
+	         	<a href="/auth/instagram" id="tooltip-stop-1">Import Videos from Instagram</a>
+	        </div>
+	          {{/if}}
 				</div>
-				<div class="i-vid-container">
-					<video class="js-vid-click js-fetch-vid" id="js-fetch-vid1" name="1" src=""></video>
-				</div>
-				<div class="i-vid-container">
-					<video class="js-vid-click js-fetch-vid" id="js-fetch-vid2" name="2" src=""></video>
-				</div>
-        {{else}}
-        <div class="insta-thumbnails">
-         	<a href="/auth/instagram">Upload</a>
-        </div>
-          {{/if}}
+
+				<div class="video-container clearfix">
+					<p>Sample Videos</p>
+						<div class="i-vid-container">
+							<video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
+						</div>
+						<div class="i-vid-container">
+							<video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
+						</div>
+						<div class="i-vid-container">
+							<video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
+						</div>
+					</div>
 			</div>
+
+	  	<div class="methodsBox js-appear is-hidden clearfix">
+	  	  <p>Drag & drop the green buttons into the code editor to the right</p>
+        <ul id="methodList">
+          {{#filters}}
+          <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+          {{/filters}}
+        </ul>
+        <button type="button" class="sm-btn show-inline js-switch-videos btn purple-btn-main">Switch Video</button>
+        <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
+      </div>
+
 		</div>
 
 
@@ -62,17 +80,7 @@
 				<form>
 					<textarea id="codemirror" name="codemirror">{{code}}</textarea>
 		  	</form>
-		  	</div>
-	  	   <div class="methodsBox js-appear is-hidden clearfix">
-	  	    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Drag & drop the green buttons into the code editor above</p>
-	  	    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You change the words and the numbers in the editor, too!</p>
-            <ul id="methodList">
-            {{#filters}}
-              <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-            {{/filters}}
-            </ul>
-            <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
-          </div>
+		  </div>
   	</div>
 
   	<div class="col-md-2">
@@ -132,8 +140,9 @@
 
 	<div class="lesson-container centered-lesson">
 		<div class="links-holder">
-			<a class="link-one" href="/share">Share Your Video</a>
-			<a class="link-two js-slide-left-first" href="/lesson/1">Try It Again</a>
+			<a class="link-one" id="mix-share" href="/share">Share Your Video</a>
+			<a class="link-two js-slide-left-first" id="mix-again" href="/lesson/1">Try It Again</a>
+
 
 		</div>
 		<video id="vid-display" src=""></video>
@@ -184,8 +193,8 @@
               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
             </div>
           </div>
-          </div>
-          </div>
+        </div>
+    	</div>
 
       <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog2">
@@ -329,11 +338,15 @@
 <script src="/js/filters.js"></script>
 <script src="/js/lessons.js"></script>
 
-<script>
+<script type="text/javascript">
 	$(window).load(function() {
 	  $("#joyRideTipContent").joyride({
 	  	autoStart: true
 	  });
 	});
 
+    mixpanel.track_links("#mix-share", "Share clicked", {
+        "referrer": document.referrer
+    });
+    mixpanel.track_links("#mix-again", "Try It Again clicked" );
 </script>

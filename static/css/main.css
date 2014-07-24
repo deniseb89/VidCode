@@ -406,8 +406,13 @@ padding-bottom: 101px;}
 .blue-btn{background-color: #3262EA!important;}
 .blue-btn:hover{background-color: #2044A8!important;}
 
-.purple-btn{background-color: #AE40C1!important;}
+.purple-btn{background-color: #AE40C1!important; font-weight: bold;}
 .purple-btn:hover{background-color: #7D248C!important;}
+
+.purple-btn-main{background-color: #441B4B!important; color: #fff; font-weight: bold;}
+.purple-btn-main:hover{background-color: #652F6E!important; color:#fff;}
+.purple-btn-main:active, .purple-btn-main:focus{color: #fff;}
+
 
 .cyan-btn{background-color: #3BE2D6!important;}
 .cyan-btn:hover{background-color: #24ADA4!important;}
@@ -485,11 +490,12 @@ ul{
 }
 
 .methodsBox{
-    background-color: rgba(253, 246, 227, .3);
-    width: 104%;
+    width: 100%;
     padding-bottom: 12px;
+    text-align: center;
 }
 
+#methodList{margin-left: -30px;}
 
 #editor {
     margin: 0;
@@ -628,6 +634,7 @@ canvas{vertical-align: bottom;}
     font-weight: 700!important;
     margin-left: 4px;
     float: left;
+    width:120px;
 }
 
 .draggable:hover{background-color: rgba(49, 150, 101, 1)!important; cursor: -webkit-grab; cursor: -moz-grab;}
@@ -635,6 +642,7 @@ canvas{vertical-align: bottom;}
 
 
 .draggable.is-active{
+    cursor: pointer;
     background-image: url(../img/xbtn_drag.png)!important;
     background-repeat: no-repeat;
     background-position: right;}
@@ -706,8 +714,8 @@ canvas{vertical-align: bottom;}
 
 .lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -20px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
-.lesson-page .insta-thumbnails a{font-weight: bold; background-color: #441B4B; float: left; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
-.lesson-page .insta-thumbnails a:hover{text-decoration: none; background-color: #652F6E;}
+.lesson-page .insta-thumbnails a, .share-landing a{background-color: #319665; float: left; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .insta-thumbnails a:hover{text-decoration: none; background-color: #50BA87;}
 .lesson-page .feedback a{font-weight: bold; background-color: #441B4B; float: right; margin: 250px 0 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .feedback a:hover{text-decoration: none; background-color: #652F6E;}
 .lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
@@ -722,7 +730,7 @@ canvas{vertical-align: bottom;}
 
 .spacer {margin-top: 175px !important;}
 
-.lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin-bottom: 25px;}
+.lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin: 25px 0;}
 
 .lesson-page .arrow-smaller{font-size: .9em;}
 .lesson-page .links-holder{text-align: center;}
@@ -762,9 +770,13 @@ canvas{vertical-align: bottom;}
 .galleryshow .video{width: 100%;}
 .galleryshow .gallery-info{margin-bottom: 20px;}
 
-.sm-btn{width: 146px; margin-left: 236px};
+.sm-btn{width: 146px; margin-left: 10px; float: left;}
 
-.share-landing img{width: 75%; padding-left: 500px };
+.share-landing{text-align: center;}
+.share-landing h2{color: #319665!important;}
+.share-landing p{margin: 20px; }
+.share-landing a{font-weight: bold; float: none; margin-bottom:30px;}
+.share-landing a:hover{color: #fff; background-color: #50BA87;}
 
 /* ==========================================================================
    Helper classes

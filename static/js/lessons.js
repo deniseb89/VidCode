@@ -92,6 +92,12 @@ $( document ).ready(function() {
   	slideLeft('.js-slide-1', '.js-slide-final');
   });
 
+
+	$('.js-switch-videos').click(function(){
+		$('.methodsBox').addClass('is-hidden');
+		$(".js-switch-appear").removeClass("is-hidden");
+	});
+
 });
 
 
@@ -115,3 +121,5 @@ var slideRight = function(oldSlide, newSlide){
   	$(newSlide).removeClass('is-hidden');
   }, 500);
 }
+
+
