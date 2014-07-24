@@ -406,8 +406,13 @@ padding-bottom: 101px;}
 .blue-btn{background-color: #3262EA!important;}
 .blue-btn:hover{background-color: #2044A8!important;}
 
-.purple-btn{background-color: #AE40C1!important;}
+.purple-btn{background-color: #AE40C1!important; font-weight: bold;}
 .purple-btn:hover{background-color: #7D248C!important;}
+
+.purple-btn-main{background-color: #441B4B!important; color: #fff; font-weight: bold;}
+.purple-btn-main:hover{background-color: #652F6E!important; color:#fff;}
+.purple-btn-main:active, .purple-btn-main:focus{color: #fff;}
+
 
 .cyan-btn{background-color: #3BE2D6!important;}
 .cyan-btn:hover{background-color: #24ADA4!important;}
@@ -485,11 +490,12 @@ ul{
 }
 
 .methodsBox{
-    background-color: rgba(253, 246, 227, .3);
-    width: 104%;
+    width: 100%;
     padding-bottom: 12px;
+    text-align: center;
 }
 
+#methodList{margin-left: -30px;}
 
 #editor {
     margin: 0;
@@ -547,14 +553,14 @@ ul{
     padding-right: 3px;
     margin-left: -15px;
     height: 600px;
-    background: #81DBBA; /* Old browsers */
-    background: -moz-linear-gradient(110deg, #81DBBA 15%, #7D43A3 50%, #81DBBA 80%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(15%,#81DBBA), color-stop(50%,#7D43A3), color-stop(80%,#81DBBA)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(110deg, #81DBBA 15%, #7D43A3 50%, #81DBBA 80%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(110deg, #81DBBA 15%, #7D43A3 50%, #81DBBA 80%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(110deg, #81DBBA 15%, #7D43A3 50%, #81DBBA 80%); /* IE10+ */
-    background: linear-gradient(155deg, #81DBBA 15%, #7D43A3 50%, #81DBBA 80%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#81DBBA', endColorstr='#7D43A3',GradientType=0 ); /* IE6-9 */
+    background: #53C489; /* Old browsers */
+    background: -moz-linear-gradient(110deg, #53C489 15%, #7D43A3 50%, #53C489 80%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(15%,#53C489), color-stop(50%,#7D43A3), color-stop(80%,#81DBBA)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(110deg, #53C489 15%, #7D43A3 50%, #53C489 80%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(110deg, #53C489 15%, #7D43A3 50%, #53C489 80%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(110deg, #53C489 15%, #7D43A3 50%, #53C489 80%); /* IE10+ */
+    background: linear-gradient(155deg, #53C489 15%, #7D43A3 50%, #53C489 80%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#53C489', endColorstr='#7D43A3',GradientType=0 ); /* IE6-9 */
     background-size: 100% 500%;
     background-position: 0% 0%;
     -webkit-animation-name: colorful;
@@ -576,8 +582,7 @@ ul{
             width: 400px;
         }
 
-canvas{
-            vertical-align: bottom;     }
+canvas{vertical-align: bottom;}
 
 @-webkit-keyframes colorful {
     from {
@@ -592,7 +597,7 @@ canvas{
 .blackbg{
     background: #000!important;
     opacity: 1;
-    }
+}
 
 .clearHover{
     position: absolute;
@@ -629,6 +634,7 @@ canvas{
     font-weight: 700!important;
     margin-left: 4px;
     float: left;
+    width:120px;
 }
 
 .draggable:hover{background-color: rgba(49, 150, 101, 1)!important; cursor: -webkit-grab; cursor: -moz-grab;}
@@ -636,6 +642,7 @@ canvas{
 
 
 .draggable.is-active{
+    cursor: pointer;
     background-image: url(../img/xbtn_drag.png)!important;
     background-repeat: no-repeat;
     background-position: right;}
@@ -667,6 +674,7 @@ canvas{
 .btndown{display: none;}
 
 .learnMore .explanation{display: none; padding-left: 3px; font-size: .9em;}
+
 
 
 /* ----Code editor ----- */
@@ -706,8 +714,8 @@ canvas{
 
 .lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -20px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
-.lesson-page .insta-thumbnails a{font-weight: bold; background-color: #441B4B; float: left; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
-.lesson-page .insta-thumbnails a:hover{text-decoration: none; background-color: #652F6E;}
+.lesson-page .insta-thumbnails a, .share-landing a{background-color: #319665; float: left; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .insta-thumbnails a:hover{text-decoration: none; background-color: #50BA87;}
 .lesson-page .feedback a{font-weight: bold; background-color: #441B4B; float: right; margin: 250px 0 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .feedback a:hover{text-decoration: none; background-color: #652F6E;}
 .lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
@@ -722,7 +730,7 @@ canvas{
 
 .spacer {margin-top: 175px !important;}
 
-.lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin-bottom: 25px;}
+.lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin: 25px 0;}
 
 .lesson-page .arrow-smaller{font-size: .9em;}
 .lesson-page .links-holder{text-align: center;}
@@ -735,6 +743,10 @@ canvas{
 .lesson-page .links-holder .link-two:hover{text-decoration: none; background-color: #50BA87;}
 
 .lesson-page .links-holder .link-three{color: #684770;}
+.lesson-page .vid-placeholder{background-color: blue; width: 381px; height: 222px; margin-left: 0;}
+.lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 99px; font-size: 1.7em!important;}
+
+.i-error{text-align: center; font-weight: bold;}
 
 .centered-lesson{ margin: 0 auto 45px;}
 .centered-lesson video{display: block; margin: 0 auto; width: 80%;}
@@ -758,9 +770,13 @@ canvas{
 .galleryshow .video{width: 100%;}
 .galleryshow .gallery-info{margin-bottom: 20px;}
 
-.sm-btn{width: 146px; margin-left: 236px};
+.sm-btn{width: 146px; margin-left: 10px; float: left;}
 
-.share-landing img{width: 75%; padding-left: 500px };
+.share-landing{text-align: center;}
+.share-landing h2{color: #319665!important;}
+.share-landing p{margin: 20px auto; width: 600px;}
+.share-landing a{font-weight: bold; float: none; margin-bottom:30px;}
+.share-landing a:hover{color: #fff; background-color: #50BA87;}
 
 /* ==========================================================================
    Helper classes

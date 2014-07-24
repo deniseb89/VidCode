@@ -17,6 +17,10 @@ exports.intro = function (req, res) {
   res.render('intro', { title: 'VidCode' });
 };
 
+exports.oldDemo2 = function (req, res) {
+  res.render('oldDemo2', { title: 'VidCode' });
+};
+
 exports.gallery = function (req, res) {
   var userVidURL = req.query.userVidURL;
   if(userVidURL){
@@ -38,7 +42,7 @@ exports.partone = function (db) {
     var user = req.user;
     var token = req.params.token;
     var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
- 
+
     if (!token) {
 
     var codeText =
@@ -197,12 +201,12 @@ exports.igCB = function (req, res) {
     fs.readdir('./video/', function(err, files){
       for (var i=0; i<files.length; i++) {
         fs.unlink('./video/'+files[i]);
-      }    
+      }
     });
   });
 
   fs.mkdir('./img/', function (){
-    fs.readdir('./img/', function(err, files){ 
+    fs.readdir('./img/', function(err, files){
       if (err) {console.log(err);}
       for (var i=0; i<files.length; i++) {
         fs.unlink('./img/'+files[i]);
@@ -223,7 +227,7 @@ exports.igCB = function (req, res) {
         urls=[];
         urlsVid=[];
         urlsImg=[];
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure']; 
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
     var codeText =
 "\
  \n\
@@ -301,7 +305,7 @@ exports.igCB = function (req, res) {
 // };
 
 exports.igGet = function(req,res) {
-  var n = req.params.media; 
+  var n = req.params.media;
     fs.readFile('./video/i_'+n+'.mp4', function(err,file){
       if (err){
         res.send(500);
@@ -319,7 +323,7 @@ exports.awsUpload = function(req,res){
   var AWS = require('aws-sdk');
   AWS.config.loadFromPath('./config.json');
   var s3 = new AWS.S3();
-  // request(url).pipe(fs.createWriteStream('./video/aws.webm'));  
+  // request(url).pipe(fs.createWriteStream('./video/aws.webm'));
   request.get(userVidURL, function(err,data){
     if (!err){
       var userVid = data;

@@ -21,6 +21,7 @@ var showVid = function() {
   $(".runbtn").removeClass("is-hidden");
   $(".video2").removeClass("is-hidden");
   $(".js-appear").removeClass("is-hidden");
+  $(".js-switch-appear").addClass("is-hidden");
   $('.CodeMirror-code').removeClass('is-hidden');
   $('.step0').removeClass('is-hidden');
   labelLines();
@@ -51,9 +52,9 @@ function stopDL() {
   videoDisplay.controls = true;
   videoDisplay.load();
   videoDisplay.play();
-  $('.displayWait').addClass('is-hidden'); 
-  $('.lesson-prompt').text('Looks amazing!');  
-  $('.link-two').attr('disabled',false);  
+  $('.displayWait').addClass('is-hidden');
+  $('.lesson-prompt').text('Looks amazing!');
+  $('.link-two').attr('disabled',false);
   $('#dLink').attr('href', videoDLurl);
   $('#export').text('Save video');
   $("body").css("cursor", "auto");
@@ -62,7 +63,7 @@ function stopDL() {
   $('#dLbtn').attr('disabled',false);
   $('#youtube').attr('disabled',false);
 
-  $('.dl-progress').text('All Finished!');      
+  $('.dl-progress').text('All Finished!');
   $('.share-btn').removeClass('is-hidden');
   // windowObjectReference = window.open('/gallery?userVidURL='+videoDLurl,'GalleryPage','resizable,scrollbars');
   //save to AWS S3
@@ -88,22 +89,22 @@ $( document ).ready(function() {
         styleActiveLine: true,
         matchBrackets: true
       });
-  
+
   $('.CodeMirror-code').addClass('is-hidden');
 
-  var codeDelay;  
+  var codeDelay;
   myCodeMirror.on("change", function() {
             clearTimeout(codeDelay);
             codeDelay = setTimeout(updateScript, 300);
     });
-    
+
   seriously = new Seriously();
   seriously.go();
 
   var delay=2000;
   setTimeout(InitSeriously,delay);      
 
-  // video events section  
+  // video events section
   $(".uploadfile").click(function(){
       $('.loader').removeClass('is-hidden');
   });
@@ -159,7 +160,7 @@ $( document ).ready(function() {
   movie.addEventListener('pause',function(){
     //also update movie.___() line in code editor
        $(".runbtn").text('Play');
-  });    
+  });
 
   // End video events section
 
@@ -219,7 +220,7 @@ $( document ).ready(function() {
 
   $('.js-close-steps').click(function(){
     $('.step4.ch1').addClass('is-hidden');
-  });    
+  });
 
   $(".tab2").click(function(){
       $(".tabs-2").removeClass("is-hidden");
@@ -313,17 +314,17 @@ $( document ).ready(function() {
   // if(tnExist) {
   //   $.ajax('/instagram/0',{
   //     success: function(data, textStatus, jqXHR){
-  //       var thumbnail = document.getElementById('js-fetch-vid1');    
+  //       var thumbnail = document.getElementById('js-fetch-vid1');
   //       thumbnail.addEventListener("canplay", function(){
   //         //
   //         console.log('thumbnail data loaded from page load');
   //         thumbnail.load();
-  //       }, false);         
+  //       }, false);
   //       thumbnail.src ="data:video/mp4;base64,"+data;
   //     },
   //     error: function(data, textStatus, jqXHR){
   //       $('.loader').addClass('is-hidden');
-  //           alert("You don't have any Instagram videos :(");            
+  //           alert("You don't have any Instagram videos :(");
   //     }
   //   })
   // }
@@ -333,25 +334,25 @@ $( document ).ready(function() {
 
   //       thumbnail.addEventListener("loadeddata", function(){
   //         console.log('thumbnail data loaded from page load');
-  //       }, false);         
+  //       }, false);
   //       thumbnail.src ="data:video/mp4;base64,"+data;
   //     },
   //     error: function(data, textStatus, jqXHR){
   //       $('.loader').addClass('is-hidden');
   //     }
-  //   })    
+  //   })
 
   // $.ajax('/instagram/2',{
   //     success: function(data, textStatus, jqXHR){
   //       thumbnail.addEventListener("loadeddata", function(){
   //         console.log('thumbnail data loaded from page load');
-  //       }, false);         
+  //       }, false);
   //       thumbnail.src ="data:video/mp4;base64,"+data;
   //     },
   //     error: function(data, textStatus, jqXHR){
   //       $('.loader').addClass('is-hidden');
   //     }
-  //   })    
+  //   })
 
 //filters page
   var timeshasdropped = 0;
@@ -416,7 +417,7 @@ $( document ).ready(function() {
   });
 
 //scrubbing page
-  
+
   $('#mouseScrubber').draggable({
       drag: function (event, ui){
           labelLines();
