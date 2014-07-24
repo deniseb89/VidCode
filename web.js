@@ -13,7 +13,7 @@ var monk = require('monk');
 var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
 // passport-instagram auth
-var INSTAGRAM_CLIENT_ID = "f8348c57bbdb4f25bfd7b0776a84f09b"
+var INSTAGRAM_CLIENT_ID = "f8348c57bbdb4f25bfd7b0776a84f09b";
 var INSTAGRAM_CLIENT_SECRET = "3fcbb0b63c094ca798d9430a81fe123a";
 
 passport.serializeUser(function(user, done) {
@@ -27,8 +27,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new InstagramStrategy({
     clientID: INSTAGRAM_CLIENT_ID,
     clientSecret: INSTAGRAM_CLIENT_SECRET,
-    // callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
-    callbackURL: "http://localhost:8080/auth/instagram/cb"
+    callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
+    // callbackURL: "http://localhost:8080/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -58,8 +58,12 @@ app.set('view engine', '.html');
 
 // configure express routes
 var routes = require('./routes');
-app.get('/', routes.index);
-//app.get('/intro',routes.intro);
+app.get('/',routes.index);
+app.get('/1',routes.index);
+app.get('/2',routes.index2);
+app.get('/3',routes.index3);
+
+app.get('/intro', routes.intro);
 app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);
@@ -82,5 +86,5 @@ app.get('/awsUpload', routes.awsUpload);
 
 // create server
 http.createServer(app).listen(app.get('port'),function(){
-  console.log("Listening on " + app.get('port'));
+  console.log("Listening on" + app.get('port'));
 });

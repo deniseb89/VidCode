@@ -1,17 +1,68 @@
 $( document ).ready(function() {
 
+  var thumbnails = document.querySelectorAll('.js-fetch-vid');
+  var tnExist = thumbnails[0];
+  
+  if (tnExist) {
+      var delay=1000;
+      setTimeout(loadThumbnail,delay); 
+      // loadThumbnail();
+  };
+
+  function loadThumbnail(){
+    var thumbnail0 = document.getElementById('js-fetch-vid0');
+    var n = thumbnail0.getAttribute("name");
+    $.ajax('/instagram/'+n,{
+        success: function(data, textStatus, jqXHR){
+          thumbnail0.src = "data:video/mp4;base64,"+data;          	
+          thumbnail0.addEventListener("loadeddata", function(){
+          }, false);                 
+        },
+        error: function(data, textStatus, jqXHR){
+          $('.loader').addClass('is-hidden');
+              alert("You don't have any Instagram videos :(");            
+        }
+      })
+
+    var thumbnail1 = document.getElementById('js-fetch-vid1');
+    var n = thumbnail1.getAttribute("name");
+    $.ajax('/instagram/'+n,{
+        success: function(data, textStatus, jqXHR){
+          thumbnail1.src = "data:video/mp4;base64,"+data;            
+          thumbnail1.addEventListener("loadeddata", function(){
+          }, false);                 
+        },
+        error: function(data, textStatus, jqXHR){
+          $('.loader').addClass('is-hidden');
+        }
+      })
+
+    var thumbnail2 = document.getElementById('js-fetch-vid2');
+    var n = thumbnail2.getAttribute("name");
+    $.ajax('/instagram/'+n,{
+        success: function(data, textStatus, jqXHR){
+          thumbnail2.src = "data:video/mp4;base64,"+data;            
+          thumbnail2.addEventListener("loadeddata", function(){
+          }, false);                 
+        },
+        error: function(data, textStatus, jqXHR){
+          $('.loader').addClass('is-hidden');
+        }
+      })
+  };
+
 	$('.sample-vid').click(function(){
+		var thisSrc = $(this).attr('src');		
 		$('.loader').removeClass('is-hidden');
 		$('.js-vid-click').removeClass('js-selected-video');
 		$(this).addClass('js-selected-video');
-
 		movie.addEventListener("loadeddata", showVid, false);
-		var thisSrc = $(this).attr('src');
-			movie.src = thisSrc;				
+		movie.src = thisSrc;				
 	});
 
 	$('.js-fetch-vid').click(function(){
 		$('.loader').removeClass('is-hidden');
+    $(this).addClass('js-selected-video');
 		//go get video based on # in quadrant
 		var n = $(this).attr("name");
 		$.ajax('/instagram/'+n,{
@@ -26,22 +77,9 @@ $( document ).ready(function() {
 	    })		
 	});
 
-	// $('#js-fetch-vid1').click(function(){
-	// 	//go get video based on # in quadrant
-	// 	$.ajax('/instagram/1',{
-	//       success: function(data, textStatus, jqXHR){
-	//         movie.src="data:video/mp4;base64,"+data;
-	//       },
-	//       error: function(data, textStatus, jqXHR){
-	//         $('.loader').addClass('is-hidden');
-	//         // alert("You don't have any Instagram videos :(");
-	//       }
-	//     })		
-	// });
-
   $('.js-slide-right-final').click(function(){
   	slideRight('.js-slide-1', '.js-slide-final');
-  	$('.lesson-prompt').text('Wait just a moment as we save your video creation...');
+  	$('.lesson-prompt').text('Wait just a moment as we save your awesome video creation...');
   	movie.play();
   	rafId = requestAnimationFrame(drawVideoFrame);
   	$("body").css("cursor", "progress");
