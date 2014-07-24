@@ -70,6 +70,8 @@ app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
 app.get('/share', routes.share);
 
+app.get('/demotest', routes.oldDemo2);
+
 //------lesson template ----------//
 app.get('/lesson/1', routes.partone(db));
 app.get('/lesson/2', routes.parttwo);

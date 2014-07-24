@@ -14,12 +14,15 @@
 		<div class="col-md-4">
 		  <div class="loader is-hidden"><img src="/img/loader.gif"></div>
 			<span class="js-active-vid active-vid">
+						<div class="vid-placeholder overlay">
+							<h3>Select a video below to edit</h3>
+						</div>
 		        <video class="video1 is-hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
 		        <canvas class="video2 is-hidden" id="canvas">
 		          </canvas>
 		        <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 			</span>
-			<div class="video-container" id="tooltip-stop-1">
+			<div class="video-container clearfix" id="tooltip-stop-1">
 				<p>Sample Videos</p>
 					<div class="i-vid-container">
 						<video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
@@ -31,10 +34,10 @@
 						<video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
 					</div>
 			</div>
-			<div class="spacer"></div>
-			<div class="video-container">
+			<div class="video-container clearfix">
 
         <p>Instagram Videos</p>
+        <span class="i-error"></span>
         {{#if user}}
 				<div class="i-vid-container">
 					<video class="js-vid-click js-fetch-vid" id="js-fetch-vid0" name="0" src=""></video>
@@ -46,9 +49,9 @@
 					<video class="js-vid-click js-fetch-vid" id="js-fetch-vid2" name="2" src=""></video>
 				</div>
         {{else}}
-         <div class="insta-thumbnails">
-         		<a href="/auth/instagram">Upload</a>
-         	</div>
+        <div class="insta-thumbnails">
+         	<a href="/auth/instagram">Upload</a>
+        </div>
           {{/if}}
 			</div>
 		</div>
@@ -131,7 +134,6 @@
 		<div class="links-holder">
 			<a class="link-one" href="/share">Share Your Video</a>
 			<a class="link-two js-slide-left-first" href="/lesson/1">Try It Again</a>
-			<!-- <a class="link-three" href="#">Choose Another Lesson Path</a> -->
 
 		</div>
 		<video id="vid-display" src=""></video>
