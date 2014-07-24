@@ -701,6 +701,7 @@ canvas{
     font-family: 'Copse';
     cursor: pointer;
     font-size: 1.3em;}
+.lesson-container{margin-top: 40px;}
 .lesson-page .progress-set .progress-active{color: #fff; background-color: #441B4B;}
 
 .lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -55px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
