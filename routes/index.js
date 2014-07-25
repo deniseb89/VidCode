@@ -218,6 +218,7 @@ exports.igCB = function (req, res) {
     var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
     var token = user.accessToken;
+    var username = user.username;
     var media_json,
         media,
         url,
@@ -274,6 +275,9 @@ exports.igCB = function (req, res) {
         } else if (file_extension == '.mp4'){
           target_path = './video/i_'+i+file_extension;
         }
+
+
+        //buggy but working
         var ws = fs.createWriteStream(target_path);
         request(url).pipe(ws);
         // error catch
@@ -308,7 +312,11 @@ exports.igGet = function(req,res) {
   var n = req.params.media;
     fs.readFile('./video/i_'+n+'.mp4', function(err,file){
       if (err){
-        res.send(500);
+        if(n==0) {
+          res.send(500);
+        } else {
+          res.send(501);
+        }
       } else {
         var base64Image = file.toString('base64');
         res.send(base64Image);

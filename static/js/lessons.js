@@ -10,6 +10,8 @@ $( document ).ready(function() {
   };
 
   function loadThumbnail(){
+    var username = $('#username').text();
+    console.log('user: ' + username);
     var thumbnail0 = document.getElementById('js-fetch-vid0');
     var n = thumbnail0.getAttribute("name");
     $.ajax('/instagram/'+n,{
