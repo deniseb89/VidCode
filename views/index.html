@@ -593,7 +593,7 @@
 
 
 
-<div id="subscribeFormWelcome"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:24px">Sign up to make a Vidcode!</span></span>
+<div id="subscribeFormWelcome"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:24px"><p>Want to make your videos more awesome? </p>Give it a go.</span></span>
 </div>
 <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
 
@@ -681,5 +681,43 @@
                 _gaq.push(["_setDomainName", ".list-manage.com"]);
                 _gaq.push(["_trackPageview"]);
                 _gaq.push(["_setAllowLinker", true]);
-            } catch(err) {console.log(err);}</script>
+
+            } catch(err) {console.log(err);}
+            </script>
+            <script>
+            readCookie();
+
+function readCookie() {
+     if (document.cookie == "") {
+     	//brand new visitor. Do nothing
+     } else {
+    window.location.replace('/intro');
+    var the_cookie = document.cookie;
+    the_cookie = unescape(the_cookie);
+    the_cookie_split = the_cookie.split(";");
+    for (loop=0;loop<the_cookie_split.length;loop++) {
+        var part_of_split = the_cookie_split[loop];
+        var find_name = part_of_split.indexOf("nfti_date")
+        if (find_name!=-1) {
+            break;
+        } // Close if
+    } // Close for
+    if (find_name==-1) {
+    } else {
+    	var seconds_in_a_day = 86400000;
+    	var seconds_in_a_week = 7 * seconds_in_a_day;
+        var date_split = part_of_split.split("=");
+        var last = date_split[1];
+        var last2 = new Date(last);
+        var last2Num = last2.getTime();
+        var today = new Date();
+        var todayNum = today.getTime();
+        var timePassed = todayNum - last2Num;
+    } // Close if (find_name==-1)
+      }
+} // Close function readCookie()
+
+            </script>
+
+
 

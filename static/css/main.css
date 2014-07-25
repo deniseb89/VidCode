@@ -234,6 +234,12 @@ h2{font-family: 'Copse', serif!important; color: #441B4B!important;}
 
 .margin-negs{margin-left: -44px;}
 
+.skipbtn{float: right;
+margin-right: -177px;
+margin-top: 50px;
+font-size: .9em;}
+
+
 .video1{
     position: absolute;
     z-index: 5;
