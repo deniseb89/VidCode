@@ -14,13 +14,15 @@ $( document ).ready(function() {
     console.log('user: ' + username);
     var thumbnail0 = document.getElementById('js-fetch-vid0');
     var n = thumbnail0.getAttribute("name");
-    $.ajax('/instagram/'+n,{
+    $.ajax('/instagram/0',{
         success: function(data, textStatus, jqXHR){
+          $('#js-fetch-vid0').removeClass('is-hidden');                    
           thumbnail0.src = "data:video/mp4;base64,"+data;
           thumbnail0.addEventListener("loadeddata", function(){
           }, false);
         },
         error: function(data, textStatus, jqXHR){
+          $('#js-fetch-vid0').addClass('is-hidden');
           $('.loader').addClass('is-hidden');
           $('.i-error').text("You don't have any Instagram videos :(");
         }
@@ -28,26 +30,30 @@ $( document ).ready(function() {
 
     var thumbnail1 = document.getElementById('js-fetch-vid1');
     var n = thumbnail1.getAttribute("name");
-    $.ajax('/instagram/'+n,{
+    $.ajax('/instagram/1',{
         success: function(data, textStatus, jqXHR){
+          $('#js-fetch-vid1').removeClass('is-hidden');          
           thumbnail1.src = "data:video/mp4;base64,"+data;
           thumbnail1.addEventListener("loadeddata", function(){
           }, false);
         },
         error: function(data, textStatus, jqXHR){
+          $('#js-fetch-vid1').addClass('is-hidden');          
           $('.loader').addClass('is-hidden');
         }
       })
 
     var thumbnail2 = document.getElementById('js-fetch-vid2');
     var n = thumbnail2.getAttribute("name");
-    $.ajax('/instagram/'+n,{
+    $.ajax('/instagram/2',{
         success: function(data, textStatus, jqXHR){
+          $('#js-fetch-vid2').removeClass('is-hidden');          
           thumbnail2.src = "data:video/mp4;base64,"+data;
           thumbnail2.addEventListener("loadeddata", function(){
           }, false);
         },
         error: function(data, textStatus, jqXHR){
+          $('#js-fetch-vid2').addClass('is-hidden');          
           $('.loader').addClass('is-hidden');
         }
       })
