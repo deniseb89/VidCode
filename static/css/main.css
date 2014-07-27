@@ -788,6 +788,13 @@ canvas{vertical-align: bottom;}
 
 .greentext{color: #319665!important;}
 
+
+/* ======================       Modal Lessons          ============================= */
+
+
+.modal-content{width: 800px; }
+.modal{width: 810px; overflow: hidden; left: 50%; margin-left: -405px;}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
