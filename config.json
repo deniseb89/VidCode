@@ -1,7 +1,9 @@
-{
+var config = {};
 	"accessKeyId": "AKIAIRAYNA2YHJZB5PDA",
 	"secretAccessKey": "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",
 	"region": "us-east-1",
 	 "INSTAGRAM_CLIENT_ID": "f8348c57bbdb4f25bfd7b0776a84f09b",
 	 "INSTAGRAM_CLIENT_SECRET": "3fcbb0b63c094ca798d9430a81fe123a"
 }
+
+module.exports = config;

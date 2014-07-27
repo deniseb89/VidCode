@@ -4,13 +4,34 @@ var http = require('http');
 var path = require('path');
 var crypto = require('crypto');
 var util = require('util');
+var config = require('./config');
 var passport = require('passport');
 var InstagramStrategy = require('./models/passport-instagram').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy
 
 // create mongodb
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
+
+
+// passport-facebook auth
+var passport = require('passport')
+  , FacebookStrategy = require('passport-facebook').Strategy;
+
+passport.use(new FacebookStrategy({
+    clientID: config.FACEBOOK_APP_ID,
+    clientSecret: config.FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:8080/auth/facebook/cb"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate({facebookId: profile.id}, function(err, user) {
+      if (err) { return done(err); }
+      done(null, user);
+    });
+  }
+));
+
 
 // passport-instagram auth
 var INSTAGRAM_CLIENT_ID = "f8348c57bbdb4f25bfd7b0776a84f09b";
@@ -62,7 +83,8 @@ app.get('/',routes.index);
 app.get('/1',routes.index);
 app.get('/2',routes.index2);
 app.get('/3',routes.index3);
-
+app.get('/g',routes.indexG);
+app.get('/googleForm',routes.indexGF);
 app.get('/intro', routes.intro);
 app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
@@ -83,6 +105,10 @@ app.post('/upload', routes.upload);
 app.post('/save', routes.save(db, crypto));
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
 app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB);
+
+app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});
+app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB);
+
 app.get('/instagram/:media', routes.igGet);
 app.get('/awsUpload', routes.awsUpload);
 

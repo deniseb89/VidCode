@@ -13,6 +13,14 @@ exports.index3 = function (req, res) {
   res.render('index3', {layout:false , title: 'VidCode' });
 };
 
+exports.indexG = function (req, res) {
+  res.render('indexG', {layout:false , title: 'VidCode' });
+};
+
+exports.indexGF = function (req, res) {
+  res.render('googleForm', {layout:false , title: 'VidCode' });
+};
+
 exports.intro = function (req, res) {
   res.render('intro', { title: 'VidCode' });
 };
@@ -323,6 +331,11 @@ exports.igGet = function(req,res) {
       }
     });
 };
+
+exports.fbCB = function (req, res) {
+  console.log('hit Facebook callback');
+  //check username
+}
 
 exports.awsUpload = function(req,res){
   var userVidURL = req.query.userVidURL;

@@ -23,7 +23,8 @@
     "mongodb": "~1.4.0",
     "passport": ">= 0.0.0",
     "pkginfo": "0.2.x",
-    "passport-oauth": "0.1.x",   
+    "passport-oauth": "0.1.x",
+    "passport-oauth2": "1.x.x",  
     "request": "~2.27.0"
   },
   "devDependencies": {
