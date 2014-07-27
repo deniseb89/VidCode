@@ -7,7 +7,7 @@ var util = require('util');
 var config = require('./config');
 var passport = require('passport');
 var InstagramStrategy = require('./models/passport-instagram').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy
+// var FacebookStrategy = require('passport-facebook').Strategy
 
 // create mongodb
 var mongo = require('mongodb');
@@ -16,21 +16,21 @@ var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
 
 // passport-facebook auth
-var passport = require('passport')
-  , FacebookStrategy = require('passport-facebook').Strategy;
+// var passport = require('passport')
+//   , FacebookStrategy = require('passport-facebook').Strategy;
 
-passport.use(new FacebookStrategy({
-    clientID: config.FACEBOOK_APP_ID,
-    clientSecret: config.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:8080/auth/facebook/cb"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate({facebookId: profile.id}, function(err, user) {
-      if (err) { return done(err); }
-      done(null, user);
-    });
-  }
-));
+// passport.use(new FacebookStrategy({
+//     clientID: config.FACEBOOK_APP_ID,
+//     clientSecret: config.FACEBOOK_APP_SECRET,
+//     callbackURL: "http://localhost:8080/auth/facebook/cb"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     User.findOrCreate({facebookId: profile.id}, function(err, user) {
+//       if (err) { return done(err); }
+//       done(null, user);
+//     });
+//   }
+// ));
 
 
 // passport-instagram auth
