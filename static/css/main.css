@@ -169,9 +169,13 @@ h2{font-family: 'Copse', serif!important; color: #441B4B!important;}
 .cropOne{height: 257px;}
 .cropTwo{height: 280px;}
 
+
+
 /* ==========================================================================
    VidCode custom styles
    ========================================================================== */
+
+
 /*Header */
 .nav{background-color: #fff;}
 .nav li a:hover{background-color: #e8f4ed!important; }
