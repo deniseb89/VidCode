@@ -175,6 +175,13 @@ h2{font-family: 'Copse', serif!important; color: #441B4B!important;}
    VidCode custom styles
    ========================================================================== */
 
+.cc-6{
+    -webkit-transition:  .6s;
+    -moz-transition:     .6s;
+    -ms-transition:      .6s;
+    -o-transition:       .6s;
+    transition:          .6s;}
+
 
 /*Header */
 .nav{background-color: #fff;}
@@ -708,17 +715,17 @@ canvas{vertical-align: bottom;}
 .set-container{width: 95%; margin: 20px auto; background-color: #fff}
 .lesson-page .progress-set{ margin: 0 auto; width: 450px; padding: 20px;}
 .lesson-page .progress-set h2{font-size: 1.3em; display: inline;}
-.lesson-page .progress-set .progress-num{border: 1px solid #441B4B;
+.lesson-page .progress-num{border: 1px solid #441B4B;
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    padding: 4px;
+    width: 20px;
+    height: 20px;
     margin: 2px 7px;
     text-align: center;
     display: inline-block;
     font-family: 'Copse';
     cursor: pointer;
-    font-size: 1.3em;}
+    font-size: .9em;
+}
 .lesson-container{margin-top: 40px;}
 .lesson-page .progress-set .progress-active{color: #fff; background-color: #441B4B;}
 
@@ -757,6 +764,15 @@ canvas{vertical-align: bottom;}
 .lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 99px; font-size: 1.7em!important;}
 
 .lesson-page .vidtip{font-size: 1em;}
+
+.learning-pop-link{font-weight: 600; color: #441B4B;}
+.learning-pop-container{cursor: pointer; margin: 8px 0}
+.learning-pop-container ul{list-style-type: disc; font-size: .9em; padding: 0 56px;}
+
+.learning-pop-container:hover .progress-num{border: 1px solid #319665; color: #319665;}
+.learning-pop-container:hover .learning-pop-link{color: #319665;}
+
+
 
 .i-error{text-align: center; font-weight: bold;}
 
@@ -798,6 +814,9 @@ canvas{vertical-align: bottom;}
 
 .modal-content{width: 800px; }
 .modal{width: 810px; overflow: hidden; left: 50%; margin-left: -405px;}
+
+.modal-title{font-weight: 600; color: #441B4B;}
+.btn-close-modal{cursor: pointer; margin-top: -27px;}
 
 /* ==========================================================================
    Helper classes
