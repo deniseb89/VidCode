@@ -279,9 +279,9 @@ exports.igCB = function (req, res) {
         var ix = url.lastIndexOf('.');
         var file_extension = (ix < 0) ? '' : url.substr(ix);
         if(file_extension == '.jpg'){
-          target_path = './img/i_'+i+file_extension;
+          target_path = './img/'+username + '_'+i+file_extension;
         } else if (file_extension == '.mp4'){
-          target_path = './video/i_'+i+file_extension;
+          target_path = './video/'+username + '_'+i+file_extension;
         }
 
 
@@ -317,24 +317,49 @@ exports.igCB = function (req, res) {
 // };
 
 exports.igGet = function(req,res) {
-  var n = req.params.media;
-    fs.readFile('./video/i_'+n+'.mp4', function(err,file){
-      if (err){
-        if(n==0) {
-          res.send(500);
-        } else {
-          res.send(501);
-        }
+  var dir = './video/';
+  var filename = req.params.media + '.mp4';
+
+  fs.readdir(dir, function(err, files){
+    if (err) {
+      console.log('readdir error: '+err);
+    } else {
+      if (files.indexOf(filename)>=0) {
+        fs.readFile(dir+filename, function(err, data) {
+          if (err) {
+            res.send(500);
+          } else {
+            console.log('done reading '+filename);
+            var base64Image = data.toString('base64');
+            res.send(base64Image);
+          }          
+        });           
       } else {
-        var base64Image = file.toString('base64');
-        res.send(base64Image);
+        console.log(filename+' doesnt exist');
+        res.send(500);
       }
-    });
+    }
+  })
 };
 
-exports.fbCB = function (req, res) {
-  console.log('hit Facebook callback');
-  //check username
+exports.fbCB = function (db) {
+  return function (req, res) {
+    var user = req.user;
+    console.log('welcome '+user.displayName + ' aka ' + user.id);
+    var vc = db.get('vidcode');
+    vc.findOne({ fb_id: user.id }, function (err, doc) {
+      if (!doc) {
+        doc = { fb_id: user.id };
+        if (user.displayName) {
+          doc.fb_display = user.displayName;
+        }
+        vc.insert(doc);
+        console.log('new mongo FB doc for: '+doc.fb_display);
+      }
+    });
+
+    res.end();
+  }
 }
 
 exports.awsUpload = function(req,res){

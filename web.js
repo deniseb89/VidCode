@@ -7,35 +7,34 @@ var util = require('util');
 var config = require('./config');
 var passport = require('passport');
 var InstagramStrategy = require('./models/passport-instagram').Strategy;
-// var FacebookStrategy = require('passport-facebook').Strategy
+var FacebookStrategy = require('passport-facebook').Strategy
 
 // create mongodb
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
-
 // passport-facebook auth
-// var passport = require('passport')
-//   , FacebookStrategy = require('passport-facebook').Strategy;
+var passport = require('passport')
+  , FacebookStrategy = require('passport-facebook').Strategy;
 
-// passport.use(new FacebookStrategy({
-//     clientID: config.FACEBOOK_APP_ID,
-//     clientSecret: config.FACEBOOK_APP_SECRET,
-//     callbackURL: "http://localhost:8080/auth/facebook/cb"
-//   },
-//   function(accessToken, refreshToken, profile, done) {
-//     User.findOrCreate({facebookId: profile.id}, function(err, user) {
-//       if (err) { return done(err); }
-//       done(null, user);
-//     });
-//   }
-// ));
-
+passport.use(new FacebookStrategy({
+    clientID: config.FACEBOOK_APP_ID,
+    clientSecret: config.FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:8080/auth/facebook/cb"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function(){
+      return done(null, profile);
+    })
+    // User.findOrCreate({facebookId: profile.id}, function(err, user) {
+    //   if (err) { return done(err); }
+    //   done(null, user);
+    // });
+  }
+));
 
 // passport-instagram auth
-var INSTAGRAM_CLIENT_ID = "f8348c57bbdb4f25bfd7b0776a84f09b";
-var INSTAGRAM_CLIENT_SECRET = "3fcbb0b63c094ca798d9430a81fe123a";
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -46,10 +45,12 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new InstagramStrategy({
-    clientID: INSTAGRAM_CLIENT_ID,
-    clientSecret: INSTAGRAM_CLIENT_SECRET,
-    callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
-    // callbackURL: "http://localhost:8080/auth/instagram/cb"
+    clientID: config.INSTAGRAM_CLIENT_ID_LOCAL,
+    clientSecret: config.INSTAGRAM_CLIENT_SECRET_LOCAL,
+    callbackURL: config.INSTAGRAM_CB_LOCAL
+    // clientID: config.INSTAGRAM_CLIENT_ID,
+    // clientSecret: config.INSTAGRAM_CLIENT_SECRET,    
+    // callbackURL: "config.INSTAGRAM_CB
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -107,7 +108,7 @@ app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res
 app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB);
 
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});
-app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB);
+app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
 
 app.get('/instagram/:media', routes.igGet);
 app.get('/awsUpload', routes.awsUpload);
