@@ -45,12 +45,9 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new InstagramStrategy({
-    clientID: config.INSTAGRAM_CLIENT_ID_LOCAL,
-    clientSecret: config.INSTAGRAM_CLIENT_SECRET_LOCAL,
-    callbackURL: config.INSTAGRAM_CB_LOCAL
-    // clientID: config.INSTAGRAM_CLIENT_ID,
-    // clientSecret: config.INSTAGRAM_CLIENT_SECRET,    
-    // callbackURL: "config.INSTAGRAM_CB
+    clientID: config.INSTAGRAM_CLIENT_ID,
+    clientSecret: config.INSTAGRAM_CLIENT_SECRET,
+    callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -80,13 +77,13 @@ app.set('view engine', '.html');
 
 // configure express routes
 var routes = require('./routes');
-app.get('/',routes.index);
+app.get('/',routes.indexGF);
 app.get('/1',routes.index);
 app.get('/2',routes.index2);
 app.get('/3',routes.index3);
 app.get('/g',routes.indexG);
 app.get('/googleForm',routes.indexGF);
-app.get('/intro', routes.intro);
+app.get('/intro/:uid?', routes.intro(db));
 app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);

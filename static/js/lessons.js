@@ -23,13 +23,18 @@ $( document ).ready(function() {
         error: function(data, textStatus, jqXHR){
           $('#js-fetch-vid0').parent().addClass('is-hidden');
           $('.loader').addClass('is-hidden');
+          //display different error if there is a loading problem
           $('.i-error').text("You don't have any Instagram videos :(");
         }
       })
 
     var thumbnail1 = document.getElementById('js-fetch-vid1');
     var n = thumbnail1.getAttribute("name");
+<<<<<<< HEAD
     $.ajax('/instagram/'+n,{
+=======
+    $.ajax('/instagram/'+username+'_'+n,{
+>>>>>>> 8bb0b282465c85e76804df665ca9c34ef3a5b7d9
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid1').removeClass('is-hidden');          
           thumbnail1.src = "data:video/mp4;base64,"+data;
@@ -44,7 +49,11 @@ $( document ).ready(function() {
 
     var thumbnail2 = document.getElementById('js-fetch-vid2');
     var n = thumbnail2.getAttribute("name");
+<<<<<<< HEAD
     $.ajax('/instagram/'+n,{
+=======
+    $.ajax('/instagram/'+username+'_'+n,{
+>>>>>>> 8bb0b282465c85e76804df665ca9c34ef3a5b7d9
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid2').removeClass('is-hidden');          
           thumbnail2.src = "data:video/mp4;base64,"+data;
@@ -60,7 +69,7 @@ $( document ).ready(function() {
 
 
 	$('.sample-vid').click(function(){
-    mixpanel.track('Selected a video');
+    mixpanel.track('Selected a sample video');
 		var thisSrc = $(this).attr('src');
 		$('.vid-placeholder').addClass('is-hidden');
 		$('.loader').removeClass('is-hidden');
