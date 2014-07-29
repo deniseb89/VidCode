@@ -102,7 +102,7 @@ $( document ).ready(function() {
   seriously.go();
 
   var delay=2000;
-  setTimeout(InitSeriously,delay);      
+  setTimeout(InitSeriously,delay);
 
   // video events section
   $(".uploadfile").click(function(){
@@ -242,10 +242,20 @@ $( document ).ready(function() {
   $( "ul, li" ).disableSelection();
 
   //hover state of learn more section
+
+  $('.js-values').hover(function(){
+    showInfo("5", "rgba(103, 121, 198, .4)");
+  }, function(){
+    removeInfo("5");
+  });
+
+
   $('.js-object').hover(function(){
     showInfo("movie", "rgba(49, 150, 101, .4)");
+    showInfo("effects", "rgba(49, 150, 101, .4)");
   }, function(){
     removeInfo("movie");
+    removeInfo("effects");
   });
   $('.js-movie').hover(function(){
     showInfo("movie", "rgba(49, 150, 101, .4)");
@@ -253,10 +263,11 @@ $( document ).ready(function() {
     removeInfo("movie");
   });
   $('.js-effects').hover(function(){
-    showInfo("effect", "rgba(49, 150, 101, .4)");
+    showInfo("effects", "rgba(49, 150, 101, .4)");
   }, function(){
-    removeInfo("effect");
+    removeInfo("effects");
   });
+
   $('.js-seriously').hover(function(){
     showInfo("seriously", "rgba(49, 150, 101, .4)");
   }, function(){
@@ -278,7 +289,7 @@ $( document ).ready(function() {
     removeInfo("showEffect");
   });
   $('.js-play').hover(function(){
-    showInfo("play", "rgba(50, 98, 234, 0.4)");
+    showInfo("play", "rgba(118, 70, 130, 0.4)");
   }, function(){
     removeInfo("play");
   });

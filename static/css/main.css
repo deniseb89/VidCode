@@ -178,11 +178,11 @@ h2{font-family: 'Copse', serif!important; color: #441B4B!important;}
 
 
 .cc-6{
-    -webkit-transition:  .6s;
-    -moz-transition:     .6s;
-    -ms-transition:      .6s;
-    -o-transition:       .6s;
-    transition:          .6s;}
+    -webkit-transition:  .4s;
+    -moz-transition:     .4s;
+    -ms-transition:      .4s;
+    -o-transition:       .4s;
+    transition:          .4s;}
 
 
 
@@ -634,11 +634,14 @@ canvas{vertical-align: bottom;}
 .learnMore .firstly{padding-left: 6px; font-size: 1.1em;}
 .learnMore .secondary{padding-left: 12px;}
 
+
+
 .btndown{display: none;}
 
 .learnMore .explanation{display: none; padding-left: 3px; font-size: .9em;}
 
-
+.lesson-img-1{width: 255px; margin-bottom: -57px;}
+.lesson-img-2{width: 385px; margin-bottom: -74px;}
 
 /* ----Code editor ----- */
 
@@ -715,9 +718,24 @@ canvas{vertical-align: bottom;}
 .learning-pop-container{cursor: pointer; margin: 8px 0}
 .learning-pop-container ul{list-style-type: disc; font-size: .9em; padding: 0 56px;}
 
-.learning-pop-container:hover .progress-num{border: 1px solid #319665; color: #319665;}
-.learning-pop-container:hover .learning-pop-link{color: #319665;}
+.learning-pop-container:hover .progress-num{border: 1px solid #774782; color: #774782;}
+.learning-pop-container:hover .learning-pop-link{color: #774782;}
 
+.l-color-2{color: #6779C6;}
+.progress-num.l-color-2{border: #6779C6 1px solid;}
+.learning-pop-container.l-color-2:hover .l-color-2{color: #255299;}
+.learning-pop-container.l-color-2:hover .progress-num.l-color-2{border: #255299 1px solid;}
+
+
+.l-color-3{color: #329766;}
+.progress-num.l-color-3{border: #329766 1px solid;}
+.learning-pop-container.l-color-3:hover .l-color-3{color: #1C5034;}
+.learning-pop-container.l-color-3:hover .progress-num.l-color-3{border: #1C5034 1px solid;}
+
+.l-color-4{color: #764682;}
+.progress-num.l-color-4{border: #764682 1px solid;}
+.learning-pop-container.l-color-4:hover .l-color-4{color: #481056;}
+.learning-pop-container.l-color-4:hover .progress-num.l-color-4{border: #481056 1px solid;}
 
 
 .i-error{text-align: center; font-weight: bold;}
