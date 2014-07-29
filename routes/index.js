@@ -25,6 +25,10 @@ exports.intro = function (req, res) {
   res.render('intro', { title: 'VidCode' });
 };
 
+exports.signin = function (req, res) {
+  res.render('signin', { title: 'VidCode' });
+};
+
 exports.oldDemo2 = function (req, res) {
   res.render('oldDemo2', { title: 'VidCode' });
 };
