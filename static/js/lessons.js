@@ -15,7 +15,7 @@ $( document ).ready(function() {
     var n = thumbnail0.getAttribute("name");
     $.ajax('/instagram/'+username+'_'+n,{
         success: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid0').removeClass('is-hidden');                    
+          $('#js-fetch-vid0').removeClass('is-hidden');
           thumbnail0.src = "data:video/mp4;base64,"+data;
           thumbnail0.addEventListener("loadeddata", function(){
           }, false);
@@ -30,38 +30,32 @@ $( document ).ready(function() {
 
     var thumbnail1 = document.getElementById('js-fetch-vid1');
     var n = thumbnail1.getAttribute("name");
-<<<<<<< HEAD
-    $.ajax('/instagram/'+n,{
-=======
+
     $.ajax('/instagram/'+username+'_'+n,{
->>>>>>> 8bb0b282465c85e76804df665ca9c34ef3a5b7d9
         success: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid1').removeClass('is-hidden');          
+          $('#js-fetch-vid1').removeClass('is-hidden');
           thumbnail1.src = "data:video/mp4;base64,"+data;
           thumbnail1.addEventListener("loadeddata", function(){
           }, false);
         },
         error: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid1').parent().addClass('is-hidden');          
+          $('#js-fetch-vid1').parent().addClass('is-hidden');
           $('.loader').addClass('is-hidden');
         }
       })
 
     var thumbnail2 = document.getElementById('js-fetch-vid2');
     var n = thumbnail2.getAttribute("name");
-<<<<<<< HEAD
-    $.ajax('/instagram/'+n,{
-=======
+
     $.ajax('/instagram/'+username+'_'+n,{
->>>>>>> 8bb0b282465c85e76804df665ca9c34ef3a5b7d9
         success: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid2').removeClass('is-hidden');          
+          $('#js-fetch-vid2').removeClass('is-hidden');
           thumbnail2.src = "data:video/mp4;base64,"+data;
           thumbnail2.addEventListener("loadeddata", function(){
           }, false);
         },
         error: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid2').parent().addClass('is-hidden');          
+          $('#js-fetch-vid2').parent().addClass('is-hidden');
           $('.loader').addClass('is-hidden');
         }
       })
@@ -80,8 +74,8 @@ $( document ).ready(function() {
 	});
 
 	$('.js-fetch-vid').click(function(){
-    var username = $('#username').text();    
-    $('.vid-placeholder').addClass('is-hidden');    
+    var username = $('#username').text();
+    $('.vid-placeholder').addClass('is-hidden');
 		$('.loader').removeClass('is-hidden');
     $(this).addClass('js-selected-video');
 		//go get video based on # in quadrant

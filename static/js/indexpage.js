@@ -19,7 +19,7 @@ $(window).load(function(){
       if (find_name==-1) {
       } else {
         var seconds_in_a_day = 86400000;
-        var seconds_in_a_week = 7 * seconds_in_a_day;     
+        var seconds_in_a_week = 7 * seconds_in_a_day;
           var date_split = part_of_split.split("=");
           var last = date_split[1];
           var last2 = new Date(last);
@@ -28,9 +28,9 @@ $(window).load(function(){
           var todayNum = today.getTime();
           var timePassed = todayNum - last2Num;
           if (timePassed>seconds_in_a_week) {
-            $('#chromeWarn').modal('show');           
+            $('#chromeWarn').modal('show');
           }
-      } 
+      }
     }
   } // Close function readCookie()
 })
@@ -66,14 +66,9 @@ $(document).ready(function () {
   });
 
   $('#mix-finish-tour').click(function(){
-<<<<<<< HEAD
-    mixpanel.track_links("#mix-finish-tour", "Finished the Tour" );
-  });
-=======
-    mixpanel.track("Finished the Tour" );
-  });  
 
->>>>>>> 8bb0b282465c85e76804df665ca9c34ef3a5b7d9
+    mixpanel.track("Finished the Tour" );
+  });
 
 });
 
