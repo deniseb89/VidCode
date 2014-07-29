@@ -230,9 +230,17 @@ exports.upload = function (req, res) {
 };
 
 exports.igCB = function (req, res) {
-  console.log('hitting IG callback');
-  var user = req.user;
-  if (user){
+  console.log('hitting instagram cb');
+  // fs.mkdir('./video/', function () {
+  //   fs.readdir('./video/', function(err, files){
+  //     for (var i=0; i<files.length; i++) {
+  //       fs.unlink('./video/'+files[i]);
+  //     }
+  //   });
+  // });
+
+  if (req.user){
+    var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
     var token = user.accessToken;
     var username = user.username;
@@ -282,7 +290,7 @@ exports.igCB = function (req, res) {
     if(next_page && (pages<5)){
       igApiCall(next_page);
     } else {
-      urls = urlsVid;
+      urls = urlsVid.concat(urlsImg);
       for (var i=0; i<urls.length; i++) {
         url = urls[i];
         var ix = url.lastIndexOf('.');
@@ -293,32 +301,27 @@ exports.igCB = function (req, res) {
           target_path = './video/'+username + '_'+i+file_extension;
         }
 
+
         //buggy but working
         var ws = fs.createWriteStream(target_path);
-        var piping = request(url).pipe(ws);
+        request(url).pipe(ws);
         // error catch
       }
 
-      ws.on('finish', function() {
+      ws.end('this is the end\n');
+      ws.on('close', function() {
         res.render('partone', {
           code: codeText,
           filters: filters,
           user: username
         });
       });
+
     }
-
-
     });
 }
   igApiCall(next_max_id);
-  } else {
-    res.render('partone', {
-    code: codeText,
-    filters: filters
-  });    
-  }
-
+  }  
 };
 
 exports.igGet = function(req,res) {
@@ -332,6 +335,7 @@ exports.igGet = function(req,res) {
       if (files.indexOf(filename)>=0) {
         fs.readFile(dir+filename, function(err, data) {
           if (err) {
+            console.log(filename+' does not exit')
             res.send(500);
           } else {
             console.log('done reading '+filename);
