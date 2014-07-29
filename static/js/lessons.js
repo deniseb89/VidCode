@@ -30,7 +30,11 @@ $( document ).ready(function() {
 
     var thumbnail1 = document.getElementById('js-fetch-vid1');
     var n = thumbnail1.getAttribute("name");
+<<<<<<< HEAD
+    $.ajax('/instagram/'+n,{
+=======
     $.ajax('/instagram/'+username+'_'+n,{
+>>>>>>> 8bb0b282465c85e76804df665ca9c34ef3a5b7d9
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid1').removeClass('is-hidden');          
           thumbnail1.src = "data:video/mp4;base64,"+data;
@@ -45,7 +49,11 @@ $( document ).ready(function() {
 
     var thumbnail2 = document.getElementById('js-fetch-vid2');
     var n = thumbnail2.getAttribute("name");
+<<<<<<< HEAD
+    $.ajax('/instagram/'+n,{
+=======
     $.ajax('/instagram/'+username+'_'+n,{
+>>>>>>> 8bb0b282465c85e76804df665ca9c34ef3a5b7d9
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid2').removeClass('is-hidden');          
           thumbnail2.src = "data:video/mp4;base64,"+data;
