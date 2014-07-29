@@ -93,6 +93,8 @@ app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
 app.get('/share', routes.share);
 
+app.get('/signin', routes.signin);
+
 app.get('/demotest', routes.oldDemo2);
 
 //------lesson template ----------//

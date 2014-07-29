@@ -14,13 +14,13 @@
 		<div class="col-md-4">
 		  <div class="loader is-hidden"><img src="/img/loader.gif"></div>
 			<span class="js-active-vid active-vid">
-						<div class="vid-placeholder overlay">
-							<h3>Select a video below</h3>
-						</div>
-		        <video class="video1 is-hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
-		        <canvas class="video2 is-hidden" id="canvas">
-		          </canvas>
-		        <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
+				<div class="vid-placeholder overlay">
+					<h3>Select a video below</h3>
+				</div>
+        <video class="video1 is-hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+        <canvas class="video2 is-hidden" id="canvas">
+          </canvas>
+        <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 			</span>
 
 
@@ -59,8 +59,8 @@
             <div class="i-vid-container">
               <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
             </div>
-          </div>        
-          
+          </div>
+
 			</div>
 
 	  	<div class="methodsBox js-appear is-hidden clearfix">
@@ -81,7 +81,7 @@
 		</div>
 
 
-		<div class="col-md-6">
+		<div class="col-md-5">
 			<div class="tabs-2">
 				<form>
 					<textarea id="codemirror" name="codemirror">{{code}}</textarea>
@@ -89,9 +89,12 @@
 		  </div>
   	</div>
 
-  	<div class="col-md-2">
+  	<div class="col-md-3">
 				<div id="tooltip-stop-3" class="learnMore">
-          <h4>What's Going On?</h4>
+
+
+
+
           <ul>
             <li class="js-object">
               <button type="button" id="objectLM" class="btn green-btn object bold" data-toggle="modal" data-target="#object222">What's an object?</button>
@@ -156,16 +159,161 @@
 
 </div>
 
+
+
+      <div class="modal fade" id="lesson-1-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">1. What are we writing? JavaScript!</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                JavaScript?
+              </p>
+              <p>
+                Javascript is a programming language. Since computers don't speak human languages like English or Spanish, so we use programming languages to talk to them. All your favorite apps are made by talking to computers with programming languages.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="lesson-2-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">2. How is it changing my video?</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Your code is your input, and your video is the output created once the computer translates your code.
+              </p>
+              <p>
+                When you change the words and numbers in your code (your input), you'll see your video (your output) change as well.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="lesson-3-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">3. The pieces of our code</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Some of the pieces of JavaScript include values, variables, objects and functions.
+              </p>
+              <p>
+                Have you changed the numbers and words around in your code? Then you've already worked with some of these pieces!
+              </p>
+              <p>
+                First, let's talk about values.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="lesson-4-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">4. Let's talk about values</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The numbers in your code, such as
+              </p>
+              <p>
+                effects.noise.amount = 7;
+              </p>
+              <p>
+                are a type of value called a number (but you already knew that!)
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="lesson-4-2-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">4a. Types of Values</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Some types of values are:
+              </p>
+              <p>
+                Numbers: 1, 12, 178
+              </p>
+              <p>
+                Strings (text in quotes): "hello", "12 is a cool number"
+              </p>
+              <p>
+                booleans (whether something is true or false): videoPlaying = true;
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="lesson-objects-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">5. Another value: objects!</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Let's move on to a fourth type of value, objects!
+              </p>
+              <p>
+                Objects in JavaScript hold your data.
+              </p>
+              <p>
+                In your code, effects and movie are both objects.
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="modal fade" id="object222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog2">
           <div class="modal-content">
             <div class="modal-header instruct-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
               <h4 class="modal-title">Objects...</h4>
             </div>
             <div class="modal-body instruct-body">
               <p>
-                A object in javascript can be anything!
+                An object in javascript can be anything!
                 <br>
                 <br>
                 In the case of our VidCode these words, such as “movie”, are containers to allow instructions to be applied to the “movie”.
@@ -184,16 +332,17 @@
           <div class="modal-content">
             <div class="modal-header instruct-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">Your movie!</h4>
+              <h4 class="modal-title">5a. Your movie!</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
             </div>
             <div class="modal-body instruct-body">
               <p>
                 The word "movie" is an object that uses the canvas element in HTML5 to play your video.
-                <br>
-                <br>
+              </p>
+              <p>
                 Remember, an object is just a word that contains data under the hood.
-                <br>
-                <br>
+              </p>
+              <p>
                 With code, and computers, there are many things happening "behind the scenes" which we don't see.
               </p>
               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
@@ -207,17 +356,12 @@
           <div class="modal-content">
             <div class="modal-header instruct-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">So many effects!</h4>
+              <h4 class="modal-title">5b. So many effects!</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
             </div>
             <div class="modal-body instruct-body">
               <p>
-                The word "effects" is an object that contains ALL the effects.
-                <br>
-                <br>
-                You have three effects in your demo.
-                <br>
-                <br>
-                These live in a hidden "list" within the "effects" object.
+                The word effects is an object that keeps track of all of the effects you can apply to your video, such as blur and vignette.
               </p>
               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
             </div>
@@ -225,42 +369,36 @@
         </div>
       </div>
 
-      <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog2">
-          <div class="modal-content">
-            <div class="modal-header instruct-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">So many effects!</h4>
-            </div>
-            <div class="modal-body instruct-body">
-              <p>
-                The word "effects" is an object that contains ALL the effects.
-                <br>
-                <br>
-                You have three effects in your demo.
-                <br>
-                <br>
-                These live in a hidden "list" within the "effects" object.
-              </p>
-              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog2">
           <div class="modal-content">
             <div class="modal-header instruct-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">Functions are actions</h4>
+              <h4 class="modal-title">6. Functions</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
             </div>
             <div class="modal-body instruct-body">
               <p>
-                Functions are a HUGE piece of the computer programming pie.
-                <br>
-                <br>
-                A function is a set of arguments or intructions to run on a block of code.
+                A function is a an instruction. You can think of it like a verb.
+              </p>
+              <p>
+                Imagine if you were training your cat. If you gave your cat an obstacle course, and told her to complete it, your cat would probably be pretty confused.
+              </p>
+              <p>
+                But if instead, you broke it up into smaller instructions, and told her
+              </p>
+              <p>
+                'go down this slide'
+              </p>
+              <p>
+                it would be much less confusing.
+              </p>
+              <p>
+                Functions are kind of like that! Lots of smaller instructions to make coding easier.
+              </p>
+              <p>
+                play() is an example of a function.
               </p>
               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
             </div>
@@ -268,39 +406,17 @@
         </div>
       </div>
 
-      <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog2">
-          <div class="modal-content">
-            <div class="modal-header instruct-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">Functions are actions</h4>
-            </div>
-            <div class="modal-body instruct-body">
-              <p>
-                Functions are a HUGE piece of the computer programming pie.
-                <br>
-                <br>
-                A function is a set of arguments or intructions to run on a block of code.
-              </p>
-              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div class="modal fade" id="play222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog2">
           <div class="modal-content">
             <div class="modal-header instruct-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
-              <h4 class="modal-title">"play" is a function...</h4>
+              <h4 class="modal-title">6a. play() is a function</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
             </div>
             <div class="modal-body instruct-body">
               <p>
-                ...but it's called a <em>method</em>.
-                <br>
-                <br>
-                It tells the movie object to play.  It's called a method, not a function, because it is applied <em>directly</em> to a object via the dot "." thing.
+                When you type 'play()' or 'pause()' after the word movie, you are sending a function (a verb!) directly to the movie object.
               </p>
               <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
             </div>

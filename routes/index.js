@@ -37,6 +37,10 @@ exports.intro = function (db) {
   }
 };
 
+exports.signin = function (req, res) {
+  res.render('signin', { title: 'VidCode' });
+};
+
 exports.oldDemo2 = function (req, res) {
   res.render('oldDemo2', { title: 'VidCode' });
 };
