@@ -291,7 +291,7 @@ exports.igCB = function (req, res) {
     if(next_page && (pages<5)){
       igApiCall(next_page);
     } else {
-      urls = urlsVid.concat(urlsImg);
+      urls = urlsVid;
       for (var i=0; i<urls.length; i++) {
         url = urls[i];
         var ix = url.lastIndexOf('.');
