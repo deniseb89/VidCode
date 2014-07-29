@@ -230,7 +230,7 @@ exports.upload = function (req, res) {
 };
 
 exports.igCB = function (req, res) {
-
+  console.log('hitting IG callback');
   if (req.user){
     
     fs.mkdir('./video/', function () {
