@@ -83,25 +83,23 @@ target="hidden_iframe" onsubmit="submitted=true;">
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
 <div dir="ltr" class="ss-item ss-item-required ss-radio"><div class="ss-form-entry">
 <label class="ss-q-item-label" for="entry_106681868"><div class="ss-q-title">Who are you?
-<label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
-<span class="ss-required-asterisk">*</span></div>
+</div>
 <div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
 
-<ul class="ss-choices" role="radiogroup" aria-label="Who are you?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1552866269" value="I&#39;m a teen" id="group_1552866269_1" role="radio" class="ss-q-radio" aria-label="I&#39;m a teen" required="" aria-required="true"></span>
+<ul class="ss-choices" role="radiogroup" aria-label="Who are you?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1552866269" value="I&#39;m a teen" id="group_1552866269_1" role="radio" class="ss-q-radio" aria-label="I&#39;m a teen"></span>
 <span class="ss-choice-label">I&#39;m a teen</span>
-</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1552866269" value="I&#39;m a parent" id="group_1552866269_2" role="radio" class="ss-q-radio" aria-label="I&#39;m a parent" required="" aria-required="true"></span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1552866269" value="I&#39;m a parent" id="group_1552866269_2" role="radio" class="ss-q-radio" aria-label="I&#39;m a parent"></span>
 <span class="ss-choice-label">I&#39;m a parent</span>
-</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1552866269" value="I&#39;m an educator" id="group_1552866269_3" role="radio" class="ss-q-radio" aria-label="I&#39;m an educator" required="" aria-required="true"></span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1552866269" value="I&#39;m an educator" id="group_1552866269_3" role="radio" class="ss-q-radio" aria-label="I&#39;m an educator"></span>
 <span class="ss-choice-label">I&#39;m an educator</span>
-</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1552866269" value="Other" id="group_1552866269_4" role="radio" class="ss-q-radio" aria-label="Other" required="" aria-required="true"></span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1552866269" value="Other" id="group_1552866269_4" role="radio" class="ss-q-radio" aria-label="Other"></span>
 <span class="ss-choice-label">Other</span>
 </label></li></ul>
 <div class="error-message" id="106681868_errorMessage"></div>
 <div class="required-message">This is a required question</div></div></div></div>
-<input type="hidden" name="draftResponse" value="[,,&quot;6259582235793254119&quot;]
+<input type="hidden" name="draftResponse" value="[,,&quot;3372643136384260838&quot;]
 ">
 <input type="hidden" name="pageHistory" value="0">
-
 
 <input type="hidden" name="fbzx" value="6259582235793254119">
 
@@ -128,7 +126,38 @@ target="hidden_iframe" onsubmit="submitted=true;">
 <script type="text/javascript">H5F.setup(document.getElementById('ss-form'));
           _initFormViewer(
             "[100,\x22#CCC\x22,[]\n]\n");</script>
+            <script>
+            readCookie();
 
+function readCookie() {
+     if (document.cookie == "") {
+     	//brand new visitor. Do nothing
+     } else {
+    // window.location.replace('/intro');
+    var the_cookie = document.cookie;
+    the_cookie = unescape(the_cookie);
+    the_cookie_split = the_cookie.split(";");
+    for (loop=0;loop<the_cookie_split.length;loop++) {
+        var part_of_split = the_cookie_split[loop];
+        var find_name = part_of_split.indexOf("nfti_date")
+        if (find_name!=-1) {
+            break;
+        } // Close if
+    } // Close for
+    if (find_name==-1) {
+    } else {
+    	var seconds_in_a_day = 86400000;
+    	var seconds_in_a_week = 7 * seconds_in_a_day;
+        var date_split = part_of_split.split("=");
+        var last = date_split[1];
+        var last2 = new Date(last);
+        var last2Num = last2.getTime();
+        var today = new Date();
+        var todayNum = today.getTime();
+        var timePassed = todayNum - last2Num;
+    } // Close if (find_name==-1)
+      }
+} // Close function readCookie()
 
-<script>    mixpanel.track_forms("#signup-form", "Signup Submitted" );</script>
+            </script>
             </div></body></html>

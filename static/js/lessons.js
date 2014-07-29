@@ -60,7 +60,7 @@ $( document ).ready(function() {
 
 
 	$('.sample-vid').click(function(){
-    mixpanel.track('Selected a video');
+    mixpanel.track('Selected a sample video');
 		var thisSrc = $(this).attr('src');
 		$('.vid-placeholder').addClass('is-hidden');
 		$('.loader').removeClass('is-hidden');

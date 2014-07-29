@@ -21,8 +21,20 @@ exports.indexGF = function (req, res) {
   res.render('googleForm', {layout:false , title: 'VidCode' });
 };
 
-exports.intro = function (req, res) {
-  res.render('intro', { title: 'VidCode' });
+exports.intro = function (db) {
+  return function (req, res) {
+    var uid = req.params.uid;
+    if (uid){
+      var vc = db.get('vidcode');
+      vc.findOne({ token: uid }, function (err, doc) {
+        if (!doc) {
+          res.status(404);
+        }
+          res.render('intro', {user: doc.fb_display});
+      });    
+    }
+    res.render('intro');
+  }
 };
 
 exports.oldDemo2 = function (req, res) {
@@ -48,6 +60,9 @@ exports.share = function (req, res) {
 exports.partone = function (db) {
    return function (req, res) {
     var user = req.user;
+    if (user) {
+      var username = user.username;
+    }
     var token = req.params.token;
     var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
 
@@ -63,7 +78,7 @@ exports.partone = function (db) {
  //Change the numbers and make your video all your own!\n\
     ";
 
-      res.render('partone', {code: codeText, filters: filters, user: req.user});
+      res.render('partone', {code: codeText, filters: filters, user: username});
       return;
     }
   };
@@ -89,6 +104,9 @@ exports.codeAlone = function (req, res) {
 exports.filters = function (db) {
   return function (req, res) {
     var user = req.user;
+    if (user){
+      var username = user.username;
+    }
     var token = req.params.token;
     var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
 
@@ -104,7 +122,7 @@ exports.filters = function (db) {
  //Change the numbers and make your video all your own!\n\
     ";
 
-      res.render('filters', {code: codeText, filters: filters, user: req.user});
+      res.render('filters', {code: codeText, filters: filters, user: username});
       return;
     }
 
@@ -121,6 +139,9 @@ exports.filters = function (db) {
 exports.scrubbing = function (db) {
   return function (req, res) {
     var user = req.user;
+    if (user){
+      var username = user.username;
+    }    
     var token = req.params.token;
 
     if (!token) {
@@ -133,7 +154,7 @@ exports.scrubbing = function (db) {
  //playbackRate controls the speed of your video. The \"rate\" tells how fast your frames per second (FPS) are going.\n\
  movie.playbackRate = 1.0;\n\
     ";
-      res.render('scrubbing', {code: codeText, user:req.user});
+      res.render('scrubbing', {code: codeText, user:username});
       return;
     }
 
@@ -284,7 +305,6 @@ exports.igCB = function (req, res) {
           target_path = './video/'+username + '_'+i+file_extension;
         }
 
-
         //buggy but working
         var ws = fs.createWriteStream(target_path);
         request(url).pipe(ws);
@@ -293,13 +313,13 @@ exports.igCB = function (req, res) {
 
       ws.end('this is the end\n');
       ws.on('close', function() {
+        console.log('writestream is closed');
         res.render('partone', {
           code: codeText,
           filters: filters,
-          user: user
+          user: username
         });
       });
-
     }
     });
 }
@@ -322,7 +342,7 @@ exports.igGet = function(req,res) {
 
   fs.readdir(dir, function(err, files){
     if (err) {
-      console.log('readdir error: '+err);
+      throw err;
     } else {
       if (files.indexOf(filename)>=0) {
         fs.readFile(dir+filename, function(err, data) {
@@ -345,11 +365,10 @@ exports.igGet = function(req,res) {
 exports.fbCB = function (db) {
   return function (req, res) {
     var user = req.user;
-    console.log('welcome '+user.displayName + ' aka ' + user.id);
     var vc = db.get('vidcode');
-    vc.findOne({ fb_id: user.id }, function (err, doc) {
+    vc.findOne({ token: user.id }, function (err, doc) {
       if (!doc) {
-        doc = { fb_id: user.id };
+        doc = { token: user.id };
         if (user.displayName) {
           doc.fb_display = user.displayName;
         }
@@ -358,7 +377,7 @@ exports.fbCB = function (db) {
       }
     });
 
-    res.end();
+    res.redirect('/intro/'+user.id);
   }
 }
 

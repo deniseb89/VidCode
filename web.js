@@ -80,13 +80,13 @@ app.set('view engine', '.html');
 
 // configure express routes
 var routes = require('./routes');
-app.get('/',routes.index);
+app.get('/',routes.indexGF);
 app.get('/1',routes.index);
 app.get('/2',routes.index2);
 app.get('/3',routes.index3);
 app.get('/g',routes.indexG);
 app.get('/googleForm',routes.indexGF);
-app.get('/intro', routes.intro);
+app.get('/intro/:uid?', routes.intro(db));
 app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);
