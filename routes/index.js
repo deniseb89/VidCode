@@ -231,17 +231,8 @@ exports.upload = function (req, res) {
 
 exports.igCB = function (req, res) {
   console.log('hitting IG callback');
-  if (req.user){
-    
-    fs.mkdir('./video/', function () {
-      fs.readdir('./video/', function(err, files){
-        for (var i=0; i<files.length; i++) {
-          fs.unlink('./video/'+files[i]);
-        }
-      });
-    });    
-
-    var user = req.user;
+  var user = req.user;
+  if (user){
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
     var token = user.accessToken;
     var username = user.username;

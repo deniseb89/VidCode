@@ -53,7 +53,6 @@ $(document).ready(function () {
   	slideRight('.js-slide3', '.js-slide4');
   });
 
-
   $('.js-slide1-left').click(function(){
   	slideLeft('.js-slide1', '.js-slide2');
   });
@@ -65,6 +64,11 @@ $(document).ready(function () {
   $('.js-slide3-left').click(function(){
   	slideLeft('.js-slide3', '.js-slide4');
   });
+
+  $('#mix-finish-tour').click(function(){
+    mixpanel.track("Finished the Tour" );
+  });  
+
 
 });
 
