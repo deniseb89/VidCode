@@ -231,14 +231,23 @@ exports.upload = function (req, res) {
 
 exports.igCB = function (req, res) {
   console.log('hitting instagram cb');
-  // fs.mkdir('./video/', function () {
-  //   fs.readdir('./video/', function(err, files){
-  //     for (var i=0; i<files.length; i++) {
-  //       fs.unlink('./video/'+files[i]);
-  //     }
-  //   });
-  // });
+  fs.mkdir('./video/', function () {
+    fs.readdir('./video/', function(err, files){
+      for (var i=0; i<files.length; i++) {
+        fs.unlink('./video/'+files[i]);
+      }
+    });
+  });
 
+  fs.mkdir('./img/', function (){
+    fs.readdir('./img/', function(err, files){
+      if (err) {console.log(err);}
+      for (var i=0; i<files.length; i++) {
+        fs.unlink('./img/'+files[i]);
+      }
+    });
+  });
+  
   if (req.user){
     var user = req.user;
     var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";

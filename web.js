@@ -46,8 +46,8 @@ passport.deserializeUser(function(obj, done) {
 
 passport.use(new InstagramStrategy({
     clientID: config.INSTAGRAM_CLIENT_ID,
-    clientSecret: config.INSTAGRAM_CLIENT_SECRET,    
-    callbackURL: config.INSTAGRAM_CB
+    clientSecret: config.INSTAGRAM_CLIENT_SECRET,
+    callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
