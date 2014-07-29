@@ -11,10 +11,9 @@ $( document ).ready(function() {
 
   function loadThumbnail(){
     var username = $('#username').text();
-    console.log('user: ' + username);
     var thumbnail0 = document.getElementById('js-fetch-vid0');
     var n = thumbnail0.getAttribute("name");
-    $.ajax('/instagram/0',{
+    $.ajax('/instagram/'+username+'_'+n,{
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid0').removeClass('is-hidden');                    
           thumbnail0.src = "data:video/mp4;base64,"+data;
@@ -22,7 +21,7 @@ $( document ).ready(function() {
           }, false);
         },
         error: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid0').addClass('is-hidden');
+          $('#js-fetch-vid0').parent().addClass('is-hidden');
           $('.loader').addClass('is-hidden');
           $('.i-error').text("You don't have any Instagram videos :(");
         }
@@ -38,7 +37,7 @@ $( document ).ready(function() {
           }, false);
         },
         error: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid1').addClass('is-hidden');          
+          $('#js-fetch-vid1').parent().addClass('is-hidden');          
           $('.loader').addClass('is-hidden');
         }
       })
@@ -53,7 +52,7 @@ $( document ).ready(function() {
           }, false);
         },
         error: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid2').addClass('is-hidden');          
+          $('#js-fetch-vid2').parent().addClass('is-hidden');          
           $('.loader').addClass('is-hidden');
         }
       })
@@ -61,6 +60,7 @@ $( document ).ready(function() {
 
 
 	$('.sample-vid').click(function(){
+    mixpanel.track('Selected a video');
 		var thisSrc = $(this).attr('src');
 		$('.vid-placeholder').addClass('is-hidden');
 		$('.loader').removeClass('is-hidden');
@@ -71,12 +71,13 @@ $( document ).ready(function() {
 	});
 
 	$('.js-fetch-vid').click(function(){
+    var username = $('#username').text();    
     $('.vid-placeholder').addClass('is-hidden');    
 		$('.loader').removeClass('is-hidden');
     $(this).addClass('js-selected-video');
 		//go get video based on # in quadrant
 		var n = $(this).attr("name");
-		$.ajax('/instagram/'+n,{
+		$.ajax('/instagram/'+username+'_'+n,{
 	      success: function(data, textStatus, jqXHR){
 			movie.addEventListener("loadeddata", showVid, false);
 	        movie.src="data:video/mp4;base64,"+data;

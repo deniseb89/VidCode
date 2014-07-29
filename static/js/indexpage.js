@@ -42,6 +42,7 @@ $(document).ready(function () {
   //Intro Page Slider
   $('.js-slide2-right').click(function(){
   	slideRight('.js-slide1', '.js-slide2');
+    mixpanel.track('Started the Tour');
   });
 
   $('.js-slide3-right').click(function(){

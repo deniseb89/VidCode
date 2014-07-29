@@ -1,32 +1,3 @@
-     <script>
-    //   window.fbAsyncInit = function() {
-    //     FB.init({
-    //       appId      : '316757878488178',
-    //       xfbml      : true,
-    //       version    : 'v2.0'
-    //     });
-
-    //     FB.getLoginStatus(function(response) {
-    //       if (response.status === 'connected') {
-    //         console.log('Logged in.');
-    //       }
-    //       else {
-    //         FB.login();
-    //       }
-    //     });
-
-    //   };
-
-    //   (function(d, s, id){
-    //      var js, fjs = d.getElementsByTagName(s)[0];
-    //      if (d.getElementById(id)) {return;}
-    //      js = d.createElement(s); js.id = id;
-    //      js.src = "//connect.facebook.net/en_US/sdk/debug.js";
-    //      // js.src = "//connect.facebook.net/en_US/sdk.js";
-    //      fjs.parentNode.insertBefore(js, fjs);
-    //    }(document, 'script', 'facebook-jssdk'));
-
-     </script>
 
 <div class="container-fluid">
 <!-- Google Chrome DL instruction -->
@@ -56,17 +27,18 @@
         <div class="circle bg2 js-fade is-hidden"></div>
         <div class="circle bg3 js-fade is-hidden"></div>
       </div>
-      <div class="95width">
-        <div class="js-slide2-right btn btn-primary right">Take the tour</div>
-        <a class="skipbtn" href="/lesson/1">Skip the tour</a>
-      </div>
+
+
+      <div class="js-slide2-right btn btn-primary right" id="mix-tour">Take the tour</div>
+      <a class="skipbtn" id="mix-skip-tour" href="/lesson/1">Skip the tour</a>
+
     </div>
 
     <div class="js-slide2 is-hidden">
       <h1>Drag & drop filters into the code editor</h1>
       <div class="img_crop cropZero">
 
-        <img src="img/drag.gif">
+        <img src="/img/drag.gif">
       </div>
       <div class="95width">
         <button class="btn btn-primary left js-slide1-left">Prev</button>
@@ -78,7 +50,7 @@
       <h1>Check out the Learn More section</h1>
       <div class="img_crop cropOne">
 
-        <img src="img/learnmore.gif">
+        <img src="/img/learnmore.gif">
       </div>
       <div class="95width">
         <button class="btn btn-primary left js-slide2-left">Prev</button>
@@ -89,14 +61,18 @@
     <div class="js-slide4 is-hidden">
       <h1>Share your creation!</h1>
       <div class="img_crop cropTwo">
-        <img src="img/export.gif">
+        <img src="/img/export.gif">
       </div>
 
       <button class="btn btn-primary left js-slide3-left">Prev</button>
+<<<<<<< HEAD
 
       <div class="95width">
         <a class="right" href="/lesson/1"><button class="btn btn-primary">Let's Get Started!</button></a>
       </div>
+=======
+      <a class="right" href="/lesson/1"><button class="btn btn-primary" id="mix-finish-tour">Let's Get Started!</button></a>
+>>>>>>> 9579a714766ecd4e2b3a5c6356e78d58fddd5e5a
     </div>
 
 
@@ -104,3 +80,12 @@
 </div>
 
 <script src="/js/indexpage.js"></script>
+<script>
+
+  mixpanel.track_links("#mix-skip-tour", "Tour Skipped" );
+  mixpanel.track_links("#mix-finish-tour", "Finished the Tour" );
+  mixpanel.track('Intro page viewed', {
+    'page name' : document.title,
+    'url' : window.location.pathname
+});
+</script>

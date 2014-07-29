@@ -471,6 +471,10 @@
     mixpanel.track_links("#mix-again", "Try It Again clicked" );
     mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
     mixpanel.track_links("#tooltip-stop-4", "I'm Done clicked" );
+      mixpanel.track('Main UI page viewed', {
+    'page name' : document.title,
+    'url' : window.location.pathname
+});
     // mixpanel.track_links("#objectsLM", "Movie Learn More clicked" );
     // mixpanel.track_links("#movie", "Movie Learn More clicked" );
     // mixpanel.track_links("#effects", "Effects Learn More clicked" );
