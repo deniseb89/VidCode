@@ -307,10 +307,18 @@ exports.igCB = function (req, res) {
         });
       });
     }
+
+
     });
 }
   igApiCall(next_max_id);
+  } else {
+    res.render('partone', {
+    code: codeText,
+    filters: filters
+  });    
   }
+
 };
 
 exports.igGet = function(req,res) {

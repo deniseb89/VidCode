@@ -4,7 +4,7 @@ $( document ).ready(function() {
   var tnExist = thumbnails[0];
 
   if (tnExist) {
-      var delay=1;
+      var delay=1000;
       setTimeout(loadThumbnail,delay);
       // loadThumbnail();
   };
