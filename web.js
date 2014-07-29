@@ -45,12 +45,12 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new InstagramStrategy({
-    clientID: config.INSTAGRAM_CLIENT_ID_LOCAL,
-    clientSecret: config.INSTAGRAM_CLIENT_SECRET_LOCAL,
-    callbackURL: config.INSTAGRAM_CB_LOCAL
-    // clientID: config.INSTAGRAM_CLIENT_ID,
-    // clientSecret: config.INSTAGRAM_CLIENT_SECRET,    
-    // callbackURL: "config.INSTAGRAM_CB
+    // clientID: config.INSTAGRAM_CLIENT_ID_LOCAL,
+    // clientSecret: config.INSTAGRAM_CLIENT_SECRET_LOCAL,
+    // callbackURL: config.INSTAGRAM_CB_LOCAL
+    clientID: config.INSTAGRAM_CLIENT_ID,
+    clientSecret: config.INSTAGRAM_CLIENT_SECRET,    
+    callbackURL: config.INSTAGRAM_CB
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...

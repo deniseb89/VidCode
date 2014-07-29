@@ -230,22 +230,13 @@ exports.upload = function (req, res) {
 };
 
 exports.igCB = function (req, res) {
-  fs.mkdir('./video/', function () {
-    fs.readdir('./video/', function(err, files){
-      for (var i=0; i<files.length; i++) {
-        fs.unlink('./video/'+files[i]);
-      }
-    });
-  });
-
-  fs.mkdir('./img/', function (){
-    fs.readdir('./img/', function(err, files){
-      if (err) {console.log(err);}
-      for (var i=0; i<files.length; i++) {
-        fs.unlink('./img/'+files[i]);
-      }
-    });
-  });
+  // fs.mkdir('./video/', function () {
+  //   fs.readdir('./video/', function(err, files){
+  //     for (var i=0; i<files.length; i++) {
+  //       fs.unlink('./video/'+files[i]);
+  //     }
+  //   });
+  // });
 
   if (req.user){
     var user = req.user;
@@ -311,13 +302,11 @@ exports.igCB = function (req, res) {
 
         //buggy but working
         var ws = fs.createWriteStream(target_path);
-        request(url).pipe(ws);
+        var piping = request(url).pipe(ws);
         // error catch
       }
 
-      ws.end('this is the end\n');
-      ws.on('close', function() {
-        console.log('writestream is closed');
+      ws.on('finish', function() {
         res.render('partone', {
           code: codeText,
           filters: filters,
@@ -330,15 +319,6 @@ exports.igCB = function (req, res) {
   igApiCall(next_max_id);
   }
 };
-
-// exports.getThumb = function(req,res){
-//   var files = fs.readdirSync('./video/');
-//   var rs = fs.createReadStream('./video/'+files[0]);
-//   rs.on('end', function() {
-//     console.log('no more data.');
-//     rs.pipe(res);
-//   });
-// };
 
 exports.igGet = function(req,res) {
   var dir = './video/';
@@ -359,7 +339,6 @@ exports.igGet = function(req,res) {
           }          
         });           
       } else {
-        console.log(filename+' doesnt exist');
         res.send(500);
       }
     }

@@ -4,7 +4,7 @@ $( document ).ready(function() {
   var tnExist = thumbnails[0];
 
   if (tnExist) {
-      var delay=1000;
+      var delay=1;
       setTimeout(loadThumbnail,delay);
       // loadThumbnail();
   };
@@ -29,7 +29,7 @@ $( document ).ready(function() {
 
     var thumbnail1 = document.getElementById('js-fetch-vid1');
     var n = thumbnail1.getAttribute("name");
-    $.ajax('/instagram/1',{
+    $.ajax('/instagram/'+username+'_'+n,{
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid1').removeClass('is-hidden');          
           thumbnail1.src = "data:video/mp4;base64,"+data;
@@ -44,7 +44,7 @@ $( document ).ready(function() {
 
     var thumbnail2 = document.getElementById('js-fetch-vid2');
     var n = thumbnail2.getAttribute("name");
-    $.ajax('/instagram/2',{
+    $.ajax('/instagram/'+username+'_'+n,{
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid2').removeClass('is-hidden');          
           thumbnail2.src = "data:video/mp4;base64,"+data;
