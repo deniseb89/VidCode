@@ -14,8 +14,9 @@
     "node": "0.10.x",
     "npm": "1.4.3"
   },
-  "dependencies": {  
-    "express": "3.5",
+  "dependencies": {
+    "body-parser": "1.5.2",  
+    "express": "4.7.x",
     "express3-handlebars": "~0.5.0",
     "fileupload": "~0.3.0",
     "crx": "~0.4.1",
