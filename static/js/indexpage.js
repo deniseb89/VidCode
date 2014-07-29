@@ -66,6 +66,10 @@ $(document).ready(function () {
   	slideLeft('.js-slide3', '.js-slide4');
   });
 
+  $('#mix-finish-tour').click(function(){
+    mixpanel.track_links("#mix-finish-tour", "Finished the Tour" );
+  });
+
 });
 
 var slideRight = function(oldSlide, newSlide){
