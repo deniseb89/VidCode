@@ -600,7 +600,7 @@ canvas{vertical-align: bottom;}
 
 .draggable {
     position: relative;
-    z-index: 1000;
+    z-index: 1;
     text-align: left!important;
     background-color: rgba(49, 150, 101, .9)!important;
     font-weight: 700!important;
