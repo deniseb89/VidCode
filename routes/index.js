@@ -351,18 +351,20 @@ exports.fbCB = function (db) {
     var user = req.user;
     console.log('welcome '+user.displayName + ' aka ' + user.id);
     var vc = db.get('vidcode');
-    vc.findOne({ fb_id: user.id }, function (err, doc) {
+    vc.findOne({ id: user.id , social: "facebook"}, function (err, doc) {
       if (!doc) {
-        doc = { fb_id: user.id };
+        doc = { id: user.id };
         if (user.displayName) {
           doc.fb_display = user.displayName;
         }
+        doc.social = "facebook";
         vc.insert(doc);
         console.log('new mongo FB doc for: '+doc.fb_display);
+      } else {
+        console.log('found doc in mongo for: '+doc.fb_display);
       }
+      res.send(doc);
     });
-
-    res.end();
   }
 }
 
