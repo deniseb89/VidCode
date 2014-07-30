@@ -5,24 +5,15 @@ exports.index = function (req, res) {
   res.render('index', {layout:false , title: 'VidCode' });
 };
 
-exports.index2 = function (req, res) {
-  res.render('index2', {layout:false , title: 'VidCode' });
-};
-
-exports.index3 = function (req, res) {
-  res.render('index3', {layout:false , title: 'VidCode' });
-};
-
-exports.indexG = function (req, res) {
-  res.render('indexG', {layout:false , title: 'VidCode' });
-};
-
 exports.indexGF = function (req, res) {
   res.render('googleForm', {layout:false , title: 'VidCode' });
 };
 
-exports.intro = function (req, res) {
-  res.render('intro', { title: 'VidCode' });
+exports.intro = function (db) {
+  return function (req, res) {
+    var user = req.user;
+    res.render('intro', {user: user});
+  }
 };
 
 exports.signin = function (req, res) {
@@ -151,19 +142,19 @@ exports.scrubbing = function (db) {
   };
 };
 
-exports.save = function (db, crypto) {
-  return function (req, res) {
-    var code = req.body.codemirror;
-    var token = req.body.token;
+// exports.save = function (db, crypto) {
+//   return function (req, res) {
+//     var code = req.body.codemirror;
+//     var token = req.body.token;
 
-    if (!token) {
-      token = generateToken(crypto);
-      save(db, token, token, code);
-    }
+//     if (!token) {
+//       token = generateToken(crypto);
+//       save(db, token, token, code);
+//     }
 
-    res.redirect('/filters/' + token);
-  };
-};
+//     res.redirect('/filters/' + token);
+//   };
+// };
 
 exports.upload = function (req, res) {
   var filename = req.files.file.name;
@@ -208,117 +199,98 @@ exports.upload = function (req, res) {
   }
 };
 
-exports.igCB = function (req, res) {
-  fs.mkdir('./video/', function () {
-    fs.readdir('./video/', function(err, files){
-      for (var i=0; i<files.length; i++) {
-        fs.unlink('./video/'+files[i]);
-      }
-    });
-  });
-
-  fs.mkdir('./img/', function (){
-    fs.readdir('./img/', function(err, files){
-      if (err) {console.log(err);}
-      for (var i=0; i<files.length; i++) {
-        fs.unlink('./img/'+files[i]);
-      }
-    });
-  });
-
-  if (req.user){
-    var user = req.user;
-    var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
-    var token = user.accessToken;
-    var username = user.username;
-    var media_json,
-        media,
-        url,
-        target_path,
-        next_max_id="",
-        pages=0;
-        urls=[];
-        urlsVid=[];
-        urlsImg=[];
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
-    var codeText =
-"\
- \n\
- //This line of code makes your movie play!\n\
- movie.play();\n\
-\n\
- //The code below lets you add, remove, and alter your video filters.\n\
- //Change the numbers and make your video all your own!\n\
-    ";
- function igApiCall(next_page){
-    request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
-      if(!err){
-        pages++;
-        media_json= JSON.parse(body);
-        // res.send(media_json);
-        // return;
-        next_page = media_json.pagination.next_max_id;
-        media = media_json.data;
-        var item;
-        var i = 0;
-
-        for (var i=0; i < media.length; i++){
-          item = media[i];
-          if (item.hasOwnProperty("videos")&&(urlsVid.length<4)) {
-            urlsVid.push(item.videos.standard_resolution.url);
-          } else if (item.hasOwnProperty("images")&&(urlsImg.length<4)){
-            urlsImg.push(item.images.standard_resolution.url);
-          }
+exports.igCB = function (db) {
+  return function (req, res) {
+    fs.mkdir('./video/', function () {
+      fs.readdir('./video/', function(err, files){
+        for (var i=0; i<files.length; i++) {
+          fs.unlink('./video/'+files[i]);
         }
-      } else {
-        res.send('error with Instagram API');
-        return;
-      }
-    if(next_page && (pages<5)){
-      igApiCall(next_page);
-    } else {
-      urls = urlsVid.concat(urlsImg);
-      for (var i=0; i<urls.length; i++) {
-        url = urls[i];
-        var ix = url.lastIndexOf('.');
-        var file_extension = (ix < 0) ? '' : url.substr(ix);
-        if(file_extension == '.jpg'){
-          target_path = './img/'+username + '_'+i+file_extension;
-        } else if (file_extension == '.mp4'){
-          target_path = './video/'+username + '_'+i+file_extension;
-        }
-
-
-        //buggy but working
-        var ws = fs.createWriteStream(target_path);
-        request(url).pipe(ws);
-        // error catch
-      }
-
-      ws.end('this is the end\n');
-      ws.on('close', function() {
-        res.render('partone', {
-          code: codeText,
-          filters: filters,
-          user: user
-        });
       });
-
-    }
     });
-}
-  igApiCall(next_max_id);
-  }
-};
 
-// exports.getThumb = function(req,res){
-//   var files = fs.readdirSync('./video/');
-//   var rs = fs.createReadStream('./video/'+files[0]);
-//   rs.on('end', function() {
-//     console.log('no more data.');
-//     rs.pipe(res);
-//   });
-// };
+    fs.mkdir('./img/', function (){
+      fs.readdir('./img/', function(err, files){
+        if (err) {console.log(err);}
+        for (var i=0; i<files.length; i++) {
+          fs.unlink('./img/'+files[i]);
+        }
+      });
+    });
+
+    if (req.user){
+      var user = req.user;
+      var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
+      var token = user.accessToken;
+      var username = user.username;
+      var uid = user.id;
+      var media_json,
+          media,
+          url,
+          target_path,
+          next_max_id="",
+          pages=0;
+          urls=[];
+          urlsVid=[];
+          urlsImg=[];
+
+   function igApiCall(next_page){
+      request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
+        if(!err){
+          pages++;
+          media_json= JSON.parse(body);
+          next_page = media_json.pagination.next_max_id;
+          media = media_json.data;
+          var item;
+          var i = 0;
+
+          for (var i=0; i < media.length; i++){
+            item = media[i];
+            if (item.hasOwnProperty("videos")&&(urlsVid.length<4)) {
+              urlsVid.push(item.videos.standard_resolution.url);
+            } else if (item.hasOwnProperty("images")&&(urlsImg.length<4)){
+              urlsImg.push(item.images.standard_resolution.url);
+            }
+          }
+        } else {
+          res.send('error with Instagram API');
+          return;
+        }
+      if(next_page && (pages<5)){
+        igApiCall(next_page);
+      } else {
+        urls = urlsVid.concat(urlsImg);
+        for (var i=0; i<urls.length; i++) {
+          url = urls[i];
+          var ix = url.lastIndexOf('.');
+          var file_extension = (ix < 0) ? '' : url.substr(ix);
+          if(file_extension == '.jpg'){
+            target_path = './img/'+username + '_'+i+file_extension;
+          } else if (file_extension == '.mp4'){
+            target_path = './video/'+username + '_'+i+file_extension;
+          }
+
+          //buggy but working
+          var ws = fs.createWriteStream(target_path);
+          request(url).pipe(ws);
+          // error catch
+        }
+
+        ws.end('this is the end\n');
+        ws.on('close', function() {
+          var successcb = function(doc) {
+            res.render("intro", {user: doc.username});
+          };  
+          var user = req.user;
+          var doc = findOrCreate(db,uid, username,'instagram',successcb);
+        });
+      }
+    });
+  }
+    igApiCall(next_max_id);
+    }
+  };
+};
 
 exports.igGet = function(req,res) {
   var dir = './video/';
@@ -348,23 +320,11 @@ exports.igGet = function(req,res) {
 
 exports.fbCB = function (db) {
   return function (req, res) {
+    var successcb = function(doc) {
+      res.render("intro", {user: doc.username});
+    };  
     var user = req.user;
-    console.log('welcome '+user.displayName + ' aka ' + user.id);
-    var vc = db.get('vidcode');
-    vc.findOne({ id: user.id , social: "facebook"}, function (err, doc) {
-      if (!doc) {
-        doc = { id: user.id };
-        if (user.displayName) {
-          doc.fb_display = user.displayName;
-        }
-        doc.social = "facebook";
-        vc.insert(doc);
-        console.log('new mongo FB doc for: '+doc.fb_display);
-      } else {
-        console.log('found doc in mongo for: '+doc.fb_display);
-      }
-      res.send(doc);
-    });
+    var doc = findOrCreate(db,user.id, user.displayName,'facebook',successcb);
   }
 }
 
@@ -401,30 +361,26 @@ function generateToken(crypto) {
   return token;
 }
 
-function save(db, token, video, code) {
-  var vc = db.get('vidcode');
-  vc.findOne({ token: token }, function (err, doc) {
-    if (!doc) {
-      doc = { token: token };
-      if (video) {
-        doc.video = video;
+function findOrCreate(db, id, username, social, cb) {
+    var vc = db.get('vidcode');
+    vc.findOne({ id: id , social: social}, function (err, doc) {
+      if (!doc) {
+        //insert all the user info we care about
+        doc = { id: id };
+        if (username) {
+          doc.username = username;
+        }
+        if (social){
+          doc.social = social;        
+        }
+        vc.insert(doc);
+        console.log('new mongo doc for: '+doc.username);
+      } else {
+        console.log('found doc in mongo for: '+doc.username);
       }
-      if (code) {
-        doc.code = code;
-      }
-
-      vc.insert(doc);
-    } else {
-      if (video) {
-        doc.video = video;
-      }
-      if (code) {
-        doc.code = code;
-      }
-
-      vc.update(doc);
-    }
-  });
+      console.log(doc);
+      cb(doc);
+    });
 }
 
 function oc(a) {

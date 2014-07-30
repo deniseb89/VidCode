@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser')
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
@@ -47,7 +48,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new InstagramStrategy({
     clientID: config.INSTAGRAM_CLIENT_ID_LOCAL,
     clientSecret: config.INSTAGRAM_CLIENT_SECRET_LOCAL,
-    callbackURL: config.INSTAGRAM_CB_LOCAL
+    callbackURL: "http://localhost:8080/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -61,13 +62,10 @@ passport.use(new InstagramStrategy({
 var app = express();
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
-app.use(express.bodyParser({ keepExtensions: true, limit: '25mb', uploadDir: __dirname +'/vids' }));
-app.use(express.urlencoded());
-app.use(express.json());
-app.use(express.methodOverride());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(app.router);
 
 // configure express template engine
 var exphbs = require('express3-handlebars');
@@ -77,13 +75,9 @@ app.set('view engine', '.html');
 
 // configure express routes
 var routes = require('./routes');
-app.get('/',routes.index);
-app.get('/1',routes.index);
-app.get('/2',routes.index2);
-app.get('/3',routes.index3);
-app.get('/g',routes.indexG);
+app.get('/',routes.signin);
 app.get('/googleForm',routes.indexGF);
-app.get('/intro', routes.intro);
+app.get('/intro/:uid?', routes.intro(db));
 app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);
@@ -102,9 +96,9 @@ app.get('/lesson/4', routes.partfour);
 
 app.get('/codeAlone', routes.codeAlone);
 app.post('/upload', routes.upload);
-app.post('/save', routes.save(db, crypto));
+// app.post('/save', routes.save(db, crypto));
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
-app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB);
+app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
 
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});
 app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
