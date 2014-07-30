@@ -298,7 +298,6 @@ exports.igCB = function (req, res) {
           target_path = './video/'+username + '_'+i+file_extension;
         }
 
-
         //buggy but working
         var ws = fs.createWriteStream(target_path);
         request(url).pipe(ws);
@@ -332,7 +331,7 @@ exports.igGet = function(req,res) {
       if (files.indexOf(filename)>=0) {
         fs.readFile(dir+filename, function(err, data) {
           if (err) {
-            console.log(filename+' does not exit')
+            console.log(filename+' does not exist')
             res.send(500);
           } else {
             console.log('done reading '+filename);
