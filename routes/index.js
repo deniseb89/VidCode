@@ -1,5 +1,6 @@
 var fs = require('fs');
 var request = require('request');
+var session = require('express-session');
 
 exports.index = function (req, res) {
   res.render('index', {layout:false , title: 'VidCode' });
@@ -11,17 +12,22 @@ exports.indexGF = function (req, res) {
 
 exports.intro = function (db) {
   return function (req, res) {
-    var uid = req.params.uid;
-    if (uid){
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var id = user.id;
       var vc = db.get('vidcode');
-      vc.findOne({ token: uid }, function (err, doc) {
+      vc.findOne({ id: id, "social":social }, function (err, doc) {
         if (!doc) {
           res.status(404);
         }
-          res.render('intro', {user: doc.fb_display});
-      });    
+          res.render('intro', {user: doc});
+          return;
+      });      
+    } else {
+      // If there is no logged in user, we have a problem
+      res.render('intro');          
     }
-    res.render('intro');
   }
 };
 
@@ -45,21 +51,43 @@ exports.galleryshow = function (req, res) {
   res.render('galleryshow', {title: 'VidCode Gallery' });
 };
 
-exports.share = function (req, res) {
-  res.render('share');
+exports.share = function (db) {
+  return function (req, res){
+    var url = req.params.url;
+    if (!url){
+      res.render('share');
+      return;
+    }
+    var vc = db.get('vidcode');
+    vc.findOne({ "share.url" : url }, function (err, doc) {
+      if (!doc) {
+        res.status(404);
+      }
+        res.render('share', {video: doc.share.video});
+    });
+  }
+}
+
+exports.save = function (db,crypto) {
+   return function (req, res) {
+    var user = req.user;
+    if (user) {
+      var social = user.provider;
+      var uid = user.id;
+    }
+
+    var video = "/img/wha_color.mp4";    
+    //get the webm video. save it to the doc {user.id, user.provider}
+    //as share = { video: *.webm, url: token }
+    url = generateToken(crypto);
+    saveVideo(db, uid, social, url, video);
+    res.redirect('/share/' + url);
+  };
 };
 
 exports.partone = function (db) {
    return function (req, res) {
-    var user = req.user;
-    if (user) {
-      var username = user.username;
-    }
-    var token = req.params.token;
     var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
-
-    if (!token) {
-
     var codeText =
 "\
  \n\
@@ -70,8 +98,27 @@ exports.partone = function (db) {
  //Change the numbers and make your video all your own!\n\
     ";
 
-      res.render('partone', {code: codeText, filters: filters, user: username});
-      return;
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var uid = user.id;
+      var username = user.username;
+      var vc = db.get('vidcode');
+      // vc.findOne({ uid: uid, social:social }, function (err, doc) {
+      //   if (!doc) {
+      //     res.status(404);
+      //   }
+      //   console.log('doc: '+doc);
+      //     res.render('partone', {code: codeText, filters: filters, user: doc});
+      //     return;
+      // });
+      var successcb = function(doc) {
+        res.render("partone", {code: codeText, filters: filters, user: doc});
+      };  
+      var temp = findOrCreate(db,uid, username,social,successcb);
+      
+    } else {
+      res.render('partone', {code: codeText, filters: filters});          
     }
   };
 };
@@ -160,20 +207,6 @@ exports.scrubbing = function (db) {
   };
 };
 
-exports.save = function (db, crypto) {
-  return function (req, res) {
-    var code = req.body.codemirror;
-    var token = req.body.token;
-
-    if (!token) {
-      token = generateToken(crypto);
-      save(db, token, token, code);
-    }
-
-    res.redirect('/filters/' + token);
-  };
-};
-
 exports.upload = function (req, res) {
   var filename = req.files.file.name;
   var extensionAllowed = [".mp4", ".mov",".MOV"];
@@ -217,108 +250,99 @@ exports.upload = function (req, res) {
   }
 };
 
-exports.igCB = function (req, res) {
-  console.log('hitting instagram cb');
-  fs.mkdir('./video/', function () {
-    fs.readdir('./video/', function(err, files){
-      for (var i=0; i<files.length; i++) {
-        fs.unlink('./video/'+files[i]);
-      }
-    });
-  });
-
-  fs.mkdir('./img/', function (){
-    fs.readdir('./img/', function(err, files){
-      if (err) {console.log(err);}
-      for (var i=0; i<files.length; i++) {
-        fs.unlink('./img/'+files[i]);
-      }
-    });
-  });
-  
-  if (req.user){
-    var user = req.user;
-    var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
-    var token = user.accessToken;
-    var username = user.username;
-    var media_json,
-        media,
-        url,
-        target_path,
-        next_max_id="",
-        pages=0;
-        urls=[];
-        urlsVid=[];
-        urlsImg=[];
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
-    var codeText =
-"\
- \n\
- //This line of code makes your movie play!\n\
- movie.play();\n\
-\n\
- //The code below lets you add, remove, and alter your video filters.\n\
- //Change the numbers and make your video all your own!\n\
-    ";
- function igApiCall(next_page){
-    request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
-      if(!err){
-        pages++;
-        media_json= JSON.parse(body);
-        // res.send(media_json);
-        // return;
-        next_page = media_json.pagination.next_max_id;
-        media = media_json.data;
-        var item;
-        var i = 0;
-
-        for (var i=0; i < media.length; i++){
-          item = media[i];
-          if (item.hasOwnProperty("videos")&&(urlsVid.length<4)) {
-            urlsVid.push(item.videos.standard_resolution.url);
-          } else if (item.hasOwnProperty("images")&&(urlsImg.length<4)){
-            urlsImg.push(item.images.standard_resolution.url);
-          }
+exports.igCB = function (db) {
+  return function (req, res) {
+    fs.mkdir('./video/', function () {
+      fs.readdir('./video/', function(err, files){
+        for (var i=0; i<files.length; i++) {
+          fs.unlink('./video/'+files[i]);
         }
-      } else {
-        res.send('error with Instagram API');
-        return;
-      }
-    if(next_page && (pages<5)){
-      igApiCall(next_page);
-    } else {
-      urls = urlsVid.concat(urlsImg);
-      for (var i=0; i<urls.length; i++) {
-        url = urls[i];
-        var ix = url.lastIndexOf('.');
-        var file_extension = (ix < 0) ? '' : url.substr(ix);
-        if(file_extension == '.jpg'){
-          target_path = './img/'+username + '_'+i+file_extension;
-        } else if (file_extension == '.mp4'){
-          target_path = './video/'+username + '_'+i+file_extension;
-        }
-
-
-        //buggy but working
-        var ws = fs.createWriteStream(target_path);
-        request(url).pipe(ws);
-        // error catch
-      }
-
-      ws.end('this is the end\n');
-      ws.on('close', function() {
-        res.render('partone', {
-          code: codeText,
-          filters: filters,
-          user: username
-        });
       });
-
-    }
     });
-}
-  igApiCall(next_max_id);
-  }  
+
+    fs.mkdir('./img/', function (){
+      fs.readdir('./img/', function(err, files){
+        if (err) {console.log(err);}
+        for (var i=0; i<files.length; i++) {
+          fs.unlink('./img/'+files[i]);
+        }
+      });
+    });
+
+    if (req.user){
+      var user = req.user;
+      var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
+      var token = user.accessToken;
+      var username = user.username;
+      var uid = user.id;
+      var media_json,
+          media,
+          url,
+          target_path,
+          next_max_id="",
+          pages=0;
+          urls=[];
+          urlsVid=[];
+          urlsImg=[];
+
+   function igApiCall(next_page){
+      request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
+        if(!err){
+          pages++;
+          media_json= JSON.parse(body);
+          next_page = media_json.pagination.next_max_id;
+          media = media_json.data;
+          var item;
+          var i = 0;
+
+          for (var i=0; i < media.length; i++){
+            item = media[i];
+            if (item.hasOwnProperty("videos")&&(urlsVid.length<4)) {
+              urlsVid.push(item.videos.standard_resolution.url);
+            } else if (item.hasOwnProperty("images")&&(urlsImg.length<4)){
+              urlsImg.push(item.images.standard_resolution.url);
+            }
+          }
+        } else {
+          res.send('error with Instagram API');
+          return;
+        }
+      if(next_page && (pages<5)){
+        igApiCall(next_page);
+      } else {
+
+        urls = urlsVid.concat(urlsImg);
+        for (var i=0; i<urls.length; i++) {
+          url = urls[i];
+          var ix = url.lastIndexOf('.');
+          var file_extension = (ix < 0) ? '' : url.substr(ix);
+          if(file_extension == '.jpg'){
+            target_path = './img/'+username + '_'+i+file_extension;
+          } else if (file_extension == '.mp4'){
+            target_path = './video/'+username + '_'+i+file_extension;
+          }
+
+          //buggy but working
+          var ws = fs.createWriteStream(target_path);
+          request(url).pipe(ws);
+          // error catch
+        }
+
+        ws.end('this is the end\n');
+        ws.on('close', function() {
+          var successcb = function(doc) {
+            res.render("intro", {user: doc});
+          };  
+          var user = req.user;
+          var doc = findOrCreate(db,uid, username,'instagram',successcb);
+        });
+      }
+    });
+
+  }
+    igApiCall(next_max_id);
+    }
+  };
 };
 
 exports.igGet = function(req,res) {
@@ -327,20 +351,19 @@ exports.igGet = function(req,res) {
 
   fs.readdir(dir, function(err, files){
     if (err) {
-      throw err;
+      console.log('readdir error: '+err);
     } else {
       if (files.indexOf(filename)>=0) {
         fs.readFile(dir+filename, function(err, data) {
           if (err) {
-            console.log(filename+' does not exit')
             res.send(500);
           } else {
-            console.log('done reading '+filename);
             var base64Image = data.toString('base64');
             res.send(base64Image);
           }          
         });           
       } else {
+        console.log(filename+' doesnt exist');
         res.send(500);
       }
     }
@@ -349,20 +372,13 @@ exports.igGet = function(req,res) {
 
 exports.fbCB = function (db) {
   return function (req, res) {
+    var successcb = function(doc) {
+      //establish session
+      // console.log(req.session);
+      res.render("intro", {user: doc});
+    };  
     var user = req.user;
-    var vc = db.get('vidcode');
-    vc.findOne({ token: user.id }, function (err, doc) {
-      if (!doc) {
-        doc = { token: user.id };
-        if (user.displayName) {
-          doc.fb_display = user.displayName;
-        }
-        vc.insert(doc);
-        console.log('new mongo FB doc for: '+doc.fb_display);
-      }
-    });
-
-    res.redirect('/intro/'+user.id);
+    var doc = findOrCreate(db,user.id, user.displayName,'facebook',successcb);
   }
 }
 
@@ -399,31 +415,52 @@ function generateToken(crypto) {
   return token;
 }
 
-function save(db, token, video, code) {
-  var vc = db.get('vidcode');
-  vc.findOne({ token: token }, function (err, doc) {
-    if (!doc) {
-      doc = { token: token };
-      if (video) {
-        doc.video = video;
+function findOrCreate(db, id, username, social, cb) {
+    var vc = db.get('vidcode');
+    vc.findOne({ id: id , social: social}, function (err, doc) {
+      if (!doc) {
+        //insert all the user info we care about
+        doc = { id: id };
+        if (username) {
+          doc.username = username;
+        }
+        if (social){
+          doc.social = social;        
+        }
+        vc.insert(doc);
+        console.log('new mongo doc for: '+doc.username);
       }
-      if (code) {
-        doc.code = code;
-      }
-
-      vc.insert(doc);
-    } else {
-      if (video) {
-        doc.video = video;
-      }
-      if (code) {
-        doc.code = code;
-      }
-
-      vc.update(doc);
-    }
-  });
+        console.log('found mongo doc for: '+doc.username);
+      cb(doc);
+    });
 }
+
+function saveVideo(db, id, social, url, video) {
+  var vc = db.get('vidcode');
+  if (id && social){
+    vc.findOne({ id: id , social: social}, function (err, doc) {
+      if (!doc) {
+        doc = { id : id };
+        
+        if (video) {
+          doc.share = {video: video, url: url}
+        }
+        console.log('created new doc with'+video);
+        vc.insert(doc);
+      } else {
+        vc.update(doc, { $set: { share: {video: video, url: url }} });
+
+        console.log('updated doc with '+video);
+      }
+    });    
+  } else {
+    //no user logged in but we'll still save the video
+      doc = { share: {video: video, url: url} };
+      console.log('created new doc anonymously with' + video);
+      vc.insert(doc);
+  }
+}
+
 
 function oc(a) {
   var o = {};

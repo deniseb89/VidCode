@@ -17,7 +17,7 @@
 				<div class="vid-placeholder overlay">
 					<h3>Select a video below</h3>
 				</div>
-        <video class="video1 is-hidden" id="myvideo" src="/img/demo.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+        <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
         <canvas class="video2 is-hidden" id="canvas">
           </canvas>
         <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
@@ -219,9 +219,12 @@
     <div class="lesson-prompt">
   </div>
 
-	<div class="lesson-container centered-lesson">
+	<!-- <div class="lesson-container centered-lesson"> -->
 		<div class="links-holder">
-			<a class="link-one" id="mix-share" href="/share">Share Your Video</a>
+      <form method="post" action="/save">
+        <!-- <a class="link-one" id="mix-share" href="/share">Share Your Video</a> -->
+        <input type="submit" value="Share Your Video" class="link-one"/>
+      </form>
 			<a class="link-two js-slide-left-first" id="mix-again" href="/lesson/1">Try It Again</a>
 
 
@@ -543,7 +546,7 @@
         </div>
       </div>
 
-<h4 id="username" class="is-hidden">{{user}}</h4>
+<h4 id="username" class="is-hidden">{{user.username}}</h4>
 
 <ol id="joyRideTipContent">
   <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
