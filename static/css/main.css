@@ -499,12 +499,22 @@ ul{
     background-color: #319665;
     color: #fff;
     margin-right: 15px!important;
+    z-index: 3;
+    position: relative;
 }
 
 .btn-method:hover{
     color: #fff!important;
     background-color: #2A7A5D;
 }
+
+.prev-s-btn{left: -558px;
+    bottom: -44px;
+    position: relative;
+}
+
+.prev-final{position: relative; left: -558px;}
+
 
 .btn-method.is-active{opacity: .5;}
 
@@ -651,6 +661,40 @@ canvas{vertical-align: bottom;}
 
 .lesson-img-1{width: 255px; margin-bottom: -57px;}
 .lesson-img-2{width: 385px; margin-bottom: -74px;}
+
+/* ---------------- Learn More Gamges ------------------ */
+
+
+.boolean-game{height: 150px;}
+.boolean-game img{position: absolute;}
+
+.f-s-1{left: 137px; top: 82px; z-index: 5;}
+.f-s-2{left: 110px; top: -15px;}
+.f-s-3{left: 17px; top: 42px;}
+.f-s-4{left: 15px; top: 90px; z-index: 3;}
+.f-s-5{left: 86px; top: 103px;}
+.f-s-6{left: 149px; top: 99px; z-index: 4;}
+.f-s-7{left: 151px; top: 91px;}
+.f-s-8{left: 165px; top: 52px;}
+.f-s-9{left: 141px; top: -21px;}
+
+.js-f-b-click{cursor: pointer;}
+
+
+.g-text-container{
+    left: 335px; top: 21px;
+    position: absolute;
+    padding-right: 30px;
+}
+
+.line-1{font-family: 'Copse'; color: #58355F; font-size: 1.3em;}
+.l-text{font-weight: bold; font-size: 1.5em; margin-left: 5px;}
+
+.line-2{font-size: 2em; font-family: 'Copse';}
+
+.is-showing-true{color: #329766;}
+.is-showing-false{color: #323761;}
+
 
 /* ----Code editor ----- */
 

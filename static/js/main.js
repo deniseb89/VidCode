@@ -244,9 +244,19 @@ $( document ).ready(function() {
   //hover state of learn more section
 
   $('.js-values').hover(function(){
-    showInfo("5", "rgba(103, 121, 198, .4)");
+    showInfo("amount", "rgba(103, 121, 198, .4)");
+    showInfo('"', "rgba(103, 121, 198, .4)");
   }, function(){
-    removeInfo("5");
+    removeInfo("amount");
+    removeInfo('"');
+  });
+
+  $('.js-boolean').hover(function(){
+    showInfo("true", "rgba(103, 121, 198, .4)");
+    showInfo("false", "rgba(103, 121, 198, .4)");
+  }, function(){
+    removeInfo("true");
+    removeInfo("false");
   });
 
 
@@ -262,6 +272,9 @@ $( document ).ready(function() {
   }, function(){
     removeInfo("movie");
   });
+
+
+
   $('.js-effects').hover(function(){
     showInfo("effects", "rgba(49, 150, 101, .4)");
   }, function(){
