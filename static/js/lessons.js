@@ -111,6 +111,32 @@ $( document ).ready(function() {
 		$(".js-switch-appear").removeClass("is-hidden");
 	});
 
+
+
+  //boolean game
+  var fclicks = 0;
+  $('.js-f-b-click').click(function(){
+    $(this).fadeOut('fast');
+    if($('.js-bool-switch').hasClass('is-showing-true')){
+      $('.js-bool-switch').removeClass('is-showing-true');
+      $('.js-bool-switch').addClass('is-showing-false');
+      $('.js-bool-switch').text('False');
+      fclicks++
+    }
+    else{
+      $('.js-bool-switch').removeClass('is-showing-false');
+      $('.js-bool-switch').addClass('is-showing-true');
+      $('.js-bool-switch').text('True');
+      fclicks++
+      if(fclicks === 8){
+        fclicks = 0;
+        $('.js-f-b-click').fadeIn();
+      }
+    }
+
+  });
+
+
 });
 
 
