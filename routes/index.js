@@ -351,19 +351,19 @@ exports.igGet = function(req,res) {
 
   fs.readdir(dir, function(err, files){
     if (err) {
-      throw err;
+      console.log('readdir error: '+err);
     } else {
       if (files.indexOf(filename)>=0) {
         fs.readFile(dir+filename, function(err, data) {
           if (err) {
-            console.log(filename+' does not exist')
             res.send(500);
           } else {
-              var base64Image = data.toString('base64');
+            var base64Image = data.toString('base64');
             res.send(base64Image);
           }          
         });           
       } else {
+        console.log(filename+' doesnt exist');
         res.send(500);
       }
     }
@@ -441,6 +441,7 @@ function saveVideo(db, id, social, url, video) {
     vc.findOne({ id: id , social: social}, function (err, doc) {
       if (!doc) {
         doc = { id : id };
+        
         if (video) {
           doc.share = {video: video, url: url}
         }

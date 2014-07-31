@@ -48,9 +48,10 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new InstagramStrategy({
-    clientID: config.INSTAGRAM_CLIENT_ID,
-    clientSecret: config.INSTAGRAM_CLIENT_SECRET,
-    callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
+    clientID: config.INSTAGRAM_CLIENT_ID_LOCAL,
+    clientSecret: config.INSTAGRAM_CLIENT_SECRET_LOCAL,
+    callbackURL: "http://localhost:8080/auth/instagram/cb"    
+    // callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
     // User.findOrCreate({ instagramId: profile.id }, function (err, user) {
