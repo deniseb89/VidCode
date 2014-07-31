@@ -1,5 +1,7 @@
 var express = require('express');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
@@ -51,7 +53,9 @@ passport.use(new InstagramStrategy({
     callbackURL: "http://localhost:8080/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
+    // User.findOrCreate({ instagramId: profile.id }, function (err, user) {
+    //   return done(err, user);
+    // });
     process.nextTick(function () {
       return done(null, profile);
     });
@@ -64,6 +68,14 @@ app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(cookieParser('my 114 o2o'));
+app.use(session({
+  secret: 'keyboard cat',
+  maxAge : 1000*60*60*24 ,
+  cookie : {
+    maxAge : 1000*60*60*24 // expire the session(-cookie) after 1 day
+  }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -82,7 +94,7 @@ app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
-app.get('/share', routes.share);
+app.get('/share/:url?', routes.share(db));
 
 app.get('/signin', routes.signin);
 
@@ -96,7 +108,8 @@ app.get('/lesson/4', routes.partfour);
 
 app.get('/codeAlone', routes.codeAlone);
 app.post('/upload', routes.upload);
-// app.post('/save', routes.save(db, crypto));
+app.post('/save', routes.save(db, crypto));
+
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
 app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
 

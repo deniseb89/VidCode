@@ -1,5 +1,6 @@
 var fs = require('fs');
 var request = require('request');
+var session = require('express-session');
 
 exports.index = function (req, res) {
   res.render('index', {layout:false , title: 'VidCode' });
@@ -12,7 +13,21 @@ exports.indexGF = function (req, res) {
 exports.intro = function (db) {
   return function (req, res) {
     var user = req.user;
-    res.render('intro', {user: user});
+    if (user){
+      var social = user.provider;
+      var id = user.id;
+      var vc = db.get('vidcode');
+      vc.findOne({ id: id, "social":social }, function (err, doc) {
+        if (!doc) {
+          res.status(404);
+        }
+          res.render('intro', {user: doc});
+          return;
+      });      
+    } else {
+      // If there is no logged in user, we have a problem
+      res.render('intro');          
+    }
   }
 };
 
@@ -36,18 +51,43 @@ exports.galleryshow = function (req, res) {
   res.render('galleryshow', {title: 'VidCode Gallery' });
 };
 
-exports.share = function (req, res) {
-  res.render('share');
+exports.share = function (db) {
+  return function (req, res){
+    var url = req.params.url;
+    if (!url){
+      res.render('share');
+      return;
+    }
+    var vc = db.get('vidcode');
+    vc.findOne({ "share.url" : url }, function (err, doc) {
+      if (!doc) {
+        res.status(404);
+      }
+        res.render('share', {video: doc.share.video});
+    });
+  }
+}
+
+exports.save = function (db,crypto) {
+   return function (req, res) {
+    var user = req.user;
+    if (user) {
+      var social = user.provider;
+      var uid = user.id;
+    }
+
+    var video = "/img/wha_color.mp4";    
+    //get the webm video. save it to the doc {user.id, user.provider}
+    //as share = { video: *.webm, url: token }
+    url = generateToken(crypto);
+    saveVideo(db, uid, social, url, video);
+    res.redirect('/share/' + url);
+  };
 };
 
 exports.partone = function (db) {
    return function (req, res) {
-    var user = req.user;
-    var token = req.params.token;
     var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
-
-    if (!token) {
-
     var codeText =
 "\
  \n\
@@ -57,9 +97,27 @@ exports.partone = function (db) {
  //The code below lets you add, remove, and alter your video filters.\n\
  //Change the numbers and make your video all your own!\n\
     ";
-
-      res.render('partone', {code: codeText, filters: filters, user: req.user});
-      return;
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var uid = user.id;
+      var username = user.username;
+      var vc = db.get('vidcode');
+      // vc.findOne({ uid: uid, social:social }, function (err, doc) {
+      //   if (!doc) {
+      //     res.status(404);
+      //   }
+      //   console.log('doc: '+doc);
+      //     res.render('partone', {code: codeText, filters: filters, user: doc});
+      //     return;
+      // });
+      var successcb = function(doc) {
+        res.render("partone", {code: codeText, filters: filters, user: doc});
+      };  
+      var temp = findOrCreate(db,uid, username,social,successcb);
+      
+    } else {
+      res.render('partone', {code: codeText, filters: filters});          
     }
   };
 };
@@ -141,20 +199,6 @@ exports.scrubbing = function (db) {
     });
   };
 };
-
-// exports.save = function (db, crypto) {
-//   return function (req, res) {
-//     var code = req.body.codemirror;
-//     var token = req.body.token;
-
-//     if (!token) {
-//       token = generateToken(crypto);
-//       save(db, token, token, code);
-//     }
-
-//     res.redirect('/filters/' + token);
-//   };
-// };
 
 exports.upload = function (req, res) {
   var filename = req.files.file.name;
@@ -279,7 +323,7 @@ exports.igCB = function (db) {
         ws.end('this is the end\n');
         ws.on('close', function() {
           var successcb = function(doc) {
-            res.render("intro", {user: doc.username});
+            res.render("intro", {user: doc});
           };  
           var user = req.user;
           var doc = findOrCreate(db,uid, username,'instagram',successcb);
@@ -305,8 +349,7 @@ exports.igGet = function(req,res) {
           if (err) {
             res.send(500);
           } else {
-            console.log('done reading '+filename);
-            var base64Image = data.toString('base64');
+              var base64Image = data.toString('base64');
             res.send(base64Image);
           }          
         });           
@@ -321,7 +364,9 @@ exports.igGet = function(req,res) {
 exports.fbCB = function (db) {
   return function (req, res) {
     var successcb = function(doc) {
-      res.render("intro", {user: doc.username});
+      //establish session
+      // console.log(req.session);
+      res.render("intro", {user: doc});
     };  
     var user = req.user;
     var doc = findOrCreate(db,user.id, user.displayName,'facebook',successcb);
@@ -375,13 +420,37 @@ function findOrCreate(db, id, username, social, cb) {
         }
         vc.insert(doc);
         console.log('new mongo doc for: '+doc.username);
-      } else {
-        console.log('found doc in mongo for: '+doc.username);
       }
-      console.log(doc);
+        console.log('found mongo doc for: '+doc.username);
       cb(doc);
     });
 }
+
+function saveVideo(db, id, social, url, video) {
+  var vc = db.get('vidcode');
+  if (id && social){
+    vc.findOne({ id: id , social: social}, function (err, doc) {
+      if (!doc) {
+        doc = { id : id };
+        if (video) {
+          doc.share = {video: video, url: url}
+        }
+        console.log('created new doc with'+video);
+        vc.insert(doc);
+      } else {
+        vc.update(doc, { $set: { share: {video: video, url: url }} });
+
+        console.log('updated doc with '+video);
+      }
+    });    
+  } else {
+    //no user logged in but we'll still save the video
+      doc = { share: {video: video, url: url} };
+      console.log('created new doc anonymously with' + video);
+      vc.insert(doc);
+  }
+}
+
 
 function oc(a) {
   var o = {};
