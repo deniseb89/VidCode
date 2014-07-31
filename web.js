@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser')
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
@@ -61,13 +62,10 @@ passport.use(new InstagramStrategy({
 var app = express();
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
-app.use(express.bodyParser({ keepExtensions: true, limit: '25mb', uploadDir: __dirname +'/vids' }));
-app.use(express.urlencoded());
-app.use(express.json());
-app.use(express.methodOverride());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(app.router);
 
 // configure express template engine
 var exphbs = require('express3-handlebars');
@@ -78,10 +76,6 @@ app.set('view engine', '.html');
 // configure express routes
 var routes = require('./routes');
 app.get('/',routes.indexGF);
-app.get('/1',routes.index);
-app.get('/2',routes.index2);
-app.get('/3',routes.index3);
-app.get('/g',routes.indexG);
 app.get('/googleForm',routes.indexGF);
 app.get('/intro/:uid?', routes.intro(db));
 app.get('/filters/:token?', routes.filters(db));

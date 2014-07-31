@@ -5,18 +5,6 @@ exports.index = function (req, res) {
   res.render('index', {layout:false , title: 'VidCode' });
 };
 
-exports.index2 = function (req, res) {
-  res.render('index2', {layout:false , title: 'VidCode' });
-};
-
-exports.index3 = function (req, res) {
-  res.render('index3', {layout:false , title: 'VidCode' });
-};
-
-exports.indexG = function (req, res) {
-  res.render('indexG', {layout:false , title: 'VidCode' });
-};
-
 exports.indexGF = function (req, res) {
   res.render('googleForm', {layout:false , title: 'VidCode' });
 };
