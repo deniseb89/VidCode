@@ -30,7 +30,10 @@ $( document ).ready(function() {
 
     var thumbnail1 = document.getElementById('js-fetch-vid1');
     var n = thumbnail1.getAttribute("name");
+<<<<<<< HEAD
 
+=======
+>>>>>>> staging
     $.ajax('/instagram/'+username+'_'+n,{
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid1').removeClass('is-hidden');
@@ -46,7 +49,10 @@ $( document ).ready(function() {
 
     var thumbnail2 = document.getElementById('js-fetch-vid2');
     var n = thumbnail2.getAttribute("name");
+<<<<<<< HEAD
 
+=======
+>>>>>>> staging
     $.ajax('/instagram/'+username+'_'+n,{
         success: function(data, textStatus, jqXHR){
           $('#js-fetch-vid2').removeClass('is-hidden');

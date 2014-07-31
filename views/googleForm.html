@@ -117,6 +117,7 @@ target="hidden_iframe" onsubmit="submitted=true;">
 <script type="text/javascript">H5F.setup(document.getElementById('ss-form'));
           _initFormViewer(
             "[100,\x22#CCC\x22,[]\n]\n");</script>
+<<<<<<< HEAD
             <script>
             readCookie();
 
@@ -125,6 +126,19 @@ function readCookie() {
      	//brand new visitor. Do nothing
      } else {
     window.location.replace('/intro');
+=======
+
+
+<script>    mixpanel.track_forms("#signup-form", "Signup Submitted" );</script>
+<script>
+            readCookie();
+
+	function readCookie() {
+     if (document.cookie == "") {
+     	//brand new visitor. Do nothing
+     } else {
+    window.location.replace('/signin');
+>>>>>>> staging
     var the_cookie = document.cookie;
     the_cookie = unescape(the_cookie);
     the_cookie_split = the_cookie.split(";");
@@ -148,7 +162,15 @@ function readCookie() {
         var timePassed = todayNum - last2Num;
     } // Close if (find_name==-1)
       }
+<<<<<<< HEAD
 } // Close function readCookie()
 
             </script>           
+=======
+      } // Close function readCookie()
+
+</script>
+
+
+>>>>>>> staging
             </div></body></html>
