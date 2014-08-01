@@ -98,30 +98,19 @@ exports.partone = function (db) {
  //The code below lets you add, remove, and alter your video filters.\n\
  //Change the numbers and make your video all your own!\n\
     ";
-
     var user = req.user;
     if (user){
-      console.log('partone with a user');
       var social = user.provider;
       var uid = user.id;
       var username = user.username;
       var vc = db.get('vidcode');
-      // vc.findOne({ uid: uid, social:social }, function (err, doc) {
-      //   if (!doc) {
-      //     res.status(404);
-      //   }
-      //   console.log('doc: '+doc);
-      //     res.render('partone', {code: codeText, filters: filters, user: doc});
-      //     return;
-      // });
+
       var successcb = function(doc) {
         res.render("partone", {code: codeText, filters: filters, user: doc});
       };  
       var temp = findOrCreate(db,uid, username,social,successcb);
       
     } else {
-      console.log('partone without a user. req looks like this');
-      console.log(req);
       res.render('partone', {code: codeText, filters: filters});          
     }
   };
