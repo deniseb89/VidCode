@@ -388,7 +388,7 @@ exports.signup = function (db, crypto) {
   return function (req, res) {
     var email = req.body.email;
     var successcb = function(doc) {
-      res.render("intro", {user: doc});
+      res.redirect ('/intro/'+doc.social+'/'+doc.id);
     };  
     var user = req.user;
     var doc = findOrCreate(db,email, email,'vidcode',successcb);

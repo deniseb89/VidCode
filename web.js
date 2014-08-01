@@ -24,7 +24,8 @@ var passport = require('passport')
 passport.use(new FacebookStrategy({
     clientID: config.FACEBOOK_APP_ID,
     clientSecret: config.FACEBOOK_APP_SECRET,
-    callbackURL: "http://vidcode.herokuapp.com/auth/facebook/cb"
+    callbackURL: "http://localhost:8080/auth/facebook/cb"        
+    // callbackURL: "http://vidcode.herokuapp.com/auth/facebook/cb"
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
