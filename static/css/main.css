@@ -98,9 +98,9 @@ textarea {
 }
 
 
-.instagram-form input, textarea {
+.instagram-form input, textarea, .s-popup input {
     padding: 9px;
-    border: solid 1px #E5E5E5;
+    border: solid 1px #BDBEC1;
     outline: 0;
     font: normal 13px/100% Verdana, Tahoma, sans-serif;
     width: 200px;
@@ -112,13 +112,19 @@ textarea {
     -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     }
 
-
+.s-popup input{ padding: 13px;
+margin-left: 17px;
+width: 90%;
+background-image: url('/img/envelope-icon.png');
+background-repeat: no-repeat;
+background-position: right;}
 
 input:hover, textarea:hover,
 input:focus, textarea:focus {
     border-color: #C9C9C9;
     -webkit-box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px;
     }
+
 
 .stepone h4{font-weight: 600; color: #441B4B; text-align: center; padding-top:45px; padding-bottom: 25px;}
 img.filterSelect { cursor: pointer; width: 90%; height: 90%; max-width: 500px; margin: 10px auto; display:block; }
