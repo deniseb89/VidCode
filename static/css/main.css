@@ -787,7 +787,7 @@ canvas{vertical-align: bottom;}
 .lesson-page .links-holder .link-two:hover{text-decoration: none; background-color: #50BA87;}
 
 .lesson-page .links-holder .link-three{color: #684770;}
-.lesson-page .vid-placeholder{background-color: blue; width: 381px; height: 222px; margin: -20px 0 0 0;}
+.lesson-page .vid-placeholder{background-color: blue; width: 100%; height: 222px; margin: -20px 0 0 0;}
 .lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 99px; font-size: 1.7em!important;}
 
 .lesson-page .vidtip{font-size: 1em;}
