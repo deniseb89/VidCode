@@ -757,8 +757,8 @@ canvas{vertical-align: bottom;}
 
 .lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -20px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
-.lesson-page .insta-thumbnails a, .share-landing a{background-color: #319665; float: left; color: #fff; padding: 6px; border-radius: 4px;}
-.lesson-page .insta-thumbnails a:hover{text-decoration: none; background-color: #50BA87;}
+.lesson-page .insta-import a, .share-landing a{background-color: #319665; float: left; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .insta-import a:hover{text-decoration: none; background-color: #50BA87;}
 .lesson-page .feedback a{font-weight: bold; background-color: #441B4B; float: right; margin: 250px 0 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .feedback a:hover{text-decoration: none; background-color: #652F6E;}
 .lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
