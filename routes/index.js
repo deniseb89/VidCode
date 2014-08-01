@@ -100,6 +100,7 @@ exports.partone = function (db) {
     ";
 
     var user = req.user;
+    console.log(user);
     if (user){
       var social = user.provider;
       var uid = user.id;
