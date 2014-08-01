@@ -1,7 +1,16 @@
 
   <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
 
-
+<div class="container-fixed">
+  <div class="popup is-hidden">
+    <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
+      10 mb max file size
+      <input type="file" name="file" value="Select a File" />
+      <button class="btn btn-primary uploadfile">Upload</button>
+      <button class="btn js-hide-upload uploadfile">Cancel</button>
+      <p></p>
+    </form>
+  </div>
 
 
 <div class="set-container lesson-page clearfix js-slide-1">
@@ -31,8 +40,8 @@
 			<div class="js-switch-appear">
 
         <div class="video-container clearfix">
-          <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
-
+<!--           <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
+ -->
           <p>Instagram Videos</p>
           <div class="insta-thumbnails is-hidden">
             <span class="i-error"></span>

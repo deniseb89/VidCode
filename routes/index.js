@@ -209,8 +209,7 @@ exports.scrubbing = function (db) {
 };
 
 exports.upload = function (req, res) {
-  console.log('well hello there');
-  // var filename = req.files.file.name;
+  var filename = req.files.file.name;
   var extensionAllowed = [".mp4", ".mov",".MOV"];
   var maxSizeOfFile = 25000000;
   var msg = "";
