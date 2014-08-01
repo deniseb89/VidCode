@@ -98,7 +98,7 @@ textarea {
 }
 
 
-.instagram-form input, textarea, .s-popup input {
+.instagram-form input, textarea, .sign-in-input {
     padding: 9px;
     border: solid 1px #BDBEC1;
     outline: 0;
@@ -112,7 +112,7 @@ textarea {
     -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     }
 
-.s-popup input{ padding: 13px;
+.sign-in-input{ padding: 13px;
 margin-left: 17px;
 width: 90%;
 background-image: url('/img/envelope-icon.png');
@@ -668,7 +668,7 @@ canvas{vertical-align: bottom;}
 .lesson-img-1{width: 255px; margin-bottom: -57px;}
 .lesson-img-2{width: 385px; margin-bottom: -74px;}
 
-/* ---------------- Learn More Gamges ------------------ */
+/* ---------------- Learn More Games ------------------ */
 
 
 .boolean-game{height: 150px;}
@@ -700,6 +700,24 @@ canvas{vertical-align: bottom;}
 
 .is-showing-true{color: #329766;}
 .is-showing-false{color: #323761;}
+
+
+
+.l-g-container{width: 47%; float: left; border: 1px solid; border-radius: 4px; height: 150px;}
+.l-g-container p{text-align: center; font-weight: 600;}
+.l-g-container img{position: absolute;}
+
+.l-game-input{border-color: #F395AC;}
+.l-game-output{border-color: #3D2146; margin-left:25px;}
+
+.l-g-i-1{margin-left: 230px; margin-top: 10px;}
+.l-g-i-2{margin-left: 162px; margin-top: 73px;}
+.l-g-i-3{margin-left: 150px; margin-top: 35px;}
+.l-g-i-4{margin-left: 78px; margin-top: 66px; z-index: 1;}
+.l-g-i-5{margin-top: 19px;}
+.l-g-i-6{margin-left: 42px; margin-top: 11px;}
+
+.l-g-o-1{margin-left: 126px;}
 
 
 /* ----Code editor ----- */

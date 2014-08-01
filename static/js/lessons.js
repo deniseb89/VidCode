@@ -136,11 +136,9 @@ $( document ).ready(function() {
 var instaUser = function() {
     var social = $('#social').text()
     if (social=="instagram"){
-      console.log('instagram')
       var delay=1000;
       setTimeout(loadThumbnail,delay);
     } else {
-      console.log('not instagram');
       $('.insta-import').removeClass('is-hidden');
     }
   }
@@ -168,5 +166,6 @@ var slideRight = function(oldSlide, newSlide){
   	$(newSlide).removeClass('is-hidden');
   }, 500);
 }
+
 
 
