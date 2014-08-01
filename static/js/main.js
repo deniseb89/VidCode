@@ -44,6 +44,9 @@ function stopDL() {
   video_filtered = webmBlob;
   var videoDL = document.getElementById('video-dl');
   var videoDisplay = document.getElementById('vid-display');
+  
+  upload(video_filtered);
+
   videoDLurl = window.URL.createObjectURL(webmBlob);
   //videoDL.src = videoDLurl;
   //videoDL.controls = true;
@@ -133,19 +136,16 @@ $( document ).ready(function() {
     e.preventDefault();
   });
 
-  $(".js-instagram-import").click(function(){
-      $('.loader').removeClass('is-hidden');
-      $.ajax('/instagram/vid',{
-        success: function(data, textStatus, jqXHR){
-          movie.src="data:video/mp4;base64,"+data;
-          movie.addEventListener("loadeddata", showVid, false);
-        },
-        error: function(data, textStatus, jqXHR){
-          $('.loader').addClass('is-hidden');
-          alert("You don't have any Instagram videos :(");
-        }
-    });
-  });
+function upload(blobOrFile) {
+  console.log('uploading the video');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/upload', true);
+  xhr.onload = function(e) {
+    console.log('starting...');
+  };
+
+  xhr.send(blobOrFile);
+}
 
   var rafId;
   var frames = [];

@@ -12,10 +12,11 @@ exports.indexGF = function (req, res) {
 
 exports.intro = function (db) {
   return function (req, res) {
-    var user = req.user;
-    if (user){
-      var social = user.provider;
-      var id = user.id;
+    var social = req.params.social;
+    var id = req.params.id;
+    if (id&&social){
+      // var social = user.provider;
+      // var id = user.id;
       var vc = db.get('vidcode');
       vc.findOne({ id: id, "social":social }, function (err, doc) {
         if (!doc) {
@@ -25,7 +26,7 @@ exports.intro = function (db) {
           return;
       });      
     } else {
-      // If there is no logged in user, we have a problem
+      // There is no logged in user
       res.render('intro');          
     }
   }
@@ -208,7 +209,8 @@ exports.scrubbing = function (db) {
 };
 
 exports.upload = function (req, res) {
-  var filename = req.files.file.name;
+  console.log('well hello there');
+  // var filename = req.files.file.name;
   var extensionAllowed = [".mp4", ".mov",".MOV"];
   var maxSizeOfFile = 25000000;
   var msg = "";
@@ -331,7 +333,8 @@ exports.igCB = function (db) {
         ws.end('this is the end\n');
         ws.on('close', function() {
           var successcb = function(doc) {
-            res.render("intro", {user: doc});
+            // res.render("intro", {user: doc});
+            res.redirect ('/intro/'+doc.social+'/'+doc.id);
           };  
           var user = req.user;
           var doc = findOrCreate(db,uid, username,'instagram',successcb);
@@ -373,14 +376,24 @@ exports.igGet = function(req,res) {
 exports.fbCB = function (db) {
   return function (req, res) {
     var successcb = function(doc) {
-      //establish session
-      // console.log(req.session);
-      res.render("intro", {user: doc});
+      res.redirect ('/intro/'+doc.social+'/'+doc.id);
+      // res.render("intro", {user: doc});
     };  
     var user = req.user;
     var doc = findOrCreate(db,user.id, user.displayName,'facebook',successcb);
   }
 }
+
+exports.signup = function (db, crypto) {
+  return function (req, res) {
+    var email = req.body.email;
+    var successcb = function(doc) {
+      res.render("intro", {user: doc});
+    };  
+    var user = req.user;
+    var doc = findOrCreate(db,email, email,'vidcode',successcb);
+  };
+};
 
 exports.awsUpload = function(req,res){
   var userVidURL = req.query.userVidURL;
