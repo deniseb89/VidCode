@@ -100,8 +100,8 @@ exports.partone = function (db) {
     ";
 
     var user = req.user;
-    console.log(user);
     if (user){
+      console.log('partone with a user');
       var social = user.provider;
       var uid = user.id;
       var username = user.username;
@@ -120,6 +120,8 @@ exports.partone = function (db) {
       var temp = findOrCreate(db,uid, username,social,successcb);
       
     } else {
+      console.log('partone without a user');
+
       res.render('partone', {code: codeText, filters: filters});          
     }
   };
