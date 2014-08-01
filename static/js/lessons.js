@@ -162,3 +162,4 @@ var slideRight = function(oldSlide, newSlide){
 }
 
 
+

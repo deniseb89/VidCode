@@ -473,4 +473,3 @@ var lessonIsActive = function(newLesson){
   }, 350);
 }
 
-
