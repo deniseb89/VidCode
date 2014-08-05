@@ -44,13 +44,7 @@ function stopDL() {
   video_filtered = webmBlob;
   var videoDL = document.getElementById('video-dl');
   var videoDisplay = document.getElementById('vid-display');
-  
-  upload(video_filtered);
-
   videoDLurl = window.URL.createObjectURL(webmBlob);
-  //videoDL.src = videoDLurl;
-  //videoDL.controls = true;
-  //videoDL.load();
   videoDisplay.src = videoDLurl;
   videoDisplay.controls = true;
   videoDisplay.load();
@@ -65,19 +59,10 @@ function stopDL() {
   $('#export').attr('disabled',false);
   $('#dLbtn').attr('disabled',false);
   $('#youtube').attr('disabled',false);
-
   $('.dl-progress').text('All Finished!');
   $('.share-btn').removeClass('is-hidden');
-  // windowObjectReference = window.open('/gallery?userVidURL='+videoDLurl,'GalleryPage','resizable,scrollbars');
-  //save to AWS S3
-  // $.ajax('/awsUpload?userVidURL='+videoDLurl,{
-  //   success: function(data, textStatus, jqXHR){
-  //     console.log('Successfully uploaded to AWS');
-  //   },
-  //   error: function(data, textStatus, jqXHR){
-  //     console.log('Failed to upload to AWS');
-  //   }
-  // });
+  //save the video
+  //upload(video_filtered);
 };
 
 $( document ).ready(function() {

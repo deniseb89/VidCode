@@ -13,5 +13,6 @@ config.FACEBOOK_APP_ID = "316757878488178";
 config.FACEBOOK_APP_SECRET = "96cffaf081f970215f3bf79d985129a1";
 config.FACEBOOK_APP_ID_LOCAL = "318702334960399";
 config.FACEBOOK_APP_SECRET_LOCAL = "69bd6d08b0330cdb9e0e874b2476d774";
+config.FACEBOOK_CB = "http://vidcode.herokuapp.com/auth/facebook/cb"
 
 module.exports = config;

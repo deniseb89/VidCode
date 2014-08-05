@@ -20,14 +20,15 @@ exports.intro = function (db) {
       var vc = db.get('vidcode');
       vc.findOne({ id: id, "social":social }, function (err, doc) {
         if (!doc) {
-          res.status(404);
+          res.render('404', {layout:false});
+          return;
         }
           res.render('intro', {user: doc});
           return;
       });      
     } else {
       // There is no logged in user
-      res.render('intro');          
+      res.render('intro');        
     }
   }
 };
@@ -81,7 +82,7 @@ exports.save = function (db,crypto) {
     //get the webm video. save it to the doc {user.id, user.provider}
     //as share = { video: *.webm, url: token }
     url = generateToken(crypto);
-    saveVideo(db, uid, social, url, video);
+    // saveVideo(db, uid, social, url, video);
     res.redirect('/share/' + url);
   };
 };
@@ -108,9 +109,10 @@ exports.partone = function (db) {
       var successcb = function(doc) {
         res.render("partone", {code: codeText, filters: filters, user: doc});
       };  
-      var temp = findOrCreate(db,uid, username,social,successcb);
+      findOrCreate(db,uid, username,social,successcb);
       
     } else {
+      res.send(req.session);   
       res.render('partone', {code: codeText, filters: filters});          
     }
   };
@@ -432,9 +434,7 @@ function findOrCreate(db, id, username, social, cb) {
           doc.social = social;        
         }
         vc.insert(doc);
-        console.log('new mongo doc for: '+doc.username);
       }
-        console.log('found mongo doc for: '+doc.username);
       cb(doc);
     });
 }

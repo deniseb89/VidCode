@@ -17,15 +17,25 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+    var vc = db.get('vidcode');
+    vc.findOne({id: user.id , "social": user.provider}, function (err, doc) {
+      done(err, user);
+    });
+});
+
 // passport-facebook auth
 var passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy;
 
 passport.use(new FacebookStrategy({
-    clientID: config.FACEBOOK_APP_ID_LOCAL,
-    clientSecret: config.FACEBOOK_APP_SECRET_LOCAL,
-    // callbackURL: "http://vidcode.herokuapp.com/auth/facebook/cb"        
-    callbackURL: "http://localhost:8080/auth/facebook/cb"
+      clientID: process.env.FACEBOOK_APP_ID || config.FACEBOOK_APP_ID_LOCAL,
+      clientSecret: process.env.FACEBOOK_APP_SECRET || config.FACEBOOK_APP_SECRET_LOCAL,
+      callbackURL: process.env.FACEBOOK_CB ||  "http://localhost:8080/auth/facebook/cb"         
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
@@ -39,23 +49,14 @@ passport.use(new FacebookStrategy({
 ));
 
 // passport-instagram auth
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
-
 passport.use(new InstagramStrategy({
-    clientID: config.INSTAGRAM_CLIENT_ID_LOCAL,
-    clientSecret: config.INSTAGRAM_CLIENT_SECRET_LOCAL,
-    callbackURL: "http://localhost:8080/auth/instagram/cb"    
-    // callbackURL: "http://vidcode.herokuapp.com/auth/instagram/cb"
+    clientID: process.env.INSTAGRAM_CLIENT_ID|| config.INSTAGRAM_CLIENT_ID_LOCAL,
+    clientSecret: process.env.INSTAGRAM_CLIENT_SECRET || config.INSTAGRAM_CLIENT_SECRET_LOCAL,    
+    callbackURL: process.env.INSTAGRAM_CB || "http://localhost:8080/auth/instagram/cb"
   },
   function(accessToken, refreshToken, profile, done) {
-    // User.findOrCreate({ instagramId: profile.id }, function (err, user) {
+    var vc = db.get('vidcode');
+    // vc.findOrCreate({ id: profile.id  , "social":"instagram"}, function (err, user) {
     //   return done(err, user);
     // });
     process.nextTick(function () {
@@ -66,18 +67,21 @@ passport.use(new InstagramStrategy({
 
 // configure express
 var app = express();
+var environ = app.get('env');
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser('my 114 o2o'));
-app.use(session({
-  secret: 'keyboard cat',
-  maxAge : 1000*60*60*24 ,
-  cookie : {
-    maxAge : 1000*60*60*24 // expire the session(-cookie) after 1 day
-  }
-}));
+var sess = {
+  secret: 'keyboard kitty cat',
+  cookie: {}
+}
+if (environ === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
+app.use(session(sess));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -91,7 +95,7 @@ app.set('view engine', '.html');
 var routes = require('./routes');
 app.get('/',routes.signin);
 app.get('/googleForm',routes.indexGF);
-app.get('/intro/:social/:id', routes.intro(db));
+app.get('/intro/:social?/:id?', routes.intro(db));
 app.get('/filters/:token?', routes.filters(db));
 app.get('/scrubbing', routes.scrubbing(db));
 app.get('/gallery', routes.gallery);

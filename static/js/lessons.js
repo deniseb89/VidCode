@@ -52,7 +52,6 @@ $( document ).ready(function() {
 	});
 
 
-
   //boolean game
   var fclicks = 0;
   $('.js-f-b-click').click(function(){
@@ -134,7 +133,7 @@ $( document ).ready(function() {
   };
 
 var instaUser = function() {
-    var social = $('#social').text()
+    var social = $('#social').text();
     if (social=="instagram"){
       var delay=1000;
       setTimeout(loadThumbnail,delay);
@@ -142,9 +141,6 @@ var instaUser = function() {
       $('.insta-import').removeClass('is-hidden');
     }
   }
-
-
-
 
 var slideLeft = function(oldSlide, newSlide){
 	$(newSlide).addClass('is-hidden');
@@ -166,6 +162,3 @@ var slideRight = function(oldSlide, newSlide){
   	$(newSlide).removeClass('is-hidden');
   }, 500);
 }
-
-
-
