@@ -112,7 +112,7 @@ exports.partone = function (db) {
       findOrCreate(db,uid, username,social,successcb);
       
     } else {
-      res.send(req.session);   
+      // res.send(req.session);   
       res.render('partone', {code: codeText, filters: filters});          
     }
   };
