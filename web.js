@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
+// var cookieParser = require('cookie-parser');
+var session = require('cookie-session');
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
@@ -18,10 +18,14 @@ var monk = require('monk');
 var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
 passport.serializeUser(function(user, done) {
+  console.log('serializing');
+  console.log(user);
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
+  console.log('deserializing');
+  console.log(user);
     var vc = db.get('vidcode');
     vc.findOne({id: user.id , "social": user.provider}, function (err, doc) {
       done(err, user);
@@ -72,16 +76,14 @@ app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(cookieParser('my 114 o2o'));
-var sess = {
-  secret: 'keyboard kitty cat',
-  cookie: {}
-}
-if (environ === 'production') {
-  app.set('trust proxy', 1) // trust first proxy
-  sess.cookie.secure = true // serve secure cookies
-}
-app.use(session(sess));
+// app.use(cookieParser('my 114 o2o'));
+app.use(session({
+  secret: 'secret kitty'
+  // secureProxy: false // if you do SSL outside of node
+}))
+
+console.log(environ);
+
 app.use(passport.initialize());
 app.use(passport.session());
 
