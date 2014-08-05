@@ -19,13 +19,11 @@ var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
 passport.serializeUser(function(user, done) {
   console.log('serializing');
-  console.log(user);
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
   console.log('deserializing');
-  console.log(user);
     var vc = db.get('vidcode');
     vc.findOne({id: user.id , "social": user.provider}, function (err, doc) {
       done(err, user);
@@ -71,7 +69,6 @@ passport.use(new InstagramStrategy({
 
 // configure express
 var app = express();
-var environ = app.get('env');
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -82,8 +79,8 @@ app.use(session({
   // secureProxy: false // if you do SSL outside of node
 }))
 
-console.log(environ);
-
+console.log('app.get says: '+app.get('env'));
+console.log('process.env says '+process.env.NODE_ENV);
 app.use(passport.initialize());
 app.use(passport.session());
 

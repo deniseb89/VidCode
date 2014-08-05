@@ -12,4 +12,12 @@ $( document ).ready(function() {
 		$('.b-cover-layer').addClass('is-hidden');
 	});
 
+	$('.fb-login').click(function(){
+		mixpanel.track("facebook login" );
+	})
+
+	$('.insta-login').click(function(){
+		mixpanel.track("instagram login" );
+	})
+
 });
