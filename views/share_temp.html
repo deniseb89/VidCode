@@ -8,25 +8,18 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 
 <div class="set-container lesson-page clearfix share-landing">
-	<h2 class="kaytitle is-hidden"></h2>
-    <h2 class="kaydesc is-hidden"></h2>
-    <h2 class="is-hidden">username</h2>
-    <h3 id="file" class="is-hidden">{{video}}</h3>
-    <h3 id="token" class="is-hidden">{{token}}</h3>    
-	<video id="vid-display" controls autoplay src=""></video>
-	<div class="fb-share-button"></div>
+	<h2>Sorry, this feature isn't quite ready yet.</h2>
+	<p>We're working as fast as we can to make sure that you can share your awesome videos with your friends. This feature will be ready soon.</p>
+	
+	<div class="fb-share-button" data-href="http://vidcode.herokuapp.com/lesson/1"></div>
+
 	<p class="greentext">Thank you for vidcoding!</p>
 	<a class="btn" id="mix-return-to-editor" href="/lesson/1">Return to Editor</a>
+	<video src=""><video>
 </div>
 
 <script>
-$( document ).ready(function() {
+
 	mixpanel.track_links("#mix-return-to-editor", "Return to Editor clicked" );
-	var filename = '/userVid/?file='+$('#file').text();
-	var token =  $('#token').text();
-	var videoDisplay = document.getElementById('vid-display');
-	videoDisplay.src = filename;
-	$('.fb-share-button').attr('data-href','http://vidcode.herokuapp.com/share/'+token);
-});
 
 </script>

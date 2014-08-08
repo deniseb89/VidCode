@@ -1,3 +1,79 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+ <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Vidcode</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/custom-theme/jquery-ui-1.9.2.custom.css">
+  <link rel="stylesheet" href="/js/vendor/codemirror-3.22/lib/codemirror.css">
+  <link rel="stylesheet" href="/js/vendor/codemirror-3.22/theme/solarized.css">
+  <link rel="stylesheet" href="/css/codemirror-vidcode.css">
+  <link rel="stylesheet" href="/css/contentflow.css">
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Copse' rel='stylesheet' type='text/css'>
+
+  <script src="/js/jquery.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-50458041-1', 'vidcode.herokuapp.com');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false﻿});</script>
+
+</head>
+<body>
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <div class="b-cover-layer is-hidden cc-6"></div>
+  <ul class="nav nav-tabs">
+    <li><a class="show-inline" href="/"><img src="/img/logo.png" id="image"></a>
+      <a class="small nudge-left show-inline" href="http://vidcode.io/" target="_blank">
+        <span class="glyphicon glyphicon-star"></span>About & Updates
+      </a></li>
+    <li class="pull-right">
+      {{#if user}}
+      <a href="#" class="small">Hey, {{user.username}}!</a>
+      {{/if}}
+    </li>
+  </ul>
+  <div class="s-popup is-hidden cc-6">
+    <p>Sign into Vidcode</p>
+    <button class="login-btn fb-login">Log in with facebook</button>
+    <button class="login-btn insta-login">Log in with Instagram</button>
+    <button class="login-btn g-login">Log in with Google</button>
+    <div class="s-separator">
+      <hr class="line-l">
+      <div class="text-special">or</div>
+      <hr class="line-r">
+    </div>
+    <button class="login-btn n-a-login">Create an account</button>
+  </div>
+
+
+  <div>
+
 
   <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
 
@@ -14,33 +90,34 @@
 
 
 <div class="set-container lesson-page clearfix js-slide-1">
-	<div class="progress-set">
+  <div class="progress-set">
 
-	</div>
+  </div>
 
-	<span class="next-progress-btn">
-		<a id="tooltip-stop-4" class="js-slide-right-final" href="#">I'm Done!▸</a>
-	</span>
+  <span class="next-progress-btn">
+    <a id="tooltip-stop-4" class="js-slide-right-final" href="#">I'm Done!▸</a>
+  </span>
 
-	<div class="lesson-container">
-		<div class="col-md-4">
-		  <div class="loader is-hidden"><img src="/img/loader.gif"></div>
-			<span class="js-active-vid active-vid">
-				<div class="vid-placeholder overlay">
-					<h3>Select a video below</h3>
-				</div>
+  <div class="lesson-container">
+    <div class="col-md-4">
+      <div class="loader is-hidden"><img src="/img/loader.gif"></div>
+      <span class="js-active-vid active-vid">
+        <div class="vid-placeholder overlay">
+          <h3>Select a video below</h3>
+        </div>
         <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
         <canvas class="video2 is-hidden" id="canvas">
           </canvas>
         <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
-			</span>
+      </span>
 
 
 
-			<div class="js-switch-appear">
+      <div class="js-switch-appear">
 
         <div class="video-container clearfix">
-          <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
+<!--           <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
+ -->
           <p>Instagram Videos</p>
           <div class="insta-thumbnails is-hidden">
             <span class="i-error"></span>
@@ -74,36 +151,36 @@
             </div>
           </div>
 
-			</div>
-
-	  	<div class="methodsBox js-appear is-hidden clearfix">
-	  	  <p class="vidtip">Drag & drop the buttons into the code editor on the right. Change the numbers to customize the filters!</p>
-  			<div class="clearfix">
-	        <ul id="methodList">
-	          {{#filters}}
-	          <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-	          {{/filters}}
-	        </ul>
-	      </div>
-	      <div class="clearfix">
-	        <button type="button" class="sm-btn show-inline js-switch-videos btn purple-btn-main">Switch Video</button>
-	        <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
-	      </div>
       </div>
 
-		</div>
+      <div class="methodsBox js-appear is-hidden clearfix">
+        <p class="vidtip">Drag & drop the buttons into the code editor on the right. Change the numbers to customize the filters!</p>
+        <div class="clearfix">
+          <ul id="methodList">
+            {{#filters}}
+            <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+            {{/filters}}
+          </ul>
+        </div>
+        <div class="clearfix">
+          <button type="button" class="sm-btn show-inline js-switch-videos btn purple-btn-main">Switch Video</button>
+          <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
+        </div>
+      </div>
+
+    </div>
 
 
-		<div class="col-md-5">
-			<div class="tabs-2">
-				<form>
-					<textarea id="codemirror" name="codemirror">{{code}}</textarea>
-		  	</form>
-		  </div>
-  	</div>
+    <div class="col-md-5">
+      <div class="tabs-2">
+        <form>
+          <textarea id="codemirror" name="codemirror">{{code}}</textarea>
+        </form>
+      </div>
+    </div>
 
-  	<div class="col-md-3">
-				<div id="tooltip-stop-3" class="learnMore">
+    <div class="col-md-3">
+        <div id="tooltip-stop-3" class="learnMore">
 
           <div class="learning-pop-container" data-toggle="modal" data-target="#lesson-1-222">
             <span class="progress-num cc-6">
@@ -210,13 +287,14 @@
           <a href="http://www.vidcode.io/contact">Feedback? Yes, Please!</a>
         </div>
       </div>
-  	</div>
+    </div>
 
 
-	</div>
+  </div>
 
 
 </div>
+
 
 <div class="set-container lesson-page clearfix is-hidden js-slide-final">
 
@@ -224,49 +302,28 @@
     <a class="js-slide-left-first" href="#"><span class="arrow-smaller">◄</span> Previous</a>
   </span>
   <div class="progress-set">
+
   </div>
+
+
     <div class="lesson-prompt">
   </div>
 
-  <div class="lesson-container centered-lesson">
+  <!-- <div class="lesson-container centered-lesson"> -->
     <div class="links-holder">
-      <a class="link-one is-hidden" id="mix-share" href="/save">Share Your Video</a>
-      <a class="link-two is-hidden js-slide-left-first" id="mix-again" href="/lesson/1">Try It Again</a>
-    <h2 class="kaytitle is-hidden"></h2>
-    <h2 class="kaydesc is-hidden"></h2>
-    <h2 class="is-hidden">username</h2>
-    <video id="vid-display" src=""></video>
+      <form method="post" action="/save">
+        <input type="submit" value="Share Your Video" class="link-one"/>
+      </form>
+      <!-- <a class="link-one" id="mix-share" href="/share">Share Your Video</a> -->
+      <a class="link-two js-slide-left-first" id="mix-again" href="/lesson/1">Try It Again</a>
+
+
     </div>
+    <video id="vid-display" src=""></video>
   </div>
 
 </div>
 
-  <div class="lesson-page clearfix set-container is-hidden js-slide-title">
-      <div id="fb-root"></div>
-          <script>(function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
-            fjs.parentNode.insertBefore(js, fjs);
-          }(document, 'script', 'facebook-jssdk'));</script>
-          
-          <span class="previous-progress-btn">
-            <a class="js-slide-left-title previous-progress-btn" href="#"><span class="arrow-smaller">◄</span> Previous</a>
-          </span>
-          <div class="desc-container">
-            
-            <h2>Give your vidcode some more personality!</h1>
-        
-            <input id="formTitle" placeholder="Name it here" required type="text"/>
-            <br/>
-            <input id="formDesc" placeholder="Describe it here" required type="text"/>
-            
-            <span class="next-progress-btn">
-              <a id="tooltip-stop-4" class="submit js-slide-right-title" href="#">Ok!</a>
-            </span>
-          </div>
-  </div>
 
 
       <div class="modal fade" id="lesson-1-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -499,7 +556,7 @@
             </div>
           </div>
         </div>
-    	</div>
+      </div>
 
       <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog2">
@@ -614,11 +671,11 @@
 <script src="/js/lessons.js"></script>
 
 <script>
-	$(window).load(function() {
-	  $("#joyRideTipContent").joyride({
-	  	autoStart: true
-	  });
-	});
+  $(window).load(function() {
+    $("#joyRideTipContent").joyride({
+      autoStart: true
+    });
+  });
 
     mixpanel.track_links("#mix-share", "Share clicked" );
     mixpanel.track_links("#mix-again", "Try It Again clicked" );
@@ -628,11 +685,34 @@
     'page name' : document.title,
     'url' : window.location.pathname
 });
-    // mixpanel.track_links("#objectsLM", "Movie Learn More clicked" );
-    // mixpanel.track_links("#movie", "Movie Learn More clicked" );
-    // mixpanel.track_links("#effects", "Effects Learn More clicked" );
-    // mixpanel.track_links("#function", "Function Learn More clicked" );
-    // mixpanel.track_links("#play", "Play Learn More clicked" );
 
-</script>
+</script>    
 
+  </div>
+
+  <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
+  <script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
+  <script src="/js/vendor/jquery.joyride-2.1.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script src="/js/vendor/codemirror-3.22/lib/codemirror.js"></script>
+  <script src="/js/vendor/codemirror-3.22/mode/javascript/javascript.js"></script>
+  <script src="/js/vendor/whammy.min.js"></script>
+  <script src="/js/vendor/Scrubbing.js/dist/Scrubbing.js"></script>
+  <script src="/Seriously/seriously.js"></script>
+  <script src="/Seriously/effects/seriously.vignette.js"></script>
+  <script src="/Seriously/effects/seriously.blur.js"></script>
+  <script src="/Seriously/effects/seriously.filmgrain.js"></script>
+  <script src="/Seriously/effects/seriously.exposure.js"></script>
+  <script src="/Seriously/effects/seriously.noise.js"></script>
+  <script src="/Seriously/effects/seriously.sepia.js"></script>
+  <script src="/Seriously/effects/seriously.hue-saturation.js"></script>
+  <script src="/Seriously/effects/seriously.fader.js"></script>
+  <script src="/js/plugins.js"></script>
+  <script src="/js/signInInfo.js"></script>
+
+  <script type="text/javascript">
+      $('.tooltip-lesson').tooltip();
+  </script>
+
+</body>
+</html>

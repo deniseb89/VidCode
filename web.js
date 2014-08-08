@@ -1,6 +1,5 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-// var cookieParser = require('cookie-parser');
 var session = require('cookie-session');
 var fs = require('fs');
 var http = require('http');
@@ -18,12 +17,10 @@ var monk = require('monk');
 var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
 passport.serializeUser(function(user, done) {
-  console.log('serializing');
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  console.log('deserializing');
     var vc = db.get('vidcode');
     vc.findOne({id: user.id , "social": user.provider}, function (err, doc) {
       done(err, user);
@@ -43,10 +40,6 @@ passport.use(new FacebookStrategy({
     process.nextTick(function(){
       return done(null, profile);
     })
-    // User.findOrCreate({facebookId: profile.id}, function(err, user) {
-    //   if (err) { return done(err); }
-    //   done(null, user);
-    // });
   }
 ));
 
@@ -75,7 +68,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 // app.use(cookieParser('my 114 o2o'));
 app.use(session({
-  secret: 'secret kitty'
+  secret: 'secret kitty',
+  maxAge: 1000*60*60*24
   // secureProxy: false // if you do SSL outside of node
 }))
 
@@ -93,37 +87,31 @@ app.set('view engine', '.html');
 // configure express routes
 var routes = require('./routes');
 app.get('/',routes.signin);
-app.get('/googleForm',routes.indexGF);
-app.get('/intro/:social?/:id?', routes.intro(db));
-app.get('/filters/:token?', routes.filters(db));
-app.get('/scrubbing', routes.scrubbing(db));
-app.get('/gallery', routes.gallery);
-app.get('/galleryshow', routes.galleryshow);
-app.get('/share/:url?', routes.share(db));
-
 app.get('/signin', routes.signin);
-
-app.get('/demotest', routes.oldDemo2);
-
-//------lesson template ----------//
+app.get('/intro/:social?/:id?', routes.intro(db));
 app.get('/lesson/1', routes.partone(db));
-app.get('/lesson/2', routes.parttwo);
-app.get('/lesson/3', routes.partthree);
-app.get('/lesson/4', routes.partfour);
+app.get('/share/:token?', routes.share(db));
+app.get('/notFound', routes.notFound);
 
-app.get('/codeAlone', routes.codeAlone);
-app.post('/upload', routes.upload);
-app.post('/save', routes.save(db, crypto));
+// app.get('/googleForm',routes.indexGF);
+// app.get('/filters/:token?', routes.filters(db));
+// app.get('/scrubbing', routes.scrubbing(db));
+// app.get('/gallery', routes.gallery);
+// app.get('/galleryshow', routes.galleryshow);
+
+//sign up + sign in
 app.post('/signup', routes.signup(db));
-
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
 app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
-
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});
 app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
 
+//getting and sending videos
 app.get('/instagram/:media', routes.igGet);
 app.get('/awsUpload', routes.awsUpload);
+app.get('/save', routes.save(db));
+app.get('/userVid', routes.getUserVid)
+app.post('/upload', routes.upload(mongo,db,crypto));
 
 // create server
 http.createServer(app).listen(app.get('port'),function(){
