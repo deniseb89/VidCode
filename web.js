@@ -95,7 +95,6 @@ app.get('/notFound', routes.notFound);
 app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
 
-// app.get('/googleForm',routes.indexGF);
 // app.get('/filters/:token?', routes.filters(db));
 // app.get('/scrubbing', routes.scrubbing(db));
 
