@@ -387,32 +387,6 @@ exports.signup = function (db, crypto) {
   };
 };
 
-exports.awsUpload = function(req,res){
-  var userVidURL = req.query.userVidURL;
-  userVidURL = "blob:"+ userVidURL.substr(5).replace(/:/g,"%3A");
-  console.log(userVidURL);
-  var AWS = require('aws-sdk');
-  AWS.config.loadFromPath('./config.json');
-  var s3 = new AWS.S3();
-  // request(url).pipe(fs.createWriteStream('./video/aws.webm'));
-  request.get(userVidURL, function(err,data){
-    if (!err){
-      var userVid = data;
-      var bucketName = 'vidcode';
-      var keyName = 'test.mp4';
-      var params = {Bucket: bucketName, Key: keyName, Body: userVid, ACL: 'public-read'};
-      s3.putObject(params, function(err, data) {
-        if (err)
-          console.log('aws error:'+err);
-        else
-          console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
-        });
-        } else {
-          console.log('request error: '+err);
-        }
-    });
-};
-
 function generateToken(crypto) {
   var tokenLength = 10;
   var buf = crypto.randomBytes(Math.ceil(tokenLength * 3 / 4));
