@@ -1,5 +1,6 @@
 var fs = require('fs');
 var request = require('request');
+var Busboy = require('busboy');
 
 exports.index = function (req, res) {
   res.render('index', {layout:false , title: 'VidCode' });
@@ -72,16 +73,16 @@ exports.share = function (db) {
   return function (req, res){
     var token = req.params.token;
     if (!token){
-      res.render('share_temp');
+      res.render('404', {layout: false});
       return;
     }
     var vc = db.get('vidcode');
     vc.findOne({ 'videos.token' : token }, function (err, doc) { 
       if (!doc) {
-        res.render('share_temp');
-        // res.render('404', {layout: false});
+        // res.render('share_temp');
+        res.render('404', {layout: false});
       } else {
-        res.render('share_temp',{video: doc.videos.filename, token:doc.videos.token});        
+        res.render('share',{user: doc});        
       }
     });
   }
@@ -218,7 +219,6 @@ exports.upload = function(mongo, db, crypto) {
     var user = req.user || null;
     var id = user.id || null;
     var social = user.provider || 'vidcode';    
-    var Busboy = require('busboy');
     var busboy = new Busboy({ headers: req.headers });
     var extensionAllowed = [".mp4", ".mov",".mpeg",".webm"];
     var maxSizeOfFile = 25000000;
@@ -230,7 +230,7 @@ exports.upload = function(mongo, db, crypto) {
       filename = token + '.webm';
       target_folder = './video/' +social[0]+'_'+user.id+'/' 
       target_path = target_folder+ filename;
-      //Todo: handle error if file doesnt exist. fs.stat(target_path);
+      //Todo: handle error if file doesnt exist
       file.pipe(fs.createWriteStream(target_path));
       saveVideo(db, id, social, target_path, token, function(){
       });
@@ -244,15 +244,8 @@ exports.upload = function(mongo, db, crypto) {
 };
 
 exports.igCB = function (db) {
-  return function (req, res) {
-    fs.mkdir('./img/', function (){
-      fs.readdir('./img/', function(err, files){
-        if (err) {console.log(err);}
-        for (var i=0; i<files.length; i++) {
-          fs.unlink('./img/'+files[i]);
-        }
-      });
-    });
+  return function (req, res) {    
+    //use busboy to stream the IG videos
     var user = req.user;
     if (user){
       fs.mkdir('./video', function (err){
@@ -278,8 +271,6 @@ exports.igCB = function (db) {
           next_max_id="",
           pages=0;
           urls=[];
-          urlsVid=[];
-          urlsImg=[];
 
    function igApiCall(next_page){
       request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
@@ -293,10 +284,8 @@ exports.igCB = function (db) {
 
           for (var i=0; i < media.length; i++){
             item = media[i];
-            if (item.hasOwnProperty("videos")&&(urlsVid.length<4)) {
-              urlsVid.push(item.videos.standard_resolution.url);
-            } else if (item.hasOwnProperty("images")&&(urlsImg.length<4)){
-              urlsImg.push(item.images.standard_resolution.url);
+            if (item.hasOwnProperty("videos")&&(urls.length<4)) {
+              urls.push(item.videos.standard_resolution.url);
             }
           }
         } else {
@@ -307,20 +296,14 @@ exports.igCB = function (db) {
         igApiCall(next_page);
       } else {
 
-        urls = urlsVid.concat(urlsImg);
         for (var i=0; i<urls.length; i++) {
           url = urls[i];
           var ix = url.lastIndexOf('.');
           var file_extension = (ix < 0) ? '' : url.substr(ix);
-          if(file_extension == '.jpg'){
-            target_path = './img/'+username + '_'+i+file_extension;
-          } else if (file_extension == '.mp4'){
-            target_path = dir+username + '_'+i+file_extension;
-          }
+          target_path = dir+username + '_'+i+file_extension;
 
           //buggy but working
           var ws = fs.createWriteStream(target_path);
-
           request(url).pipe(ws);
           // error catch
         }
@@ -332,7 +315,7 @@ exports.igCB = function (db) {
             res.redirect ('/intro/'+doc.social+'/'+doc.id);
           };  
           var user = req.user;
-          var doc = findOrCreate(db,uid, username,'instagram',successcb);
+          var doc = findOrCreate(db,uid,username,'instagram',successcb);
         });
       }
     });

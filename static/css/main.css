@@ -850,7 +850,8 @@ canvas{vertical-align: bottom;}
 .share-landing p{margin: 20px auto; width: 600px;}
 .share-landing a{font-weight: bold; float: none; margin-bottom:30px;}
 .share-landing a:hover{color: #fff; background-color: #50BA87;}
-
+.share-landing video{display: block; margin: 0 auto; width: 80%;}
+.addthis-container {margin-top: 30px};
 .greentext{color: #319665!important;}
 
 

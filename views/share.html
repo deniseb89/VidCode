@@ -1,20 +1,15 @@
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=316757878488178&version=v2.0";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53e5544e45115c2b"></script>
 
 <div class="set-container lesson-page clearfix share-landing">
-	<h2 class="kaytitle is-hidden"></h2>
-    <h2 class="kaydesc is-hidden"></h2>
-    <h2 class="is-hidden">username</h2>
-    <h3 id="file" class="is-hidden">{{video}}</h3>
-    <h3 id="token" class="is-hidden">{{token}}</h3>    
-	<video id="vid-display" controls autoplay src=""></video>
-	<div class="fb-share-button"></div>
+	<h2 class="is-hidden">title</h2>
+    <h2 class="is-hidden">desc</h2>
+    <h2 class>Made by {{user.username}}</h2>
+    <h3 id="file" class="is-hidden">{{user.videos.filename}}</h3>
+    <h3 id="token" class="is-hidden">{{user.videos.token}}</h3>    
+	<video id="vid-display" controls src=""></video>
+	<div class="addthis-container">
+		<div class="addthis_sharing_toolbox"></div>
+	</div>
 	<p class="greentext">Thank you for vidcoding!</p>
 	<a class="btn" id="mix-return-to-editor" href="/lesson/1">Return to Editor</a>
 </div>

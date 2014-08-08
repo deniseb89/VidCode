@@ -92,12 +92,12 @@ app.get('/intro/:social?/:id?', routes.intro(db));
 app.get('/lesson/1', routes.partone(db));
 app.get('/share/:token?', routes.share(db));
 app.get('/notFound', routes.notFound);
+app.get('/gallery', routes.gallery);
+app.get('/galleryshow', routes.galleryshow);
 
 // app.get('/googleForm',routes.indexGF);
 // app.get('/filters/:token?', routes.filters(db));
 // app.get('/scrubbing', routes.scrubbing(db));
-// app.get('/gallery', routes.gallery);
-// app.get('/galleryshow', routes.galleryshow);
 
 //sign up + sign in
 app.post('/signup', routes.signup(db));
