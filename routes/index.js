@@ -82,7 +82,7 @@ exports.share = function (db) {
         // res.render('share_temp');
         res.render('404', {layout: false});
       } else {
-        res.render('share',{user: doc});        
+        res.render('share_temp',{user: doc});        
       }
     });
   }
