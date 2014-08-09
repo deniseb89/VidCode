@@ -41,32 +41,25 @@ function drawVideoFrame(time) {
 function stopDL() {
   cancelAnimationFrame(rafId);
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-  video_filtered = webmBlob;
-  var videoDL = document.getElementById('video-dl');
   var videoDisplay = document.getElementById('vid-display');
   videoDLurl = window.URL.createObjectURL(webmBlob);
   videoDisplay.src = videoDLurl;
   videoDisplay.controls = true;
-  videoDisplay.load();
   videoDisplay.play();
   $('.displayWait').addClass('is-hidden');
   $('.lesson-prompt').text('Looks amazing!');
   $('.kaytitle').removeClass('is-hidden');
   $('.kaydesc').removeClass('is-hidden');
-  $('.link-two').attr('disabled',false);
-  $('#dLink').attr('href', videoDLurl);
-  $('#export').text('Save video');
-  $("body").css("cursor", "auto");
-  $("#export").css("cursor", "auto");
   $('.link-one').removeClass('is-hidden');
   $('.link-two').removeClass('is-hidden');
-  //save the video
-  saveVideo(webmBlob, videoDLurl);
+  //save the video + title + desc
+  //only do it once
+  submitVideo(webmBlob);
 };
 
-var saveVideo = function (blob,filename) {
-  //send the title & desc too
+var submitVideo = function (blob) {
   var formData = new FormData();
+  //append input #formTitle #formDesc
   formData.append('video',blob);
   $.ajax({
     url: '/upload',
@@ -116,8 +109,6 @@ $( document ).ready(function() {
     var formObj = $(this);
     var formURL = formObj.attr("action");
     var formData = new FormData(this);
-    // var formData = new FormData();
-    // formData.append('video','/img/wha_color.mp4','test.mp4');
 
     $.ajax({
       url: '/upload',

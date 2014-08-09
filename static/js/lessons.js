@@ -11,12 +11,12 @@ $( document ).ready(function() {
 
 	$('.sample-vid').click(function(){
     mixpanel.track('Selected a sample video');
-		var thisSrc = $(this).attr('src');
 		$('.vid-placeholder').addClass('is-hidden');
 		$('.loader').removeClass('is-hidden');
 		$('.js-vid-click').removeClass('js-selected-video');
 		$(this).addClass('js-selected-video');
 		movie.addEventListener("loadeddata", showVid, false);
+    var thisSrc = $(this).attr('src');
 		movie.src = thisSrc;
 	});
 
@@ -41,15 +41,13 @@ $( document ).ready(function() {
 
   $('.js-slide-right-title').click(function(){
     slideRight('.js-slide-title', '.js-slide-final');
-    $('.lesson-prompt').text('Wait just a moment as we save your awesome video creation...');
-    movie.play();
-    rafId = requestAnimationFrame(drawVideoFrame);
-    $("body").css("cursor", "progress");
-    $('.link-two').attr('disabled',true);
   });
 
   $('.js-slide-right-final').click(function(){
     slideRight('.js-slide-1', '.js-slide-title');
+    $('.lesson-prompt').text('Wait just a moment as your awesome video creation is saving...');  
+    movie.load();
+    rafId = requestAnimationFrame(drawVideoFrame);      
   });
 
   $('.js-slide-left-title').click(function(){
@@ -108,7 +106,7 @@ $( document ).ready(function() {
         error: function(data, textStatus, jqXHR){
           $('#js-fetch-vid0').parent().addClass('is-hidden');
           $('.loader').addClass('is-hidden');
-          //display different error if there is a loading problem
+          //Todo: display different error if there is a loading problem
           $('.i-error').text("You don't have any Instagram videos :(");
         }
       })

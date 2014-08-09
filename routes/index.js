@@ -228,12 +228,34 @@ exports.upload = function(mongo, db, crypto) {
       //Todo: stream file straight to gridFS
       token = generateToken(crypto);
       filename = token + '.webm';
+
+      var Db = mongo.Db;
+      var Grid = mongo.Grid;
+      Db.connect("mongodb://localhost:27017/vidcode", function(err, db) {
+        if(err) return console.dir(err);
+        var gs = new mongo.GridStore(db, "test.webm", "w");
+        gs.open(function(err, gridStore) {
+          var stream = gridStore.stream(true);
+
+          stream.on("data", function(chunk) {
+            console.log("Chunk of file data");
+          });
+
+          stream.on("end", function() {
+            console.log("EOF of file");
+          });
+
+          stream.on("close", function() {
+            console.log("Finished reading the file");
+          });
+        });
+      });
+
       target_folder = './video/' +social[0]+'_'+user.id+'/' 
       target_path = target_folder+ filename;
-      //Todo: handle error if file doesnt exist
+      //handle error if file doesnt exist
       fs.mkdir('./video', function (err){
         fs.mkdir(target_folder, function (err) {
-            console.log(err);
             file.pipe(fs.createWriteStream(target_path));
             saveVideo(db, id, social, target_path, token, function(){
               //I was thinking a cb would go here for redirecting to a page
@@ -387,9 +409,12 @@ exports.signup = function (db, crypto) {
     });
 
     var successcb = function(doc) {
+      //store the email as the session user
+      //user.id = email;
+      //user.social = 'vidcode';
       res.redirect ('/intro/'+doc.social+'/'+doc.id);
     };  
-    var user = req.user;
+
     var doc = findOrCreate(db,email, email,'vidcode',successcb);
   };
 };
