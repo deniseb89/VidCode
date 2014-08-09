@@ -107,7 +107,6 @@ app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect
 
 //getting and sending videos
 app.get('/instagram/:media', routes.igGet);
-app.get('/awsUpload', routes.awsUpload);
 app.get('/save', routes.save(db));
 app.get('/userVid', routes.getUserVid)
 app.post('/upload', routes.upload(mongo,db,crypto));

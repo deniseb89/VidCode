@@ -231,8 +231,15 @@ exports.upload = function(mongo, db, crypto) {
       target_folder = './video/' +social[0]+'_'+user.id+'/' 
       target_path = target_folder+ filename;
       //Todo: handle error if file doesnt exist
-      file.pipe(fs.createWriteStream(target_path));
-      saveVideo(db, id, social, target_path, token, function(){
+      fs.mkdir('./video', function (err){
+        fs.mkdir(target_folder, function (err) {
+            console.log(err);
+            file.pipe(fs.createWriteStream(target_path));
+            saveVideo(db, id, social, target_path, token, function(){
+              //I was thinking a cb would go here for redirecting to a page
+              //but now I'm not sure. Empty for now
+            });
+        });        
       });
     });
 
