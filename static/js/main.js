@@ -68,7 +68,11 @@ var submitVideo = function (blob) {
     mimeType:"multipart/form-data",
     contentType: false,
     cache: false,
-    processData:false
+    processData:false,
+    success: function(token, textStatus, jqXHR){
+      console.log(token);
+      $('.js-update-token').attr('href','/share/'+token);
+   }
    });
 }
 

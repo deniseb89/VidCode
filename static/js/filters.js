@@ -49,11 +49,6 @@
         matchIDs.push(matchID);
       }
 
-         // if (matchIDs.indexOf('num-filmgrain')!=-1){
-         //  adjScript+="\n\ effects.filmgrain.amount = parseInt($('#num-filmgrain').text())/10;";
-         // } else {
-         //  adjScript+="\n\ effects.filmgrain.amount = 0;";
-         // }
          if (matchIDs.indexOf('num-blur')!=-1){
           adjScript+="\n\ effects.blur.amount = parseInt($('#num-blur').text())/100;";
          }else {

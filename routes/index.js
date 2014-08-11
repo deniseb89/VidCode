@@ -1,6 +1,7 @@
 var fs = require('fs');
 var request = require('request');
 var Busboy = require('busboy');
+var Grid = require("gridfs-stream");
 
 exports.index = function (req, res) {
   res.render('index', {layout:false , title: 'VidCode' });
@@ -51,53 +52,57 @@ exports.galleryshow = function (req, res) {
   res.render('galleryshow', {title: 'VidCode Gallery' });
 };
 
-exports.save = function (db) {
-  return function (req, res){
-    var user = req.user;
-    if (!user){
-      res.render('404');
-      return;
-    }
-    var vc = db.get('vidcode');
-    vc.findOne({ id: user.id, 'social':user.provider}, function (err, doc) { 
-      if (!doc) {
-        res.render('404', {layout: false});
-      } else {
-        res.redirect('/share/'+doc.videos.token);        
-      }
-    });
-  }
-}
-
 exports.share = function (db) {
   return function (req, res){
     var token = req.params.token;
+    var file;
     if (!token){
       res.render('404', {layout: false});
       return;
     }
-    var vc = db.get('vidcode');
-    vc.findOne({ 'videos.token' : token }, function (err, doc) { 
+
+    var vc = db.get('vidcode');    
+    vc.findOne({ 'vidcodes.token' : token }, function (err, doc) { 
       if (!doc) {
-        // res.render('share_temp');
         res.render('404', {layout: false});
       } else {
-        res.render('share_temp',{user: doc});        
+        for (var item in doc.vidcodes){
+          if(doc.vidcodes[item]['token']==token){
+            file = doc.vidcodes[item]['file'];
+          }
+        };
+        res.render('share',{user: doc, file:file});        
       }
     });
   }
 }
 
-exports.getUserVid = function (req, res){
-  var file = req.query.file;
-  var rs = fs.createReadStream(file);
-  res.setHeader("content-type", "video/mp4");
-  rs.pipe(res);
-  rs.on('error', function(err){
-    res.end();
-  })
-  //handle read errors
-}
+exports.getUserVid = function(mongo, monk){
+  return function (req, res){
+    var file = req.query.file;
+    var Db = mongo.Db;
+    var gfs;
+    var host = process.env.MONGOHQ_URL || 'localhost:27017/vidcode';
+
+    Db.connect("mongodb://"+host, function(err, db) { 
+      var gfs = new Grid(db, mongo);
+
+      var rs = gfs.createReadStream({
+        _id: file
+      });    
+
+      rs.on('error', function (err) {
+        console.log('An error occurred in reading file '+file+': '+err);
+        res.status(500).end();
+      });
+        
+      res.setHeader("content-type", "video/webm");
+      rs.pipe(res);
+
+    })
+  };
+};
+
 exports.partone = function (db) {
    return function (req, res) {
     var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
@@ -214,7 +219,7 @@ exports.scrubbing = function (db) {
   };
 };
 
-exports.upload = function(mongo, db, crypto) {
+exports.upload = function(mongo, monk, crypto) {
   return function (req, res) {
     var user = req.user || null;
     var id = user.id || null;
@@ -224,50 +229,32 @@ exports.upload = function(mongo, db, crypto) {
     var maxSizeOfFile = 25000000;
     var target_path;
     var filename;
+    var Db = mongo.Db;
+    var host = process.env.MONGOHQ_URL || 'localhost:27017/vidcode';
+
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      //Todo: stream file straight to gridFS
-      token = generateToken(crypto);
-      filename = token + '.webm';
+      Db.connect("mongodb://"+host, function(err, db) { 
+        console.log('connected to '+host);
+        var token = generateToken(crypto);
+        filename = token + '.webm';
+        var gfs = new Grid(db, mongo);
+        var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
+        file.pipe(ws);
 
-      var Db = mongo.Db;
-      var Grid = mongo.Grid;
-      Db.connect("mongodb://localhost:27017/vidcode", function(err, db) {
-        if(err) return console.dir(err);
-        var gs = new mongo.GridStore(db, "test.webm", "w");
-        gs.open(function(err, gridStore) {
-          var stream = gridStore.stream(true);
-
-          stream.on("data", function(chunk) {
-            console.log("Chunk of file data");
-          });
-
-          stream.on("end", function() {
-            console.log("EOF of file");
-          });
-
-          stream.on("close", function() {
-            console.log("Finished reading the file");
-          });
+        ws.on('close', function(file) {
+          saveVideo(monk, id, social, file._id, token, function(){
+            console.log('wrote + indexed '+file._id+' to '+token+' in mongo');
+            res.send(token);
+          });          
         });
-      });
+        ws.on('error', function(err){
+          console.log('An error occurred in writing');
+          res.end();
+        })
 
-      target_folder = './video/' +social[0]+'_'+user.id+'/' 
-      target_path = target_folder+ filename;
-      //handle error if file doesnt exist
-      fs.mkdir('./video', function (err){
-        fs.mkdir(target_folder, function (err) {
-            file.pipe(fs.createWriteStream(target_path));
-            saveVideo(db, id, social, target_path, token, function(){
-              //I was thinking a cb would go here for redirecting to a page
-              //but now I'm not sure. Empty for now
-            });
-        });        
       });
     });
 
-    busboy.on('finish', function() {
-      // res.end();
-    });
     req.pipe(busboy);
   };
 };
@@ -282,7 +269,6 @@ exports.igCB = function (db) {
         fs.mkdir(dir, function (err) {
           fs.readdir(dir, function(err, files){
             for (var i=0; i<files.length; i++) {
-              //only delete instagram imported files
               fs.unlink(dir+files[i]);
             }
           });
@@ -333,7 +319,7 @@ exports.igCB = function (db) {
 
           //buggy but working
           var ws = fs.createWriteStream(target_path);
-          request(url).pipe(ws);
+          request(url).pipe(fs.createWriteStream(target_path));
           // error catch
         }
 
@@ -444,25 +430,23 @@ function findOrCreate(db, id, username, social, cb) {
     });
 }
 
-function saveVideo(db, id, social, filename, token, cb) {
+function saveVideo(db, id, social, file, token, cb) {
   var vc = db.get('vidcode');
   if (id && social){
     vc.findOne({ id: id , social: social}, function (err, doc) {
       if (!doc) {
         doc = { id : id };
-        doc.videos = {filename: filename, token: token}
+        doc.videos = {file: file, token: token}
         //also insert title and description
-        console.log('created new doc with'+filename);
         vc.insert(doc);
       } else {
-        //but dont really just set and replace here. instead, add videos to the videos object
-        vc.update(doc, { $set: { videos: {filename: filename, token: token }} });
+        vc.update(doc, { $addToSet: { vidcodes: {"file": file, "token": token }}});
       }
       cb()
     });    
   } else {
     //no user logged in but we'll still save the video
-      doc = { videos: {filename: filename, token: token} };
+      doc = { vidcodes: {"file": file, "token": token} };
       vc.insert(doc);
       cb();
   }
