@@ -773,6 +773,8 @@ canvas{vertical-align: bottom;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
 .spacer {margin-top: 175px !important;}
+.desc-container {text-align: center}
+.desc-container #formDesc {margin: 10px 0 10px 70px;}
 
 .lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin: 25px 0;}
 
@@ -821,6 +823,7 @@ canvas{vertical-align: bottom;}
 .i-error{text-align: center; font-weight: bold;}
 
 .centered-lesson{ margin: 0 auto 45px;}
+.centered-lesson h2{display: block; margin: 0 auto;}
 .centered-lesson video{display: block; margin: 0 auto; width: 80%;}
 /* =============    Gallery Page    ======== */
 .galleryheader{margin: 20px 0 15px 15px;}
@@ -849,7 +852,8 @@ canvas{vertical-align: bottom;}
 .share-landing p{margin: 20px auto; width: 600px;}
 .share-landing a{font-weight: bold; float: none; margin-bottom:30px;}
 .share-landing a:hover{color: #fff; background-color: #50BA87;}
-
+.share-landing video{display: block; margin: 0 auto; width: 80%;}
+.addthis-container {margin-top: 30px};
 .greentext{color: #319665!important;}
 
 

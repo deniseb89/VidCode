@@ -40,8 +40,7 @@
 			<div class="js-switch-appear">
 
         <div class="video-container clearfix">
-<!--           <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
- -->
+          <!-- <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button> -->
           <p>Instagram Videos</p>
           <div class="insta-thumbnails is-hidden">
             <span class="i-error"></span>
@@ -219,35 +218,55 @@
 
 </div>
 
-
 <div class="set-container lesson-page clearfix is-hidden js-slide-final">
 
-	<span class="previous-progress-btn">
-		<a class="js-slide-left-first" href="#"><span class="arrow-smaller">◄</span> Previous</a>
-	</span>
-	<div class="progress-set">
-
-	</div>
-
-
+  <span class="previous-progress-btn">
+    <a class="js-slide-left-first" href="#"><span class="arrow-smaller">◄</span> Previous</a>
+  </span>
+  <div class="progress-set">
+  </div>
     <div class="lesson-prompt">
   </div>
 
-	<!-- <div class="lesson-container centered-lesson"> -->
-		<div class="links-holder">
-      <form method="post" action="/save">
-        <!-- <a class="link-one" id="mix-share" href="/share">Share Your Video</a> -->
-        <input type="submit" value="Share Your Video" class="link-one"/>
-      </form>
-			<a class="link-two js-slide-left-first" id="mix-again" href="/lesson/1">Try It Again</a>
-
-
-		</div>
-		<video id="vid-display" src=""></video>
-	</div>
+  <div class="lesson-container centered-lesson">
+    <div class="links-holder">
+      <a class="link-one is-hidden" id="mix-share" href="/save">Share Your Video</a>
+      <a class="link-two is-hidden js-slide-left-first" id="mix-again" href="/lesson/1">Try It Again</a>
+    <h2 class="kaytitle is-hidden"></h2>
+    <h2 class="kaydesc is-hidden"></h2>
+    <h2 class="is-hidden">username</h2>
+    <video id="vid-display" src=""></video>
+    </div>
+  </div>
 
 </div>
 
+  <div class="lesson-page clearfix set-container is-hidden js-slide-title">
+      <div id="fb-root"></div>
+          <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));</script>
+          
+          <span class="previous-progress-btn">
+            <a class="js-slide-left-title previous-progress-btn" href="#"><span class="arrow-smaller">◄</span> Previous</a>
+          </span>
+          <div class="desc-container">
+            
+            <h2>Give your vidcode some more personality!</h1>
+        
+            <input id="formTitle" placeholder="Name it here" required type="text"/>
+            <br/>
+            <input id="formDesc" placeholder="Describe it here" required type="text"/>
+            
+            <span class="next-progress-btn">
+              <a id="tooltip-stop-4" class="submit js-slide-right-title" href="#">Ok!</a>
+            </span>
+          </div>
+  </div>
 
 
       <div class="modal fade" id="lesson-1-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

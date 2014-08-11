@@ -44,41 +44,40 @@ function stopDL() {
   video_filtered = webmBlob;
   var videoDL = document.getElementById('video-dl');
   var videoDisplay = document.getElementById('vid-display');
-  
-  upload(video_filtered);
-
   videoDLurl = window.URL.createObjectURL(webmBlob);
-  //videoDL.src = videoDLurl;
-  //videoDL.controls = true;
-  //videoDL.load();
   videoDisplay.src = videoDLurl;
   videoDisplay.controls = true;
   videoDisplay.load();
   videoDisplay.play();
   $('.displayWait').addClass('is-hidden');
   $('.lesson-prompt').text('Looks amazing!');
+  $('.kaytitle').removeClass('is-hidden');
+  $('.kaydesc').removeClass('is-hidden');
   $('.link-two').attr('disabled',false);
   $('#dLink').attr('href', videoDLurl);
   $('#export').text('Save video');
   $("body").css("cursor", "auto");
   $("#export").css("cursor", "auto");
-  $('#export').attr('disabled',false);
-  $('#dLbtn').attr('disabled',false);
-  $('#youtube').attr('disabled',false);
-
-  $('.dl-progress').text('All Finished!');
-  $('.share-btn').removeClass('is-hidden');
-  // windowObjectReference = window.open('/gallery?userVidURL='+videoDLurl,'GalleryPage','resizable,scrollbars');
-  //save to AWS S3
-  // $.ajax('/awsUpload?userVidURL='+videoDLurl,{
-  //   success: function(data, textStatus, jqXHR){
-  //     console.log('Successfully uploaded to AWS');
-  //   },
-  //   error: function(data, textStatus, jqXHR){
-  //     console.log('Failed to upload to AWS');
-  //   }
-  // });
+  $('.link-one').removeClass('is-hidden');
+  $('.link-two').removeClass('is-hidden');
+  //save the video
+  saveVideo(webmBlob, videoDLurl);
 };
+
+var saveVideo = function (blob,filename) {
+  //send the title & desc too
+  var formData = new FormData();
+  formData.append('video',blob);
+  $.ajax({
+    url: '/upload',
+    type: 'POST',
+    data:  formData,
+    mimeType:"multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData:false
+   });
+}
 
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
@@ -113,11 +112,15 @@ $( document ).ready(function() {
   });
 
   $(".uploadform").submit(function(e) {
+    //replace form file with a static file for now
     var formObj = $(this);
     var formURL = formObj.attr("action");
     var formData = new FormData(this);
+    // var formData = new FormData();
+    // formData.append('video','/img/wha_color.mp4','test.mp4');
+
     $.ajax({
-      url: formURL,
+      url: '/upload',
       type: 'POST',
       data:  formData,
       mimeType:"multipart/form-data",
@@ -135,22 +138,6 @@ $( document ).ready(function() {
      });
     e.preventDefault();
   });
-
-function upload(blobOrFile) {
-  console.log('uploading the video');
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/upload', true);
-  xhr.onload = function(e) {
-    console.log('starting...');
-  };
-
-  xhr.send(blobOrFile);
-}
-
-  var rafId;
-  var frames = [];
-  var capture;
-  var videoDLurl;
 
   movie.addEventListener('playing',function(){
     //also update movie.___() line in code editor
@@ -331,52 +318,6 @@ function upload(blobOrFile) {
   var removeInfo = function(term){
     $('pre:contains('+term+')').css("background", "none" );
   };
-
-  // var thumbnails = document.querySelectorAll('.js-fetch-vid');
-  // var tnExist = thumbnails[0];
-  // //go get video based on # in quadrant
-  // if(tnExist) {
-  //   $.ajax('/instagram/0',{
-  //     success: function(data, textStatus, jqXHR){
-  //       var thumbnail = document.getElementById('js-fetch-vid1');
-  //       thumbnail.addEventListener("canplay", function(){
-  //         //
-  //         console.log('thumbnail data loaded from page load');
-  //         thumbnail.load();
-  //       }, false);
-  //       thumbnail.src ="data:video/mp4;base64,"+data;
-  //     },
-  //     error: function(data, textStatus, jqXHR){
-  //       $('.loader').addClass('is-hidden');
-  //           alert("You don't have any Instagram videos :(");
-  //     }
-  //   })
-  // }
-
-  // $.ajax('/instagram/1',{
-  //     success: function(data, textStatus, jqXHR){
-
-  //       thumbnail.addEventListener("loadeddata", function(){
-  //         console.log('thumbnail data loaded from page load');
-  //       }, false);
-  //       thumbnail.src ="data:video/mp4;base64,"+data;
-  //     },
-  //     error: function(data, textStatus, jqXHR){
-  //       $('.loader').addClass('is-hidden');
-  //     }
-  //   })
-
-  // $.ajax('/instagram/2',{
-  //     success: function(data, textStatus, jqXHR){
-  //       thumbnail.addEventListener("loadeddata", function(){
-  //         console.log('thumbnail data loaded from page load');
-  //       }, false);
-  //       thumbnail.src ="data:video/mp4;base64,"+data;
-  //     },
-  //     error: function(data, textStatus, jqXHR){
-  //       $('.loader').addClass('is-hidden');
-  //     }
-  //   })
 
 //filters page
   var timeshasdropped = 0;

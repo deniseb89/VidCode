@@ -1,5 +1,12 @@
 $( document ).ready(function() {
 
+  $(".submit").click(function() {
+        var buttonTitle = document.getElementById("formTitle").value;
+        $(".kaytitle").text(buttonTitle);
+        var buttonDesc = document.getElementById("formDesc").value;
+        $(".kaydesc").text(buttonDesc);
+  })
+
   instaUser();
 
 	$('.sample-vid').click(function(){
@@ -32,25 +39,31 @@ $( document ).ready(function() {
 	    })
 	});
 
-  $('.js-slide-right-final').click(function(){
-  	slideRight('.js-slide-1', '.js-slide-final');
-  	$('.lesson-prompt').text('Wait just a moment as we save your awesome video creation...');
-  	movie.play();
-  	rafId = requestAnimationFrame(drawVideoFrame);
-  	$("body").css("cursor", "progress");
+  $('.js-slide-right-title').click(function(){
+    slideRight('.js-slide-title', '.js-slide-final');
+    $('.lesson-prompt').text('Wait just a moment as we save your awesome video creation...');
+    movie.play();
+    rafId = requestAnimationFrame(drawVideoFrame);
+    $("body").css("cursor", "progress");
     $('.link-two').attr('disabled',true);
   });
 
-  $('.js-slide-left-first').click(function(){
-  	slideLeft('.js-slide-1', '.js-slide-final');
+  $('.js-slide-right-final').click(function(){
+    slideRight('.js-slide-1', '.js-slide-title');
   });
 
+  $('.js-slide-left-title').click(function(){
+    slideLeft('.js-slide-1', '.js-slide-title');
+  });
+
+  $('.js-slide-left-first').click(function(){
+    slideLeft('.js-slide-title', '.js-slide-final');
+  });
 
 	$('.js-switch-videos').click(function(){
 		$('.methodsBox').addClass('is-hidden');
 		$(".js-switch-appear").removeClass("is-hidden");
 	});
-
 
 
   //boolean game
@@ -134,7 +147,7 @@ $( document ).ready(function() {
   };
 
 var instaUser = function() {
-    var social = $('#social').text()
+    var social = $('#social').text();
     if (social=="instagram"){
       var delay=1000;
       setTimeout(loadThumbnail,delay);
@@ -142,9 +155,6 @@ var instaUser = function() {
       $('.insta-import').removeClass('is-hidden');
     }
   }
-
-
-
 
 var slideLeft = function(oldSlide, newSlide){
 	$(newSlide).addClass('is-hidden');
@@ -166,6 +176,3 @@ var slideRight = function(oldSlide, newSlide){
   	$(newSlide).removeClass('is-hidden');
   }, 500);
 }
-
-
-
