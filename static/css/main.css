@@ -815,6 +815,8 @@ canvas{vertical-align: bottom;}
 .learning-pop-container.l-color-4:hover .l-color-4{color: #481056;}
 .learning-pop-container.l-color-4:hover .progress-num.l-color-4{border: #481056 1px solid;}
 
+.exampleText{position: absolute; left: 360px; font-weight: 700; color: #15A05F;}
+
 
 .i-error{text-align: center; font-weight: bold;}
 
