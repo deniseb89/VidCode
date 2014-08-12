@@ -82,11 +82,12 @@ exports.getUserVid = function(mongo, monk){
     var file = req.query.file;
     var Db = mongo.Db;
     var gfs;
-    var host = process.env.MONGOHQ_URL || 'localhost:27017/vidcode';
+    var host = process.env.MONGOHQ_URL || 'mongodb://localhost:27017/vidcode';
 
-    Db.connect("mongodb://"+host, function(err, db) { 
+    Db.connect(host, function(err, db) {
+      if (err){console.log('db connection error:'+err);}       
+      console.log('connected to '+host);     
       var gfs = new Grid(db, mongo);
-
       var rs = gfs.createReadStream({
         _id: file
       });    
@@ -314,7 +315,7 @@ exports.igCB = function (db) {
           url = urls[i];
           var ix = url.lastIndexOf('.');
           var file_extension = (ix < 0) ? '' : url.substr(ix);
-          target_path = dir+username + '_'+i+file_extension;
+          target_path = dir+username+'_'+i+file_extension;
 
           //buggy but working
           var ws = fs.createWriteStream(target_path);
@@ -368,32 +369,22 @@ exports.igGet = function(req,res) {
 
 exports.fbCB = function (db) {
   return function (req, res) {
-    var user = req.user;
-    fs.mkdir('./video', function (err){    
-    });
-
     var successcb = function(doc) {
       res.redirect ('/intro/'+doc.social+'/'+doc.id);
     };  
 
+    var user = req.user;
     var doc = findOrCreate(db,user.id, user.displayName,'facebook',successcb);
   }
 }
 
 exports.signup = function (db, crypto) {
   return function (req, res) {
-    var email = req.body.email;
-
-    fs.mkdir('./video', function (err){   
-    });
-
     var successcb = function(doc) {
-      //store the email as the session user
-      //user.id = email;
-      //user.social = 'vidcode';
       res.redirect ('/intro/'+doc.social+'/'+doc.id);
-    };  
+    };
 
+    var email = req.body.email;
     var doc = findOrCreate(db,email, email,'vidcode',successcb);
   };
 };
