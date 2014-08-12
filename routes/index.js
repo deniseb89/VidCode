@@ -230,10 +230,11 @@ exports.upload = function(mongo, monk, crypto) {
     var target_path;
     var filename;
     var Db = mongo.Db;
-    var host = process.env.MONGOHQ_URL || 'localhost:27017/vidcode';
+    var host = process.env.MONGOHQ_URL || 'mongodb://localhost:27017/vidcode';
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      Db.connect("mongodb://"+host, function(err, db) { 
+      Db.connect(host, function(err, db) {
+        if (err){console.log('db connection error:'+err);} 
         console.log('connected to '+host);
         var token = generateToken(crypto);
         filename = token + '.webm';
@@ -262,19 +263,17 @@ exports.upload = function(mongo, monk, crypto) {
 exports.igCB = function (db) {
   return function (req, res) {    
     //use busboy to stream the IG videos
+    dir ='./video/';
+    fs.mkdir(dir, function (err){
+      fs.readdir(dir, function(err, files){
+        for (var i=0; i<files.length; i++) {
+          fs.unlink(dir+files[i]);
+        }
+      });
+    });
+
     var user = req.user;
     if (user){
-      fs.mkdir('./video', function (err){
-        dir = './video/i_'+user.id+'/';
-        fs.mkdir(dir, function (err) {
-          fs.readdir(dir, function(err, files){
-            for (var i=0; i<files.length; i++) {
-              fs.unlink(dir+files[i]);
-            }
-          });
-        });        
-      });
-
       var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
       var token = user.accessToken;
       var username = user.username;
@@ -343,7 +342,7 @@ exports.igCB = function (db) {
 
 exports.igGet = function(req,res) {
   var user = req.user;
-  var dir = './video/i_'+user.id+'/';
+  var dir = './video/';
   var filename = req.params.media + '.mp4';
 
   fs.readdir(dir, function(err, files){
@@ -370,10 +369,7 @@ exports.igGet = function(req,res) {
 exports.fbCB = function (db) {
   return function (req, res) {
     var user = req.user;
-    fs.mkdir('./video', function (err){
-      dir = './video/f_'+user.id+'/';
-      fs.mkdir(dir, function (err) {
-      });        
+    fs.mkdir('./video', function (err){    
     });
 
     var successcb = function(doc) {
@@ -388,10 +384,7 @@ exports.signup = function (db, crypto) {
   return function (req, res) {
     var email = req.body.email;
 
-    fs.mkdir('./video', function (err){
-      dir = './video/v_'+email+'/';
-      fs.mkdir(dir, function (err) {
-      });        
+    fs.mkdir('./video', function (err){   
     });
 
     var successcb = function(doc) {
