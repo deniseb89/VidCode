@@ -121,6 +121,7 @@ MongoClient.connect(host, function(err, db1) {
   if (err) throw err;
   Db = db1;
   gfs = Grid(Db, mongo);
+  console.log('connected to Mongo database: '+Db);
   app.post('/upload', routes.upload(db,gfs,crypto));
   app.get('/video', routes.getUserVid(gfs));
   http.createServer(app).listen(app.get('port'),function(){

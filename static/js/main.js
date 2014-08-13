@@ -41,17 +41,6 @@ function drawVideoFrame(time) {
 function stopDL() {
   cancelAnimationFrame(rafId);
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-  var videoDisplay = document.getElementById('vid-display');
-  videoDLurl = window.URL.createObjectURL(webmBlob);
-  videoDisplay.src = videoDLurl;
-  videoDisplay.controls = true;
-  videoDisplay.play();
-  $('.displayWait').addClass('is-hidden');
-  $('.lesson-prompt').text('Looks amazing!');
-  $('.kaytitle').removeClass('is-hidden');
-  $('.kaydesc').removeClass('is-hidden');
-  $('.link-one').removeClass('is-hidden');
-  $('.link-two').removeClass('is-hidden');
   //save the video + title + desc
   //only do it once
   submitVideo(webmBlob);
@@ -70,9 +59,22 @@ var submitVideo = function (blob) {
     cache: false,
     processData:false,
     success: function(token, textStatus, jqXHR){
-      console.log(token);
       $('.js-update-token').attr('href','/share/'+token);
-   }
+	  var videoDisplay = document.getElementById('vid-display');
+	  videoDLurl = window.URL.createObjectURL(blob);
+	  videoDisplay.src = videoDLurl;
+	  videoDisplay.controls = true;
+	  videoDisplay.play();
+	  $('.displayWait').addClass('is-hidden');
+	  $('.lesson-prompt').text('Looks amazing!');
+	  $('.link-one').removeClass('is-hidden');
+	  $('.link-two').removeClass('is-hidden');
+	},
+	error: function(jqXHR, textStatus, errorThrown){
+		console.log('uh oh! Mongo Error!');
+		$('.mongoError').text('uh oh! Your video hit an error while being saved. :(');		
+		$('.mongoError').removeClass('is-hidden');		
+	}	
    });
 }
 

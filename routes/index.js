@@ -223,11 +223,12 @@ exports.upload = function(db, gfs, crypto) {
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
       var token = generateToken(crypto);
       filename = token + '.webm';
-
       var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
+      console.log('created ws');
       file.pipe(ws);
-
       ws.on('close', function(file) {
+        console.log('ws closed');
+        console.log('saving '+file._id+' to '+token+' for user '+id+'/'+social);
         saveVideo(db, id, social, file._id, token, function(){
           console.log('wrote + indexed '+file._id+' to '+token+' in mongo');
           res.send(token);
@@ -239,6 +240,10 @@ exports.upload = function(db, gfs, crypto) {
       })
 
     });
+
+    busboy.on('finish', function(){
+    	console.log('busboy finished');
+    })
 
     req.pipe(busboy);
   };
