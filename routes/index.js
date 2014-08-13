@@ -1,7 +1,6 @@
 var fs = require('fs');
 var request = require('request');
 var Busboy = require('busboy');
-var Grid = require("gridfs-stream");
 
 exports.index = function (req, res) {
   res.render('index', {layout:false , title: 'VidCode' });
@@ -77,30 +76,20 @@ exports.share = function (db) {
   }
 }
 
-exports.getUserVid = function(mongo, monk){
+exports.getUserVid = function(gfs){
   return function (req, res){
     var file = req.query.file;
-    var Db = mongo.Db;
-    var gfs;
-    var host = process.env.MONGOHQ_URL || 'mongodb://localhost:27017/vidcode';
+    var rs = gfs.createReadStream({
+      _id: file
+    });    
 
-    Db.connect(host, function(err, db) {
-      if (err){console.log('db connection error:'+err);}       
-      console.log('connected to '+host);     
-      var gfs = new Grid(db, mongo);
-      var rs = gfs.createReadStream({
-        _id: file
-      });    
-
-      rs.on('error', function (err) {
-        console.log('An error occurred in reading file '+file+': '+err);
-        res.status(500).end();
-      });
-        
-      res.setHeader("content-type", "video/webm");
-      rs.pipe(res);
-
-    })
+    rs.on('error', function (err) {
+      console.log('An error occurred in reading file '+file+': '+err);
+      res.status(500).end();
+    });
+      
+    res.setHeader("content-type", "video/webm");
+    rs.pipe(res); 
   };
 };
 
@@ -220,7 +209,7 @@ exports.scrubbing = function (db) {
   };
 };
 
-exports.upload = function(mongo, monk, crypto) {
+exports.upload = function(db, gfs, crypto) {
   return function (req, res) {
     var user = req.user || null;
     var id = user.id || null;
@@ -230,31 +219,25 @@ exports.upload = function(mongo, monk, crypto) {
     var maxSizeOfFile = 25000000;
     var target_path;
     var filename;
-    var Db = mongo.Db;
-    var host = process.env.MONGOHQ_URL || 'mongodb://localhost:27017/vidcode';
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      Db.connect(host, function(err, db) {
-        if (err){console.log('db connection error:'+err);} 
-        console.log('connected to '+host);
-        var token = generateToken(crypto);
-        filename = token + '.webm';
-        var gfs = new Grid(db, mongo);
-        var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
-        file.pipe(ws);
+      var token = generateToken(crypto);
+      filename = token + '.webm';
 
-        ws.on('close', function(file) {
-          saveVideo(monk, id, social, file._id, token, function(){
-            console.log('wrote + indexed '+file._id+' to '+token+' in mongo');
-            res.send(token);
-          });          
-        });
-        ws.on('error', function(err){
-          console.log('An error occurred in writing');
-          res.end();
-        })
+      var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
+      file.pipe(ws);
 
+      ws.on('close', function(file) {
+        saveVideo(db, id, social, file._id, token, function(){
+          console.log('wrote + indexed '+file._id+' to '+token+' in mongo');
+          res.send(token);
+        });          
       });
+      ws.on('error', function(err){
+        console.log('An error occurred in writing');
+        res.end();
+      })
+
     });
 
     req.pipe(busboy);

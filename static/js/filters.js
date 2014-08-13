@@ -64,7 +64,7 @@
         } else {
           adjScript+="\n\ effects.exposure.amount = 0;";
         }
-        if ($(match).attr('id')=='num-fader'){
+        if (matchIDs.indexOf('num-fader')!=-1){
           adjScript+="\n\ effects.fader.amount = parseInt($('#num-fader').text())/25;";
         } else {
           adjScript+="\n\ effects.fader.amount = 0;";
@@ -91,19 +91,6 @@
       textScript+=adjScript;
       textScript+="\n\ } catch(e){"+ adjScript +"\n\ }";
       scriptNew.text = textScript;
-
-      if(cmScript.indexOf(20) >= 0 && step2 === 0){
-        $('.step1.ch1').addClass('is-hidden');
-        $('.step2.ch1').removeClass('is-hidden');
-        step2++;
-      }
-
-      var codeContents = $('.cm-property').text();
-      if(codeContents.indexOf('pause') >= 0 && step3 === 0 && step2 === 1){
-        $('.step2.ch1').addClass('is-hidden');
-        $('.step3.ch1').removeClass('is-hidden');
-        step3++;
-      }
 
       try {
       var cmProp = $('.cm-' + eff).text();

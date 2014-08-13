@@ -339,16 +339,10 @@ $( document ).ready(function() {
           if (eff=="fader") {
             myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
             myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-            $('.step0.ch2').addClass('is-hidden');
-            $('.step2.ch2').addClass('is-hidden');
-            $('.step1.ch2').removeClass('is-hidden');
           }
         } else {
           myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-          $('.step0.ch2').addClass('is-hidden');
-          $('.step1.ch2').addClass('is-hidden');
-          $('.step2.ch2').removeClass('is-hidden');
         }
 
         myCodeMirror.save();
