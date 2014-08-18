@@ -10,6 +10,7 @@ var config = require('./config');
 var passport = require('passport');
 var InstagramStrategy = require('./models/passport-instagram').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy
+var Grid = require("gridfs-stream");
 
 // create mongodb
 var mongo = require('mongodb');
@@ -107,11 +108,23 @@ app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect
 
 //getting and sending videos
 app.get('/instagram/:media', routes.igGet);
-app.get('/save', routes.save(db));
-app.get('/userVid', routes.getUserVid)
-app.post('/upload', routes.upload(mongo,db,crypto));
 
 // create server
-http.createServer(app).listen(app.get('port'),function(){
-  console.log("Listening on " + app.get('port'));
+// connect away
+
+var MongoClient = mongo.MongoClient;
+var host = process.env.MONGOHQ_URL || 'mongodb://localhost:27017/vidcode';
+var gfs; //grid-fs object;
+var Db;
+
+MongoClient.connect(host, function(err, db1) {
+  if (err) throw err;
+  Db = db1;
+  gfs = Grid(Db, mongo);
+  console.log('connected to Mongo database: '+Db);
+  app.post('/upload', routes.upload(db,gfs,crypto));
+  app.get('/video', routes.getUserVid(gfs));
+  http.createServer(app).listen(app.get('port'),function(){
+    console.log("Listening on " + app.get('port'));
+  });
 });

@@ -51,53 +51,48 @@ exports.galleryshow = function (req, res) {
   res.render('galleryshow', {title: 'VidCode Gallery' });
 };
 
-exports.save = function (db) {
-  return function (req, res){
-    var user = req.user;
-    if (!user){
-      res.render('404');
-      return;
-    }
-    var vc = db.get('vidcode');
-    vc.findOne({ id: user.id, 'social':user.provider}, function (err, doc) { 
-      if (!doc) {
-        res.render('404', {layout: false});
-      } else {
-        res.redirect('/share/'+doc.videos.token);        
-      }
-    });
-  }
-}
-
 exports.share = function (db) {
   return function (req, res){
     var token = req.params.token;
+    var file;
     if (!token){
       res.render('404', {layout: false});
       return;
     }
-    var vc = db.get('vidcode');
-    vc.findOne({ 'videos.token' : token }, function (err, doc) { 
+
+    var vc = db.get('vidcode');    
+    vc.findOne({ 'vidcodes.token' : token }, function (err, doc) { 
       if (!doc) {
-        // res.render('share_temp');
         res.render('404', {layout: false});
       } else {
-        res.render('share_temp',{user: doc});        
+        for (var item in doc.vidcodes){
+          if(doc.vidcodes[item]['token']==token){
+            file = doc.vidcodes[item]['file'];
+          }
+        };
+        res.render('share',{user: doc, file:file});        
       }
     });
   }
 }
 
-exports.getUserVid = function (req, res){
-  var file = req.query.file;
-  var rs = fs.createReadStream(file);
-  res.setHeader("content-type", "video/mp4");
-  rs.pipe(res);
-  rs.on('error', function(err){
-    res.end();
-  })
-  //handle read errors
-}
+exports.getUserVid = function(gfs){
+  return function (req, res){
+    var file = req.query.file;
+    var rs = gfs.createReadStream({
+      _id: file
+    });    
+
+    rs.on('error', function (err) {
+      console.log('An error occurred in reading file '+file+': '+err);
+      res.status(500).end();
+    });
+      
+    res.setHeader("content-type", "video/webm");
+    rs.pipe(res); 
+  };
+};
+
 exports.partone = function (db) {
    return function (req, res) {
     var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
@@ -214,7 +209,7 @@ exports.scrubbing = function (db) {
   };
 };
 
-exports.upload = function(mongo, db, crypto) {
+exports.upload = function(db, gfs, crypto) {
   return function (req, res) {
     var user = req.user || null;
     var id = user.id || null;
@@ -224,28 +219,32 @@ exports.upload = function(mongo, db, crypto) {
     var maxSizeOfFile = 25000000;
     var target_path;
     var filename;
+
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      //Todo: stream file straight to gridFS
-      token = generateToken(crypto);
+      var token = generateToken(crypto);
       filename = token + '.webm';
-      target_folder = './video/' +social[0]+'_'+user.id+'/' 
-      target_path = target_folder+ filename;
-      //Todo: handle error if file doesnt exist
-      fs.mkdir('./video', function (err){
-        fs.mkdir(target_folder, function (err) {
-            console.log(err);
-            file.pipe(fs.createWriteStream(target_path));
-            saveVideo(db, id, social, target_path, token, function(){
-              //I was thinking a cb would go here for redirecting to a page
-              //but now I'm not sure. Empty for now
-            });
-        });        
+      var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
+      console.log('created ws');
+      file.pipe(ws);
+      ws.on('close', function(file) {
+        console.log('ws closed');
+        console.log('saving '+file._id+' to '+token+' for user '+id+'/'+social);
+        saveVideo(db, id, social, file._id, token, function(){
+          console.log('wrote + indexed '+file._id+' to '+token+' in mongo');
+          res.send(token);
+        });          
       });
+      ws.on('error', function(err){
+        console.log('An error occurred in writing');
+        res.end();
+      })
+
     });
 
-    busboy.on('finish', function() {
-      // res.end();
-    });
+    busboy.on('finish', function(){
+    	console.log('busboy finished');
+    })
+
     req.pipe(busboy);
   };
 };
@@ -253,20 +252,17 @@ exports.upload = function(mongo, db, crypto) {
 exports.igCB = function (db) {
   return function (req, res) {    
     //use busboy to stream the IG videos
+    dir ='./video/';
+    fs.mkdir(dir, function (err){
+      fs.readdir(dir, function(err, files){
+        for (var i=0; i<files.length; i++) {
+          fs.unlink(dir+files[i]);
+        }
+      });
+    });
+
     var user = req.user;
     if (user){
-      fs.mkdir('./video', function (err){
-        dir = './video/i_'+user.id+'/';
-        fs.mkdir(dir, function (err) {
-          fs.readdir(dir, function(err, files){
-            for (var i=0; i<files.length; i++) {
-              //only delete instagram imported files
-              fs.unlink(dir+files[i]);
-            }
-          });
-        });        
-      });
-
       var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
       var token = user.accessToken;
       var username = user.username;
@@ -307,11 +303,11 @@ exports.igCB = function (db) {
           url = urls[i];
           var ix = url.lastIndexOf('.');
           var file_extension = (ix < 0) ? '' : url.substr(ix);
-          target_path = dir+username + '_'+i+file_extension;
+          target_path = dir+username+'_'+i+file_extension;
 
           //buggy but working
           var ws = fs.createWriteStream(target_path);
-          request(url).pipe(ws);
+          request(url).pipe(fs.createWriteStream(target_path));
           // error catch
         }
 
@@ -335,7 +331,7 @@ exports.igCB = function (db) {
 
 exports.igGet = function(req,res) {
   var user = req.user;
-  var dir = './video/i_'+user.id+'/';
+  var dir = './video/';
   var filename = req.params.media + '.mp4';
 
   fs.readdir(dir, function(err, files){
@@ -361,35 +357,22 @@ exports.igGet = function(req,res) {
 
 exports.fbCB = function (db) {
   return function (req, res) {
-    var user = req.user;
-    fs.mkdir('./video', function (err){
-      dir = './video/f_'+user.id+'/';
-      fs.mkdir(dir, function (err) {
-      });        
-    });
-
     var successcb = function(doc) {
       res.redirect ('/intro/'+doc.social+'/'+doc.id);
     };  
 
+    var user = req.user;
     var doc = findOrCreate(db,user.id, user.displayName,'facebook',successcb);
   }
 }
 
 exports.signup = function (db, crypto) {
   return function (req, res) {
-    var email = req.body.email;
-
-    fs.mkdir('./video', function (err){
-      dir = './video/v_'+email+'/';
-      fs.mkdir(dir, function (err) {
-      });        
-    });
-
     var successcb = function(doc) {
       res.redirect ('/intro/'+doc.social+'/'+doc.id);
-    };  
-    var user = req.user;
+    };
+
+    var email = req.body.email;
     var doc = findOrCreate(db,email, email,'vidcode',successcb);
   };
 };
@@ -419,25 +402,23 @@ function findOrCreate(db, id, username, social, cb) {
     });
 }
 
-function saveVideo(db, id, social, filename, token, cb) {
+function saveVideo(db, id, social, file, token, cb) {
   var vc = db.get('vidcode');
   if (id && social){
     vc.findOne({ id: id , social: social}, function (err, doc) {
       if (!doc) {
         doc = { id : id };
-        doc.videos = {filename: filename, token: token}
+        doc.videos = {file: file, token: token}
         //also insert title and description
-        console.log('created new doc with'+filename);
         vc.insert(doc);
       } else {
-        //but dont really just set and replace here. instead, add videos to the videos object
-        vc.update(doc, { $set: { videos: {filename: filename, token: token }} });
+        vc.update(doc, { $addToSet: { vidcodes: {"file": file, "token": token }}});
       }
       cb()
     });    
   } else {
     //no user logged in but we'll still save the video
-      doc = { videos: {filename: filename, token: token} };
+      doc = { vidcodes: {"file": file, "token": token} };
       vc.insert(doc);
       cb();
   }

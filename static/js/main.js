@@ -41,32 +41,14 @@ function drawVideoFrame(time) {
 function stopDL() {
   cancelAnimationFrame(rafId);
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-  video_filtered = webmBlob;
-  var videoDL = document.getElementById('video-dl');
-  var videoDisplay = document.getElementById('vid-display');
-  videoDLurl = window.URL.createObjectURL(webmBlob);
-  videoDisplay.src = videoDLurl;
-  videoDisplay.controls = true;
-  videoDisplay.load();
-  videoDisplay.play();
-  $('.displayWait').addClass('is-hidden');
-  $('.lesson-prompt').text('Looks amazing!');
-  $('.kaytitle').removeClass('is-hidden');
-  $('.kaydesc').removeClass('is-hidden');
-  $('.link-two').attr('disabled',false);
-  $('#dLink').attr('href', videoDLurl);
-  $('#export').text('Save video');
-  $("body").css("cursor", "auto");
-  $("#export").css("cursor", "auto");
-  $('.link-one').removeClass('is-hidden');
-  $('.link-two').removeClass('is-hidden');
-  //save the video
-  saveVideo(webmBlob, videoDLurl);
+  //save the video + title + desc
+  //only do it once
+  submitVideo(webmBlob);
 };
 
-var saveVideo = function (blob,filename) {
-  //send the title & desc too
+var submitVideo = function (blob) {
   var formData = new FormData();
+  //append input #formTitle #formDesc
   formData.append('video',blob);
   $.ajax({
     url: '/upload',
@@ -75,7 +57,24 @@ var saveVideo = function (blob,filename) {
     mimeType:"multipart/form-data",
     contentType: false,
     cache: false,
-    processData:false
+    processData:false,
+    success: function(token, textStatus, jqXHR){
+      $('.js-update-token').attr('href','/share/'+token);
+	  var videoDisplay = document.getElementById('vid-display');
+	  videoDLurl = window.URL.createObjectURL(blob);
+	  videoDisplay.src = videoDLurl;
+	  videoDisplay.controls = true;
+	  videoDisplay.play();
+	  $('.displayWait').addClass('is-hidden');
+	  $('.lesson-prompt').text('Looks amazing!');
+	  $('.link-one').removeClass('is-hidden');
+	  $('.link-two').removeClass('is-hidden');
+	},
+	error: function(jqXHR, textStatus, errorThrown){
+		console.log('uh oh! Mongo Error!');
+		$('.mongoError').text('uh oh! Your video hit an error while being saved. :(');		
+		$('.mongoError').removeClass('is-hidden');		
+	}	
    });
 }
 
@@ -116,8 +115,6 @@ $( document ).ready(function() {
     var formObj = $(this);
     var formURL = formObj.attr("action");
     var formData = new FormData(this);
-    // var formData = new FormData();
-    // formData.append('video','/img/wha_color.mp4','test.mp4');
 
     $.ajax({
       url: '/upload',
@@ -344,16 +341,10 @@ $( document ).ready(function() {
           if (eff=="fader") {
             myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
             myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-            $('.step0.ch2').addClass('is-hidden');
-            $('.step2.ch2').addClass('is-hidden');
-            $('.step1.ch2').removeClass('is-hidden');
           }
         } else {
           myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-          $('.step0.ch2').addClass('is-hidden');
-          $('.step1.ch2').addClass('is-hidden');
-          $('.step2.ch2').removeClass('is-hidden');
         }
 
         myCodeMirror.save();

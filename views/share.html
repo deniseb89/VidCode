@@ -4,8 +4,7 @@
 	<h2 class="is-hidden">title</h2>
     <h2 class="is-hidden">desc</h2>
     <h2 class>Made by {{user.username}}</h2>
-    <h3 id="file" class="is-hidden">{{user.videos.filename}}</h3>
-    <h3 id="token" class="is-hidden">{{user.videos.token}}</h3>    
+    <h3 id="file" class="is-hidden">{{file}}</h3>
 	<video id="vid-display" controls src=""></video>
 	<div class="addthis-container">
 		<div class="addthis_sharing_toolbox"></div>
@@ -17,7 +16,7 @@
 <script>
 $( document ).ready(function() {
 	mixpanel.track_links("#mix-return-to-editor", "Return to Editor clicked" );
-	var filename = '/userVid/?file='+$('#file').text();
+	var filename = '/video/?file='+$('#file').text();
 	var token =  $('#token').text();
 	var videoDisplay = document.getElementById('vid-display');
 	videoDisplay.src = filename;
