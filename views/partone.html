@@ -41,7 +41,7 @@
 
         <div class="video-container clearfix">
           <!-- <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button> -->
-          <p>Instagram Videos</p>
+          <p id="tooltip-stop-1">Instagram Videos</p>
           <div class="insta-thumbnails is-hidden">
             <span class="i-error"></span>
             <div class="i-vid-container">
@@ -225,7 +225,7 @@
   </span>
   <div class="progress-set">
   </div>
-    <div class="lesson-prompt">
+  <div class="lesson-prompt js-lesson-prompt">
   </div>
 
   <div class="lesson-container centered-lesson">
@@ -250,18 +250,19 @@
             js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
             fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));</script>
-          
+
           <span class="previous-progress-btn">
             <a class="js-slide-left-title previous-progress-btn" href="#"><span class="arrow-smaller">◄</span> Previous</a>
           </span>
           <div class="desc-container">
-            
-            <h2>Give your vidcode some more personality!</h1>
-        
-            <input id="formTitle" placeholder="Name it here" required type="text"/>
+            <div class="progress-set">
+            </div>
+            <div class="lesson-prompt">Give your vidcode some more personality!</div>
+
+            <input class="generalInput" id="formTitle" placeholder="Name it here" required type="text"/>
             <br/>
-            <input id="formDesc" placeholder="Describe it here" required type="text"/>
-            
+            <input class="generalInput" id="formDesc" placeholder="Describe it here" required type="text"/>
+
             <span class="next-progress-btn">
               <a class="submit js-slide-right-title" href="#"> Preview▸</a>
             </span>
