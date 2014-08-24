@@ -8,6 +8,7 @@ Adapted from v002 by Anton Marini and Tom Butterworth
 
 http://v002.info/plugins/v002-blurs/
 */
+
 (function (root, factory) {
 	'use strict';
 
@@ -309,7 +310,7 @@ http://v002.info/plugins/v002-blurs/
 				uniform: 'amount',
 				defaultValue: 0.2,
 				min: 0,
-				max: 1
+				max: 100
 			}
 		},
 		title: 'Gaussian Blur'

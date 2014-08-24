@@ -71,7 +71,7 @@
 				type: 'number',
 				uniform: 'amount',
 				min: 0,
-				max: 1,
+				max: 100,
 				defaultValue: 1
 			},
 			timer: {

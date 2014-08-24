@@ -53,7 +53,7 @@
 				uniform: 'amount',
 				defaultValue: .5,
 				min: 0,
-				max: 1
+				max: 100
 			}
 		},
 		title: 'Fader',

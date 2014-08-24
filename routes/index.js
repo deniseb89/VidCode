@@ -120,7 +120,8 @@ exports.partone = function (db) {
       findOrCreate(db,uid, username,social,successcb);
       
     } else {
-      res.redirect('/signin');   
+        res.render("partone", {code: codeText, filters: filters});
+      //res.redirect('/signin');   
     }
   };
 };
@@ -228,7 +229,6 @@ exports.upload = function(db, gfs, crypto) {
       file.pipe(ws);
       ws.on('close', function(file) {
         console.log('ws closed');
-        console.log('saving '+file._id+' to '+token+' for user '+id+'/'+social);
         saveVideo(db, id, social, file._id, token, function(){
           console.log('wrote + indexed '+file._id+' to '+token+' in mongo');
           res.send(token);
@@ -253,14 +253,12 @@ exports.igCB = function (db) {
   return function (req, res) {    
     //use busboy to stream the IG videos
     dir ='./video/';
-    fs.mkdir(dir, function (err){
-      fs.readdir(dir, function(err, files){
-        for (var i=0; i<files.length; i++) {
-          fs.unlink(dir+files[i]);
-        }
-      });
-    });
-
+    // fs.readdir(dir, function(err, files){
+    //   for (var i=0; i<files.length; i++) {
+    //     fs.unlink(dir+files[i]);
+    //   }
+    // });
+   
     var user = req.user;
     if (user){
       var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
@@ -307,14 +305,16 @@ exports.igCB = function (db) {
 
           //buggy but working
           var ws = fs.createWriteStream(target_path);
+          console.log('ws created');
           request(url).pipe(fs.createWriteStream(target_path));
           // error catch
         }
-
+  
         ws.end('this is the end\n');
         ws.on('close', function() {
           var successcb = function(doc) {
             //send all the video filepaths in the response
+              //console.log('ws closed ');
             res.redirect ('/intro/'+doc.social+'/'+doc.id);
           };  
           var user = req.user;
@@ -333,7 +333,7 @@ exports.igGet = function(req,res) {
   var user = req.user;
   var dir = './video/';
   var filename = req.params.media + '.mp4';
-
+  var filenameW = req.params.media + '.webm'
   fs.readdir(dir, function(err, files){
     if (err) {
       console.log('readdir error: '+err);
@@ -347,7 +347,17 @@ exports.igGet = function(req,res) {
             res.send(base64Image);
           }          
         });           
-      } else {
+      } else if (files.indexOf(filenameW)>=0) {
+        fs.readFile(dir+filenameW, function(err, data) {
+          if (err) {
+            res.status(500).end();
+          } else {
+            var base64Image = data.toString('base64');
+            res.send(base64Image);
+          }          
+        });     
+
+    } else {
         console.log(filename+' doesnt exist');
         res.status(500).end();
       }

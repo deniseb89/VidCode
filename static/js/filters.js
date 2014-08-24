@@ -1,16 +1,12 @@
-    var video_filtered;
-    var step2 = 0;
-    var step3 = 0;
-    var step4 = 0;
     var allEffects = [];
+	var mult = {'blur':.01, 'fader':.04, 'exposure':.04, 'noise':.1, 'vignette': 1 };
 
     var labelLines = function() {
       //this function should take an input for the relevant effect, not brute force for all
       //also take note of whats active and whats not here (filters as well movie play-related code lines)
       for (var e=0; e< allEffects.length; e++){
-        $("pre:contains('effects."+allEffects[e]+"')").addClass('line-'+allEffects[e]);
-        $(".line-"+allEffects[e]).find('.cm-number').attr('id','num-'+allEffects[e]);
-        $(".line-"+allEffects[e]).find('span').addClass('cm-'+allEffects[e]);
+        $("pre:contains('effects."+allEffects[e]+"')").addClass('active-effect');
+        $("pre:contains('effects."+allEffects[e]+"')").attr('name',allEffects[e]);
       }
     }
 
@@ -35,50 +31,40 @@
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
       var cmScript = myCodeMirror.getValue();
+      eval(cmScript);
       var adjScript = "";
       var textScript = "\n\ try {\n\ "+cmScript;
 
-      //filter-specific
       labelLines();
-      var matches = document.querySelectorAll(".cm-number");
-      var matchIDs = [];
-      for (var i = 0; i < matches.length; i++)
-      {
-        var match = matches[i];
-        var matchID = $(match).attr('id');
-        matchIDs.push(matchID);
+      var matchEff = document.querySelectorAll(".active-effect");
+      
+      var matchNames = [];
+      for (var t = 0; t < matchEff.length; t++) {
+        var matchE = matchEff[t];
+        matchNames.push($(matchE).attr("name"));
       }
 
-         if (matchIDs.indexOf('num-blur')!=-1){
-          adjScript+="\n\ effects.blur.amount = parseInt($('#num-blur').text())/100;";
-         }else {
-          adjScript+="\n\ effects.blur.amount = 0;";
-         }
-        if (matchIDs.indexOf('num-vignette')!=-1){
-          adjScript+="\n\ effects.vignette.amount = Math.round(parseInt($('#num-vignette').text()));";
+      for (var c = 0; c < allEffects.length; c++) {
+        var thisEffect = allEffects[c];
+        if (matchNames.indexOf(thisEffect) < 0) {
+          adjScript+="\n\ effects." + thisEffect + ".amount = 0;";
         } else {
-          adjScript+="\n\ effects.vignette.amount = 0;";
+          var adjAmt = effects[thisEffect]['amount']*mult[thisEffect];
+          adjScript+="\n\ effects." + thisEffect +".amount = " +adjAmt+ ";";
         }
-        if (matchIDs.indexOf('num-exposure')!=-1){
-          adjScript+="\n\ effects.exposure.amount = parseInt($('#num-exposure').text())/25;";
-        } else {
-          adjScript+="\n\ effects.exposure.amount = 0;";
-        }
-        if (matchIDs.indexOf('num-fader')!=-1){
-          adjScript+="\n\ effects.fader.amount = parseInt($('#num-fader').text())/25;";
-        } else {
-          adjScript+="\n\ effects.fader.amount = 0;";
-        }
-        if (matchIDs.indexOf('num-noise')!=-1){
-          adjScript+="\n\ effects.noise.amount = parseInt($('#num-noise').text())/10;";
-        } else {
-          adjScript+="\n\ effects.noise.amount = 0;";
-        }
+      }
 
         if (textScript.indexOf('effects.sepia')>=0) {
           if (allEffects.indexOf('sepia')<0) {
             allEffects.push('sepia');
-            InitSeriously();
+		      var thisEffect;
+		      effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
+		      effects[allEffects[0]]["source"] = video;
+		      for (var i=1;i<allEffects.length;i++){
+		        effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
+		        effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
+		      }
+		      target.source = effects[allEffects[allEffects.length-1]];
           }
         } else {
           var si = allEffects.indexOf('sepia');
@@ -91,17 +77,7 @@
       textScript+=adjScript;
       textScript+="\n\ } catch(e){"+ adjScript +"\n\ }";
       scriptNew.text = textScript;
-
-      try {
-      var cmProp = $('.cm-' + eff).text();
-      if(cmProp.indexOf(eff) >= 0){
-      }
-      else if(step4 === 0 && step3 === 1){
-        $('.step3.ch1').addClass('is-hidden');
-        $('.step4.ch1').removeClass('is-hidden');
-        step4++;
-      }; } catch(e){};
-
+      
       document.body.appendChild(scriptNew);
     }
 
