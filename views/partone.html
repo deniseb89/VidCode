@@ -41,7 +41,7 @@
 
         <div class="video-container clearfix">
           <!-- <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button> -->
-          <p>Instagram Videos</p>
+          <p id="tooltip-stop-1">Instagram Videos</p>
           <div class="insta-thumbnails is-hidden">
             <span class="i-error"></span>
             <div class="i-vid-container">
@@ -225,7 +225,7 @@
   </span>
   <div class="progress-set">
   </div>
-    <div class="lesson-prompt">
+  <div class="lesson-prompt js-lesson-prompt">
   </div>
 
   <div class="lesson-container centered-lesson">
@@ -250,18 +250,19 @@
             js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
             fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));</script>
-          
+
           <span class="previous-progress-btn">
             <a class="js-slide-left-title previous-progress-btn" href="#"><span class="arrow-smaller">◄</span> Previous</a>
           </span>
           <div class="desc-container">
-            
-            <h2>Give your vidcode some more personality!</h1>
-        
-            <input id="formTitle" placeholder="Name it here" required type="text"/>
+            <div class="progress-set">
+            </div>
+            <div class="lesson-prompt">Give your vidcode some more personality!</div>
+
+            <input class="generalInput" id="formTitle" placeholder="Name it here" required type="text"/>
             <br/>
-            <input id="formDesc" placeholder="Describe it here" required type="text"/>
-            
+            <input class="generalInput" id="formDesc" placeholder="Describe it here" required type="text"/>
+
             <span class="next-progress-btn">
               <a class="submit js-slide-right-title" href="#"> Preview▸</a>
             </span>
@@ -343,7 +344,7 @@
             </div>
             <div class="modal-body instruct-body">
               <p>
-                Some of the pieces of JavaScript include <strong>values</strong>, <strong>variables</strong>, <strong>objects</strong> and <strong>functions</strong.
+                Some of the pieces of JavaScript include <strong>values</strong>, <strong>variables</strong>, <strong>objects</strong> and <strong>functions</strong>.
               </p>
               <p>
                 Have you changed the numbers and words around in your code? Then you've already worked with some of these pieces!
@@ -397,13 +398,13 @@
                 Some types of values are:
               </p>
               <p>
-                Numbers: 1, 12, 178
+                <strong>Numbers</strong>: <span class="exampleText">1, 12, 178</span>
               </p>
               <p>
-                Strings (text in quotes): "hello", "12 is a cool number"
+                <strong>Strings</strong> (text in quotes): <span class="exampleText">"hello", "12 is a cool number"</span>
               </p>
               <p>
-                booleans (whether something is true or false): videoPlaying = true;
+                <strong>Booleans</strong> (whether something is true or false): <span class="exampleText">videoPlaying = true;</span>
               </p>
               <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#lesson-4-222" aria-hidden="true">Prev</button>
               <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#lesson-4-3-222" aria-hidden="true">Next</button>
@@ -436,7 +437,7 @@
                 <p>Booleans set variables to true or false.</p>
                 <p>Pick petals off the flower to change this boolean value from true to false</p>
 
-                <p class="line-1">My cat loves me <span class="l-text">=</span></p>
+                <p class="line-1">my_cat_loves_me? <span class="l-text">=</span></p>
                 <p class="js-bool-switch is-showing-true l-text line-2">
                   True
                 </p>
@@ -465,6 +466,9 @@
               </p>
               <p>
                 Objects in JavaScript hold your data.
+              </p>
+              <p>
+                Think about a picnic basket, that holds the lots of different things that we need for a picnic. Our one basket can hold foods, such as salads and cheese, but it can also hold our picnic blanket and plates.
               </p>
               <p>
                 In your code, effects and movie are both objects.

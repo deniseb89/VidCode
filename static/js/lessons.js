@@ -44,11 +44,11 @@ $( document ).ready(function() {
   });
 
   $('.js-slide-right-final').click(function(){
-  	$('.mongoError').addClass('is-hidden');		
+  	$('.mongoError').addClass('is-hidden');
     slideRight('.js-slide-1', '.js-slide-title');
-    $('.lesson-prompt').text('Wait just a moment as your awesome video creation is saving...');  
+    $('.js-lesson-prompt').text('Wait just a moment as your awesome video creation is saving...');
     movie.load();
-    rafId = requestAnimationFrame(drawVideoFrame);      
+    rafId = requestAnimationFrame(drawVideoFrame);
   });
 
   $('.js-slide-left-title').click(function(){

@@ -65,14 +65,13 @@ var submitVideo = function (blob) {
 	  videoDisplay.src = videoDLurl;
 	  videoDisplay.controls = true;
 	  $('.displayWait').addClass('is-hidden');
-	  $('.lesson-prompt').text('Looks amazing!');
+	  $('.js-lesson-prompt').text('Looks amazing!');
 	  $('.link-one').removeClass('is-hidden');
 	  $('.link-two').removeClass('is-hidden');
 	},
-	error: function(jqXHR, textStatus, errorThrown){
-		$('.mongoError').text('uh oh! Your video hit an error while being saved. :(');		
-		$('.mongoError').removeClass('is-hidden');		
-	}	
+  	error: function(jqXHR, textStatus, errorThrown){
+      console.log('mongo Error: '+errorThrown);
+  	}	
    });
 }
 
