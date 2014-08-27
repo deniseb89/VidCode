@@ -213,8 +213,13 @@ exports.scrubbing = function (db) {
 exports.upload = function(db, gfs, crypto) {
   return function (req, res) {
     var user = req.user || null;
-    var id = user.id || null;
-    var social = user.provider || 'vidcode';    
+    if (user){
+      var id = user.id;
+      var social = user.provider;
+    } else {
+      var id = social = null;
+    }
+
     var busboy = new Busboy({ headers: req.headers });
     var extensionAllowed = [".mp4", ".mov",".mpeg",".webm"];
     var maxSizeOfFile = 25000000;
