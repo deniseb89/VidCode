@@ -900,6 +900,9 @@ canvas{vertical-align: bottom;}
 .modal-title{font-weight: 600; color: #441B4B;}
 .btn-close-modal{cursor: pointer; margin-top: -27px;}
 
+.is-inactive-btn{opacity: .6; cursor: default;}
+.is-inactive-btn:hover{background-color: #441B4B!important;}
+
 
 /* ==========================================================================
    Helper classes
@@ -938,7 +941,6 @@ canvas{vertical-align: bottom;}
 /* JS is styling */
 
 .is-inactive{display: none; margin-left: 165px;}
-
 
 
 /*
