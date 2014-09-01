@@ -817,7 +817,7 @@ canvas{vertical-align: bottom;}
 
 .centered-lesson{ margin: 0 auto 45px;}
 .centered-lesson h2{display: block; margin: 0 auto;}
-.centered-lesson video{display: block; margin: 32px auto -5px; width: 520px;}
+.centered-lesson video{display: block; margin: 32px auto -5px; width: 530px;}
 /* =============    Gallery Page    ======== */
 .galleryheader{margin: 20px 0 15px 15px;}
 
@@ -844,12 +844,12 @@ canvas{vertical-align: bottom;}
 .share-landing h2{color: #319665!important;}
 .share-landing p{margin: 20px auto; width: 600px;}
 .share-landing a{font-weight: bold; float: none; margin-bottom:30px;}
-.share-landing a:hover{color: #fff; background-color: #50BA87;}
-.share-landing video{display: block; margin: 0 auto; width: 80%;}
+.share-landing .btn:hover{color: #fff; background-color: #50BA87;}
+.share-landing video{display: block; margin: 0 auto; width: 530px;}
 .addthis-container {margin-top: 30px};
 .greentext{color: #319665!important;}
 
-.share-p-text-container{width: 520px; margin: 3px auto; text-align: left;}
+.share-p-text-container{width: 530px; margin: 3px auto; text-align: left;}
 .share-p-text-container h3{font-family: "Copse"; color: #441B4B; padding-left: 0px; font-size: 1.8em;}
 .share-p-text-container p{font-weight: 400; font-size: 1.1em; color: #333;}
 
