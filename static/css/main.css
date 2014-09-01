@@ -111,6 +111,8 @@ textarea {
     -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     }
+.generalInput{display: block; margin: 10px auto; width: 383px;}
+textarea.generalInput{margin-bottom: 35px;}
 
 .sign-in-input{ padding: 13px;
 margin-left: 17px;
@@ -756,7 +758,7 @@ canvas{vertical-align: bottom;}
 .lesson-container{margin-top: 40px;}
 .lesson-page .progress-set .progress-active{color: #fff; background-color: #441B4B;}
 
-.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -20px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: 17px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
 .lesson-page .insta-import a, .share-landing a{background-color: #319665; float: left; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .insta-import a:hover{text-decoration: none; background-color: #50BA87;}
@@ -774,7 +776,6 @@ canvas{vertical-align: bottom;}
 
 .spacer {margin-top: 175px !important;}
 .desc-container {text-align: center}
-.desc-container #formDesc {margin: 10px 0 10px 116px;}
 
 .lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin: 25px 0;}
 
