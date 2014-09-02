@@ -1,11 +1,12 @@
 $( document ).ready(function() {
 
-  $(".submit").click(function() {
-        var buttonTitle = document.getElementById("formTitle").value;
-        $(".kaytitle").text(buttonTitle);
-        var buttonDesc = document.getElementById("formDesc").value;
-        $(".kaydesc").text(buttonDesc);
-  })
+  $(".js-desc").click(function() {
+      $('.share-p-text-container').removeClass('is-hidden');
+      var buttonTitle = document.getElementById("formTitle").value;
+      $(".kaytitle").text(buttonTitle);
+      var buttonDesc = document.getElementById("formDesc").value;
+      $(".kaydesc").text(buttonDesc);
+  });
 
   instaUser();
 
@@ -37,16 +38,15 @@ $( document ).ready(function() {
 	    })
 	});
 
-  $('.js-slide-right-title').click(function(){
-    slideRight('.js-slide-title', '.js-slide-final');
-  });
-
   $('.js-slide-right-final').click(function(){
   	$('.mongoError').addClass('is-hidden');
     slideRight('.js-slide-1', '.js-slide-title');
-    $('.js-lesson-prompt').text('Wait just a moment as your awesome video creation is saving...');
     movie.load();
-    movie.muted = true;    
+    movie.muted = true;
+    $('.js-lesson-prompt').text('');    
+    $('.progressDiv').removeClass('is-hidden');
+    $('#vid-display').addClass('is-hidden');
+    frames=[];
     rafId = requestAnimationFrame(drawVideoFrame);
   });
 

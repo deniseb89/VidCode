@@ -216,32 +216,6 @@
 
 	</div>
 
-
-</div>
-
-<div class="set-container lesson-page clearfix is-hidden js-slide-final">
-
-  <span class="previous-progress-btn">
-    <a class="js-slide-left-first" href="#"><span class="arrow-smaller">◄</span> Return to Code</a>
-  </span>
-  <div class="progress-set">
-  </div>
-  <div class="lesson-prompt js-lesson-prompt">
-  </div>
-
-  <div class="lesson-container centered-lesson">
-    <div class="links-holder">
-      <a class="link-one is-hidden js-update-token" id="mix-share" href="/share">Share Your Video</a>
-      <a class="link-two is-hidden js-slide-left-first" id="mix-again" href="/lesson/1">Try It Again</a>
-      <h3 class="mongoError"></h3>
-      <video id="vid-display" src=""></video>
-      <div class="share-p-text-container">
-        <h3 class="kaytitle"></h3>
-        <p class="kaydesc"></p>
-      </div>
-    </div>
-  </div>
-
 </div>
 
   <div class="lesson-page clearfix set-container is-hidden js-slide-title">
@@ -255,10 +229,10 @@
           }(document, 'script', 'facebook-jssdk'));</script>
 
           <span class="previous-progress-btn">
-            <a class="js-slide-left-title previous-progress-btn" href="#"><span class="arrow-smaller">◄</span> Previous</a>
+            <a class="js-slide-left-title previous-progress-btn" href="#"><span class="arrow-smaller">◄</span> Return to Code</a>
           </span>
           <span class="next-progress-btn">
-            <a class="submit js-slide-right-title" href="#"> Share▸</a>
+            <a class="is-inactive-btn js-share" id="mix-share" href="/share"> Share▸</a>
           </span>
           <div class="desc-container">
             <div class="progress-set">
@@ -269,6 +243,27 @@
 
             <textarea class="generalInput" id="formDesc" placeholder="Describe it here" cols="40" rows="5"></textarea>
 
+            <span class="desc-ok-btn">
+              <a class="js-desc" href="#"> OK</a>
+            </span>
+
+          </div>
+
+          <div class="lesson-prompt js-lesson-prompt"></div>  
+
+          <div class="progressDiv progress progress-striped">
+            <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+
+          <div class="lesson-container centered-lesson">
+            <div class="links-holder">
+              <video id="vid-display" src=""></video>
+              <div class="share-p-text-container is-hidden">
+                <h3 class="kaytitle"></h3>
+                <p class="kaydesc"></p>
+              </div>
+            </div>
           </div>
   </div>
 

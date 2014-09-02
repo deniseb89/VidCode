@@ -112,7 +112,6 @@ textarea {
     -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     }
 .generalInput{display: block; margin: 10px auto; width: 383px;}
-textarea.generalInput{margin-bottom: 35px;}
 
 .sign-in-input{ padding: 13px;
 margin-left: 17px;
@@ -247,7 +246,8 @@ body.is-in-signup{overflow: hidden;}
 }
 
 .progressDiv {
-   width: 300px;
+   margin: auto;
+   width: 500px;
 }
 
 .share-btn {
@@ -752,6 +752,8 @@ canvas{vertical-align: bottom;}
 
 .lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: 17px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
+.lesson-page .desc-ok-btn a{font-weight: bold; background-color: #441B4B; margin-left: 350px; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .desc-ok-btn a:hover{text-decoration: none; background-color: #652F6E;}
 .lesson-page .insta-import a, .share-landing a{background-color: #319665; float: left; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .insta-import a:hover{text-decoration: none; background-color: #50BA87;}
 .lesson-page .feedback a{font-weight: bold; background-color: #441B4B; float: right; margin: 250px 0 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}

@@ -7,11 +7,12 @@ var movie,
     vidLen,
     target,
     effects = {},
+    rafId,
+    frames = [],
+    capture,
+    videoDLurl,
+    videoDisplay,
     windowObjectReference = null;
-var rafId;
-var frames = [];
-var capture;
-var videoDLurl;
 
 var showVid = function() {
   $('.js-activate-btn').addClass('is-hidden');
@@ -35,16 +36,16 @@ function drawVideoFrame(time) {
   capture = frames.length*60/1000;
   captureTxt = Math.floor(100*capture/vidLen)+'%';
   $('.dl-progress').css('width',captureTxt);
-  $('.dl-progress').text(captureTxt+' complete');
+  $('.dl-progress').text('saving...');
   frames.push(canvas.toDataURL('image/webp', 1));
   if (capture>=vidLen){ stopDL();}
 };
 
 function stopDL() {
   cancelAnimationFrame(rafId);
+  $('.progressDiv').addClass('is-hidden');
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
   //save the video + title + desc
-  //only do it once
   submitVideo(webmBlob);
 };
 
@@ -61,16 +62,15 @@ var submitVideo = function (blob) {
     cache: false,
     processData:false,
     success: function(token, textStatus, jqXHR){
-      $('.js-update-token').attr('href','/share/'+token);
-	  var videoDisplay = document.getElementById('vid-display');
-	  videoDLurl = window.URL.createObjectURL(blob);
-	  videoDisplay.src = videoDLurl;
-	  videoDisplay.controls = true;
-	  $('.displayWait').addClass('is-hidden');
-	  $('.js-lesson-prompt').text('Looks amazing!');
-	  $('.link-one').removeClass('is-hidden');
-	  $('.link-two').removeClass('is-hidden');
-	},
+      $('#vid-display').removeClass('is-hidden');
+      videoDLurl = window.URL.createObjectURL(blob);
+      videoDisplay.src = videoDLurl;
+      videoDisplay.controls = true;      
+      $('.js-share').attr('href','/share/'+token);
+      $('.js-share').removeClass('is-inactive-btn');
+  	  $('.js-lesson-prompt').text('Looks amazing!');
+      $('.share-p-text-container').removeClass('is-hidden');
+  	},
   	error: function(jqXHR, textStatus, errorThrown){
       console.log('mongo Error: '+errorThrown);
   	}
@@ -80,6 +80,7 @@ var submitVideo = function (blob) {
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
   canvas = document.getElementById('canvas');
+  videoDisplay = document.getElementById('vid-display');  
   seriously = new Seriously();
   seriously.go();
   movie.addEventListener('canplay',InitSeriously, false);
