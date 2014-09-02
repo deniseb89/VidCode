@@ -34,7 +34,7 @@ body{
 
 h3{
     padding-left: 15px;
-    font-size: 2em!important;
+    font-size: 2em;
     font-weight: 700!important;
     }
 
@@ -111,6 +111,8 @@ textarea {
     -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     }
+.generalInput{display: block; margin: 10px auto; width: 383px;}
+textarea.generalInput{margin-bottom: 35px;}
 
 .sign-in-input{ padding: 13px;
 margin-left: 17px;
@@ -222,14 +224,6 @@ body.is-in-signup{overflow: hidden;}
     margin-left: 30px;
 }
 
-.allie4{
-    float: left;
-    padding-left: 300px;
-    width: 148px!important;
-}
-
-.allie4 a{color: #fff; text-decoration: none;}
-.allie4 a:hover{color: #fff; text-decoration: none;}
 
 
 .centerObject{
@@ -756,7 +750,7 @@ canvas{vertical-align: bottom;}
 .lesson-container{margin-top: 40px;}
 .lesson-page .progress-set .progress-active{color: #fff; background-color: #441B4B;}
 
-.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -20px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: 17px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
 .lesson-page .insta-import a, .share-landing a{background-color: #319665; float: left; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .insta-import a:hover{text-decoration: none; background-color: #50BA87;}
@@ -774,7 +768,6 @@ canvas{vertical-align: bottom;}
 
 .spacer {margin-top: 175px !important;}
 .desc-container {text-align: center}
-.desc-container #formDesc {margin: 10px 0 10px 116px;}
 
 .lesson-page .lesson-prompt{color: #319665; font-family: 'Copse'; text-align: center; font-size: 1.4em; margin: 25px 0;}
 
@@ -824,7 +817,7 @@ canvas{vertical-align: bottom;}
 
 .centered-lesson{ margin: 0 auto 45px;}
 .centered-lesson h2{display: block; margin: 0 auto;}
-.centered-lesson video{display: block; margin: 0 auto; width: 80%;}
+.centered-lesson video{display: block; margin: 32px auto -5px; width: 530px;}
 /* =============    Gallery Page    ======== */
 .galleryheader{margin: 20px 0 15px 15px;}
 
@@ -851,10 +844,14 @@ canvas{vertical-align: bottom;}
 .share-landing h2{color: #319665!important;}
 .share-landing p{margin: 20px auto; width: 600px;}
 .share-landing a{font-weight: bold; float: none; margin-bottom:30px;}
-.share-landing a:hover{color: #fff; background-color: #50BA87;}
-.share-landing video{display: block; margin: 0 auto; width: 80%;}
+.share-landing .btn:hover{color: #fff; background-color: #50BA87;}
+.share-landing video{display: block; margin: 0 auto; width: 530px;}
 .addthis-container {margin-top: 30px};
 .greentext{color: #319665!important;}
+
+.share-p-text-container{width: 530px; margin: 3px auto; text-align: left;}
+.share-p-text-container h3{font-family: "Copse"; color: #441B4B; padding-left: 0px; font-size: 1.8em;}
+.share-p-text-container p{font-weight: 400; font-size: 1.1em; color: #333;}
 
 
 .s-background{
@@ -900,6 +897,9 @@ canvas{vertical-align: bottom;}
 .modal-title{font-weight: 600; color: #441B4B;}
 .btn-close-modal{cursor: pointer; margin-top: -27px;}
 
+.is-inactive-btn{opacity: .6; cursor: default;}
+.is-inactive-btn:hover{background-color: #441B4B!important;}
+
 
 /* ==========================================================================
    Helper classes
@@ -938,7 +938,6 @@ canvas{vertical-align: bottom;}
 /* JS is styling */
 
 .is-inactive{display: none; margin-left: 165px;}
-
 
 
 /*

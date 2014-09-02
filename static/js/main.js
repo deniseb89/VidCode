@@ -14,6 +14,8 @@ var capture;
 var videoDLurl;
 
 var showVid = function() {
+  $('.js-activate-btn').addClass('is-hidden');
+  $('.js-slide-right-final').removeClass('is-hidden');
   $('.loader').addClass('is-hidden');
   $(".popup").addClass("is-hidden");
   $(".clearHover").addClass("is-hidden");
@@ -71,7 +73,7 @@ var submitVideo = function (blob) {
 	},
   	error: function(jqXHR, textStatus, errorThrown){
       console.log('mongo Error: '+errorThrown);
-  	}	
+  	}
    });
 }
 

@@ -19,7 +19,8 @@
 	</div>
 
 	<span class="next-progress-btn">
-		<a id="tooltip-stop-4" class="js-slide-right-final" href="#">I'm Done!▸</a>
+		<a id="tooltip-stop-4" class="is-inactive-btn js-activate-btn" href="#">I'm Done!▸</a>
+    <a id="tooltip-stop-4" class="is-hidden js-slide-right-final" href="#">I'm Done!▸</a>
 	</span>
 
 	<div class="lesson-container">
@@ -221,7 +222,7 @@
 <div class="set-container lesson-page clearfix is-hidden js-slide-final">
 
   <span class="previous-progress-btn">
-    <a class="js-slide-left-first" href="#"><span class="arrow-smaller">◄</span> Previous</a>
+    <a class="js-slide-left-first" href="#"><span class="arrow-smaller">◄</span> Return to Code</a>
   </span>
   <div class="progress-set">
   </div>
@@ -232,10 +233,12 @@
     <div class="links-holder">
       <a class="link-one is-hidden js-update-token" id="mix-share" href="/share">Share Your Video</a>
       <a class="link-two is-hidden js-slide-left-first" id="mix-again" href="/lesson/1">Try It Again</a>
-    <h2 class="kaytitle"></h2>
-    <h2 class="kaydesc"></h2>
-    <h3 class="mongoError"></h3>
-    <video id="vid-display" src=""></video>
+      <h3 class="mongoError"></h3>
+      <video id="vid-display" src=""></video>
+      <div class="share-p-text-container">
+        <h3 class="kaytitle"></h3>
+        <p class="kaydesc"></p>
+      </div>
     </div>
   </div>
 
@@ -254,18 +257,18 @@
           <span class="previous-progress-btn">
             <a class="js-slide-left-title previous-progress-btn" href="#"><span class="arrow-smaller">◄</span> Previous</a>
           </span>
+          <span class="next-progress-btn">
+            <a class="submit js-slide-right-title" href="#"> Share▸</a>
+          </span>
           <div class="desc-container">
             <div class="progress-set">
             </div>
             <div class="lesson-prompt">Give your vidcode some more personality!</div>
 
             <input class="generalInput" id="formTitle" placeholder="Name it here" required type="text"/>
-            <br/>
-            <input class="generalInput" id="formDesc" placeholder="Describe it here" required type="text"/>
 
-            <span class="next-progress-btn">
-              <a class="submit js-slide-right-title" href="#"> Preview▸</a>
-            </span>
+            <textarea class="generalInput" id="formDesc" placeholder="Describe it here" cols="40" rows="5"></textarea>
+
           </div>
   </div>
 
