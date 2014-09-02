@@ -338,7 +338,7 @@ exports.igGet = function(req,res) {
   var user = req.user;
   var dir = './video/';
   var filename = req.params.media + '.mp4';
-  var filenameW = req.params.media + '.webm'
+  var filenameW = req.params.media + '.webm';
   fs.readdir(dir, function(err, files){
     if (err) {
       console.log('readdir error: '+err);

@@ -25,16 +25,14 @@ $( document ).ready(function() {
     $('.vid-placeholder').addClass('is-hidden');
 		$('.loader').removeClass('is-hidden');
     $(this).addClass('js-selected-video');
-		//go get video based on # in quadrant
 		var n = $(this).attr("name");
 		$.ajax('/instagram/'+username+'_'+n,{
 	      success: function(data, textStatus, jqXHR){
-			movie.addEventListener("loadeddata", showVid, false);
+			    movie.addEventListener("loadeddata", showVid, false);
 	        movie.src="data:video/mp4;base64,"+data;
 	      },
 	      error: function(data, textStatus, jqXHR){
 	        $('.loader').addClass('is-hidden');
-	        // alert("You don't have any Instagram videos :(");
 	      }
 	    })
 	});
@@ -48,10 +46,12 @@ $( document ).ready(function() {
     slideRight('.js-slide-1', '.js-slide-title');
     $('.js-lesson-prompt').text('Wait just a moment as your awesome video creation is saving...');
     movie.load();
+    movie.muted = true;    
     rafId = requestAnimationFrame(drawVideoFrame);
   });
 
   $('.js-slide-left-title').click(function(){
+    movie.muted = false;  
     slideLeft('.js-slide-1', '.js-slide-title');
   });
 
@@ -107,7 +107,6 @@ $( document ).ready(function() {
         error: function(data, textStatus, jqXHR){
           $('#js-fetch-vid0').parent().addClass('is-hidden');
           $('.loader').addClass('is-hidden');
-          //Todo: display different error if there is a loading problem
           $('.i-error').text("You don't have any Instagram videos :(");
         }
       })

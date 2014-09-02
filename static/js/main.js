@@ -78,6 +78,10 @@ var submitVideo = function (blob) {
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
   canvas = document.getElementById('canvas');
+  seriously = new Seriously();
+  seriously.go();
+  movie.addEventListener('canplay',InitSeriously, false);
+  movie.load();
 
   myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
         mode:  "javascript",
@@ -95,12 +99,6 @@ $( document ).ready(function() {
             clearTimeout(codeDelay);
             codeDelay = setTimeout(updateScript, 300);
     });
-
-  seriously = new Seriously();
-  seriously.go();
-
-  var delay=2000;
-  setTimeout(InitSeriously,delay);
 
   // video events section
   $(".uploadfile").click(function(){
@@ -145,28 +143,6 @@ $( document ).ready(function() {
 
   // End video events section
 
-  $("#gallery-share").click(function(){
-    windowObjectReference = window.open('/gallery?userVidURL='+videoDLurl,'GalleryPage','resizable,scrollbars');
-  });
-
-  $("#email-share").click(function(){
-    windowObjectReference = window.open('https://gmail.com');
-  });
-
-  $("#export").click(function(){
-    //restart video from 1 and only retrieve frame when playing
-    $('.progressDiv').removeClass('is-hidden');
-    rafId = requestAnimationFrame(drawVideoFrame);
-    $(this).text('Saving...');
-    $("body").css("cursor", "progress");
-    $(this).css("cursor","progress");
-    $(this).attr('disabled',true);
-  });
-
-  $('#youtube').click(function(){
-    $('.YouTube').removeClass('is-hidden');
-  });
-
   $(".js-upload-video").click(function(){
       $(".popup").removeClass("is-hidden");
   });
@@ -175,15 +151,6 @@ $( document ).ready(function() {
       $('.loader').addClass('is-hidden');
       $(".popup").addClass("is-hidden");
   });
-
-  $(".js-choose-sample").change(function(){
-      var sampleVids = {"origami":"/img/demo.mp4","flower":"/img/wha_color.mp4"};
-      var sample = $(this).val();
-      if (sample){
-        movie.src=sampleVids[sample];
-        movie.addEventListener("loadeddata", showVid, false);
-      }
-    });
 
   $(".runbtn").click(function(){
       $(".video2").removeClass("is-hidden");
@@ -197,10 +164,6 @@ $( document ).ready(function() {
       var eff = allEffects[i];
       $('[name='+eff+']').removeClass("is-active");
     }
-  });
-
-  $('.js-close-steps').click(function(){
-    $('.step4.ch1').addClass('is-hidden');
   });
 
   $(".tab2").click(function(){

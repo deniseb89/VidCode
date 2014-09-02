@@ -23,6 +23,7 @@
         thisEffect.amount = 0;
       }
       target.source = effects[allEffects[allEffects.length-1]];
+      movie.removeEventListener('canplay', InitSeriously, false);
     };
 
     var updateScript = function() {

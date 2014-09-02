@@ -5825,7 +5825,7 @@
 		'							+ dot(m1*m1, vec2(dot(p3, x3), dot(p4, x4)))) ;\n' +
 		'}\n' +
 		'#endif\n';
-
 	return Seriously;
 
 }));
+
