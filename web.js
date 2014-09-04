@@ -96,9 +96,6 @@ app.get('/notFound', routes.notFound);
 app.get('/gallery', routes.gallery);
 app.get('/galleryshow', routes.galleryshow);
 
-// app.get('/filters/:token?', routes.filters(db));
-// app.get('/scrubbing', routes.scrubbing(db));
-
 //sign up + sign in
 app.post('/signup', routes.signup(db));
 app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
@@ -107,8 +104,8 @@ app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){
 app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
 
 //getting and sending videos
-app.get('/instagram/:media', routes.igGet);
-
+app.get('/instagram/:media/:ix', routes.igGet);
+app.get('/sample/:file', routes.getSample);
 // create server
 // connect away
 

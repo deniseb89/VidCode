@@ -10,32 +10,14 @@ $( document ).ready(function() {
 
   instaUser();
 
-	$('.sample-vid').click(function(){
-    mixpanel.track('Selected a sample video');
-		$('.vid-placeholder').addClass('is-hidden');
-		$('.loader').removeClass('is-hidden');
-		$('.js-vid-click').removeClass('js-selected-video');
-		$(this).addClass('js-selected-video');
-		movie.addEventListener("loadeddata", showVid, false);
-    var thisSrc = $(this).attr('src');
-		movie.src = thisSrc;
-	});
-
-	$('.js-fetch-vid').click(function(){
-    var username = $('#username').text();
+	$('.js-vid-click').click(function(){
     $('.vid-placeholder').addClass('is-hidden');
 		$('.loader').removeClass('is-hidden');
+    $('.js-vid-click').removeClass('js-selected-video');
     $(this).addClass('js-selected-video');
-		var n = $(this).attr("name");
-		$.ajax('/instagram/'+username+'_'+n,{
-	      success: function(data, textStatus, jqXHR){
-			    movie.addEventListener("loadeddata", showVid, false);
-	        movie.src="data:video/mp4;base64,"+data;
-	      },
-	      error: function(data, textStatus, jqXHR){
-	        $('.loader').addClass('is-hidden');
-	      }
-	    })
+    movie.addEventListener("loadeddata", showVid, false);
+    var thisSrc = $(this).attr('src');
+    movie.src = thisSrc;
 	});
 
   $('.js-slide-right-final').click(function(){
@@ -95,53 +77,27 @@ $( document ).ready(function() {
   var loadThumbnail = function (){
     $('.insta-thumbnails').removeClass('is-hidden');
     var username = $('#username').text();
+    
     var thumbnail0 = document.getElementById('js-fetch-vid0');
     var n = thumbnail0.getAttribute("name");
-    $.ajax('/instagram/'+username+'_'+n,{
-        success: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid0').removeClass('is-hidden');
-          thumbnail0.src = "data:video/mp4;base64,"+data;
-          thumbnail0.addEventListener("loadeddata", function(){
-          }, false);
-        },
-        error: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid0').parent().addClass('is-hidden');
-          $('.loader').addClass('is-hidden');
-          $('.i-error').text("You don't have any Instagram videos :(");
-        }
-      })
+    $('#js-fetch-vid0').removeClass('is-hidden');    
+    thumbnail0.src = '/instagram/'+username+'/'+n;
+    thumbnail0.addEventListener("loadeddata", function(){
+    }, false);
 
     var thumbnail1 = document.getElementById('js-fetch-vid1');
     var n = thumbnail1.getAttribute("name");
-
-    $.ajax('/instagram/'+username+'_'+n,{
-        success: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid1').removeClass('is-hidden');
-          thumbnail1.src = "data:video/mp4;base64,"+data;
-          thumbnail1.addEventListener("loadeddata", function(){
-          }, false);
-        },
-        error: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid1').parent().addClass('is-hidden');
-          $('.loader').addClass('is-hidden');
-        }
-      })
+    $('#js-fetch-vid1').removeClass('is-hidden');
+    thumbnail1.src = '/instagram/'+username+'/'+n;
+    thumbnail1.addEventListener("loadeddata", function(){
+    }, false);
 
     var thumbnail2 = document.getElementById('js-fetch-vid2');
     var n = thumbnail2.getAttribute("name");
-
-    $.ajax('/instagram/'+username+'_'+n,{
-        success: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid2').removeClass('is-hidden');
-          thumbnail2.src = "data:video/mp4;base64,"+data;
-          thumbnail2.addEventListener("loadeddata", function(){
-          }, false);
-        },
-        error: function(data, textStatus, jqXHR){
-          $('#js-fetch-vid2').parent().addClass('is-hidden');
-          $('.loader').addClass('is-hidden');
-        }
-      })
+    $('#js-fetch-vid2').removeClass('is-hidden');
+    thumbnail2.src = '/instagram/'+username+'/'+n;
+    thumbnail2.addEventListener("loadeddata", function(){
+    }, false);
   };
 
 var instaUser = function() {
