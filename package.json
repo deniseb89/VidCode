@@ -31,7 +31,8 @@
     "passport-oauth2": "1.x.x",
     "passport-facebook": ">= 0.0.0",
     "pkginfo": "0.2.x",
-    "request": "~2.27.0"
+    "request": "~2.27.0",
+    "underscore": ">= 0.0.0"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.13",

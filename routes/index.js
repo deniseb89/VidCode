@@ -235,7 +235,6 @@ exports.upload = function(db, gfs, crypto) {
       ws.on('close', function(file) {
         console.log('ws closed');
         saveVideo(db, id, social, file._id, token, function(){
-          console.log('wrote + indexed '+file._id+' to '+token+' in mongo');
           res.send(token);
         });          
       });
@@ -258,12 +257,7 @@ exports.igCB = function (db) {
   return function (req, res) {    
     //use busboy to stream the IG videos
     dir ='./video/';
-    // fs.readdir(dir, function(err, files){
-    //   for (var i=0; i<files.length; i++) {
-    //     fs.unlink(dir+files[i]);
-    //   }
-    // });
-   
+
     var user = req.user;
     if (user){
       var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
@@ -310,7 +304,6 @@ exports.igCB = function (db) {
 
           //buggy but working
           var ws = fs.createWriteStream(target_path);
-          console.log('ws created');
           request(url).pipe(fs.createWriteStream(target_path));
           // error catch
         }
@@ -334,11 +327,33 @@ exports.igCB = function (db) {
   };
 };
 
+exports.getSample = function(req,res){
+  var file = req.params.file;
+  var cdn ='http://d3h2w266vwux2c.cloudfront.net/';
+  var file_path = './video/'+file;
+  var ws = fs.createWriteStream(file_path);
+  
+  // ws.on('close',function(){
+  //   console.log('im done writing the file');    
+  //   var rs = fs.createReadStream(file_path);
+  //   fs.readFile(file_path, function(err,data){
+  //     if (err){
+  //       res.status(500).end();
+  //     } else {
+  //       console.log('im done reading the file');
+  //       res.send(data);        
+  //     }
+  //   })
+  // })
+
+  request(cdn+file).pipe(res);
+}
+
 exports.igGet = function(req,res) {
   var user = req.user;
   var dir = './video/';
-  var filename = req.params.media + '.mp4';
-  var filenameW = req.params.media + '.webm'
+  var filename = req.params.media +'_' + req.params.ix +'.mp4';
+
   fs.readdir(dir, function(err, files){
     if (err) {
       console.log('readdir error: '+err);
@@ -348,21 +363,10 @@ exports.igGet = function(req,res) {
           if (err) {
             res.status(500).end();
           } else {
-            var base64Image = data.toString('base64');
-            res.send(base64Image);
+            res.send(data);
           }          
         });           
-      } else if (files.indexOf(filenameW)>=0) {
-        fs.readFile(dir+filenameW, function(err, data) {
-          if (err) {
-            res.status(500).end();
-          } else {
-            var base64Image = data.toString('base64');
-            res.send(base64Image);
-          }          
-        });     
-
-    } else {
+      } else {
         console.log(filename+' doesnt exist');
         res.status(500).end();
       }
