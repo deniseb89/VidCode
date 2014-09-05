@@ -750,7 +750,7 @@ canvas{vertical-align: bottom;}
 .lesson-container{margin-top: 40px;}
 .lesson-page .progress-set .progress-active{color: #fff; background-color: #441B4B;}
 
-.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: 17px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
+.lesson-page .next-progress-btn a{font-weight: bold; background-color: #441B4B; float: right; margin: -21px 35px 0 0; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .next-progress-btn a:hover{text-decoration: none; background-color: #652F6E;}
 .lesson-page .desc-ok-btn a{font-weight: bold; background-color: #441B4B; margin-left: 350px; font-size: 1.2em; color: #fff; padding: 6px; border-radius: 4px;}
 .lesson-page .desc-ok-btn a:hover{text-decoration: none; background-color: #652F6E;}
