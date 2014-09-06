@@ -21,13 +21,14 @@ $( document ).ready(function() {
 	});
 
   $('.js-slide-right-final').click(function(){
-  	$('.mongoError').addClass('is-hidden');
     slideRight('.js-slide-1', '.js-slide-title');
     movie.load();
     movie.muted = true;
+    $('.js-share').attr('href','#');    
+    $('.js-share').addClass('is-inactive-btn');    
     $('.js-lesson-prompt').text('');    
-    $('.progressDiv').removeClass('is-hidden');
     $('#vid-display').addClass('is-hidden');
+    $('.progressDiv').removeClass('is-hidden');
     frames=[];
     rafId = requestAnimationFrame(drawVideoFrame);
   });
@@ -45,7 +46,6 @@ $( document ).ready(function() {
 		$('.methodsBox').addClass('is-hidden');
 		$(".js-switch-appear").removeClass("is-hidden");
 	});
-
 
   //boolean game
   var fclicks = 0;

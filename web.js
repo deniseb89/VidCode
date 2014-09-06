@@ -6,7 +6,6 @@ var http = require('http');
 var path = require('path');
 var crypto = require('crypto');
 var util = require('util');
-var config = require('./config');
 var passport = require('passport');
 var InstagramStrategy = require('./models/passport-instagram').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy
@@ -33,9 +32,9 @@ var passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy;
 
 passport.use(new FacebookStrategy({
-      clientID: process.env.FACEBOOK_APP_ID || config.FACEBOOK_APP_ID_LOCAL,
-      clientSecret: process.env.FACEBOOK_APP_SECRET || config.FACEBOOK_APP_SECRET_LOCAL,
-      callbackURL: process.env.FACEBOOK_CB ||  "http://localhost:8080/auth/facebook/cb"         
+      clientID: process.env.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET,
+      callbackURL: process.env.FACEBOOK_CB      
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
@@ -46,15 +45,13 @@ passport.use(new FacebookStrategy({
 
 // passport-instagram auth
 passport.use(new InstagramStrategy({
-    clientID: process.env.INSTAGRAM_CLIENT_ID|| config.INSTAGRAM_CLIENT_ID_LOCAL,
-    clientSecret: process.env.INSTAGRAM_CLIENT_SECRET || config.INSTAGRAM_CLIENT_SECRET_LOCAL,    
-    callbackURL: process.env.INSTAGRAM_CB || "http://localhost:8080/auth/instagram/cb"
+    clientID: process.env.INSTAGRAM_CLIENT_ID,
+    clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
+    callbackURL: process.env.INSTAGRAM_CB
   },
   function(accessToken, refreshToken, profile, done) {
+    console.log('came back from ig id: '+process.env.INSTAGRAM_CLIENT_ID)
     var vc = db.get('vidcode');
-    // vc.findOrCreate({ id: profile.id  , "social":"instagram"}, function (err, user) {
-    //   return done(err, user);
-    // });
     process.nextTick(function () {
       return done(null, profile);
     });
@@ -67,7 +64,6 @@ app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-// app.use(cookieParser('my 114 o2o'));
 app.use(session({
   secret: 'secret kitty',
   maxAge: 1000*60*60*24
@@ -75,7 +71,6 @@ app.use(session({
 }))
 
 console.log('app.get says: '+app.get('env'));
-console.log('process.env says '+process.env.NODE_ENV);
 app.use(passport.initialize());
 app.use(passport.session());
 

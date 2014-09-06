@@ -121,7 +121,7 @@ exports.partone = function (db) {
       
     } else {
         res.render("partone", {code: codeText, filters: filters});
-      //res.redirect('/signin');   
+      //res.redirect('/signin');   //when users arent logged in, make them log in
     }
   };
 };
@@ -330,22 +330,6 @@ exports.igCB = function (db) {
 exports.getSample = function(req,res){
   var file = req.params.file;
   var cdn ='http://d3h2w266vwux2c.cloudfront.net/';
-  var file_path = './video/'+file;
-  var ws = fs.createWriteStream(file_path);
-  
-  // ws.on('close',function(){
-  //   console.log('im done writing the file');    
-  //   var rs = fs.createReadStream(file_path);
-  //   fs.readFile(file_path, function(err,data){
-  //     if (err){
-  //       res.status(500).end();
-  //     } else {
-  //       console.log('im done reading the file');
-  //       res.send(data);        
-  //     }
-  //   })
-  // })
-
   request(cdn+file).pipe(res);
 }
 

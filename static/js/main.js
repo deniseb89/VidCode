@@ -62,13 +62,13 @@ var submitVideo = function (blob) {
     cache: false,
     processData:false,
     success: function(token, textStatus, jqXHR){
-      $('#vid-display').removeClass('is-hidden');
       videoDLurl = window.URL.createObjectURL(blob);
       videoDisplay.src = videoDLurl;
       videoDisplay.controls = true;      
       $('.js-share').attr('href','/share/'+token);
       $('.js-share').removeClass('is-inactive-btn');
   	  $('.js-lesson-prompt').text('Looks amazing!');
+      $('#vid-display').removeClass('is-hidden');
       $('.share-p-text-container').removeClass('is-hidden');
   	},
   	error: function(jqXHR, textStatus, errorThrown){
