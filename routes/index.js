@@ -75,7 +75,7 @@ exports.share = function (db) {
           layout: false,
           user: doc,
           file:file,
-          url:"http://vidcode.herokuapp.com/share/"+token
+          url:"http://staging-vidcode.herokuapp.com/share/"+token
         });        
       }
     });
