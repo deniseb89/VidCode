@@ -50,7 +50,6 @@ passport.use(new InstagramStrategy({
     callbackURL: process.env.INSTAGRAM_CB
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log('came back from ig id: '+process.env.INSTAGRAM_CLIENT_ID)
     var vc = db.get('vidcode');
     process.nextTick(function () {
       return done(null, profile);
@@ -70,7 +69,7 @@ app.use(session({
   // secureProxy: false // if you do SSL outside of node
 }))
 
-console.log('app.get says: '+app.get('env'));
+// console.log(app.get('env'));
 app.use(passport.initialize());
 app.use(passport.session());
 

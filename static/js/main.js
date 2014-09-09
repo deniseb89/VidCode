@@ -64,12 +64,8 @@ var submitVideo = function (blob) {
     success: function(token, textStatus, jqXHR){
       videoDLurl = window.URL.createObjectURL(blob);
       videoDisplay.src = videoDLurl;
-      videoDisplay.controls = true;      
-      $('.js-share').attr('href','/share/'+token);
-      $('.js-share').removeClass('is-inactive-btn');
-  	  $('.js-lesson-prompt').text('Looks amazing!');
-      $('#vid-display').removeClass('is-hidden');
-      $('.share-p-text-container').removeClass('is-hidden');
+      videoDisplay.controls = true;
+      $('.js-share').attr('href','/share/'+token);                  
   	},
   	error: function(jqXHR, textStatus, errorThrown){
       console.log('mongo Error: '+errorThrown);
@@ -80,11 +76,18 @@ var submitVideo = function (blob) {
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
   canvas = document.getElementById('canvas');
-  videoDisplay = document.getElementById('vid-display');  
+  videoDisplay = document.getElementById('vid-display');
   seriously = new Seriously();
   seriously.go();
   movie.addEventListener('canplay',InitSeriously, false);
   movie.load();
+  videoDisplay.addEventListener('loadeddata', function(){
+    console.log('video display loaded');
+    $('.js-share').removeClass('is-inactive-btn');
+    $('.share-p-text-container').removeClass('is-hidden');
+    $('.js-lesson-prompt').text('Looks amazing!');
+    $('#vid-display').removeClass('is-hidden');
+  }, false);  
 
   myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
         mode:  "javascript",

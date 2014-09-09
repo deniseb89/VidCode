@@ -11,7 +11,6 @@
   <title>Vidcode</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
   <link rel="stylesheet" href="/css/normalize.css">
@@ -53,7 +52,9 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
       </a></li>
     <li class="pull-right">
       {{#if user}}
-      <a href="#" class="small">Hey, {{user.username}}!</a>
+        {{#if user.username}}
+        <a href="#" class="small">Hey, {{user.username}}!</a>
+        {{/if}}
       {{/if}}
     </li>
   </ul>

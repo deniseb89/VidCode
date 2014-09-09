@@ -70,7 +70,7 @@ exports.share = function (db) {
             file = doc.vidcodes[item]['file'];
           }
         };
-        res.render('share',{user: doc, file:file});        
+        res.render('share', {layout: false, user: doc, file:file});        
       }
     });
   }
@@ -230,10 +230,8 @@ exports.upload = function(db, gfs, crypto) {
       var token = generateToken(crypto);
       filename = token + '.webm';
       var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
-      console.log('created ws');
       file.pipe(ws);
       ws.on('close', function(file) {
-        console.log('ws closed');
         saveVideo(db, id, social, file._id, token, function(){
           res.send(token);
         });          
@@ -312,11 +310,10 @@ exports.igCB = function (db) {
         ws.on('close', function() {
           var successcb = function(doc) {
             //send all the video filepaths in the response
-              //console.log('ws closed ');
             res.redirect ('/intro/'+doc.social+'/'+doc.id);
           };  
           var user = req.user;
-          var doc = findOrCreate(db,uid,username,'instagram',successcb);
+          findOrCreate(db,uid,username,'instagram',successcb);
         });
       }
     });
@@ -365,7 +362,7 @@ exports.fbCB = function (db) {
     };  
 
     var user = req.user;
-    var doc = findOrCreate(db,user.id, user.displayName,'facebook',successcb);
+    findOrCreate(db,user.id, user.displayName,'facebook',successcb);
   }
 }
 
@@ -376,7 +373,7 @@ exports.signup = function (db, crypto) {
     };
 
     var email = req.body.email;
-    var doc = findOrCreate(db,email, email,'vidcode',successcb);
+    findOrCreate(db,email, email,'vidcode',successcb);
   };
 };
 
@@ -399,6 +396,7 @@ function findOrCreate(db, id, username, social, cb) {
         if (social){
           doc.social = social;        
         }
+        //todo: add the IG urls if social=instagram
         vc.insert(doc);
       }
       cb(doc);
@@ -420,8 +418,8 @@ function saveVideo(db, id, social, file, token, cb) {
       cb()
     });    
   } else {
-    //no user logged in but we'll still save the video
-      doc = { vidcodes: {"file": file, "token": token} };
+      console.log("no user logged in but we'll still save the video");
+      doc = { vidcodes: [{"file": file, "token": token}] };
       vc.insert(doc);
       cb();
   }
