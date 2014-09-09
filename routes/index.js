@@ -70,7 +70,13 @@ exports.share = function (db) {
             file = doc.vidcodes[item]['file'];
           }
         };
-        res.render('share', {layout: false, user: doc, file:file});        
+        res.set('title','Vidcodeio');
+        res.render('share', {
+          layout: false,
+          user: doc,
+          file:file,
+          url:"http://vidcode.herokuapp.com/share/"+token
+        });        
       }
     });
   }
