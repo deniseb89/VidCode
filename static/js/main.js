@@ -52,6 +52,8 @@ function stopDL() {
 var submitVideo = function (blob) {
   var formData = new FormData();
   //append input #formTitle #formDesc
+  formData.append('title', $(".kaytitle").text());
+  formData.append('desc', $(".kaydesc").text());
   formData.append('video',blob);
   $.ajax({
     url: '/upload',

@@ -70,12 +70,12 @@ exports.share = function (db) {
             file = doc.vidcodes[item]['file'];
           }
         };
-        res.set('title','Vidcodeio');
+        // add kickstarer url to description
         res.render('share', {
           layout: false,
           user: doc,
           file:file,
-          url:"http://staging-vidcode.herokuapp.com/share/"+token
+          url:"http://vidcode.herokuapp.com/share/"+token
         });        
       }
     });
@@ -332,8 +332,8 @@ exports.igCB = function (db) {
 
 exports.getSample = function(req,res){
   var file = req.params.file;
-  var cdn ='http://d3h2w266vwux2c.cloudfront.net/';
-  request(cdn+file).pipe(res);
+  var cdn = 'http://dg786cztanvmc.cloudfront.net';
+  request(cdn+'/videos/'+file).pipe(res);
 }
 
 exports.igGet = function(req,res) {
