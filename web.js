@@ -12,6 +12,7 @@ var FacebookStrategy = require('passport-facebook').Strategy
 var Grid = require("gridfs-stream");
 
 // create mongodb
+console.log(process.env.MONGOHQ_URL);
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
