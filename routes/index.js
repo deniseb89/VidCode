@@ -16,7 +16,7 @@ exports.intro = function (db) {
     var social = req.params.social;
     var id = req.params.id;
     if (id&&social){
-      var vc = db.get('vidcode');
+      var vc = db.collection('vidcode');
       vc.findOne({ id: id, 'social':social }, function (err, doc) {
         if (!doc) {
           res.render('404', {layout:false});
@@ -55,7 +55,7 @@ exports.share = function (db) {
       return;
     }
 
-    var vc = db.get('vidcode');    
+    var vc = db.collection('vidcode');    
     vc.findOne({ 'vidcodes.token' : token }, function (err, doc) { 
       if (!doc) {
         res.render('404', {layout: false});
@@ -115,7 +115,7 @@ exports.partone = function (db) {
       var social = user.provider;
       var uid = user.id;
       var username = user.username;
-      var vc = db.get('vidcode');
+      var vc = db.collection('vidcode');
 
       var successcb = function(doc) {
         //todo:if instagram user...
@@ -173,7 +173,7 @@ exports.filters = function (db) {
       return;
     }
 
-    var vc = db.get('vidcode');
+    var vc = db.collection('vidcode');
     vc.findOne({ token: token }, function (err, doc) {
       if (!doc) {
         res.status(404);
@@ -205,7 +205,7 @@ exports.scrubbing = function (db) {
       return;
     }
 
-    var vc = db.get('vidcode');
+    var vc = db.collection('vidcode');
     vc.findOne({ token: token }, function (err, doc) {
       if (!doc) {
         res.status(404);
@@ -265,7 +265,6 @@ exports.upload = function(db, gfs, crypto) {
 
 exports.igCB = function (db) {
   return function (req, res) {    
-    //use busboy to stream the IG videos
     dir ='./video/';
 
     var user = req.user;
@@ -306,27 +305,24 @@ exports.igCB = function (db) {
         igApiCall(next_page);
       } else {
 
-        for (var i=0; i<urls.length; i++) {
-          url = urls[i];
-          var ix = url.lastIndexOf('.');
-          var file_extension = (ix < 0) ? '' : url.substr(ix);
-          target_path = dir+username+'_'+i+file_extension;
+        // for (var i=0; i<urls.length; i++) {
+        //   url = urls[i];
+        //   var ix = url.lastIndexOf('.');
+        //   var file_extension = (ix < 0) ? '' : url.substr(ix);
+        //   target_path = dir+username+'_'+i+file_extension;
 
-          //buggy but working
-          var ws = fs.createWriteStream(target_path);
-          request(url).pipe(fs.createWriteStream(target_path));
-          // error catch
-        }
+        //   //buggy but working
+        //   var ws = fs.createWriteStream(target_path);
+        //   request(url).pipe(fs.createWriteStream(target_path));
+        //   // error catch
+        // }
   
-        ws.end('this is the end\n');
-        ws.on('close', function() {
-          var successcb = function(doc) {
-            //send all the video filepaths in the response
-            res.redirect ('/intro/'+doc.social+'/'+doc.id);
-          };  
-          var user = req.user;
-          findOrCreate(db,uid,username,'instagram',successcb);
-        });
+        var successcb = function(doc) {
+          res.redirect ('/intro/'+doc.social+'/'+doc.id);
+        };
+        //also save urls
+        findOrCreate(db,uid,username,'instagram',successcb);
+
       }
     });
 
@@ -397,7 +393,7 @@ function generateToken(crypto) {
 }
 
 function findOrCreate(db, id, username, social, cb) {
-    var vc = db.get('vidcode');
+    var vc = db.collection('vidcode');
     vc.findOne({ id: id , social: social}, function (err, doc) {
       if (!doc) {
         //insert all the user info we care about
@@ -409,29 +405,40 @@ function findOrCreate(db, id, username, social, cb) {
           doc.social = social;        
         }
         //todo: add the IG urls if social=instagram
-        vc.insert(doc);
+        vc.insert(doc, {w: 0});
       }
       cb(doc);
     });
 }
 
 function saveVideo(db, id, social, video, cb) {
-  var vc = db.get('vidcode');
+  var vc = db.collection('vidcode');
+  console.log('were in saveVideo');
   if (id && social){
     vc.findOne({ id: id , social: social}, function (err, doc) {
       if (!doc) {
         doc = { id : id };
         doc.videos = {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token};
-        vc.insert(doc);
+        vc.insert(doc, function(err,insert){
+          if (err){
+            console.log('err in inserting doc '+social+'/'+id+':' + err);            
+          }          
+        });
       } else {
-        vc.update(doc, { $addToSet: { vidcodes: {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}}});
+        console.log('found a doc');     
+        vc.update(doc, { $addToSet: { vidcodes: {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}}}, function(err,updated){
+          if (err){
+            console.log('err in updating doc '+social+'/'+id+':' + err);            
+          }
+        });
       }
       cb();
     });    
   } else {
-      console.log("no user logged in but we'll still save the video");
       doc = { vidcodes: [{"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}] };
-      vc.insert(doc);
+      vc.insert(doc, function(){
+        console.log('error in inserting anonymous video');
+      });
       cb();
   }
 }
