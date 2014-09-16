@@ -1,18 +1,15 @@
 var fs = require('fs');
 var request = require('request');
 var Busboy = require('busboy');
-
-exports.index = function (req, res) {
-  res.render('index', {layout:false , title: 'VidCode' });
-};
-
-exports.indexGF = function (req, res) {
-  res.render('googleForm', {layout:false , title: 'VidCode' });
-};
+var util = require('util');
 
 exports.notFound = function(req, res){
   res.render('404', {layout:false , title: 'VidCode' });  
 }
+
+exports.signin = function (req, res) {
+  res.render('signin', { title: 'VidCode' });
+};
 
 exports.intro = function (db) {
   return function (req, res) {
@@ -35,10 +32,6 @@ exports.intro = function (db) {
   }
 };
 
-exports.signin = function (req, res) {
-  res.render('signin', { title: 'VidCode' });
-};
-
 exports.gallery = function (req, res) {
   var userVidURL = req.query.userVidURL;
   if(userVidURL){
@@ -55,6 +48,8 @@ exports.share = function (db) {
   return function (req, res){
     var token = req.params.token;
     var file;
+    var title;
+    var desc;
     if (!token){
       res.render('404', {layout: false});
       return;
@@ -68,6 +63,8 @@ exports.share = function (db) {
         for (var item in doc.vidcodes){
           if(doc.vidcodes[item]['token']==token){
             file = doc.vidcodes[item]['file'];
+            title = doc.vidcodes[item]['title'];
+            desc = doc.vidcodes[item]['desc'];
           }
         };
         // add kickstarer url to description
@@ -75,7 +72,9 @@ exports.share = function (db) {
           layout: false,
           user: doc,
           file:file,
-          url:"http://vidcode.herokuapp.com/share/"+token
+          title:title,
+          desc:desc,
+          url:"http://app.vidcode.io/share/"+token
         });        
       }
     });
@@ -218,6 +217,7 @@ exports.scrubbing = function (db) {
 
 exports.upload = function(db, gfs, crypto) {
   return function (req, res) {
+    var video = {};
     var user = req.user || null;
     if (user){
       var id = user.id;
@@ -238,7 +238,9 @@ exports.upload = function(db, gfs, crypto) {
       var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
       file.pipe(ws);
       ws.on('close', function(file) {
-        saveVideo(db, id, social, file._id, token, function(){
+        video.file = file._id;
+        video.token = token;
+        saveVideo(db, id, social, video, function(){
           res.send(token);
         });          
       });
@@ -247,6 +249,10 @@ exports.upload = function(db, gfs, crypto) {
         res.end();
       })
 
+    });
+
+    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
+      video[fieldname] = val;
     });
 
     busboy.on('finish', function(){
@@ -409,23 +415,22 @@ function findOrCreate(db, id, username, social, cb) {
     });
 }
 
-function saveVideo(db, id, social, file, token, cb) {
+function saveVideo(db, id, social, video, cb) {
   var vc = db.get('vidcode');
   if (id && social){
     vc.findOne({ id: id , social: social}, function (err, doc) {
       if (!doc) {
         doc = { id : id };
-        doc.videos = {file: file, token: token}
-        //also insert title and description
+        doc.videos = {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token};
         vc.insert(doc);
       } else {
-        vc.update(doc, { $addToSet: { vidcodes: {"file": file, "token": token }}});
+        vc.update(doc, { $addToSet: { vidcodes: {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}}});
       }
-      cb()
+      cb();
     });    
   } else {
       console.log("no user logged in but we'll still save the video");
-      doc = { vidcodes: [{"file": file, "token": token}] };
+      doc = { vidcodes: [{"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}] };
       vc.insert(doc);
       cb();
   }

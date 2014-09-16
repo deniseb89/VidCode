@@ -6,6 +6,7 @@ $( document ).ready(function() {
       $(".kaytitle").text(buttonTitle);
       var buttonDesc = document.getElementById("formDesc").value;
       $(".kaydesc").text(buttonDesc);
+      //resend form here if title/desc is updated      
   });
 
   instaUser();
