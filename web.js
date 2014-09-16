@@ -1,3 +1,5 @@
+console.log(process.env)
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
@@ -38,7 +40,7 @@ var passport = require('passport')
 passport.use(new FacebookStrategy({
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: process.env.FACEBOOK_CB      
+      callbackURL: process.env.FACEBOOK_CB
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
