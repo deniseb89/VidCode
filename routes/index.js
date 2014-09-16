@@ -305,24 +305,26 @@ exports.igCB = function (db) {
         igApiCall(next_page);
       } else {
 
-        // for (var i=0; i<urls.length; i++) {
-        //   url = urls[i];
-        //   var ix = url.lastIndexOf('.');
-        //   var file_extension = (ix < 0) ? '' : url.substr(ix);
-        //   target_path = dir+username+'_'+i+file_extension;
+        for (var i=0; i<urls.length; i++) {
+          url = urls[i];
+          var ix = url.lastIndexOf('.');
+          var file_extension = (ix < 0) ? '' : url.substr(ix);
+          target_path = dir+username+'_'+i+file_extension;
 
-        //   //buggy but working
-        //   var ws = fs.createWriteStream(target_path);
-        //   request(url).pipe(fs.createWriteStream(target_path));
-        //   // error catch
-        // }
-  
+          //buggy but working
+          var ws = fs.createWriteStream(target_path);
+          request(url).pipe(fs.createWriteStream(target_path));
+          // error catch
+        }
+
+        ws.end('this is the end\n');
+        ws.on('close', function() {  
         var successcb = function(doc) {
           res.redirect ('/intro/'+doc.social+'/'+doc.id);
         };
         //also save urls
         findOrCreate(db,uid,username,'instagram',successcb);
-
+        });
       }
     });
 
