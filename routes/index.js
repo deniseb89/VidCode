@@ -113,8 +113,6 @@ exports.partone = function (db) {
     var user = req.user;
     if (user){
       var social = user.provider;
-      var uid = user.id;
-      var username = user.username;
       var vc = db.collection('vidcode');
 
       var successcb = function(doc) {
@@ -122,7 +120,7 @@ exports.partone = function (db) {
         //refresh API call with user.acessToken to get recent videos
         res.render("partone", {code: codeText, filters: filters, user: doc});
       };  
-      findOrCreate(db,uid, username,social,successcb);
+      findOrCreate(db,user,successcb);
       
     } else {
         res.render("partone", {code: codeText, filters: filters});
@@ -307,24 +305,14 @@ exports.igCB = function (db) {
 
         for (var i=0; i<urls.length; i++) {
           url = urls[i];
-          var ix = url.lastIndexOf('.');
-          var file_extension = (ix < 0) ? '' : url.substr(ix);
-          target_path = dir+username+'_'+i+file_extension;
-
-          //buggy but working
-          var ws = fs.createWriteStream(target_path);
-          request(url).pipe(fs.createWriteStream(target_path));
-          // error catch
         }
-
-        ws.end('this is the end\n');
-        ws.on('close', function() {  
+        user.IGvideos = urls;
+        
         var successcb = function(doc) {
           res.redirect ('/intro/'+doc.social+'/'+doc.id);
         };
-        //also save urls
-        findOrCreate(db,uid,username,'instagram',successcb);
-        });
+
+        findOrCreate(db,user,successcb);
       }
     });
 
@@ -340,30 +328,30 @@ exports.getSample = function(req,res){
   request(cdn+'/videos/'+file).pipe(res);
 }
 
-exports.igGet = function(req,res) {
-  var user = req.user;
-  var dir = './video/';
-  var filename = req.params.media +'_' + req.params.ix +'.mp4';
-
-  fs.readdir(dir, function(err, files){
-    if (err) {
-      console.log('readdir error: '+err);
-    } else {
-      if (files.indexOf(filename)>=0) {
-        fs.readFile(dir+filename, function(err, data) {
-          if (err) {
-            res.status(500).end();
-          } else {
-            res.send(data);
-          }          
-        });           
+exports.igVidGet = function(db){
+  return function(req,res) {
+    var user = req.user;
+    var vc = db.collection('vidcode');    
+    vc.findOne({ 'id':user.id, 'social':user.provider }, function (err, doc) {
+      var videoURL = doc.IGvideos[req.params.ix];
+      if (videoURL){
+        request(videoURL).pipe(res);      
       } else {
-        console.log(filename+' doesnt exist');
         res.status(500).end();
       }
-    }
-  })
+    });
+  };
 };
+
+exports.igUrlGet = function(db){
+  return function(req,res) {
+    var user = req.user;
+    var vc = db.collection('vidcode');
+    vc.findOne({ 'id':user.id, 'social':user.provider }, function (err, doc) {
+      res.send(doc.IGvideos);
+    });    
+  }
+}
 
 exports.fbCB = function (db) {
   return function (req, res) {
@@ -372,18 +360,20 @@ exports.fbCB = function (db) {
     };  
 
     var user = req.user;
-    findOrCreate(db,user.id, user.displayName,'facebook',successcb);
+    findOrCreate(db,user,successcb);
   }
 }
 
 exports.signup = function (db, crypto) {
   return function (req, res) {
+    var user = {};
     var successcb = function(doc) {
       res.redirect ('/intro/'+doc.social+'/'+doc.id);
     };
-
-    var email = req.body.email;
-    findOrCreate(db,email, email,'vidcode',successcb);
+    user.username = req.body.email;
+    user.id = req.body.email;
+    user.provider = 'vidcode';
+    findOrCreate(db,user,successcb);
   };
 };
 
@@ -394,28 +384,34 @@ function generateToken(crypto) {
   return token;
 }
 
-function findOrCreate(db, id, username, social, cb) {
+function findOrCreate(db, user, cb) {
+
     var vc = db.collection('vidcode');
-    vc.findOne({ id: id , social: social}, function (err, doc) {
+    vc.findOne({ id: user.id , social: user.provider}, function (err, doc) {
       if (!doc) {
         //insert all the user info we care about
-        doc = { id: id };
-        if (username) {
-          doc.username = username;
-        }
-        if (social){
-          doc.social = social;        
+        doc = { id: user.id };
+        doc.username = user.username;
+        doc.social = user.provider;        
+        if (user.IGvideos){
+          doc.IGvideos = user.IGvideos;
         }
         //todo: add the IG urls if social=instagram
         vc.insert(doc, {w: 0});
       }
+        if (user.IGvideos){
+          vc.update(doc, { $set: { IGvideos: user.IGvideos}}, function(err,updated){
+            if (err){
+              console.log('err in adding IGvideos '+social+'/'+id+':' + err);            
+            }
+          });          
+        }      
       cb(doc);
     });
 }
 
 function saveVideo(db, id, social, video, cb) {
   var vc = db.collection('vidcode');
-  console.log('were in saveVideo');
   if (id && social){
     vc.findOne({ id: id , social: social}, function (err, doc) {
       if (!doc) {
@@ -427,7 +423,6 @@ function saveVideo(db, id, social, video, cb) {
           }          
         });
       } else {
-        console.log('found a doc');     
         vc.update(doc, { $addToSet: { vidcodes: {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}}}, function(err,updated){
           if (err){
             console.log('err in updating doc '+social+'/'+id+':' + err);            

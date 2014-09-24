@@ -43,16 +43,16 @@
         <div class="video-container clearfix">
           <!-- <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button> -->
           <p id="tooltip-stop-1">Instagram Videos</p>
-          <div class="insta-thumbnails is-hidden">
+          <div class="insta-thumbnails">
             <span class="i-error"></span>
             <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid" id="js-fetch-vid0" name="0" src=""></video>
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid0" src=""></video>
             </div>
             <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid" id="js-fetch-vid1" name="1" src=""></video>
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid1" src=""></video>
             </div>
             <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid" id="js-fetch-vid2" name="2" src=""></video>
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid2" src=""></video>
             </div>
           </div>
 
@@ -620,6 +620,7 @@
 
 <h4 id="username" class="is-hidden">{{user.username}}</h4>
 <h4 id="social" class="is-hidden">{{user.social}}</h4>
+
 
 <ol id="joyRideTipContent">
   <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
