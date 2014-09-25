@@ -331,6 +331,7 @@ exports.getSample = function(req,res){
 exports.igVidGet = function(db){
   return function(req,res) {
     var user = req.user;
+    console.log(req.user.username);
     var vc = db.collection('vidcode');    
     vc.findOne({ 'id':user.id, 'social':user.provider }, function (err, doc) {
       var videoURL = doc.IGvideos[req.params.ix];
