@@ -1,9 +1,4 @@
 
-
-var env = require('node-env-file');
-env(__dirname + '/.env');
-console.log(process.env);
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
@@ -14,7 +9,7 @@ var crypto = require('crypto');
 var util = require('util');
 var passport = require('passport');
 var InstagramStrategy = require('./models/passport-instagram').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy
+var FacebookStrategy = require('passport-facebook').Strategy;
 var Grid = require("gridfs-stream");
 
 // create mongodb
