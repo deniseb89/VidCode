@@ -768,6 +768,7 @@ canvas{vertical-align: bottom;}
 .lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
+
 .spacer {margin-top: 175px !important;}
 .desc-container {text-align: center}
 
@@ -902,7 +903,7 @@ canvas{vertical-align: bottom;}
 .is-inactive-btn{opacity: .6; cursor: default;}
 .is-inactive-btn:hover{background-color: #441B4B!important;}
 
-
+.push-15{margin-top: 15px!important;}
 /* ==========================================================================
    Helper classes
    ========================================================================== */
