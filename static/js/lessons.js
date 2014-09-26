@@ -9,7 +9,7 @@ $( document ).ready(function() {
       //resend form here if title/desc is updated      
   });
 
-  instaUser();
+  loadThumbnails();
 
 	$('.js-vid-click').click(function(){
     $('.vid-placeholder').addClass('is-hidden');
@@ -74,42 +74,33 @@ $( document ).ready(function() {
 
 });
 
+var loadThumbnails = function() {
+  var social = $('#social').text();
 
-  var loadThumbnail = function (){
-    $('.insta-thumbnails').removeClass('is-hidden');
-    var username = $('#username').text();
-    
-    var thumbnail0 = document.getElementById('js-fetch-vid0');
-    var n = thumbnail0.getAttribute("name");
-    $('#js-fetch-vid0').removeClass('is-hidden');    
-    thumbnail0.src = '/instagram/'+username+'/'+n;
-    thumbnail0.addEventListener("loadeddata", function(){
-    }, false);
-
-    var thumbnail1 = document.getElementById('js-fetch-vid1');
-    var n = thumbnail1.getAttribute("name");
-    $('#js-fetch-vid1').removeClass('is-hidden');
-    thumbnail1.src = '/instagram/'+username+'/'+n;
-    thumbnail1.addEventListener("loadeddata", function(){
-    }, false);
-
-    var thumbnail2 = document.getElementById('js-fetch-vid2');
-    var n = thumbnail2.getAttribute("name");
-    $('#js-fetch-vid2').removeClass('is-hidden');
-    thumbnail2.src = '/instagram/'+username+'/'+n;
-    thumbnail2.addEventListener("loadeddata", function(){
-    }, false);
-  };
-
-var instaUser = function() {
-    var social = $('#social').text();
-    if (social=="instagram"){
-      var delay=1000;
-      setTimeout(loadThumbnail,delay);
-    } else {
-      $('.insta-import').removeClass('is-hidden');
-    }
+  if (social=="instagram"){
+    $.ajax('/instagramVids',{
+      success: function(data, textStatus, jqXHR){
+        var igVids = data;
+        if (igVids.length){
+          for (var i=0; i<3; i++){
+            var tn = document.getElementById('js-fetch-vid'+i);
+            $('#js-fetch-vid'+i).removeClass('is-hidden');
+            tn.src = '/instagram/'+i;
+            tn.addEventListener("loadeddata", function(){
+            }, false);
+          }
+        } else {
+          $('.i-error').text("You don't have any Instagram videos :(");          
+        }
+      },
+      error: function(data, textStatus, jqXHR){
+        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");          
+      }
+    });
+  } else {
+    $('.insta-import').removeClass('is-hidden');
   }
+}
 
 var slideLeft = function(oldSlide, newSlide){
 	$(newSlide).addClass('is-hidden');

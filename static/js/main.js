@@ -84,7 +84,6 @@ $( document ).ready(function() {
   movie.addEventListener('canplay',InitSeriously, false);
   movie.load();
   videoDisplay.addEventListener('loadeddata', function(){
-    console.log('video display loaded');
     $('.js-share').removeClass('is-inactive-btn');
     $('.share-p-text-container').removeClass('is-hidden');
     $('.js-lesson-prompt').text('Looks amazing!');

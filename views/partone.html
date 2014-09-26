@@ -30,7 +30,7 @@
 				<div class="vid-placeholder overlay">
 					<h3>Select a video below</h3>
 				</div>
-        <video class="video1 is-hidden" id="myvideo" src="/sample/wha_color.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+        <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
         <canvas class="video2 is-hidden" id="canvas">
           </canvas>
         <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
@@ -43,16 +43,16 @@
         <div class="video-container clearfix">
           <!-- <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button> -->
           <p id="tooltip-stop-1">Instagram Videos</p>
-          <div class="insta-thumbnails is-hidden">
+          <div class="insta-thumbnails">
             <span class="i-error"></span>
             <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid" id="js-fetch-vid0" name="0" src=""></video>
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid0" src=""></video>
             </div>
             <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid" id="js-fetch-vid1" name="1" src=""></video>
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid1" src=""></video>
             </div>
             <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid" id="js-fetch-vid2" name="2" src=""></video>
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid2" src=""></video>
             </div>
           </div>
 
@@ -71,7 +71,7 @@
               <video class="js-vid-click sample-vid" src="/sample/paper.mp4"></video>
             </div>
             <div class="i-vid-container">
-              <video class="js-vid-click sample-vid" src="/sample/wha_color.mp4"></video>
+              <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
             </div>
           </div>
 
@@ -620,6 +620,7 @@
 
 <h4 id="username" class="is-hidden">{{user.username}}</h4>
 <h4 id="social" class="is-hidden">{{user.social}}</h4>
+
 
 <ol id="joyRideTipContent">
   <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>

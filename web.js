@@ -18,17 +18,20 @@ var FacebookStrategy = require('passport-facebook').Strategy
 var Grid = require("gridfs-stream");
 
 // create mongodb
-console.log(process.env.MONGOHQ_URL);
 var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
+var MongoClient = mongo.MongoClient;
+var host = process.env.MONGOHQ_URL || 'mongodb://localhost:27017/vidcode';
+var gfs; //grid-fs object
+var db; //a copy of db object
+//var monk = require('monk');
+//var db = monk(process.env.MONGOHQ_URL || 'localhost:27017/vidcode');
 
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-    var vc = db.get('vidcode');
+    var vc = db.collection('vidcode');
     vc.findOne({id: user.id , "social": user.provider}, function (err, doc) {
       done(err, user);
     });
@@ -57,7 +60,6 @@ passport.use(new InstagramStrategy({
     callbackURL: process.env.INSTAGRAM_CB
   },
   function(accessToken, refreshToken, profile, done) {
-    var vc = db.get('vidcode');
     process.nextTick(function () {
       return done(null, profile);
     });
@@ -88,41 +90,44 @@ app.set('view engine', '.html');
 
 // configure express routes
 var routes = require('./routes');
-app.get('/',routes.signin);
-app.get('/signin', routes.signin);
-app.get('/intro/:social?/:id?', routes.intro(db));
-app.get('/lesson/1', routes.partone(db));
-app.get('/share/:token?', routes.share(db));
-app.get('/notFound', routes.notFound);
-app.get('/gallery', routes.gallery);
-app.get('/galleryshow', routes.galleryshow);
 
-//sign up + sign in
-app.post('/signup', routes.signup(db));
-app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
-app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
-app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});
-app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
-
-//getting and sending videos
-app.get('/instagram/:media/:ix', routes.igGet);
-app.get('/sample/:file', routes.getSample);
 // create server
 // connect away
 
-var MongoClient = mongo.MongoClient;
-var host = process.env.MONGOHQ_URL || 'mongodb://localhost:27017/vidcode';
-var gfs; //grid-fs object;
-var Db;
+MongoClient.connect(host, function(err, Db) {
 
-MongoClient.connect(host, function(err, db1) {
   if (err) throw err;
-  Db = db1;
-  gfs = Grid(Db, mongo);
+  db = Db;
+  var collection = db.collection('vidcode');
+  gfs = Grid(db, mongo);
   console.log('connected to Mongo database');
-  app.post('/upload', routes.upload(db,gfs,crypto));
+
+  app.get('/',routes.signin);
+  app.get('/signin', routes.signin);
+  app.get('/intro/:social?/:id?', routes.intro(db));
+  app.get('/lesson/1', routes.partone(db));
+  app.get('/share/:token?', routes.share(db));
+  app.get('/notFound', routes.notFound);
+  app.get('/gallery', routes.gallery);
+  app.get('/galleryshow', routes.galleryshow);
+
+  // sign up + sign in
+  app.post('/signup', routes.signup(db));
+  app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
+  app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
+  app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});
+  app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
+
+  //getting and sending videos
+  app.get('/instagramVids', routes.igUrlGet(db));
+  app.get('/instagram/:ix', routes.igVidGet(db));
+  app.get('/sample/:file', routes.getSample);
   app.get('/video', routes.getUserVid(gfs));
+  app.post('/upload', routes.upload(db,gfs,crypto));
+
   http.createServer(app).listen(app.get('port'),function(){
     console.log("Listening on " + app.get('port'));
   });
+
 });
+
