@@ -331,9 +331,12 @@ exports.getSample = function(req,res){
 exports.igVidGet = function(db){
   return function(req,res) {
     var user = req.user;
-    console.log(req.user.username);
-    var vc = db.collection('vidcode');    
-    vc.findOne({ 'id':user.id, 'social':user.provider }, function (err, doc) {
+    console.log('fetching videos for '+user.username);
+    var vc = db.collection('vidcode');  
+    vc.findOne({ 'id':user.id, 'social':"instagram" }, function (err, doc) {
+      if(err){
+        console.log('error getting IG videos from Mongo');
+      }
       var videoURL = doc.IGvideos[req.params.ix];
       if (videoURL){
         request(videoURL).pipe(res);      
@@ -347,8 +350,12 @@ exports.igVidGet = function(db){
 exports.igUrlGet = function(db){
   return function(req,res) {
     var user = req.user;
+    console.log('fetching video urls for '+user.username);    
     var vc = db.collection('vidcode');
-    vc.findOne({ 'id':user.id, 'social':user.provider }, function (err, doc) {
+    vc.findOne({ 'id':user.id, 'social':"instagram" }, function (err, doc) {
+      if(err){
+        console.log('error getting IG video urls from Mongo');
+      }
       res.send(doc.IGvideos);
     });    
   }

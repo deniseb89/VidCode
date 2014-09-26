@@ -113,7 +113,7 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
 
   //getting and sending videos
-  app.get('/instagramVids', routes.igUrlGet(db));
+  app.get('/instagramVids/', routes.igUrlGet(db));
   app.get('/instagram/:ix', routes.igVidGet(db));
   app.get('/sample/:file', routes.getSample);
   app.get('/video', routes.getUserVid(gfs));
