@@ -1,3 +1,4 @@
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
@@ -8,7 +9,7 @@ var crypto = require('crypto');
 var util = require('util');
 var passport = require('passport');
 var InstagramStrategy = require('./models/passport-instagram').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy
+var FacebookStrategy = require('passport-facebook').Strategy;
 var Grid = require("gridfs-stream");
 
 // create mongodb
@@ -92,7 +93,7 @@ MongoClient.connect(host, function(err, Db) {
 
   if (err) throw err;
   db = Db;
-  var collection = db.collection('vidcode');  
+  var collection = db.collection('vidcode');
   gfs = Grid(db, mongo);
   console.log('connected to Mongo database');
 

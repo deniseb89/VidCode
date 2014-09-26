@@ -163,7 +163,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 .CodeMirror-gutters {
   position: absolute; left: 0; top: 0;
   padding-bottom: 30px;
-  z-index: 3;
+  z-index: 0;
 }
 .CodeMirror-gutter {
   white-space: normal;
