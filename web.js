@@ -1,4 +1,8 @@
-console.log(process.env)
+
+
+var env = require('node-env-file');
+env(__dirname + '/.env');
+console.log(process.env);
 
 var express = require('express');
 var bodyParser = require('body-parser');
