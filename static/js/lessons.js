@@ -83,10 +83,9 @@ var loadThumbnails = function() {
         var igVids = data;
         if (igVids.length){
           for (var i=0; i<3; i++){
-            var tn = document.getElementById('js-fetch-vid'+i);
             $('#js-fetch-vid'+i).removeClass('is-hidden');
-            tn.src = '/instagram/'+i;
-            tn.addEventListener("loadeddata", function(){
+            document.getElementById('js-fetch-vid'+i).src = '/instagram/'+i;
+            document.getElementById('js-fetch-vid'+i).addEventListener("loadeddata", function(){
             }, false);
           }
         } else {

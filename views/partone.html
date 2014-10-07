@@ -65,10 +65,10 @@
         <div class="video-container clearfix">
           <p>Sample Videos</p>
             <div class="i-vid-container">
-              <video class="js-vid-click sample-vid" src="/sample/ge.mp4"></video>
+              <video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
             </div>
             <div class="i-vid-container">
-              <video class="js-vid-click sample-vid" src="/sample/paper.mp4"></video>
+              <video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
             </div>
             <div class="i-vid-container">
               <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
@@ -247,7 +247,7 @@
   <div class="lesson-page clearfix set-container is-hidden js-slide-title">
 
           <span class="previous-progress-btn">
-            <a class="js-slide-left-title previous-progress-btn" href="#"><span class="arrow-smaller">◄</span> Return to Code</a>
+            <a class="js-slide-left-title previous-progress-btn" id="mix-return2code" href="#"><span class="arrow-smaller">◄</span> Return to Code</a>
           </span>
           <span class="next-progress-btn">
             <a class="is-inactive-btn js-share push-15" disabled id="mix-share" href="/share"> Share▸</a>
@@ -644,6 +644,7 @@
 	});
 
     mixpanel.track_links("#mix-share", "Share clicked" );
+    mixpanel.track_links("#mix-return2code", "Returned to code" );
     mixpanel.track_links("#mix-again", "Try It Again clicked" );
     mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
     mixpanel.track_links("#tooltip-stop-4", "I'm Done clicked" );
