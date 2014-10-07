@@ -19,14 +19,14 @@ textarea {
 }
 
 html {
-    font-family: 'Open Sans', sans-serif!important;
+    font-family: 'Open Sans', sans-serif;
     font-size: 1em;
     line-height: 1.4;
     height: 100%;
 }
 
 body{
-    font-family: 'Open Sans', sans-serif!important;
+    font-family: 'Open Sans', sans-serif;
     height: 100%;
     background-color: #E6EFE9;
     width: 101%;
@@ -35,9 +35,14 @@ body{
 h3{
     padding-left: 15px;
     font-size: 2em;
-    font-weight: 700!important;
+    font-weight: 700;
     }
 
+h2{font-family: 'Copse', serif; color: #441B4B;}
+
+ul{
+    list-style-type: none;
+}
 /*
  * Remove text-shadow in selection highlight: h5bp.com/i
  * These selection rule sets have to be separate.
@@ -142,7 +147,6 @@ img.filterSelect.active {opacity: .5;}
     padding: 0.2em 0;
 }
 
-h2{font-family: 'Copse', serif!important; color: #441B4B!important;}
 
 /* ==========================================================================
    Index Intro Page
@@ -201,6 +205,37 @@ body.is-in-signup{overflow: hidden;}
     height: 120%;
     z-index: 4;
 }
+
+
+
+/*///////////////// Button Styles Custom ////////////////*/
+
+.btn-purple{
+    background-color: #441B4B; border: 0px;}
+.btn-purple:hover{
+    background-color: #7B4085;
+}
+
+.green-btn{background-color: #319665;}
+.green-btn:hover{background-color: #1E754B;}
+
+.pink-btn{background-color: #dd39a9;}
+.pink-btn:hover{background-color: #AD1D80;}
+
+.blue-btn{background-color: #3262EA;}
+.blue-btn:hover{background-color: #2044A8;}
+
+.purple-btn{background-color: #AE40C1; font-weight: bold;}
+.purple-btn:hover{background-color: #7D248C;}
+
+.purple-btn-main{background-color: #441B4B; color: #fff; font-weight: bold;}
+.purple-btn-main:hover{background-color: #652F6E; color:#fff;}
+.purple-btn-main:active, .purple-btn-main:focus{color: #fff;}
+
+
+.cyan-btn{background-color: #3BE2D6;}
+.cyan-btn:hover{background-color: #24ADA4;}
+
 
 
 /*Header */
@@ -347,48 +382,11 @@ padding-bottom: 101px;}
     margin-left: 90px;
 }
 
-.getting-started{
-    position: absolute!important;
-    z-index: 499;
-    width: 400px!important;
-    margin-left: auto!important;
-}
-
 
 .btn-close-steps{margin-bottom: 7px!important; width: 100px!important;}
 
 .btn-close-steps2{margin-right: 350px!important;}
 
-
-
-
-/*.btn-group{margin-top: 20px;}*/
-
-.btn-purple{
-    background-color: #441B4B!important; border: 0px!important;}
-.btn-purple:hover{
-    background-color: #7B4085!important;
-}
-
-.green-btn{background-color: #319665!important;}
-.green-btn:hover{background-color: #1E754B!important;}
-
-.pink-btn{background-color: #dd39a9!important;}
-.pink-btn:hover{background-color: #AD1D80!important;}
-
-.blue-btn{background-color: #3262EA!important;}
-.blue-btn:hover{background-color: #2044A8!important;}
-
-.purple-btn{background-color: #AE40C1!important; font-weight: bold;}
-.purple-btn:hover{background-color: #7D248C!important;}
-
-.purple-btn-main{background-color: #441B4B!important; color: #fff; font-weight: bold;}
-.purple-btn-main:hover{background-color: #652F6E!important; color:#fff;}
-.purple-btn-main:active, .purple-btn-main:focus{color: #fff;}
-
-
-.cyan-btn{background-color: #3BE2D6!important;}
-.cyan-btn:hover{background-color: #24ADA4!important;}
 
 
 .runbtn{
@@ -440,13 +438,6 @@ z-index: 100000;}
 .pullLeft{
     margin-left: -40px;
     }
-
-ul{
-    list-style-type: none;
-}
-
-.activebtn{
-}
 
 
 .small{
@@ -668,6 +659,8 @@ canvas{vertical-align: bottom;}
 .boolean-game{height: 150px;}
 .boolean-game img{position: absolute;}
 
+/* The placing of the flower petals in the boolean game */
+
 .f-s-1{left: 137px; top: 82px; z-index: 5;}
 .f-s-2{left: 110px; top: -15px;}
 .f-s-3{left: 17px; top: 42px;}
@@ -703,6 +696,8 @@ canvas{vertical-align: bottom;}
 
 .l-game-input{border-color: #F395AC;}
 .l-game-output{border-color: #3D2146; margin-left:25px;}
+
+/* The placing of the cooking things */
 
 .l-g-i-1{margin-left: 230px; margin-top: 10px;}
 .l-g-i-2{margin-left: 162px; margin-top: 73px;}
