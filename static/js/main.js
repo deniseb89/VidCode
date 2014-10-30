@@ -53,7 +53,6 @@ function stopDL() {
 var uploadFromComp = function (ev) {
   $('.loader').removeClass('is-hidden');
   var file = ev.target.files[0]; // FileList object
-  console.log('file type :'+file.type + ' and file size: '+ file.size);
   var reader = new FileReader();
   reader.onload = (function(theFile) {
     return function(e) {
@@ -91,7 +90,6 @@ var submitVideo = function (blob) {
       $('.js-share').attr('href','/share/'+token);                  
   	},
   	error: function(jqXHR, textStatus, errorThrown){
-      console.log('mongo Error: '+errorThrown);
   	}
    });
 }
