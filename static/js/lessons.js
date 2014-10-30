@@ -12,7 +12,6 @@ $( document ).ready(function() {
   loadThumbnails();
 
 	$('.js-vid-click').click(function(){
-    $('.vid-placeholder').addClass('is-hidden');
 		$('.loader').removeClass('is-hidden');
     $('.js-vid-click').removeClass('js-selected-video');
     $(this).addClass('js-selected-video');
@@ -82,7 +81,7 @@ var loadThumbnails = function() {
       success: function(data, textStatus, jqXHR){
         var igVids = data;
         if (igVids.length){
-          for (var i=0; i<3; i++){
+          for (var i=0; i < Math.min(igVids.length,3); i++){
             $('#js-fetch-vid'+i).removeClass('is-hidden');
             document.getElementById('js-fetch-vid'+i).src = '/instagram/'+i;
             document.getElementById('js-fetch-vid'+i).addEventListener("loadeddata", function(){

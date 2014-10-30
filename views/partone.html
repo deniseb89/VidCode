@@ -3,15 +3,14 @@
 
 <div class="container-fixed">
   <div class="popup is-hidden">
-    <form class="uploadform" method="POST" action="/upload" enctype="multipart/form-data">
+    <form class="uploadform" method="POST" action="/uploadFromComp" enctype="multipart/form-data">
       10 mb max file size
-      <input type="file" name="file" value="Select a File" />
-      <button class="btn btn-primary uploadfile">Upload</button>
+      <input type="file" id="inputFile" name="file" value="Select a File" />
+<!--       <button class="btn btn-primary uploadfile">Upload</button>-->
       <button class="btn js-hide-upload uploadfile">Cancel</button>
       <p></p>
     </form>
   </div>
-
 
 <div class="set-container lesson-page clearfix js-slide-1">
 	<div class="progress-set">
@@ -36,12 +35,12 @@
         <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 			</span>
 
-
-
 			<div class="js-switch-appear">
 
         <div class="video-container clearfix">
-          <!-- <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button> -->
+
+          <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
+        
           <p id="tooltip-stop-1">Instagram Videos</p>
           <div class="insta-thumbnails">
             <span class="i-error"></span>

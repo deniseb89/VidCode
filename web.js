@@ -118,7 +118,8 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/instagram/:ix', routes.igVidGet(db));
   app.get('/sample/:file', routes.getSample);
   app.get('/video', routes.getUserVid(gfs));
-  app.post('/upload', routes.upload(db,gfs,crypto));
+  app.post('/uploadFinished', routes.uploadFinished(db,gfs,crypto));
+  app.post('/uploadFromComp', routes.uploadFromComp(db));
 
   http.createServer(app).listen(app.get('port'),function(){
     console.log("Listening on " + app.get('port'));

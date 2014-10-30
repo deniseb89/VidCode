@@ -15,6 +15,7 @@ var movie,
     windowObjectReference = null;
 
 var showVid = function() {
+  $('.vid-placeholder').addClass('is-hidden');
   $('.js-activate-btn').addClass('is-hidden');
   $('.js-slide-right-final').removeClass('is-hidden');
   $('.loader').addClass('is-hidden');
@@ -47,7 +48,27 @@ function stopDL() {
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
   //save the video + title + desc
   submitVideo(webmBlob);
-};
+}
+
+var uploadFromComp = function (ev) {
+  $('.loader').removeClass('is-hidden');
+  var file = ev.target.files[0]; // FileList object
+  console.log('file type :'+file.type + ' and file size: '+ file.size);
+  var reader = new FileReader();
+  reader.onload = (function(theFile) {
+    return function(e) {
+      if (file.size <10000000){
+        movie.addEventListener("loadeddata", showVid, false);
+        movie.src = e.target.result;        
+      } else {
+        $('.loader').addClass('is-hidden');
+        $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
+      }
+    };
+  })(file);
+
+  reader.readAsDataURL(file);
+}
 
 var submitVideo = function (blob) {
   var formData = new FormData();
@@ -56,7 +77,7 @@ var submitVideo = function (blob) {
   formData.append('desc', $(".kaydesc").text());
   formData.append('video',blob);
   $.ajax({
-    url: '/upload',
+    url: '/uploadFinished',
     type: 'POST',
     data:  formData,
     mimeType:"multipart/form-data",
@@ -79,6 +100,7 @@ $( document ).ready(function() {
   movie = document.getElementById('myvideo');
   canvas = document.getElementById('canvas');
   videoDisplay = document.getElementById('vid-display');
+  inputFile = document.getElementById('inputFile');
   seriously = new Seriously();
   seriously.go();
   movie.addEventListener('canplay',InitSeriously, false);
@@ -88,7 +110,9 @@ $( document ).ready(function() {
     $('.share-p-text-container').removeClass('is-hidden');
     $('.js-lesson-prompt').text('Looks amazing!');
     $('#vid-display').removeClass('is-hidden');
-  }, false);  
+  }, false);
+
+  inputFile.addEventListener('change',uploadFromComp, false);  
 
   myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
         mode:  "javascript",
@@ -113,29 +137,29 @@ $( document ).ready(function() {
   });
 
   $(".uploadform").submit(function(e) {
-    //replace form file with a static file for now
-    var formObj = $(this);
-    var formURL = formObj.attr("action");
-    var formData = new FormData(this);
+    // var formObj = $(this);
+    // var formURL = formObj.attr("action");
+    // var formData = new FormData(this);
 
-    $.ajax({
-      url: '/upload',
-      type: 'POST',
-      data:  formData,
-      mimeType:"multipart/form-data",
-      contentType: false,
-      cache: false,
-      processData:false,
-      success: function(data, textStatus, jqXHR){
-        movie.src="data:video/mp4;base64,"+data;
-        movie.addEventListener("loadeddata", showVid, false);
-         },
-       error: function(jqXHR, textStatus, errorThrown){
-        $('.loader').addClass('is-hidden');
-        $(".uploadform p").text('Video is larger than 25MB. Select a smaller video and try again!');
-       }
-     });
-    e.preventDefault();
+    // $.ajax({
+    //   url: formURL,
+    //   type: 'POST',
+    //   data:  formData,
+    //   mimeType:"multipart/form-data",
+    //   contentType: false,
+    //   cache: false,
+    //   processData:false,
+    //   success: function(data, textStatus, jqXHR){
+    //     movie.src = data;
+    //     // movie.src="data:video/mp4;base64,"+data;
+    //     movie.addEventListener("loadeddata", showVid, false);
+    //      },
+    //    error: function(jqXHR, textStatus, errorThrown){
+    //     $('.loader').addClass('is-hidden');
+    //     $(".uploadform p").text('Video is larger than 10MB. Select a smaller video and try again!');
+    //    }
+    //  });
+    // e.preventDefault();
   });
 
   movie.addEventListener('playing',function(){
