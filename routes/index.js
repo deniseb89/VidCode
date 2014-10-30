@@ -215,32 +215,6 @@ exports.scrubbing = function (db) {
   };
 };
 
-exports.uploadFromComp = function(db) {
-  return function (req, res){
-    var busboy = new Busboy({ headers: req.headers });
-    var extensionAllowed = [".mp4", ".mov",".mpeg",".webm"];
-    var maxSizeOfFile = 25000000;
-    var target_path = './video/';
-    var filename;
-
-    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      // var saveTo = path.join(os.tmpDir(), path.basename(fieldname));
-      console.log('uploaded '+filename+'. Encoding is '+ encoding + '/ mimetype is '+ mimetype);
-      file.pipe(fs.createWriteStream(target_path+filename));
-    });
-
-    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-      console.log(fieldname + ": " + val);
-    });
-
-    busboy.on('finish', function(){
-      console.log('busboy finished');
-    })
-
-    req.pipe(busboy);
-  }
-}
-
 exports.uploadFinished = function(db, gfs, crypto) {
   return function (req, res) {
     var video = {};
@@ -301,8 +275,6 @@ exports.igCB = function (db) {
           next_max_id="",
           pages=0;
           urls=[];
-
-          console.log('Instagram API Token: ' + token + ' / user ID: '+ uid);
 
    function igApiCall(next_page){
       request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {

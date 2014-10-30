@@ -132,10 +132,6 @@ $( document ).ready(function() {
     });
 
   // video events section
-  $(".uploadfile").click(function(){
-      $('.loader').removeClass('is-hidden');
-  });
-
   $(".uploadform").submit(function(e) {
     // var formObj = $(this);
     // var formURL = formObj.attr("action");
