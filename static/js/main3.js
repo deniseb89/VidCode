@@ -135,8 +135,6 @@ $( document ).ready(function() {
         matchBrackets: true
       });
 
-  $('.CodeMirror-code').addClass('is-hidden');
-
   var codeDelay;
   myCodeMirror.on("change", function() {
             clearTimeout(codeDelay);

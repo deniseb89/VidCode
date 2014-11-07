@@ -131,6 +131,97 @@ exports.partone = function (db) {
   };
 };
 
+exports.lessontwo = function (db) {
+   return function (req, res) {
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];    
+    var codeText =
+'\
+ \n\
+ movie.play();\n\
+\n\
+ //This code lets you animate the fader filter with a randomizing algorithm!\n\
+ function colorSwitch() {\n\
+  var r = Math.floor(255*Math.random());\n\
+  var g = Math.floor(255*Math.random());\n\
+  var b = Math.floor(255*Math.random());\n\
+  var depth = 0.5;\n\
+  effects.fader.amount = depth;\n\
+  effects.fader.color = "rgb("+r+","+g+","+b+")";\n\
+ }\n\
+ \n\
+ //animate = setInterval(colorSwitch, 500);\n\
+ \n\
+//make it stop by uncommenting the line below\n\
+//clearInterval(animate);\n\
+\n\
+//**Note: In the real version, animation control will be fed by the visual controls, not the editor\n\
+\n\
+    ';
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var vc = db.collection('vidcode');
+
+      var successcb = function(doc) {
+        //todo:if instagram user...
+        //refresh API call with user.acessToken to get recent videos
+        res.render("lessontwo", {code: codeText, filters: filters, user: doc});
+      };  
+      findOrCreate(db,user,successcb);
+      
+    } else {
+        res.render("lessontwo", {code: codeText, filters: filters});
+    }
+  };
+};
+
+exports.lessonthree = function (db) {
+   return function (req, res) {
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];    
+    var codeText =
+'\
+ movie.play();\n\
+\n\
+ //This code lets you create stop-motion videos by controlling the frames!\n\
+ //Begin by uncommenting the line below\n\
+ //animate = setInterval(stopMotion, 500);\n\
+\n\
+ var frame = 1;\n\
+ var frame1 = 1;\n\
+ var beat = 0.5;\n\
+ var length = movie.duration;\n\
+\n\
+ function stopMotion() {\n\
+  frame = frame + beat;\n\
+  frame = (frame <= length) ? frame: frame1;\n\
+  movie.currentTime = frame;\n\
+  movie.pause();\n\
+ }\n\
+\n\
+//make it stop by uncommenting the line below\n\
+//clearInterval(animate);\n\
+\n\
+//**Note: In the real version, animation control will be fed by the visual controls, not the editor\n\
+\n\
+    ';
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var vc = db.collection('vidcode');
+
+      var successcb = function(doc) {
+        //todo:if instagram user...
+        //refresh API call with user.acessToken to get recent videos
+        res.render("lessonthree", {code: codeText, filters: filters, user: doc});
+      };  
+      findOrCreate(db,user,successcb);
+      
+    } else {
+        res.render("lessonthree", {code: codeText, filters: filters});
+    }
+  };
+};
+
 exports.parttwo = function (req, res) {
   res.render('parttwo', {title: 'VidCode Lesson' });
 };

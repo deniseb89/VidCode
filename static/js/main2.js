@@ -126,6 +126,19 @@ $( document ).ready(function() {
 
   inputFile.addEventListener('change',uploadFromComp, false);  
 
+  //temp random RGB code
+
+ function colorSwitch() {
+  var r = Math.floor(255*Math.random());
+  var g = Math.floor(255*Math.random());
+  var b = Math.floor(255*Math.random());
+  var depth = 0.5;
+  effects.fader.amount = depth;
+  effects.fader.color = "rgb("+r+","+g+","+b+")";
+ }
+
+ animate = setInterval(colorSwitch, 500);  
+
   myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
         mode:  "javascript",
         theme: "solarized light",
@@ -135,7 +148,7 @@ $( document ).ready(function() {
         matchBrackets: true
       });
 
-  $('.CodeMirror-code').addClass('is-hidden');
+  //$('.CodeMirror-code').addClass('is-hidden');
 
   var codeDelay;
   myCodeMirror.on("change", function() {

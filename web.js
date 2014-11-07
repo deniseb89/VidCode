@@ -101,6 +101,8 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/signin', routes.signin);
   app.get('/intro/:social?/:id?', routes.intro(db));
   app.get('/lesson/1', routes.partone(db));
+  app.get('/lesson/2', routes.lessontwo(db));
+  app.get('/lesson/3', routes.lessonthree(db))
   app.get('/share/:token?', routes.share(db));
   app.get('/notFound', routes.notFound);
   app.get('/gallery', routes.gallery);
@@ -125,4 +127,3 @@ MongoClient.connect(host, function(err, Db) {
   });
 
 });
-

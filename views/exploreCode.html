@@ -1,0 +1,69 @@
+<textarea>
+ function colorSwitch() {
+  var r = Math.floor(255*Math.random());
+  var g = Math.floor(255*Math.random());
+  var b = Math.floor(255*Math.random());
+  var depth = 0.5;
+  effects.fader.amount = depth;
+  effects.fader.color = "rgb("+r+","+g+","+b+")";
+ }
+
+ animate = setInterval(colorSwitch, 500);
+ clearInterval(animate);
+
+</textarea>
+
+<script>
+
+var frame = 1;
+var frame1 = 1;
+var beat = 0.5;
+var length = movie.duration;
+
+function stopMotion() {
+ frame = frame + beat;
+ frame = (frame <= length) ? frame: frame1;
+ movie.currentTime = frame;
+ movie.pause();
+ console.log(frame);
+}
+
+loop = setInterval(stopMotion,100);
+
+clearInterval(loop);
+
+</script>
+
+<script>
+  var load = function() {
+
+    var ctx1 = canvas.getContext("2d");
+    
+    //add a second canvas with image
+    var canvas2 = document.getElementById("c2");
+    
+    var ctx2 = canvas2.getContext("2d");
+   
+    movie.addEventListener("play", function() {
+        var w = movie.videoWidth / 2;
+        var h = movie.videoHeight / 2;
+
+      }, false);
+  },
+
+  var drawFrame = function () {
+    ctx1.drawImage(movie, 0, 0, w, h);
+    var frame = ctx1.getImageData(0, 0, w, h);
+    var l = frame.data.length / 4;
+    for (var i = 0; i < l; i++) {
+      var r = frame.data[i * 4 + 0];
+      var g = frame.data[i * 4 + 1];
+      var b = frame.data[i * 4 + 2];
+      if (g > 100 && r > 100 && b < 43)
+        frame.data[i * 4 + 3] = 0;
+    }
+    ctx2.putImageData(frame, 0, 0);
+    return;
+  }
+	
+</script>

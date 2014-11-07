@@ -1,9 +1,9 @@
     var allEffects = [];
-	var mult = {'blur':.01, 'fader':.04, 'exposure':.04, 'noise':.1, 'vignette': 1 };
+	   var mult = {'blur':.01, 'fader':.04, 'exposure':.04, 'noise':.1, 'vignette': 1 };
 
     var labelLines = function() {
       //this function should take an input for the relevant effect, not brute force for all
-      //also take note of whats active and whats not here (filters as well movie play-related code lines)
+      //also take note of whats active and whats not here (filters as well as movie play-related lines)
       for (var e=0; e< allEffects.length; e++){
         $("pre:contains('effects."+allEffects[e]+"')").addClass('active-effect');
         $("pre:contains('effects."+allEffects[e]+"')").attr('name',allEffects[e]);
@@ -32,7 +32,7 @@
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
       var cmScript = myCodeMirror.getValue();
-      eval(cmScript);
+      // eval(cmScript);
       var adjScript = "";
       var textScript = "\n\ try {\n\ "+cmScript;
 
@@ -44,7 +44,7 @@
         var matchE = matchEff[t];
         matchNames.push($(matchE).attr("name"));
       }
-
+      
       for (var c = 0; c < allEffects.length; c++) {
         var thisEffect = allEffects[c];
         if (matchNames.indexOf(thisEffect) < 0) {
@@ -58,15 +58,15 @@
         if (textScript.indexOf('effects.sepia')>=0) {
           if (allEffects.indexOf('sepia')<0) {
             allEffects.push('sepia');
-		      var thisEffect;
-		      effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
-		      effects[allEffects[0]]["source"] = video;
-		      for (var i=1;i<allEffects.length;i++){
-		        effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
-		        effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
-		      }
-		      target.source = effects[allEffects[allEffects.length-1]];
-          }
+  		      var thisEffect;
+  		      effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
+  		      effects[allEffects[0]]["source"] = video;
+  		      for (var i=1;i<allEffects.length;i++){
+  		        effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
+  		        effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
+  		      }
+  		      target.source = effects[allEffects[allEffects.length-1]];
+            }
         } else {
           var si = allEffects.indexOf('sepia');
           if (si>=0) {
