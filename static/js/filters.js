@@ -32,7 +32,7 @@
       var scriptNew   = document.createElement('script');
       scriptNew.id = 'codeScript';
       var cmScript = myCodeMirror.getValue();
-      // eval(cmScript);
+      eval(cmScript);
       var adjScript = "";
       var textScript = "\n\ try {\n\ "+cmScript;
 

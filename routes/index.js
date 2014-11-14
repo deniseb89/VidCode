@@ -69,7 +69,6 @@ exports.share = function (db) {
             desc = doc.vidcodes[item]['desc'];
           }
         };
-        // add kickstarer url to description
         res.render('share', {
           layout: false,
           user: doc,
@@ -159,7 +158,6 @@ exports.lessontwo = function (db) {
     ';
     var user = req.user;
     if (user){
-      var social = user.provider;
       var vc = db.collection('vidcode');
 
       var successcb = function(doc) {
@@ -206,7 +204,6 @@ exports.lessonthree = function (db) {
     ';
     var user = req.user;
     if (user){
-      var social = user.provider;
       var vc = db.collection('vidcode');
 
       var successcb = function(doc) {
@@ -221,6 +218,28 @@ exports.lessonthree = function (db) {
     }
   };
 };
+
+exports.profilePage = function(db){
+  return function(req, res) {
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var vc = db.collection('vidcode');
+      var doc;
+
+      vc.findOne({ id: user.id , social: social}, function(err, doc){
+        console.log(doc.vidcodes);
+      });
+ 
+      var successcb = function(doc) {
+        res.render("profile", {user: doc});
+      };
+      
+    } else {
+        res.render('404', {layout: false});
+    }
+  }
+}
 
 exports.parttwo = function (req, res) {
   res.render('parttwo', {title: 'VidCode Lesson' });
@@ -493,8 +512,8 @@ function findOrCreate(db, user, cb) {
         if (user.IGvideos){
           doc.IGvideos = user.IGvideos;
         }
-        //todo: add the IG urls if social=instagram
-        vc.insert(doc, {w: 0});
+        // ideally w:1
+        vc.insert(doc, {w: 0});  
       }
         if (user.IGvideos){
           vc.update(doc, { $set: { IGvideos: user.IGvideos}}, function(err,updated){

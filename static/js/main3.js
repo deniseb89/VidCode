@@ -126,6 +126,20 @@ $( document ).ready(function() {
 
   inputFile.addEventListener('change',uploadFromComp, false);  
 
+ // var frame = 1;
+ // var frame1 = 1;
+ // var beat = 0.5;
+ // var length = movie.duration;
+
+ // function stopMotion() {
+ //  frame = frame + beat;
+ //  frame = (frame <= length) ? frame: frame1;
+ //  movie.currentTime = frame;
+ //  movie.pause();
+ // }
+
+ //  animate = setInterval(stopMotion, 500);
+
   myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
         mode:  "javascript",
         theme: "solarized light",
