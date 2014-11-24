@@ -121,7 +121,6 @@ $( document ).ready(function() {
     $('.js-share').removeClass('is-inactive-btn');
     $('.share-p-text-container').removeClass('is-hidden');
     $('.js-lesson-prompt').text('Looks amazing!');
-    $('#vid-display').removeClass('is-hidden');
   }, false);
 
   inputFile.addEventListener('change',uploadFromComp, false);
@@ -139,9 +138,12 @@ $( document ).ready(function() {
 
   var codeDelay;
   myCodeMirror.on("change", function() {
-            clearTimeout(codeDelay);
-            codeDelay = setTimeout(updateScript, 300);
-    });
+    clearTimeout(codeDelay);
+    codeDelay = setTimeout(updateScript, 300);
+
+    //check whether or not any effects have been deleted/added and the buttons should be updated
+  });
+
 
   // video events section
 
@@ -298,38 +300,38 @@ $( document ).ready(function() {
   var timeshasdropped = 0;
 
   $(".tabs-2").droppable({
-      drop: function( event, ui ) {
+    drop: function( event, ui ) {
 
-        lessonIsActive(".js-effects");
+      lessonIsActive(".js-effects");
 
-        if (timeshasdropped === 0){
-          $('.step0.ch1').addClass('is-hidden');
-          $('.step1.ch1').removeClass('is-hidden');
-        }
-        timeshasdropped++;
-
-        eff = ui.draggable.attr("name");
-        $('[name='+eff+']').addClass("is-active");
-
-        // var thisEffect = seriously.effect(eff);
-        //generalize for all effect inputs
-        if (eff!="sepia"){
-          myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-          if (eff=="fader") {
-            myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
-            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-          }
-        } else {
-          myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-        }
-
-        myCodeMirror.save();
-        labelLines();
-        $(".line-"+eff).effect("highlight",2000);
+      if (timeshasdropped === 0){
+        $('.step0.ch1').addClass('is-hidden');
+        $('.step1.ch1').removeClass('is-hidden');
       }
-    });
+      timeshasdropped++;
+
+      eff = ui.draggable.attr("name");
+      $('[name='+eff+']').addClass("is-active");
+
+      // var thisEffect = seriously.effect(eff);
+      //generalize for all effect inputs
+      if (eff!="sepia"){
+        myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+        if (eff=="fader") {
+          myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+        }
+      } else {
+        myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      }
+
+      myCodeMirror.save();
+      labelLines();
+      $(".line-"+eff).effect("highlight",2000);
+    }
+  });
 
   $('#methodList li').each(function(){
     var e = $(this).attr("name");
@@ -342,8 +344,9 @@ $( document ).ready(function() {
 
   $(".draggable").click(function(){
     var eff = ($(this).attr('name'));
-    $('[name='+eff+']').removeClass("is-active");
+    $(this).removeClass("is-active");
     var allTM = myCodeMirror.getAllMarks();
+
     for (var m=0; m<allTM.length; m++){
       var tm = allTM[m];
       if (tm.className=="cm-"+eff){
