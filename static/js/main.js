@@ -205,6 +205,98 @@ $( document ).ready(function() {
 
 
 
+
+//filters page
+  var timeshasdropped = 0;
+
+  $(".tabs-2").droppable({
+    drop: function( event, ui ) {
+
+      lessonIsActive(".js-effects");
+
+      if (timeshasdropped === 0){
+        $('.step0.ch1').addClass('is-hidden');
+        $('.step1.ch1').removeClass('is-hidden');
+      }
+      timeshasdropped++;
+
+      eff = ui.draggable.attr("name");
+      $('[name='+eff+']').addClass("is-active");
+
+      // var thisEffect = seriously.effect(eff);
+      //generalize for all effect inputs
+      if (eff!="sepia"){
+        myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+        if (eff=="fader") {
+          myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+        }
+      } else {
+        myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      }
+
+      myCodeMirror.save();
+      labelLines();
+      $(".line-"+eff).effect("highlight",2000);
+    }
+  });
+
+  $('#methodList li').each(function(){
+    var e = $(this).attr("name");
+    if (e!="sepia") { allEffects.push(e); }
+    $(this).draggable({
+      helper: "clone",
+      revert: "invalid"
+    });
+  });
+
+  $(".draggable").click(function(){
+    var eff = ($(this).attr('name'));
+    $(this).removeClass("is-active");
+    var allTM = myCodeMirror.getAllMarks();
+
+    for (var m=0; m<allTM.length; m++){
+      var tm = allTM[m];
+      if (tm.className=="cm-"+eff){
+        myCodeMirror.removeLine(tm.find().to.line);
+      }
+    }
+    myCodeMirror.save();
+  });
+
+//scrubbing page
+
+  $('#mouseScrubber').draggable({
+    drag: function (event, ui){
+        labelLines();
+        var x = Math.max(0,ui.position.left/100);
+        var y = Math.max(0,ui.position.top/100);
+        myCodeMirror.eachLine( function(l){
+          var lineNum = myCodeMirror.getLineNumber(l);
+          var lineText=l.text;
+          if (lineText.indexOf("movie.playbackRate")!=-1) {
+            myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
+            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
+          }
+        });
+        myCodeMirror.save();
+        labelLines();
+        $(".line-speed").effect("highlight",2000);
+      }
+    });
+
+  });
+
+  var lessonIsActive = function(newLesson){
+    $(newLesson).show();
+    $(newLesson).animate({
+      margin: "0px"
+    }, 350);
+  }
+
+
   //hover state of learn more section
 
   $('.js-values').hover(function(){
@@ -295,94 +387,3 @@ $( document ).ready(function() {
   var removeInfo = function(term){
     $('pre:contains('+term+')').css("background", "none" );
   };
-
-//filters page
-  var timeshasdropped = 0;
-
-  $(".tabs-2").droppable({
-    drop: function( event, ui ) {
-
-      lessonIsActive(".js-effects");
-
-      if (timeshasdropped === 0){
-        $('.step0.ch1').addClass('is-hidden');
-        $('.step1.ch1').removeClass('is-hidden');
-      }
-      timeshasdropped++;
-
-      eff = ui.draggable.attr("name");
-      $('[name='+eff+']').addClass("is-active");
-
-      // var thisEffect = seriously.effect(eff);
-      //generalize for all effect inputs
-      if (eff!="sepia"){
-        myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
-        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-        if (eff=="fader") {
-          myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-        }
-      } else {
-        myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
-        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-      }
-
-      myCodeMirror.save();
-      labelLines();
-      $(".line-"+eff).effect("highlight",2000);
-    }
-  });
-
-  $('#methodList li').each(function(){
-    var e = $(this).attr("name");
-    if (e!="sepia") { allEffects.push(e); }
-    $(this).draggable({
-      helper: "clone",
-      revert: "invalid"
-    });
-  });
-
-  $(".draggable").click(function(){
-    var eff = ($(this).attr('name'));
-    $(this).removeClass("is-active");
-    var allTM = myCodeMirror.getAllMarks();
-
-    for (var m=0; m<allTM.length; m++){
-      var tm = allTM[m];
-      if (tm.className=="cm-"+eff){
-        myCodeMirror.removeLine(tm.find().to.line);
-      }
-    }
-    myCodeMirror.save();
-  });
-
-//scrubbing page
-
-  $('#mouseScrubber').draggable({
-    drag: function (event, ui){
-        labelLines();
-        var x = Math.max(0,ui.position.left/100);
-        var y = Math.max(0,ui.position.top/100);
-        myCodeMirror.eachLine( function(l){
-          var lineNum = myCodeMirror.getLineNumber(l);
-          var lineText=l.text;
-          if (lineText.indexOf("movie.playbackRate")!=-1) {
-            myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
-            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
-          }
-        });
-        myCodeMirror.save();
-        labelLines();
-        $(".line-speed").effect("highlight",2000);
-    }
-  });
-
-});
-
-var lessonIsActive = function(newLesson){
-  $(newLesson).show();
-  $(newLesson).animate({
-    margin: "0px"
-  }, 350);
-}
-
