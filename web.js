@@ -120,6 +120,7 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/instagramVids/', routes.igUrlGet(db));
   app.get('/instagram/:ix', routes.igVidGet(db));
   app.get('/sample/:file', routes.getSample);
+  app.get('/getVideos', routes.getAllVids(db));  
   app.get('/video', routes.getUserVid(gfs));
   app.post('/uploadFinished', routes.uploadFinished(db,gfs,crypto));
 

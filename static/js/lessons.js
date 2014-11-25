@@ -82,6 +82,9 @@ var loadThumbnails = function() {
         var igVids = data;
         if (igVids.length){
           for (var i=0; i < Math.min(igVids.length,3); i++){
+            $('#js-fetch-vid'+i).error(function(){
+              $(this).addClass('is-hidden');              
+            });
             $('#js-fetch-vid'+i).removeClass('is-hidden');
             document.getElementById('js-fetch-vid'+i).src = '/instagram/'+i;
             document.getElementById('js-fetch-vid'+i).addEventListener("loadeddata", function(){

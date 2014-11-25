@@ -468,6 +468,32 @@ exports.igUrlGet = function(db){
   }
 }
 
+exports.getAllVids = function(db){
+  return function (req, res){
+    //return vidcodes
+    var user = req.user;
+    var vc = db.collection('vidcode'); 
+    
+    console.log('going to get vidcodes for '+ user.username);
+
+    vc.findOne({ 'id':user.id, 'social':user.provider}, function (err, doc) { 
+      if (!doc) {
+        console.log('no doc found');
+        //there's no doc for this user
+      } else {
+        if (doc.vidcodes){
+          console.log(doc.vidcodes);
+          res.send(doc.vidcodes);
+        } else {
+        //handle if there are none
+        console.log('you have not created any vidcodes');        
+        }
+      }
+    });
+
+  };
+};
+
 exports.fbCB = function (db) {
   return function (req, res) {
     var successcb = function(doc) {
