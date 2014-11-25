@@ -4,7 +4,7 @@ var Busboy = require('busboy');
 var util = require('util');
 
 exports.notFound = function(req, res){
-  res.render('404', {layout:false , title: 'VidCode' });  
+  res.render('404', {layout:false});  
 }
 
 exports.signin = function (req, res) {
@@ -39,7 +39,9 @@ exports.gallery = function (req, res) {
   if(userVidURL){
     userVidURL = "blob:"+ userVidURL.substr(5).replace(/:/g,"%3A");
   };
+
   res.render('gallery', {title: 'VidCode Gallery', userVidURL:userVidURL});
+
 };
 
 exports.galleryshow = function (req, res) {
@@ -225,14 +227,21 @@ exports.profilePage = function(db){
     if (user){
       var social = user.provider;
       var vc = db.collection('vidcode');
-      var doc;
+      var data;
 
       vc.findOne({ id: user.id , social: social}, function(err, doc){
-        console.log(doc.vidcodes);
+        successcb(doc);
       });
  
       var successcb = function(doc) {
-        res.render("profile", {user: doc});
+        //send html instead of rendering a view
+        // var str = "<html>";
+        // str+="<p>Found "+doc.vidcodes.length+" vidcodes for "+user.username+"</p>"
+        // for (var v=0; v < doc.vidcodes.length; v++){
+        //   str+="<div>Token: "+doc.vidcodes[v].token+"</div>";
+        // }
+        // str +="</html>";
+        res.render('gallery', {videos: doc.vidcodes});
       };
       
     } else {
@@ -474,8 +483,6 @@ exports.getAllVids = function(db){
     var user = req.user;
     var vc = db.collection('vidcode'); 
     
-    console.log('going to get vidcodes for '+ user.username);
-
     vc.findOne({ 'id':user.id, 'social':user.provider}, function (err, doc) { 
       if (!doc) {
         console.log('no doc found');

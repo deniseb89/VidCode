@@ -73,7 +73,6 @@ app.use(session({
   // secureProxy: false // if you do SSL outside of node
 }))
 
-// console.log(app.get('env'));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -81,16 +80,14 @@ app.use(passport.session());
 var exphbs = require('express3-handlebars');
 app.set('views', __dirname + '/views');
 app.engine('.html', exphbs({ defaultLayout: 'main', extname: '.html' }));
-app.set('view engine', '.html');
+app.set('view engine', 'html');
 
 // configure express routes
 var routes = require('./routes');
 
 // create server
-// connect away
-
+// connect to Mongo
 MongoClient.connect(host, function(err, Db) {
-
   if (err) throw err;
   db = Db;
   var collection = db.collection('vidcode');
@@ -124,6 +121,11 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/video', routes.getUserVid(gfs));
   app.post('/uploadFinished', routes.uploadFinished(db,gfs,crypto));
 
+  //catch all for any other request attempts
+  app.get('*', function(req,res){
+    res.render('404',{layout: false});
+  });
+  
   http.createServer(app).listen(app.get('port'),function(){
     console.log("Listening on " + app.get('port'));
   });
