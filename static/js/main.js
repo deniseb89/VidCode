@@ -126,13 +126,13 @@ $( document ).ready(function() {
   inputFile.addEventListener('change',uploadFromComp, false);
 
   myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'),  {
-        mode:  "javascript",
-        theme: "solarized light",
-        lineWrapping: true,
-        lineNumbers: true,
-        styleActiveLine: true,
-        matchBrackets: true
-      });
+    mode:  "javascript",
+    theme: "solarized light",
+    lineWrapping: true,
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true
+  });
 
   $('.CodeMirror-code').addClass('is-hidden');
 
@@ -141,7 +141,7 @@ $( document ).ready(function() {
     clearTimeout(codeDelay);
     codeDelay = setTimeout(updateScript, 300);
 
-    //check whether or not any effects have been deleted/added and the buttons should be updated
+    //check whether or not any effects have been deleted/added and the buttons should be updated (in filters.js)
   });
 
 
@@ -155,24 +155,24 @@ $( document ).ready(function() {
 
   movie.addEventListener('pause',function(){
     //also update movie.___() line in code editor
-      $( "pre:contains('movie.play')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">pause</span>();');
-      $(".runbtn").text('Play');
+    $( "pre:contains('movie.play')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">pause</span>();');
+    $(".runbtn").text('Play');
   });
 
   // End video events section
 
   $(".js-upload-video").click(function(){
-      $(".popup").removeClass("is-hidden");
+    $(".popup").removeClass("is-hidden");
   });
 
   $(".js-hide-upload").click(function(){
-      $('.loader').addClass('is-hidden');
-      $(".popup").addClass("is-hidden");
+    $('.loader').addClass('is-hidden');
+    $(".popup").addClass("is-hidden");
   });
 
   $(".runbtn").click(function(){
-      $(".video2").removeClass("is-hidden");
-      movie.paused ? movie.play() : movie.pause();
+    $(".video2").removeClass("is-hidden");
+    movie.paused ? movie.play() : movie.pause();
   });
 
   $('.js-reset-code').click(function (){
@@ -207,6 +207,7 @@ $( document ).ready(function() {
 
 
 //filters page
+  //checks for current status of buttons, for lesson steps
   var timeshasdropped = 0;
 
   $(".tabs-2").droppable({
@@ -214,11 +215,13 @@ $( document ).ready(function() {
 
       lessonIsActive(".js-effects");
 
+      //lesson steps---
       if (timeshasdropped === 0){
         $('.step0.ch1').addClass('is-hidden');
         $('.step1.ch1').removeClass('is-hidden');
       }
       timeshasdropped++;
+      //---
 
       eff = ui.draggable.attr("name");
       $('[name='+eff+']').addClass("is-active");
@@ -270,24 +273,23 @@ $( document ).ready(function() {
 
   $('#mouseScrubber').draggable({
     drag: function (event, ui){
-        labelLines();
-        var x = Math.max(0,ui.position.left/100);
-        var y = Math.max(0,ui.position.top/100);
-        myCodeMirror.eachLine( function(l){
-          var lineNum = myCodeMirror.getLineNumber(l);
-          var lineText=l.text;
-          if (lineText.indexOf("movie.playbackRate")!=-1) {
-            myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
-            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
-          }
-        });
-        myCodeMirror.save();
-        labelLines();
-        $(".line-speed").effect("highlight",2000);
-      }
-    });
-
+      labelLines();
+      var x = Math.max(0,ui.position.left/100);
+      var y = Math.max(0,ui.position.top/100);
+      myCodeMirror.eachLine( function(l){
+        var lineNum = myCodeMirror.getLineNumber(l);
+        var lineText=l.text;
+        if (lineText.indexOf("movie.playbackRate")!=-1) {
+          myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
+        }
+      });
+      myCodeMirror.save();
+      labelLines();
+      $(".line-speed").effect("highlight",2000);
+    }
   });
+
 
   var lessonIsActive = function(newLesson){
     $(newLesson).show();
@@ -387,3 +389,5 @@ $( document ).ready(function() {
   var removeInfo = function(term){
     $('pre:contains('+term+')').css("background", "none" );
   };
+
+});
