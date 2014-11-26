@@ -234,18 +234,11 @@ exports.profilePage = function(db){
       });
  
       var successcb = function(doc) {
-        //send html instead of rendering a view
-        // var str = "<html>";
-        // str+="<p>Found "+doc.vidcodes.length+" vidcodes for "+user.username+"</p>"
-        // for (var v=0; v < doc.vidcodes.length; v++){
-        //   str+="<div>Token: "+doc.vidcodes[v].token+"</div>";
-        // }
-        // str +="</html>";
-        res.render('gallery', {videos: doc.vidcodes});
+        res.render('profile', {videos: doc.vidcodes});
       };
       
     } else {
-        res.render('404', {layout: false});
+        res.render('profile');
     }
   }
 }
@@ -264,7 +257,7 @@ exports.partfour = function (req, res) {
 };
 
 exports.codeAlone = function (req, res) {
-  res.render('codeAlone', {title: 'VidCode Gallery' });
+  res.render('codeAlone');
 };
 
 exports.filters = function (db) {
