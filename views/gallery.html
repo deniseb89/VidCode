@@ -2,11 +2,7 @@
 
 <div class="row gallery">
 	<div class="col-md-4">
-		{{#if userVidURL}}
-		<a><video class="video js-user-share" controls src={{userVidURL}}></a>
-		{{else}}
-		<a href='galleryshow'><video class="video js-user-share" controls src="img/gallery-samples/org_blur.webm"></a>
-		{{/if}}
+		<a href='/galleryshow'><video class="video js-user-share" controls src="img/gallery-samples/org_blur.webm"></a>
 		<div class="vid-row">
 			<img class="js-heart-click hover-change likes" src="img/heart.png">
 			<img class="js-heart-clicked likes is-hidden" src="img/heart-selected.png">

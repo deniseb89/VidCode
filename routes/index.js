@@ -228,14 +228,14 @@ exports.profilePage = function(db){
       var social = user.provider;
       var vc = db.collection('vidcode');
       var data;
+      
+      var successcb = function(doc) {
+        res.render('profile', {videos: doc.vidcodes});
+      };
 
       vc.findOne({ id: user.id , social: social}, function(err, doc){
         successcb(doc);
       });
- 
-      var successcb = function(doc) {
-        res.render('profile', {videos: doc.vidcodes});
-      };
       
     } else {
         res.render('profile');
