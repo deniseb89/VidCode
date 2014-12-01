@@ -140,8 +140,6 @@ $( document ).ready(function() {
   myCodeMirror.on("change", function() {
     clearTimeout(codeDelay);
     codeDelay = setTimeout(updateScript, 300);
-
-    //check whether or not any effects have been deleted/added and the buttons should be updated (in filters.js)
   });
 
 
