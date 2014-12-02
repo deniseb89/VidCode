@@ -88,7 +88,6 @@ var updateScript = function() {
 var checkBtnStatus = function(effect) {
   //compare the names of effect buttons to the names in activeEffects
   var effectName = $(effect).attr("name");
-  console.log(effectName);
   $('li[name=' + effectName + ']').addClass("is-active")
 
 }
