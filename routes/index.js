@@ -8,7 +8,8 @@ exports.notFound = function(req, res){
 }
 
 exports.signin = function (req, res) {
-  res.render('signin', { title: 'VidCode' });
+  console.log(req.user);
+  res.render('signin', { title: 'Vidcode' });
 };
 
 exports.intro = function (db) {
@@ -183,27 +184,20 @@ exports.lessonthree = function (db) {
  movie.play();\n\
 \n\
  //This code lets you create stop-motion videos by controlling the frames!\n\
- //Begin by uncommenting the line below\n\
- //animate = setInterval(stopMotion, 500);\n\
 \n\
- var frame = 1;\n\
- var frame1 = 1;\n\
- var beat = 0.5;\n\
- var length = movie.duration;\n\
-\n\
- function stopMotion() {\n\
-  frame = frame + beat;\n\
-  frame = (frame <= length) ? frame: frame1;\n\
-  movie.currentTime = frame;\n\
-  movie.pause();\n\
- }\n\
-\n\
-//make it stop by uncommenting the line below\n\
-//clearInterval(animate);\n\
-\n\
-//**Note: In the real version, animation control will be fed by the visual controls, not the editor\n\
+ clearInterval(stopMotion);\n\
+ var i = 0;\n\
+ stopMotion = setInterval(function(){\n\
+    var still = seriously.source(stills[i]);\n\
+    target.source = still;\n\
+    i++\n\
+    if i(i >= stills.length) { i = 0; }\n\
+  }, 250)\n\
 \n\
     ';
+
+
+
     var user = req.user;
     if (user){
       var vc = db.collection('vidcode');

@@ -11,6 +11,15 @@ $( document ).ready(function() {
 
   loadThumbnails();
 
+  $('.js-img-click').click(function(){
+    $(this).addClass('js-selected-video');
+    // replace this instead with something to switch the target source
+    $(this).addClass('js-img-still');
+    var stills = document.querySelectorAll('.js-img-still');
+    loopStills(stills);
+    $('.CodeMirror-code').removeClass('is-hidden');
+  });
+
 	$('.js-vid-click').click(function(){
 		$('.loader').removeClass('is-hidden');
     $('.js-vid-click').removeClass('js-selected-video');
