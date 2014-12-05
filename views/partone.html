@@ -1,6 +1,22 @@
 
   <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
 
+
+<div class="compatibility-error is-hidden">
+  <div class="error-message">
+    <div class="panelhead">
+      <h2>Sorry!</h2>
+    </div>
+    <div class="panelbody">
+      <p>Your browser doesn't appear to support WebGL or it isn't enabled. Visit <a href="http://get.webgl.org/">get.webgl.org</a> to learn more or try the latest version of Chrome.</p>
+
+      <p>Don't worry, you can still learn all about vidcode at <a href="http://www.vidcode.io/">vidcode.io</a>.</p>
+    </div>
+  </div>
+  <div class="cover">
+  </div>
+</div>
+
 <div class="container-fixed">
   <div class="popup is-hidden">
     <form class="uploadform" enctype="multipart/form-data">
@@ -637,6 +653,7 @@
 
 <script>
 	$(window).load(function() {
+    //should only turn on when error message doesn't appear
 	  $("#joyRideTipContent").joyride({
 	  	autoStart: true
 	  });

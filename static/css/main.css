@@ -900,6 +900,27 @@ canvas{vertical-align: bottom;}
 .is-inactive-btn:hover{background-color: #441B4B!important;}
 
 .push-15{margin-top: 15px!important;}
+
+
+
+
+/* ======================       Error          ============================= */
+.cover{width: 100%; height: 100%; position: fixed; background-color: rgba(46, 48, 58, .98); z-index: 9; top: 0;}
+.error-message{
+    position: absolute;
+    top: 23%; left:50%;
+    z-index: 10;
+    width:500px; margin-left:-250px;
+}
+
+.error-message div{width: 100%;}
+
+.panelhead{background: #329766; padding: 1px 24px 8px;}
+.panelhead h2{color: #fff;}
+.panelbody{background: #fff; padding: 22px 24px 17px; font-size: 1.1em; line-height: 1.7em;}
+
+
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
