@@ -11,6 +11,13 @@ var labelLines = function() {
 
 var InitSeriously = function(e){
   //check Seriously compatibility. Seriously.incompatible ?
+  if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
+    $('.compatibility-error').removeClass('is-hidden');
+  } else {
+    $("#joyRideTipContent").joyride({
+      autoStart: true
+    });
+  }
   video = seriously.source(movie);
   target = seriously.target(canvas);
   var thisEffect;

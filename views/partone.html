@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
 
 
-<div class="compatibility-error">
+<div class="compatibility-error is-hidden">
   <div class="error-message">
     <div class="panelhead">
       <h2>Sorry!</h2>
@@ -655,7 +655,7 @@
 	$(window).load(function() {
     //should only turn on when error message doesn't appear
 	  $("#joyRideTipContent").joyride({
-	  	autoStart: true
+	  	autoStart: false
 	  });
 	});
 
