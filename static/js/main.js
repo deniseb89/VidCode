@@ -168,17 +168,22 @@ $( document ).ready(function() {
   $('.js-step-prev').click(function(){
     var step = this.name;
     var prevStep = parseInt(step,10)-1;
-    console.log(prevStep);
-    $('.step'+step).hide();
+    console.log('switching from '+step +' to step '+prevStep);
+    $('.step'+step).addClass('is-hidden');
     $('.step'+prevStep).removeClass('is-hidden');
   });
 
   $('.js-step-next').click(function(){
     var step = this.name;
     var nextStep = parseInt(step,10)+1;
-    $('.step'+step).hide();
+    console.log('switching from '+step +' to step '+nextStep);
+    $('.step'+step).addClass('is-hidden');
     $('.step'+nextStep).removeClass('is-hidden');
   });
+
+  $('.js-steps-close').click(function(){
+    $('.steps').hide();
+  })
 
   $(".js-upload-video").click(function(){
     $(".popup").removeClass("is-hidden");
@@ -233,11 +238,11 @@ $( document ).ready(function() {
       lessonIsActive(".js-effects");
 
       //lesson steps---
-      timeshasdropped++;
-      if (timeshasdropped ){
-        $('.steps').removeClass('is-hidden');
-        $('.step0').addClass('is-hidden');
-      }
+      // timeshasdropped++;
+      // if (timeshasdropped ){
+      //   $('.steps').removeClass('is-hidden');
+      //   $('.step0').addClass('is-hidden');
+      // }
       //---
 
       eff = ui.draggable.attr("name");

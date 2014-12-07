@@ -8,7 +8,6 @@ exports.notFound = function(req, res){
 }
 
 exports.signin = function (req, res) {
-  console.log(req.user);
   res.render('signin', { title: 'Vidcode' });
 };
 
@@ -219,7 +218,6 @@ exports.cs1 = function (db) {
     var codeText =
 '\
  movie.playbackRate = 1;\n\
-\n\
     ';
 
     var user = req.user;
