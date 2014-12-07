@@ -315,16 +315,14 @@ font-size: .9em;}
 
 .steps{
     background-color:rgba(68, 27, 75, .9);
-    margin: -20px 0 -10px;
     padding: 10px;
     color: #fff;
 }
+.steps h2{margin-top: 7px;margin-bottom: 19px;font-size: 1.7em; color: #fff;}
 
-.steps h2{font-size:1.3em;
-    font-weight: 700;
-    color: #fff!important;}
-
-
+.s-btn-right{margin-right: 7px!important; margin-top: -44px!important;}
+.s-btn-left{margin-left: 4px!important;}
+.s-btn-fst{margin-top: 0!important;}
 
 .pull_left{margin-left: -31px;}
 
@@ -763,6 +761,9 @@ canvas{vertical-align: bottom;}
 .lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
+/*Adding this as a temp fix for the instruction fonts*/
+.lesson-page .steps p{font-weight: 100; color: #fff!important;}
+
 .lesson-page .still-strip img{width: 25%; margin: 2%; cursor: pointer;}
 
 .spacer {margin-top: 175px !important;}
@@ -901,7 +902,8 @@ canvas{vertical-align: bottom;}
 
 .push-15{margin-top: 15px!important;}
 
-
+.header-text-s{color: rgb(0,121,184); margin-bottom: 11px;}
+.header-text-s h3{font-weight: 400; float: left;}
 
 
 /* ======================       Error          ============================= */

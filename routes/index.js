@@ -8,7 +8,6 @@ exports.notFound = function(req, res){
 }
 
 exports.signin = function (req, res) {
-  console.log(req.user);
   res.render('signin', { title: 'Vidcode' });
 };
 
@@ -196,8 +195,6 @@ exports.lessonthree = function (db) {
 \n\
     ';
 
-
-
     var user = req.user;
     if (user){
       var vc = db.collection('vidcode');
@@ -211,6 +208,31 @@ exports.lessonthree = function (db) {
       
     } else {
         res.render("lessonthree", {code: codeText, filters: filters});
+    }
+  };
+};
+
+exports.cs1 = function (db) {
+   return function (req, res) {
+    var filters = ['blur','noise','vignette', 'fader', 'exposure'];    
+    var codeText =
+'\
+ movie.playbackRate = 1;\n\
+    ';
+
+    var user = req.user;
+    if (user){
+      var vc = db.collection('vidcode');
+
+      var successcb = function(doc) {
+        //todo:if instagram user...
+        //refresh API call with user.acessToken to get recent videos
+        res.render("cs1", {code: codeText, filters: filters, user: doc});
+      };  
+      findOrCreate(db,user,successcb);
+      
+    } else {
+        res.render("cs1", {code: codeText, filters: filters});
     }
   };
 };
