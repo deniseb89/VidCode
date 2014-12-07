@@ -27,7 +27,6 @@ var showVid = function() {
   $(".js-appear").removeClass("is-hidden");
   $(".js-switch-appear").addClass("is-hidden");
   $('.CodeMirror-code').removeClass('is-hidden');
-  $('.step0').removeClass('is-hidden');
   labelLines();
   vidLen = Math.round(this.duration);
 };
@@ -104,6 +103,11 @@ var submitVideo = function (blob) {
       videoDisplay.src = videoDLurl;
       videoDisplay.controls = true;
       $('.js-share').attr('href','/share/'+token);
+      $('#vid-display').removeClass('is-hidden');
+
+      $('.js-share').removeClass('is-inactive-btn');
+      $('.share-p-text-container').removeClass('is-hidden');
+      $('.js-lesson-prompt').text('Looks amazing!');
   	},
   	error: function(jqXHR, textStatus, errorThrown){
   	}
@@ -120,9 +124,8 @@ $( document ).ready(function() {
   movie.addEventListener('canplay', InitSeriously, false);
   movie.load();
   videoDisplay.addEventListener('loadeddata', function(){
-    $('.js-share').removeClass('is-inactive-btn');
-    $('.share-p-text-container').removeClass('is-hidden');
-    $('.js-lesson-prompt').text('Looks amazing!');
+
+
   }, false);
 
   inputFile.addEventListener('change',uploadFromComp, false);
@@ -160,6 +163,22 @@ $( document ).ready(function() {
   });
 
   // End video events section
+
+
+  $('.js-step-prev').click(function(){
+    var step = this.name;
+    var prevStep = parseInt(step,10)-1;
+    console.log(prevStep);
+    $('.step'+step).hide();
+    $('.step'+prevStep).removeClass('is-hidden');
+  });
+
+  $('.js-step-next').click(function(){
+    var step = this.name;
+    var nextStep = parseInt(step,10)+1;
+    $('.step'+step).hide();
+    $('.step'+nextStep).removeClass('is-hidden');
+  });
 
   $(".js-upload-video").click(function(){
     $(".popup").removeClass("is-hidden");
@@ -204,8 +223,6 @@ $( document ).ready(function() {
   $( "ul, li" ).disableSelection();
 
 
-
-
 //filters page
   //checks for current status of buttons, for lesson steps
   var timeshasdropped = 0;
@@ -216,11 +233,11 @@ $( document ).ready(function() {
       lessonIsActive(".js-effects");
 
       //lesson steps---
-      if (timeshasdropped === 0){
-        $('.step0.ch1').addClass('is-hidden');
-        $('.step1.ch1').removeClass('is-hidden');
-      }
       timeshasdropped++;
+      if (timeshasdropped ){
+        $('.steps').removeClass('is-hidden');
+        $('.step0').addClass('is-hidden');
+      }
       //---
 
       eff = ui.draggable.attr("name");
@@ -289,7 +306,6 @@ $( document ).ready(function() {
       $(".line-speed").effect("highlight",2000);
     }
   });
-
 
   var lessonIsActive = function(newLesson){
     $(newLesson).show();

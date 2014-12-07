@@ -105,6 +105,8 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/gallery', routes.gallery);
   app.get('/galleryshow', routes.galleryshow);
 
+  app.get('/lesson/cs1', routes.cs1(db));
+
   // sign up + sign in
   app.post('/signup', routes.signup(db));
   app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});

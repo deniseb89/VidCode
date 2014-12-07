@@ -325,7 +325,6 @@ font-size: .9em;}
     color: #fff!important;}
 
 
-
 .pull_left{margin-left: -31px;}
 
 
@@ -762,6 +761,9 @@ canvas{vertical-align: bottom;}
 .lesson-page .video-container p{font-weight: bold; font-size: 1.2em; margin-top: 15px; color: #441B4B;}
 .lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
+
+/*Adding this as a temp fix for the instruction fonts*/
+.lesson-page .steps p{font-weight: 100; color: #fff!important;}
 
 .lesson-page .still-strip img{width: 25%; margin: 2%; cursor: pointer;}
 
