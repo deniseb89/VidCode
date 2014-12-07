@@ -38,6 +38,8 @@ var requestAnimationFrame = window.requestAnimationFrame ||
                             window.webkitRequestAnimationFrame ||
                             window.msRequestAnimationFrame;
 
+window.requestAnimationFrame = requestAnimationFrame;
+
 function drawVideoFrame(time) {
   rafId = requestAnimationFrame(drawVideoFrame);
   capture = frames.length*60/1000;
