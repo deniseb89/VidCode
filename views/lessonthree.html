@@ -19,7 +19,7 @@
 
 	<span class="next-progress-btn">
 		<a id="tooltip-stop-4" class="is-inactive-btn js-activate-btn" href="#">I'm Done!▸</a>
-    <a id="tooltip-stop-4" class="is-hidden js-slide-right-final" href="#">I'm Done!▸</a>
+    <a id="tooltip-stop-4a" class="is-hidden js-slide-right-final" href="#">I'm Done!▸</a>
 	</span>
 
 	<div class="lesson-container">
@@ -30,7 +30,7 @@
 					<h3>Select a video below</h3>
 				</div>
         <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
-        <canvas class="video2" id="canvas">
+        <canvas class="video2" id="canvas" height="400" width="400">
           </canvas>
         <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 			</span>
@@ -39,40 +39,29 @@
 
         <div class="video-container clearfix">
 
-          <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
-        
-          <p id="tooltip-stop-1">Instagram Videos</p>
-          <div class="insta-thumbnails">
-            <span class="i-error"></span>
-            <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid0" src=""></video>
-            </div>
-            <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid1" src=""></video>
-            </div>
-            <div class="i-vid-container">
-              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid2" src=""></video>
-            </div>
+          <button type="button" class="btn btn-primary js-upload-photo left-btn">Upload Your Own Photos</button>
+
+          <div class="still-strip">
+            <img src="/img/temp/msh1.jpg" class="js-img-click js-img-still">
+            <img src="/img/temp/msh2.jpg" class="js-img-click">
+            <img src="/img/temp/msh3.jpg" class="js-img-click">
+            <img src="/img/temp/msh4.jpg" class="js-img-click">
+            <img src="/img/temp/msh5.jpg" class="js-img-click">
+            <img src="/img/temp/msh6.jpg" class="js-img-click">
+            <img src="/img/temp/msh7.jpg" class="js-img-click">
           </div>
 
-          <div class="insta-import is-hidden">
-            <a href="/auth/instagram" id="tooltip-stop-1">Import Videos from Instagram</a>
+          <div class="still-strip">
+            <img src="/img/Temp/Allie.jpg" class="js-img-click" />
+            <img src="/img/Temp/Blaise.jpg" />
+            <img src="/img/Temp/Chase.jpg" />
+            <img src="/img/Temp/headshot.jpeg" />
+            <img src="/img/Temp/Ken.jpg" />
+            <img src="/img/Temp/Leandra.jpg" />
+            <img src="/img/Temp/Terry.jpg" />
           </div>
 
         </div>
-
-        <div class="video-container clearfix">
-          <p>Sample Videos</p>
-            <div class="i-vid-container">
-              <video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
-            </div>
-            <div class="i-vid-container">
-              <video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
-            </div>
-            <div class="i-vid-container">
-              <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
-            </div>
-          </div>
 
 			</div>
 
@@ -631,8 +620,8 @@
 
 </ol>
 
-<script src="/js/filters.js"></script>
-<script src="/js/main3.js"></script>
+<script src="/js/stopmotion.js"></script>
+<script src="/js/main.js"></script>
 <script src="/js/lessons.js"></script>
 
 <script>
@@ -646,7 +635,7 @@
     mixpanel.track_links("#mix-return2code", "Returned to code" );
     mixpanel.track_links("#mix-again", "Try It Again clicked" );
     mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
-    mixpanel.track_links("#tooltip-stop-4", "I'm Done clicked" );
+    mixpanel.track_links("#tooltip-stop-4a", "I'm Done clicked" );
       mixpanel.track('Main UI page viewed', {
     'page name' : document.title,
     'url' : window.location.pathname

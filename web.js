@@ -73,7 +73,6 @@ app.use(session({
   // secureProxy: false // if you do SSL outside of node
 }))
 
-// console.log(app.get('env'));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -81,16 +80,14 @@ app.use(passport.session());
 var exphbs = require('express3-handlebars');
 app.set('views', __dirname + '/views');
 app.engine('.html', exphbs({ defaultLayout: 'main', extname: '.html' }));
-app.set('view engine', '.html');
+app.set('view engine', 'html');
 
 // configure express routes
 var routes = require('./routes');
 
 // create server
-// connect away
-
+// connect to Mongo
 MongoClient.connect(host, function(err, Db) {
-
   if (err) throw err;
   db = Db;
   var collection = db.collection('vidcode');
@@ -101,11 +98,10 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/signin', routes.signin);
   app.get('/intro/:social?/:id?', routes.intro(db));
   app.get('/lesson/1', routes.partone(db));
-  app.get('/lesson/tc2', routes.lessontwo(db));
-  app.get('/lesson/tc3', routes.lessonthree(db));
+  // app.get('/lesson/tc2', routes.lessontwo(db));
+  // app.get('/lesson/tc3', routes.lessonthree(db));
   app.get('/share/:token?', routes.share(db));
   app.get('/profile', routes.profilePage(db))
-  app.get('/notFound', routes.notFound);
   app.get('/gallery', routes.gallery);
   app.get('/galleryshow', routes.galleryshow);
 
@@ -120,9 +116,15 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/instagramVids/', routes.igUrlGet(db));
   app.get('/instagram/:ix', routes.igVidGet(db));
   app.get('/sample/:file', routes.getSample);
+  app.get('/getVideos', routes.getAllVids(db));  
   app.get('/video', routes.getUserVid(gfs));
   app.post('/uploadFinished', routes.uploadFinished(db,gfs,crypto));
 
+  //catch all for any other request attempts
+  app.get('*', function(req,res){
+    res.render('404',{layout: false});
+  });
+  
   http.createServer(app).listen(app.get('port'),function(){
     console.log("Listening on " + app.get('port'));
   });

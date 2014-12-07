@@ -1,0 +1,19 @@
+<div class="row gallery">
+	{{#each videos}}
+	<div class="col-md-4">
+		<a><video class="video" controls src="/video/?file={{this.file}}"></a>
+		<div class="vid-row">
+			<img class="js-heart-click hover-change likes" src="img/heart.png">
+			<img class="js-heart-clicked likes is-hidden" src="img/heart-selected.png">
+			<a href='galleryshow'>
+				<span class="info">
+					<p class="title">{{this.title}}</p>
+					<p class="username">{{this.desc}}</p>
+				</span>
+			</a>
+		</div>
+	</div>
+	{{else}}
+	<h2 class="galleryheader">You have no videos in your workstation! Start vidcoding, already!</p>
+	{{/each}}
+</div>

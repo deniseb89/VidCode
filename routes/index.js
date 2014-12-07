@@ -4,11 +4,12 @@ var Busboy = require('busboy');
 var util = require('util');
 
 exports.notFound = function(req, res){
-  res.render('404', {layout:false , title: 'VidCode' });  
+  res.render('404', {layout:false});  
 }
 
 exports.signin = function (req, res) {
-  res.render('signin', { title: 'VidCode' });
+  console.log(req.user);
+  res.render('signin', { title: 'Vidcode' });
 };
 
 exports.intro = function (db) {
@@ -39,7 +40,9 @@ exports.gallery = function (req, res) {
   if(userVidURL){
     userVidURL = "blob:"+ userVidURL.substr(5).replace(/:/g,"%3A");
   };
+
   res.render('gallery', {title: 'VidCode Gallery', userVidURL:userVidURL});
+
 };
 
 exports.galleryshow = function (req, res) {
@@ -181,27 +184,20 @@ exports.lessonthree = function (db) {
  movie.play();\n\
 \n\
  //This code lets you create stop-motion videos by controlling the frames!\n\
- //Begin by uncommenting the line below\n\
- //animate = setInterval(stopMotion, 500);\n\
 \n\
- var frame = 1;\n\
- var frame1 = 1;\n\
- var beat = 0.5;\n\
- var length = movie.duration;\n\
-\n\
- function stopMotion() {\n\
-  frame = frame + beat;\n\
-  frame = (frame <= length) ? frame: frame1;\n\
-  movie.currentTime = frame;\n\
-  movie.pause();\n\
- }\n\
-\n\
-//make it stop by uncommenting the line below\n\
-//clearInterval(animate);\n\
-\n\
-//**Note: In the real version, animation control will be fed by the visual controls, not the editor\n\
+ clearInterval(stopMotion);\n\
+ var i = 0;\n\
+ stopMotion = setInterval(function(){\n\
+    var still = seriously.source(stills[i]);\n\
+    target.source = still;\n\
+    i++\n\
+    if i(i >= stills.length) { i = 0; }\n\
+  }, 250)\n\
 \n\
     ';
+
+
+
     var user = req.user;
     if (user){
       var vc = db.collection('vidcode');
@@ -225,18 +221,18 @@ exports.profilePage = function(db){
     if (user){
       var social = user.provider;
       var vc = db.collection('vidcode');
-      var doc;
+      var data;
+      
+      var successcb = function(doc) {
+        res.render('profile', {videos: doc.vidcodes});
+      };
 
       vc.findOne({ id: user.id , social: social}, function(err, doc){
-        console.log(doc.vidcodes);
+        successcb(doc);
       });
- 
-      var successcb = function(doc) {
-        res.render("profile", {user: doc});
-      };
       
     } else {
-        res.render('404', {layout: false});
+        res.render('profile');
     }
   }
 }
@@ -255,7 +251,7 @@ exports.partfour = function (req, res) {
 };
 
 exports.codeAlone = function (req, res) {
-  res.render('codeAlone', {title: 'VidCode Gallery' });
+  res.render('codeAlone');
 };
 
 exports.filters = function (db) {
@@ -467,6 +463,30 @@ exports.igUrlGet = function(db){
     });    
   }
 }
+
+exports.getAllVids = function(db){
+  return function (req, res){
+    //return vidcodes
+    var user = req.user;
+    var vc = db.collection('vidcode'); 
+    
+    vc.findOne({ 'id':user.id, 'social':user.provider}, function (err, doc) { 
+      if (!doc) {
+        console.log('no doc found');
+        //there's no doc for this user
+      } else {
+        if (doc.vidcodes){
+          console.log(doc.vidcodes);
+          res.send(doc.vidcodes);
+        } else {
+        //handle if there are none
+        console.log('you have not created any vidcodes');        
+        }
+      }
+    });
+
+  };
+};
 
 exports.fbCB = function (db) {
   return function (req, res) {

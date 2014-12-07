@@ -763,6 +763,7 @@ canvas{vertical-align: bottom;}
 .lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
+.lesson-page .still-strip img{width: 25%; margin: 2%; cursor: pointer;}
 
 .spacer {margin-top: 175px !important;}
 .desc-container {text-align: center}

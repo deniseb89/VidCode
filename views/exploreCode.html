@@ -19,7 +19,7 @@ var frame = 1;
 var frame1 = 1;
 var beat = 0.5;
 var length = movie.duration;
-
+var loop; 
 function stopMotion() {
  frame = frame + beat;
  frame = (frame <= length) ? frame: frame1;
