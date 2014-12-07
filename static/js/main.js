@@ -121,6 +121,7 @@ $( document ).ready(function() {
     $('.js-share').removeClass('is-inactive-btn');
     $('.share-p-text-container').removeClass('is-hidden');
     $('.js-lesson-prompt').text('Looks amazing!');
+    $('#vid-display').removeClass('is-hidden');
   }, false);
 
   inputFile.addEventListener('change',uploadFromComp, false);
