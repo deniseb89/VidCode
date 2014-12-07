@@ -8,7 +8,6 @@ exports.notFound = function(req, res){
 }
 
 exports.signin = function (req, res) {
-  console.log(req.user);
   res.render('signin', { title: 'Vidcode' });
 };
 
