@@ -186,7 +186,7 @@ $( document ).ready(function() {
   });
 
   $('.js-steps-close').click(function(){
-    $('.steps').hide();
+    $('.steps').addClass('is-hidden');
   })
 
   $(".js-upload-video").click(function(){
