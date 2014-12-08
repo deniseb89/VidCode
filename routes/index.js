@@ -217,7 +217,8 @@ exports.cs1 = function (db) {
     var filters = ['blur','noise','vignette', 'fader', 'exposure'];    
     var codeText =
 '\
- movie.playbackRate = 1;\n\
+movie.play();\n\
+movie.playbackRate = 1;\n\
     ';
 
     var user = req.user;

@@ -13,8 +13,10 @@ var movie,
     videoDLurl,
     videoDisplay,
     windowObjectReference = null;
+    numVidSelect = 0;
 
 var showVid = function() {
+  numVidSelect++;
   $('.vid-placeholder').addClass('is-hidden');
   $('.js-activate-btn').addClass('is-hidden');
   $('.js-slide-right-final').removeClass('is-hidden');
@@ -29,6 +31,10 @@ var showVid = function() {
   $('.CodeMirror-code').removeClass('is-hidden');
   labelLines();
   vidLen = Math.round(this.duration);
+  if (numVidSelect === 1) {
+    $('.step0').addClass('is-hidden');
+    $('.step1').removeClass('is-hidden');
+  }
 };
 
 //account for different browsers with requestAnimationFrame
@@ -36,7 +42,6 @@ var requestAnimationFrame = window.requestAnimationFrame ||
                             window.mozRequestAnimationFrame ||
                             window.webkitRequestAnimationFrame ||
                             window.msRequestAnimationFrame;
-
 window.requestAnimationFrame = requestAnimationFrame;
 
 function drawVideoFrame(time) {
@@ -156,13 +161,13 @@ $( document ).ready(function() {
 
   movie.addEventListener('playing',function(){
     //also update movie.___() line in code editor
-    $( "pre:contains('movie.pause')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">play</span>();');
+    $( "pre:contains('movie.pause()')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">play</span>();');
     $(".runbtn").text('Pause');
   });
 
   movie.addEventListener('pause',function(){
     //also update movie.___() line in code editor
-    $( "pre:contains('movie.play')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">pause</span>();');
+    $( "pre:contains('movie.play()')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">pause</span>();');
     $(".runbtn").text('Play');
   });
 
@@ -172,7 +177,6 @@ $( document ).ready(function() {
   $('.js-step-prev').click(function(){
     var step = this.name;
     var prevStep = parseInt(step,10)-1;
-    console.log('switching from '+step +' to step '+prevStep);
     $('.step'+step).addClass('is-hidden');
     $('.step'+prevStep).removeClass('is-hidden');
   });
@@ -180,7 +184,6 @@ $( document ).ready(function() {
   $('.js-step-next').click(function(){
     var step = this.name;
     var nextStep = parseInt(step,10)+1;
-    console.log('switching from '+step +' to step '+nextStep);
     $('.step'+step).addClass('is-hidden');
     $('.step'+nextStep).removeClass('is-hidden');
   });
@@ -297,24 +300,24 @@ $( document ).ready(function() {
 
 //scrubbing page
 
-  $('#mouseScrubber').draggable({
-    drag: function (event, ui){
-      labelLines();
-      var x = Math.max(0,ui.position.left/100);
-      var y = Math.max(0,ui.position.top/100);
-      myCodeMirror.eachLine( function(l){
-        var lineNum = myCodeMirror.getLineNumber(l);
-        var lineText=l.text;
-        if (lineText.indexOf("movie.playbackRate")!=-1) {
-          myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
-        }
-      });
-      myCodeMirror.save();
-      labelLines();
-      $(".line-speed").effect("highlight",2000);
-    }
-  });
+  // $('#mouseScrubber').draggable({
+  //   drag: function (event, ui){
+  //     labelLines();
+  //     var x = Math.max(0,ui.position.left/100);
+  //     var y = Math.max(0,ui.position.top/100);
+  //     myCodeMirror.eachLine( function(l){
+  //       var lineNum = myCodeMirror.getLineNumber(l);
+  //       var lineText=l.text;
+  //       if (lineText.indexOf("movie.playbackRate")!=-1) {
+  //         myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
+  //         myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
+  //       }
+  //     });
+  //     myCodeMirror.save();
+  //     labelLines();
+  //     $(".line-speed").effect("highlight",2000);
+  //   }
+  // });
 
   var lessonIsActive = function(newLesson){
     $(newLesson).show();

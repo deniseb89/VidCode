@@ -131,36 +131,49 @@
           </div>
 
           <div class="steps step2 is-hidden">
-            <h2>Rainbow effects!</h2>
-            <p>Drag in the 'fader' method.</p>
-            <p>This guy has two properties giving YOU more control for your creative output.</p>
-            <p>From looking at the code, what do you think you can adjust here?</p>
-            <p><strong>Jump in and make this fader your own! Give it a new color and intensity.</strong></p>
+            <h2>Check out the Learn More section</h2>
+            <p>Click on 'What are we writing?' to find out how JavaScript makes your videos look cool!</p>
             <button class="btn btn-primary js-step-prev s-btn-left" name="2">Previous</button>
             <button class="btn btn-primary js-step-next s-btn-right" name="2">Next</button>
           </div>
 
           <div class="steps step3 is-hidden">
-            <h2>Speed it up and slow it down!</h2>
-            <p>Now you can control the speed of your video :)</p>
-            <p>Do you want to make it go in <i>slow</i> motion? Or would you rather have it speed up like an insane hypnotic mess?!</p>
-            <p><strong>Go ahead and try adjusting the value of <i>'movie.playbackRate'</i> to make your masterpiece!</strong></p>
+            <h2>Rainbow effects!</h2>
+            <p>Drag in the 'fader' method.</p>
+            <p>This guy has two properties giving YOU more control for your creative output.</p>
+            <p>From looking at the code, what do you think you can adjust here?</p>
+            <p><strong>Jump in and make this fader your own! Give it a new color and intensity.</strong></p>
             <button class="btn btn-primary js-step-prev s-btn-left" name="3">Previous</button>
             <button class="btn btn-primary js-step-next s-btn-right" name="3">Next</button>
           </div>
 
           <div class="steps step4 is-hidden">
             <h2>Check out the Learn More section</h2>
-            <p>The 'Learn More' section on your right has more resources for learning. Hover over 'Values: An Overview' to see where values appears in your code.</p>
-            <p>Click through these lessons to learn more about what's happening in your code!</p>
+            <p>Hover over 'Values: An Overview' to see where values appears in your code.</p>
             <button class="btn btn-primary js-step-prev s-btn-left" name="4">Previous</button>
             <button class="btn btn-primary js-step-next s-btn-right" name="4">Next</button>
           </div>
 
           <div class="steps step5 is-hidden">
+            <h2>Speed it up and slow it down!</h2>
+            <p>Now you can control the speed of your video :)</p>
+            <p>Do you want to make it go in slow motion? Or would you rather have it speed up like an insane hypnotic mess?!</p>
+            <p><strong>Go ahead and try adjusting the value of <i>'movie.playbackRate'</i> to make your masterpiece!</strong></p>
+            <button class="btn btn-primary js-step-prev s-btn-left" name="5">Previous</button>
+            <button class="btn btn-primary js-step-next s-btn-right" name="5">Next</button>
+          </div>
+
+          <div class="steps step6 is-hidden">
+            <h2>Check out the Learn More section</h2>
+            <p>Click on 'How is it changing my video?' to understand all the ingredients of the coding recipe!</p>
+            <button class="btn btn-primary js-step-prev s-btn-left" name="6">Previous</button>
+            <button class="btn btn-primary js-step-next s-btn-right" name="6">Next</button>
+          </div>
+
+          <div class="steps step7 is-hidden">
             <h2>Congrats!</h2>
             <p>You've made a video all your own by writing JavaScript! Click 'I'm Done!' to save and share your creation!</p>
-            <button class="btn btn-primary js-step-prev s-btn-left" name="5">Previous</button>
+            <button class="btn btn-primary js-step-prev s-btn-left" name="7">Previous</button>
             <button class="js-close-steps btn btn-danger js-steps-close s-btn-right">Close</button>
           </div>
 
@@ -690,8 +703,14 @@
 <h4 id="username" class="is-hidden">{{user.username}}</h4>
 <h4 id="social" class="is-hidden">{{user.social}}</h4>
 
+<ol id="joyRideTipContent">
+  <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
+  <li data-id="tooltip-stop-3" data-options="tip_location:left">Click on the buttons to the right to "Learn More" about the code you're writing!</li>
 
+  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, click "I'm Done!"</li>
 
+  <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own Instagram content.</li>
+</ol>
 
 <script src="/js/filters.js"></script>
 <script src="/js/main.js"></script>
