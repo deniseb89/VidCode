@@ -177,7 +177,7 @@ exports.lessontwo = function (db) {
 
 exports.lessonthree = function (db) {
    return function (req, res) {
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];    
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];  
     var codeText =
 '\
  movie.play();\n\
@@ -214,11 +214,12 @@ exports.lessonthree = function (db) {
 
 exports.cs1 = function (db) {
    return function (req, res) {
-    var filters = ['blur','noise','vignette', 'fader', 'exposure'];    
+    var filters = ['blur','noise','vignette', 'exposure'];
+    var advFilters = ['fader'];          
+    // var advFilters = ['fader','kaleidoscope'];          
     var codeText =
 '\
-movie.play();\n\
-movie.playbackRate = 1;\n\
+ movie.play();\n\
     ';
 
     var user = req.user;
@@ -228,12 +229,12 @@ movie.playbackRate = 1;\n\
       var successcb = function(doc) {
         //todo:if instagram user...
         //refresh API call with user.acessToken to get recent videos
-        res.render("cs1", {code: codeText, filters: filters, user: doc});
+        res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters, user: doc});
       };  
       findOrCreate(db,user,successcb);
       
     } else {
-        res.render("cs1", {code: codeText, filters: filters});
+        res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters});
     }
   };
 };
@@ -457,7 +458,6 @@ exports.getSample = function(req,res){
 exports.igVidGet = function(db){
   return function(req,res) {
     var user = req.user;
-    console.log('fetching videos for '+user.username);
     var vc = db.collection('vidcode');  
     vc.findOne({ 'id':user.id, 'social':"instagram" }, function (err, doc) {
       if(err){
@@ -476,7 +476,6 @@ exports.igVidGet = function(db){
 exports.igUrlGet = function(db){
   return function(req,res) {
     var user = req.user;
-    console.log('fetching video urls for '+user.username);    
     var vc = db.collection('vidcode');
     vc.findOne({ 'id':user.id, 'social':"instagram" }, function (err, doc) {
       if(err){

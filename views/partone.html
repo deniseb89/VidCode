@@ -95,7 +95,7 @@
 	  	<div class="methodsBox js-appear is-hidden clearfix">
 	  	  <p class="vidtip">Drag & drop the buttons into the code editor on the right. Change the numbers to customize the filters!</p>
   			<div class="clearfix">
-	        <ul id="methodList">
+	        <ul class="methodList" id="filterList">
 	          {{#filters}}
 	          <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
 	          {{/filters}}
@@ -644,7 +644,6 @@
   <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, click "I'm Done!"</li>
 
   <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own Instagram content.</li>
-
 </ol>
 
 <script src="/js/filters.js"></script>

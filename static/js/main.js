@@ -32,7 +32,7 @@ var showVid = function() {
   labelLines();
   vidLen = Math.round(this.duration);
   if (numVidSelect === 1) {
-    $('.step0').addClass('is-hidden');
+    $('.steps').addClass('is-hidden');
     $('.step1').removeClass('is-hidden');
   }
 };
@@ -179,6 +179,18 @@ $( document ).ready(function() {
     var prevStep = parseInt(step,10)-1;
     $('.step'+step).addClass('is-hidden');
     $('.step'+prevStep).removeClass('is-hidden');
+    if(prevStep===1) {
+      $('.methodList').addClass('is-hidden');
+      $('#filterList').removeClass('is-hidden');
+    }
+    if(prevStep===3) {
+      $('.methodList').addClass('is-hidden');
+      $('#advFilterList').removeClass('is-hidden');
+    }
+    if(prevStep===5) {
+      $('.methodList').addClass('is-hidden');
+      $('#speedList').removeClass('is-hidden');
+    }
   });
 
   $('.js-step-next').click(function(){
@@ -186,6 +198,18 @@ $( document ).ready(function() {
     var nextStep = parseInt(step,10)+1;
     $('.step'+step).addClass('is-hidden');
     $('.step'+nextStep).removeClass('is-hidden');
+    if(nextStep===1) {
+      $('.methodList').addClass('is-hidden');
+      $('#filterList').removeClass('is-hidden');
+    }
+    if(nextStep===3) {
+      $('.methodList').addClass('is-hidden');
+      $('#advFilterList').removeClass('is-hidden');
+    }
+    if(nextStep===5) {
+      $('.methodList').addClass('is-hidden');
+      $('#speedList').removeClass('is-hidden');
+    }
   });
 
   $('.js-steps-close').click(function(){
@@ -213,6 +237,8 @@ $( document ).ready(function() {
       var eff = allEffects[i];
       $('[name='+eff+']').removeClass("is-active");
     }
+    $('.methodList').removeClass('is-hidden');
+    movie.playbackRate = 1;
   });
 
   $(".tab2").click(function(){
@@ -257,7 +283,11 @@ $( document ).ready(function() {
 
       // var thisEffect = seriously.effect(eff);
       //generalize for all effect inputs
-      if (eff!="sepia"){
+
+      if (eff=="playbackRate"){
+        myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if (eff!="sepia"){
         myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
         myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
         if (eff=="fader") {
@@ -275,9 +305,25 @@ $( document ).ready(function() {
     }
   });
 
-  $('#methodList li').each(function(){
+  $('#filterList li').each(function(){
     var e = $(this).attr("name");
     if (e!="sepia") { allEffects.push(e); }
+    $(this).draggable({
+      helper: "clone",
+      revert: "invalid"
+    });
+  });
+
+  $('#advFilterList li').each(function(){
+    var e = $(this).attr("name");
+    if (e!="sepia") { allEffects.push(e); }
+    $(this).draggable({
+      helper: "clone",
+      revert: "invalid"
+    });
+  });
+
+  $('#speedList li').each(function(){
     $(this).draggable({
       helper: "clone",
       revert: "invalid"
