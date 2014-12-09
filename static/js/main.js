@@ -103,7 +103,6 @@ var submitVideo = function (blob) {
     cache: false,
     processData:false,
     success: function(token, textStatus, jqXHR){
-      console.log('video upload success');
       videoDLurl = window.URL.createObjectURL(blob);
       videoDisplay.src = videoDLurl;
       videoDisplay.controls = true;
@@ -129,7 +128,6 @@ $( document ).ready(function() {
   movie.addEventListener('canplay', InitSeriously, false);
   movie.load();
   videoDisplay.addEventListener('loadeddata', function(){
-    console.log('video data loaded');
     // $('.js-share').removeClass('is-inactive-btn');
     // $('.share-p-text-container').removeClass('is-hidden');
     // $('.js-lesson-prompt').text('Looks amazing!');
