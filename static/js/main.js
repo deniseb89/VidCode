@@ -56,7 +56,6 @@ function drawVideoFrame(time) {
 
 function stopDL() {
   cancelAnimationFrame(rafId);
-  $('.progressDiv').addClass('is-hidden');
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
   //save the video + title + desc
   submitVideo(webmBlob);
@@ -104,12 +103,13 @@ var submitVideo = function (blob) {
     cache: false,
     processData:false,
     success: function(token, textStatus, jqXHR){
+      console.log('video upload success');
       videoDLurl = window.URL.createObjectURL(blob);
       videoDisplay.src = videoDLurl;
       videoDisplay.controls = true;
       $('.js-share').attr('href','/share/'+token);
       $('#vid-display').removeClass('is-hidden');
-
+      $('.progressDiv').addClass('is-hidden');
       $('.js-share').removeClass('is-inactive-btn');
       $('.share-p-text-container').removeClass('is-hidden');
       $('.js-lesson-prompt').text('Looks amazing!');
@@ -129,12 +129,10 @@ $( document ).ready(function() {
   movie.addEventListener('canplay', InitSeriously, false);
   movie.load();
   videoDisplay.addEventListener('loadeddata', function(){
-
-    $('.js-share').removeClass('is-inactive-btn');
-    $('.share-p-text-container').removeClass('is-hidden');
-    $('.js-lesson-prompt').text('Looks amazing!');
-    $('#vid-display').removeClass('is-hidden');
-
+    console.log('video data loaded');
+    // $('.js-share').removeClass('is-inactive-btn');
+    // $('.share-p-text-container').removeClass('is-hidden');
+    // $('.js-lesson-prompt').text('Looks amazing!');
   }, false);
 
   inputFile.addEventListener('change',uploadFromComp, false);
@@ -464,4 +462,36 @@ $( document ).ready(function() {
     $('pre:contains('+term+')').css("background", "none" );
   };
 
+});
+
+//MixPanel Tracking for Learn More
+
+$('.learning-pop-container').click(function(){
+  var LM_targets = {
+    '#lesson-1-222': '1. What are we writing?',
+    '#lesson-2-222':'2. How is it changing my video?',
+    '#lesson-3-222':'3. Pieces of our code',
+    '#lesson-4-222': '4. Values: An Overview',
+    '#lesson-4-2-222': '4a. Types of Values',
+    '#lesson-4-3-222': '4b. Booleans',
+    '#lesson-objects-222': '5. Objects!',
+    "#effects222": '5b. Effects'
+  }
+
+  var clicked = $(this).attr('data-target');
+  if (clicked) {
+    mixpanel.track('LM '+LM_targets[clicked]+' clicked');
+  }
+});
+
+$('.learning-pop-link').click(function(){
+  var LM_targets = {
+    '#movies222': '5a. Movie',
+    '#function222': '6. Functions!',
+    '#play222': '6a. Play'
+  }
+  var clicked = $(this).attr('data-target');
+  if (clicked) {
+    mixpanel.track('LM '+LM_targets[clicked]+' clicked');
+  }
 });
