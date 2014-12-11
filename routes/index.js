@@ -73,6 +73,8 @@ exports.share = function (db) {
     var title;
     var desc;
     if (!token){
+      //todo: this should be some other landing page for plain old /share
+      //
       res.render('404', {layout: false});
       return;
     }
@@ -119,8 +121,29 @@ exports.getUserVid = function(gfs){
   };
 };
 
-exports.partone = function (db) {
-   return function (req, res) {
+
+exports.workstation = function (db) {
+  var content = require('../models/content');  
+  return function (req, res) {
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var vc = db.collection('vidcode');
+
+      var successcb = function(doc) {
+        res.render("workstation", {content: content, user: doc});
+      };  
+
+      findOrCreate(db,user,successcb);
+      
+    } else {
+      res.render("workstation", {content: content});
+    }
+  };
+};
+
+exports.partone = function (db) {  
+  return function (req, res) {
     var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
     var codeText =
 "\
@@ -234,7 +257,6 @@ exports.cs1 = function (db) {
    return function (req, res) {
     var filters = ['blur','noise','vignette', 'exposure'];
     var advFilters = ['fader'];          
-    // var advFilters = ['fader','kaleidoscope'];          
     var codeText =
 '\
  movie.play();\n\

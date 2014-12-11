@@ -459,6 +459,26 @@ z-index: 100000;}
 
 #methodList{margin-left: -30px;}
 
+/**Throwing in temp colors for each lesson*//
+/**Really hacky, Leandra. I'm sorry!! *//
+
+.basic-filter-method .btn{
+    background-color: #319665;
+}
+
+.adv-filter-method .btn{
+    background-color: rgba(128, 0, 0, 0.61);    
+}
+
+.stop-motion-method .btn{
+    background-color: rgb(134, 0, 255);
+}
+
+.view-controller {
+    margin-left: 100px!important;
+    float: right;
+}
+
 #editor {
     margin: 0;
     position: absolute;
@@ -634,7 +654,7 @@ canvas{vertical-align: bottom;}
     background-position: right;}
 
 /* The effects/ learn more area */
-.learnMore{height: 600px; width: 100%; padding-left: 15px;}
+.learnMore{height: 200px; width: 100%; padding-left: 15px;}
 .learnMore .btn{font-size: .9em; width: 92%; color: #fff; text-align: center; padding: 2px;}
 .learnMore .btn:hover{color: #fff!important;}
 .learnMore .bold{font-weight: 700;}

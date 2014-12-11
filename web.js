@@ -1,4 +1,3 @@
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
@@ -107,6 +106,7 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/galleryshow', routes.galleryshow);
 
   app.get('/lesson/cs1', routes.cs1(db));
+  app.get('/workstation', routes.workstation(db));
 
   // sign up + sign in
   app.post('/signup', routes.signup(db));

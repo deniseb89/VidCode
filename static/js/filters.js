@@ -31,6 +31,7 @@ var InitSeriously = function(){
   }
   target.source = effects[allEffects[allEffects.length-1]];
   movie.removeEventListener('canplay', InitSeriously, false);
+
 };
 
 var updateScript = function() {
