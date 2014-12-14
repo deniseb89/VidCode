@@ -152,7 +152,7 @@ img.filterSelect.active {opacity: .5;}
    Index Intro Page
    ========================================================================== */
 
-.vidcodeIntro{text-align: center;}
+.vidcodeIntro, .text-center{text-align: center;}
 .vidcodeIntro h1{font-family: 'Copse', serif; color: #441B4B; padding: 25px 0 10px;}
 .vidcodeIntro p{font-size: 1.4em; padding-bottom: 20px;}
 
@@ -950,6 +950,7 @@ canvas{vertical-align: bottom;}
 .action-m{z-index: 10;position: relative;}
 .action-modal .generalInput{width: 100%; margin: 0 auto 15px;}
 .s-btn{padding: 10px 28px;margin-left: 355px;}
+
 
 
 /* ==========================================================================

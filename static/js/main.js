@@ -231,11 +231,7 @@ $( document ).ready(function() {
 
 
 
-
-
-
-
-//filters page
+  //filters page
   //checks for current status of buttons, for lesson steps
   var timeshasdropped = 0;
 
