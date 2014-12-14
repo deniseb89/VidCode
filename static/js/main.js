@@ -105,7 +105,7 @@ var submitVideo = function (blob) {
   	},
   	error: function(jqXHR, textStatus, errorThrown){
   	}
-   });
+  });
 }
 
 $( document ).ready(function() {
@@ -206,16 +206,24 @@ $( document ).ready(function() {
 
 
   $('.js-share-m').click(function(){
-    $('.share-modal').removeClass('is-hidden');
+    modalVideoLoad('share');
+  });
+  $('.js-save-m').click(function(){
+    modalVideoLoad('save');
+  });
+
+  var modalVideoLoad = function(mname){
+    $('.' + mname + '-modal').removeClass('is-hidden');
     $('.cover50').removeClass('is-hidden');
     movie.load();
     $('.progressDiv').removeClass('is-hidden');
     frames=[];
     rafId = requestAnimationFrame(drawVideoFrame);
-  });
+  }
 
   $('.js-hide-a-m').click(function(){
     $('.share-modal').addClass('is-hidden');
+    $('.save-modal').addClass('is-hidden');
     $(this).addClass('is-hidden');
     $('.js-s-onload').addClass('is-hidden');
     $('.js-h-onload').removeClass('is-hidden');
@@ -412,3 +420,5 @@ $( document ).ready(function() {
   };
 
 });
+
+
