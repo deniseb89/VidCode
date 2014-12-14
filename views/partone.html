@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
 
 
-<div class="compatibility-error">
+<div class="compatibility-error is-hidden">
   <div class="error-message">
     <div class="panelhead">
       <h2>Sorry!</h2>
@@ -13,9 +13,35 @@
       <p>Don't worry, you can still learn all about vidcode at <a href="http://www.vidcode.io/">vidcode.io</a>.</p>
     </div>
   </div>
-  <div class="cover">
+  <div class="cover90 cover">
   </div>
 </div>
+
+<div class="action-modal">
+  <div class="share-modal action-m is-hidden">
+    <div class="a-header">
+      <p>Share</p>
+    </div>
+    <div class="a-body">
+      <p class="c-desc js-h-onload">Your video is loading</p>
+      <label for="loading-descr">Optional Video Description</label>
+      <textarea id="loading-descr" rows="4"></textarea>
+
+      <div class="progressDiv progress progress-striped">
+        <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        </div>
+      </div>
+      <div class="js-s-onload btn-center is-hidden">
+        <span class="a-share-btn tw-btn"><img src="/img/icons/tw-icon.png"> share with twitter</span>
+        <span class="a-share-btn fb-btn"><img src="/img/icons/fb-icon.png"> share with facebook</span>
+      </div>
+    </div>
+  </div>
+  <div class="cover50 cover is-hidden js-hide-a-m">
+  </div>
+
+</div>
+
 
 <div class="container-fixed">
   <div class="popup is-hidden">
@@ -32,6 +58,10 @@
 	<div class="progress-set">
 
 	</div>
+
+  <span class="big-action-btn js-share-m">
+    Share
+  </span>
 
 	<span class="next-progress-btn">
 		<a id="tooltip-stop-4" class="is-inactive-btn js-activate-btn" href="#">I'm Done!▸</a>

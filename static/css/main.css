@@ -210,6 +210,16 @@ body.is-in-signup{overflow: hidden;}
 
 /*///////////////// Button Styles Custom ////////////////*/
 
+
+.a-share-btn{cursor: pointer; color: #fff; background-color: #323762; padding: 10px 16px; font-size: 1.1em; margin: 0 9px;}
+.a-share-btn img{margin-right: 4px; width: 5%;}
+.a-share-btn:hover{opacity: .95; background-color: #1B2144;}
+
+.big-action-btn{background: #fff; border: 2px #58355F solid; border-radius: 1px; padding: 5px 13px;
+                color: #58355F; text-transform: uppercase; font-size: 1.3em;
+}
+.big-action-btn:hover{cursor: pointer;}
+
 .btn-purple{
     background-color: #441B4B; border: 0px;}
 .btn-purple:hover{
@@ -253,16 +263,8 @@ body.is-in-signup{overflow: hidden;}
 
 
 
-.alliebutton{
-    float: right;
-    margin-left: 30px;
-}
-
-
-
 .centerObject{
     margin: 0 auto;
-    width: 470px;
 }
 
 .show-inline{display: inline!important;}
@@ -905,7 +907,10 @@ canvas{vertical-align: bottom;}
 
 
 /* ======================       Error          ============================= */
-.cover{width: 100%; height: 100%; position: fixed; background-color: rgba(46, 48, 58, .98); z-index: 9; top: 0;}
+.cover{width: 100%; height: 100%; position: fixed; z-index: 9; top: 0; left: 0;}
+.cover90{background-color: rgba(46, 48, 58, .98);}
+.cover50{background-color: rgba(46, 48, 58, .35);}
+
 .error-message{
     position: absolute;
     top: 23%; left:50%;
@@ -918,6 +923,31 @@ canvas{vertical-align: bottom;}
 .panelhead{background: #329766; padding: 1px 24px 8px;}
 .panelhead h2{color: #fff;}
 .panelbody{background: #fff; padding: 22px 24px 17px; font-size: 1.1em; line-height: 1.7em;}
+
+
+
+/* ======================       Share and Save: Action Modals          ============================= */
+
+.action-modal{
+    position: absolute;
+    top: 23%; left:50%;
+    z-index: 10;
+    width:500px; margin-left:-250px;
+}
+
+.action-modal .a-header{width: 100%; background: #329766; padding: 12px 0 1px;
+    text-align:center; color: #fff;font-size: 1.7em; text-transform: uppercase;
+}
+
+.action-modal .a-body{width: 100%; background-color: #EFF3F4; color:#323762; padding: 23px 25px 25px;}
+.action-modal .c-desc{text-align: center; color: #323762; font-size: 1.7em; padding: 0 0 15px;}
+
+.action-modal label{display: block;}
+.action-modal textarea{width: 100%; margin-bottom: 33px;}
+.action-modal .progressDiv{width: 100%;}
+.action-modal .progress-bar{background:#58355F!important;}
+.btn-center{width: 97%; margin: 0 auto;}
+.action-m{z-index: 10;position: relative;}
 
 
 

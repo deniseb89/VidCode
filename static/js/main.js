@@ -122,6 +122,8 @@ $( document ).ready(function() {
     $('.share-p-text-container').removeClass('is-hidden');
     $('.js-lesson-prompt').text('Looks amazing!');
     $('#vid-display').removeClass('is-hidden');
+    $('.js-h-onload').addClass('is-hidden');
+    $('.js-s-onload').removeClass('is-hidden');
   }, false);
 
   inputFile.addEventListener('change',uploadFromComp, false);
@@ -201,6 +203,26 @@ $( document ).ready(function() {
   });
 
   $( "ul, li" ).disableSelection();
+
+
+  $('.js-share-m').click(function(){
+    $('.share-modal').removeClass('is-hidden');
+    $('.cover50').removeClass('is-hidden');
+    movie.load();
+    $('.progressDiv').removeClass('is-hidden');
+    frames=[];
+    rafId = requestAnimationFrame(drawVideoFrame);
+  });
+
+  $('.js-hide-a-m').click(function(){
+    $('.share-modal').addClass('is-hidden');
+    $(this).addClass('is-hidden');
+    $('.js-s-onload').addClass('is-hidden');
+    $('.js-h-onload').removeClass('is-hidden');
+  });
+
+
+
 
 
 
