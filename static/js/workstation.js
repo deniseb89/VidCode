@@ -60,30 +60,49 @@ function stopDL() {
 }
 
 var uploadFromComp = function (ev) {
-  $('.loader').removeClass('is-hidden');
-  var file = ev.target.files[0];
-  var maxSize = 10000000;
-  var exts = ['.mp4','.webm'];
-  var reader = new FileReader();
-  reader.onload = (function(theFile) {
-    return function(e) {
-      var fileName = file.name;
-      var i = fileName.lastIndexOf('.');
-      var ext = (i < 0) ? '' : fileName.substr(i);
-      var ext = ext.toLowerCase();
+  var files = ev.target.files;
+  for (var i in files){
+    // if (i.hasOwnPropery('file')){}
+    // console.log(files[i]);
+  }
 
-      if ( ( file.size < maxSize ) && ( exts.indexOf(ext) != -1 ) ) {
-        movie.addEventListener("loadeddata", showVid, false);
-        movie.src = e.target.result;
-        $(".uploadform p").text("");
-      } else {
-        $('.loader').addClass('is-hidden');
-        $(".uploadform p").text("Video must be smaller than 10MB and a '.mp4' or '.webm' file. Select a different video and try again!");
-      }
-    };
-  })(file);
+  var formData = new FormData();
+  formData.append('file',files[0]);
+  $.ajax({
+    url: '/uploadMedia',
+    type: 'POST',
+    data:  formData,
+    mimeType:"multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData:false,
+    success: function(file, textStatus, jqXHR){
+      var file = JSON.parse(file);
+      var fileName = "/video/?file="+file                
+      movie.src = fileName;
+      movie.addEventListener("loadeddata", showVid, false);
+      updateMediaLibrary(file);
+    },
+    error: function(file, textStatus, jqXHR){
+      console.log('file error');
+    }
+  });      
+}
 
-  reader.readAsDataURL(file);
+var updateMediaLibrary = function (file){
+  //create div and img/video tag
+
+  // <div class="media-container">
+  //   <img class="js-vid-click" src=""></img>
+  // </div>
+  var $mediaLibary = $('#media-library');
+  // for (var i in file){
+    // if (i.hasOwnPropery('file')){
+      var $div = $('<div></div').addClass('i-vid-container');
+      $div.append('<video class="js-vid-click" src="video/?file='+file+'"></video');
+      $mediaLibary.append($div);         
+    // }
+  // }
 }
 
 var submitVideo = function (blob) {
@@ -92,6 +111,7 @@ var submitVideo = function (blob) {
   formData.append('title', $(".kaytitle").text());
   formData.append('desc', $(".kaydesc").text());
   formData.append('video',blob);
+  console.log(blob);
   $.ajax({
     url: '/uploadFinished',
     type: 'POST',
@@ -305,6 +325,9 @@ $( document ).ready(function() {
   $(".js-upload-video").click(function(){
     $(".popup").removeClass("is-hidden");
   });
+
+  // $(".uploadform").submit(function(){
+  // })
 
   $(".js-hide-upload").click(function(){
     $('.loader').addClass('is-hidden');

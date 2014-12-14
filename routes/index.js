@@ -106,7 +106,16 @@ exports.share = function (db) {
 
 exports.getUserVid = function(gfs){
   return function (req, res){
+
     var file = req.query.file;
+    var contentType;
+
+    // gfs.files.find({ _id : file }).toArray(function (err, results) {
+    //   console.log(file);
+    //   console.log(results[0]);
+    //   console.log(contentType);
+    // });
+
     var rs = gfs.createReadStream({
       _id: file
     });    
@@ -115,8 +124,8 @@ exports.getUserVid = function(gfs){
       console.log('An error occurred in reading file '+file+': '+err);
       res.status(500).end();
     });
-      
-    res.setHeader("content-type", "video/webm");
+
+    // res.setHeader("content-type", "video/webm");
     rs.pipe(res); 
   };
 };
@@ -382,6 +391,49 @@ exports.scrubbing = function (db) {
       }
         res.render('scrubbing', {code: doc.code });
     });
+  };
+};
+
+exports.uploadMedia = function(db, gfs, crypto) {
+  return function (req, res) {
+    var video = {};
+    var user = req.user || null;
+    if (!user){
+      console.log('you must be logged in to upload media');
+      return;
+    } else {
+      console.log('uploading media for '+user.id);
+      var id = user.id;
+      var social = user.provider;
+    }
+
+    var busboy = new Busboy({ headers: req.headers });
+    var filename;
+
+    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+      var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
+      file.pipe(ws);
+      ws.on('close', function(file) {
+          console.log("read user's uploaded media file: "+file._id + " with content-type: "+mimetype);
+          res.send(file._id);    
+      });
+      ws.on('error', function(err){
+        console.log('An error occurred in writing');
+        res.end();
+      })
+
+    });
+
+    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
+      video[fieldname] = val;
+    });
+
+    busboy.on('finish', function(){
+      console.log('busboy finished');
+    })
+
+    req.pipe(busboy);
   };
 };
 

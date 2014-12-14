@@ -122,7 +122,8 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/getVideos', routes.getAllVids(db));  
   app.get('/video', routes.getUserVid(gfs));
   app.post('/uploadFinished', routes.uploadFinished(db,gfs,crypto));
-
+  app.post('/uploadMedia', routes.uploadMedia(db,gfs,crypto));
+ 
   //catch all for any other request attempts
   app.get('*', function(req,res){
     res.render('404',{layout: false});

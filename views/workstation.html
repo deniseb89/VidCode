@@ -21,8 +21,8 @@
   <div class="popup is-hidden">
     <form class="uploadform" enctype="multipart/form-data">
       10 mb max file size
-      <input type="file" action="" multiple id="inputFile" name="file" value="Select a File" />
-<!--       <button class="btn btn-primary uploadfile">Upload</button>-->
+      <input type="file" name="file" id="inputFile" value="Select a File" multiple/>
+       <button class="btn btn-primary uploadfile">Upload</button>
       <button class="btn js-hide-upload uploadfile">Cancel</button>
       <p></p>
     </form>
@@ -51,7 +51,7 @@
 				<div class="vid-placeholder overlay">
 					<h3>Select a video below</h3>
 				</div>
-        <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+        <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
         <canvas class="video2 is-hidden tabs-2" id="canvas">
           </canvas>
         <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
@@ -62,7 +62,9 @@
         <div class="video-container clearfix">
           <p>Your Media Library</p>
           CLIPS STILLS GRAPHICS
+          <div id="media-library">
           <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
+          </div>
 
           <p id="tooltip-stop-1">Instagram Videos</p>
           <div class="insta-thumbnails">
