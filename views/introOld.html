@@ -1,23 +1,43 @@
 
 <div class="container-fluid">
+<!-- Google Chrome DL instruction -->
+<!--       <div class="modal fade" id="chromeWarn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">Hello! Before we get started...</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              You will need Google Chrome to fully enjoy Vidcode
+              <p>
+              <a href="https://www.google.com/intl/en/chrome/browser/#brand=CHMB&utm_campaign=en&utm_source=en-ha-na-us-sk&utm_medium=ha">You can download it here</a></p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div> -->
 
   <div class="col-md-12 vidcodeIntro">
     <div class="js-slide1">
-      <h1>Computer Science Education Week: Dec 8-14, 2014</h1>
-      <h3>Learn to make your own awesome video effects with code!</h3>
+      <h1>Welcome to Vidcode!</h1>
+      <p>Get ready to create your own awesome video filters to share with your friends!</p>
       <div class="images-drop">
         <div class="circle bg1 js-fade is-hidden"></div>
         <div class="circle bg2 js-fade is-hidden"></div>
         <div class="circle bg3 js-fade is-hidden"></div>
       </div>
-      <div class="95width">
-        <a class="right" href="/lesson/cs1"><button class="btn btn-primary" id="mix-finish-tour">Let's Get Started!</button></a>
-      </div>
+
+
+      <div class="js-slide2-right btn btn-primary right" id="mix-tour">Take the tour</div>
+      <a class="skipbtn" id="mix-skip-tour" href="/lesson/1">Skip the tour</a>
+
     </div>
 
     <div class="js-slide2 is-hidden">
       <h1>Drag & drop filters into the code editor</h1>
       <div class="img_crop cropZero">
+
         <img src="/img/drag.gif">
       </div>
       <div class="95width">
@@ -29,6 +49,7 @@
     <div class="js-slide3 is-hidden">
       <h1>Check out the Learn More section</h1>
       <div class="img_crop cropOne">
+
         <img src="/img/learnmore.gif">
       </div>
       <div class="95width">
@@ -42,11 +63,18 @@
       <div class="img_crop cropTwo">
         <img src="/img/export.gif">
       </div>
+
       <button class="btn btn-primary left js-slide3-left">Prev</button>
+
+
+      <div class="95width">
+        <a class="right" href="/lesson/1"><button class="btn btn-primary" id="mix-finish-tour">Let's Get Started!</button></a>
+      </div>
+
     </div>
 
-  </div>
 
+  </div>
 </div>
 
 <script src="/js/indexpage.js"></script>
