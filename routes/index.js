@@ -35,21 +35,7 @@ exports.intro = function (db) {
 };
 
 exports.csweek = function (req, res) {
-  var social = req.params.social;
-  var id = req.params.id;
-  if (id&&social){
-    var vc = db.collection('vidcode');
-    vc.findOne({ id: id, 'social':social }, function (err, doc) {
-      if (!doc) {
-        res.render('404', {layout:false});
-        return;
-      }
-        res.render('csweek', {user: doc});
-        return;
-    });      
-  } else {
-    res.render('csweek');
-  }
+  res.redirect ('/intro');
 };
 
 exports.gallery = function (req, res) {
@@ -454,7 +440,7 @@ exports.igCB = function (db) {
         user.IGvideos = urls;
         
         var successcb = function(doc) {
-          res.redirect ('/csweek');
+          res.redirect ('/intro');
         };
 
         findOrCreate(db,user,successcb);
@@ -531,7 +517,7 @@ exports.getAllVids = function(db){
 exports.fbCB = function (db) {
   return function (req, res) {
     var successcb = function(doc) {
-      res.redirect ('/csweek');
+      res.redirect ('/intro');
     };  
 
     var user = req.user;
@@ -544,7 +530,7 @@ exports.signup = function (db, crypto) {
   return function (req, res) {
     var user = {};
     var successcb = function(doc) {
-      res.redirect ('/csweek');
+      res.redirect ('/intro');
     };
     user.username = req.body.email;
     user.id = req.body.email;
