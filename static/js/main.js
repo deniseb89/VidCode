@@ -102,7 +102,7 @@ var submitVideo = function (blob) {
       videoDisplay.src = videoDLurl;
       videoDisplay.controls = true;
       $('.js-share').attr('href','/share/'+token);
-      $(".addthis_sharing_toolbox").attr( "data-url" , 'http://app.vidcode.io/share/'+token );
+      $('meta[property=og\\:url]').attr('content', 'http://app.vidcode.io/share/'+token);
   	},
   	error: function(jqXHR, textStatus, errorThrown){
   	}
