@@ -102,6 +102,7 @@ var submitVideo = function (blob) {
       videoDisplay.src = videoDLurl;
       videoDisplay.controls = true;
       $('.js-share').attr('href','/share/'+token);
+      $(".addthis_sharing_toolbox").attr( "data-url" , 'http://app.vidcode.io/share/'+token );
   	},
   	error: function(jqXHR, textStatus, errorThrown){
   	}
@@ -213,6 +214,8 @@ $( document ).ready(function() {
   });
 
   var modalVideoLoad = function(mname){
+    addThisStyles();
+
     $('.' + mname + '-modal').removeClass('is-hidden');
     $('.cover50').removeClass('is-hidden');
     movie.load();
@@ -229,9 +232,16 @@ $( document ).ready(function() {
     $('.js-h-onload').removeClass('is-hidden');
   });
 
+  //addthis functionality and appearance
+  var addThisStyles = function(){
+    $('.at15t_facebook').attr('id', 'fb-btn-styling');
+    $('.at15t_facebook').html('<img src="/img/icons/fb-icon.png"> share with facebook');
+    $('.at15t_twitter').attr('id', 'tw-btn-styling');
+    $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
+  }
 
 
-  //filters page
+//filters page
   //checks for current status of buttons, for lesson steps
   var timeshasdropped = 0;
 
