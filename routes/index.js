@@ -34,6 +34,10 @@ exports.intro = function (db) {
   }
 };
 
+exports.csweek = function (req, res) {
+  res.redirect ('/intro');
+};
+
 exports.gallery = function (req, res) {
   var userVidURL = req.query.userVidURL;
   if(userVidURL){
@@ -177,7 +181,7 @@ exports.lessontwo = function (db) {
 
 exports.lessonthree = function (db) {
    return function (req, res) {
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];    
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];  
     var codeText =
 '\
  movie.play();\n\
@@ -195,8 +199,6 @@ exports.lessonthree = function (db) {
 \n\
     ';
 
-
-
     var user = req.user;
     if (user){
       var vc = db.collection('vidcode');
@@ -210,6 +212,33 @@ exports.lessonthree = function (db) {
       
     } else {
         res.render("lessonthree", {code: codeText, filters: filters});
+    }
+  };
+};
+
+exports.cs1 = function (db) {
+   return function (req, res) {
+    var filters = ['blur','noise','vignette', 'exposure'];
+    var advFilters = ['fader'];          
+    // var advFilters = ['fader','kaleidoscope'];          
+    var codeText =
+'\
+ movie.play();\n\
+    ';
+
+    var user = req.user;
+    if (user){
+      var vc = db.collection('vidcode');
+
+      var successcb = function(doc) {
+        //todo:if instagram user...
+        //refresh API call with user.acessToken to get recent videos
+        res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters, user: doc});
+      };  
+      findOrCreate(db,user,successcb);
+      
+    } else {
+        res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters});
     }
   };
 };
@@ -411,7 +440,7 @@ exports.igCB = function (db) {
         user.IGvideos = urls;
         
         var successcb = function(doc) {
-          res.redirect ('/intro/'+doc.social+'/'+doc.id);
+          res.redirect ('/intro');
         };
 
         findOrCreate(db,user,successcb);
@@ -433,7 +462,6 @@ exports.getSample = function(req,res){
 exports.igVidGet = function(db){
   return function(req,res) {
     var user = req.user;
-    console.log('fetching videos for '+user.username);
     var vc = db.collection('vidcode');  
     vc.findOne({ 'id':user.id, 'social':"instagram" }, function (err, doc) {
       if(err){
@@ -452,7 +480,6 @@ exports.igVidGet = function(db){
 exports.igUrlGet = function(db){
   return function(req,res) {
     var user = req.user;
-    console.log('fetching video urls for '+user.username);    
     var vc = db.collection('vidcode');
     vc.findOne({ 'id':user.id, 'social':"instagram" }, function (err, doc) {
       if(err){
@@ -490,7 +517,7 @@ exports.getAllVids = function(db){
 exports.fbCB = function (db) {
   return function (req, res) {
     var successcb = function(doc) {
-      res.redirect ('/intro/'+doc.social+'/'+doc.id);
+      res.redirect ('/intro');
     };  
 
     var user = req.user;
@@ -503,7 +530,7 @@ exports.signup = function (db, crypto) {
   return function (req, res) {
     var user = {};
     var successcb = function(doc) {
-      res.redirect ('/intro/'+doc.social+'/'+doc.id);
+      res.redirect ('/intro');
     };
     user.username = req.body.email;
     user.id = req.body.email;
