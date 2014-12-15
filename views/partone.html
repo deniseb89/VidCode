@@ -1,6 +1,7 @@
 
-  <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
 
+
+  <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
 
 <div class="compatibility-error is-hidden">
   <div class="error-message">
@@ -13,9 +14,66 @@
       <p>Don't worry, you can still learn all about vidcode at <a href="http://www.vidcode.io/">vidcode.io</a>.</p>
     </div>
   </div>
-  <div class="cover">
+  <div class="cover90 cover">
   </div>
 </div>
+
+<div class="action-modal">
+  <div class="share-modal action-m is-hidden">
+    <div class="a-header">
+      <p>Share</p>
+    </div>
+    <div class="a-body">
+      <p class="c-desc js-h-onload">Your video is loading</p>
+
+      <label for="loading-title">Title</label>
+      <input type="text" id="loading-title" class="generalInput">
+
+      <label for="loading-descr">Optional Video Description</label>
+      <textarea id="loading-descr" rows="4"></textarea>
+
+      <div class="progressDiv progress progress-striped">
+        <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        </div>
+      </div>
+      <div class="addthis-container js-s-onload is-hidden">
+        <div class="addthis_sharing_toolbox"></div>
+      </div>
+      <div class="text-center js-s-onload is-hidden">
+        <a href="#" class="js-share" target="_blank">go to video's page</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-modal action-m is-hidden">
+    <div class="a-header">
+      <p>Save</p>
+    </div>
+    <div class="a-body">
+      <p class="c-desc js-h-onload">Your video is loading</p>
+
+      <label for="loading-title">Title</label>
+      <input type="text" id="loading-title" class="generalInput">
+
+      <label for="loading-descr">Optional Video Description</label>
+      <textarea id="loading-descr" rows="4"></textarea>
+
+      <div class="progressDiv progress progress-striped">
+        <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        </div>
+      </div>
+      <div class="js-s-onload btn-center is-hidden">
+        <a class="a-share-btn s-btn js-share" target="_blank">save</a>
+        <p class="share-link"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover50 cover is-hidden js-hide-a-m">
+  </div>
+
+</div>
+
 
 <div class="container-fixed">
   <div class="popup is-hidden">
@@ -33,10 +91,12 @@
 
 	</div>
 
-	<span class="next-progress-btn">
-		<a id="tooltip-stop-4" class="is-inactive-btn js-activate-btn" href="#">I'm Done!▸</a>
-    <a id="tooltip-stop-4a" class="is-hidden js-slide-right-final" href="#">I'm Done!▸</a>
-	</span>
+    <span href="#" class="big-action-btn js-save-m">
+      Save
+    </span>
+    <span class="big-action-btn js-share-m">
+      Share
+    </span>
 
 	<div class="lesson-container">
 		<div class="col-md-4">
@@ -628,7 +688,7 @@
   <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
   <li data-id="tooltip-stop-3" data-options="tip_location:left">Click on the buttons to the right to "Learn More" about the code you're writing!</li>
 
-  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, click "I'm Done!"</li>
+  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, you can save it or share it with your friends</li>
 
   <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own Instagram content.</li>
 </ol>
@@ -636,6 +696,7 @@
 <script src="/js/filters.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/lessons.js"></script>
+
 
 <script>
 	$(window).load(function() {
@@ -649,7 +710,7 @@
     mixpanel.track_links("#mix-return2code", "Returned to code" );
     mixpanel.track_links("#mix-again", "Try It Again clicked" );
     mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
-    mixpanel.track_links("#tooltip-stop-4a", "I'm Done clicked" );
+    mixpanel.track_links("#tooltip-stop-4", "Save clicked" );
       mixpanel.track('Main UI page viewed', {
     'page name' : document.title,
     'url' : window.location.pathname

@@ -1,14 +1,5 @@
 $( document ).ready(function() {
 
-  $(".js-desc").click(function() {
-      $('.share-p-text-container').removeClass('is-hidden');
-      var buttonTitle = document.getElementById("formTitle").value;
-      $(".kaytitle").text(buttonTitle);
-      var buttonDesc = document.getElementById("formDesc").value;
-      $(".kaydesc").text(buttonDesc);
-      //resend form here if title/desc is updated      
-  });
-
   loadThumbnails();
 
   $('.js-img-click').click(function(){
