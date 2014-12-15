@@ -9,7 +9,7 @@ var labelLines = function() {
   }
 }
 
-var InitSeriously = function(e){
+var InitSeriously = function(){
   //check Seriously compatibility. Seriously.incompatible ?
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
     $('.compatibility-error').removeClass('is-hidden');
@@ -18,8 +18,8 @@ var InitSeriously = function(e){
       autoStart: true
     });
   }
-  video = seriously.source(movie);
-  target = seriously.target(canvas);
+  video = seriously.source('#myvideo');
+  target = seriously.target('#canvas');
   var thisEffect;
   effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
   effects[allEffects[0]]["source"] = video;

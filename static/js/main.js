@@ -13,8 +13,10 @@ var movie,
     videoDLurl,
     videoDisplay,
     windowObjectReference = null;
+    numVidSelect = 0;
 
 var showVid = function() {
+  numVidSelect++;
   $('.vid-placeholder').addClass('is-hidden');
   $('.js-activate-btn').addClass('is-hidden');
   $('.js-slide-right-final').removeClass('is-hidden');
@@ -27,9 +29,12 @@ var showVid = function() {
   $(".js-appear").removeClass("is-hidden");
   $(".js-switch-appear").addClass("is-hidden");
   $('.CodeMirror-code').removeClass('is-hidden');
-  $('.step0').removeClass('is-hidden');
   labelLines();
   vidLen = Math.round(this.duration);
+  if (numVidSelect === 1) {
+    $('.steps').addClass('is-hidden');
+    $('.step1').removeClass('is-hidden');
+  }
 };
 
 //account for different browsers with requestAnimationFrame
@@ -37,6 +42,7 @@ var requestAnimationFrame = window.requestAnimationFrame ||
                             window.mozRequestAnimationFrame ||
                             window.webkitRequestAnimationFrame ||
                             window.msRequestAnimationFrame;
+window.requestAnimationFrame = requestAnimationFrame;
 
 function drawVideoFrame(time) {
   rafId = requestAnimationFrame(drawVideoFrame);
@@ -50,7 +56,6 @@ function drawVideoFrame(time) {
 
 function stopDL() {
   cancelAnimationFrame(rafId);
-  $('.progressDiv').addClass('is-hidden');
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
   //save the video + title + desc
   submitVideo(webmBlob);
@@ -151,17 +156,60 @@ $( document ).ready(function() {
 
   movie.addEventListener('playing',function(){
     //also update movie.___() line in code editor
-    $( "pre:contains('movie.pause')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">play</span>();');
+    $( "pre:contains('movie.pause()')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">play</span>();');
     $(".runbtn").text('Pause');
   });
 
   movie.addEventListener('pause',function(){
     //also update movie.___() line in code editor
-    $( "pre:contains('movie.play')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">pause</span>();');
+    $( "pre:contains('movie.play()')" ).html('<span class="cm-variable">movie</span>.<span class="cm-property">pause</span>();');
     $(".runbtn").text('Play');
   });
 
   // End video events section
+
+
+  $('.js-step-prev').click(function(){
+    var step = this.name;
+    var prevStep = parseInt(step,10)-1;
+    $('.step'+step).addClass('is-hidden');
+    $('.step'+prevStep).removeClass('is-hidden');
+    if(prevStep===1) {
+      $('.methodList').addClass('is-hidden');
+      $('#filterList').removeClass('is-hidden');
+    }
+    if(prevStep===3) {
+      $('.methodList').addClass('is-hidden');
+      $('#advFilterList').removeClass('is-hidden');
+    }
+    if(prevStep===5) {
+      $('.methodList').addClass('is-hidden');
+      $('#speedList').removeClass('is-hidden');
+    }
+  });
+
+  $('.js-step-next').click(function(){
+    var step = this.name;
+    var nextStep = parseInt(step,10)+1;
+    $('.step'+step).addClass('is-hidden');
+    $('.step'+nextStep).removeClass('is-hidden');
+    if(nextStep===1) {
+      $('.methodList').addClass('is-hidden');
+      $('#filterList').removeClass('is-hidden');
+    }
+    if(nextStep===3) {
+      $('.methodList').addClass('is-hidden');
+      $('#advFilterList').removeClass('is-hidden');
+    }
+    if(nextStep===5) {
+      $('.methodList').addClass('is-hidden');
+      $('#speedList').removeClass('is-hidden');
+    }
+  });
+
+  $('.js-steps-close').click(function(){
+    $('.steps').addClass('is-hidden');
+  })
 
   $(".js-upload-video").click(function(){
     $(".popup").removeClass("is-hidden");
@@ -184,6 +232,8 @@ $( document ).ready(function() {
       var eff = allEffects[i];
       $('[name='+eff+']').removeClass("is-active");
     }
+    $('.methodList').removeClass('is-hidden');
+    movie.playbackRate = 1;
   });
 
   $(".tab2").click(function(){
@@ -204,7 +254,6 @@ $( document ).ready(function() {
   });
 
   $( "ul, li" ).disableSelection();
-
 
   $('.js-share-m').click(function(){
     modalVideoLoad('share');
@@ -240,7 +289,6 @@ $( document ).ready(function() {
     $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
   }
 
-
 //filters page
   //checks for current status of buttons, for lesson steps
   var timeshasdropped = 0;
@@ -251,11 +299,11 @@ $( document ).ready(function() {
       lessonIsActive(".js-effects");
 
       //lesson steps---
-      if (timeshasdropped === 0){
-        $('.step0.ch1').addClass('is-hidden');
-        $('.step1.ch1').removeClass('is-hidden');
-      }
-      timeshasdropped++;
+      // timeshasdropped++;
+      // if (timeshasdropped ){
+      //   $('.steps').removeClass('is-hidden');
+      //   $('.step0').addClass('is-hidden');
+      // }
       //---
 
       eff = ui.draggable.attr("name");
@@ -263,7 +311,11 @@ $( document ).ready(function() {
 
       // var thisEffect = seriously.effect(eff);
       //generalize for all effect inputs
-      if (eff!="sepia"){
+
+      if (eff=="playbackRate"){
+        myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if (eff!="sepia"){
         myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
         myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
         if (eff=="fader") {
@@ -281,9 +333,25 @@ $( document ).ready(function() {
     }
   });
 
-  $('#methodList li').each(function(){
+  $('#filterList li').each(function(){
     var e = $(this).attr("name");
     if (e!="sepia") { allEffects.push(e); }
+    $(this).draggable({
+      helper: "clone",
+      revert: "invalid"
+    });
+  });
+
+  $('#advFilterList li').each(function(){
+    var e = $(this).attr("name");
+    if (e!="sepia") { allEffects.push(e); }
+    $(this).draggable({
+      helper: "clone",
+      revert: "invalid"
+    });
+  });
+
+  $('#speedList li').each(function(){
     $(this).draggable({
       helper: "clone",
       revert: "invalid"
@@ -306,25 +374,24 @@ $( document ).ready(function() {
 
 //scrubbing page
 
-  $('#mouseScrubber').draggable({
-    drag: function (event, ui){
-      labelLines();
-      var x = Math.max(0,ui.position.left/100);
-      var y = Math.max(0,ui.position.top/100);
-      myCodeMirror.eachLine( function(l){
-        var lineNum = myCodeMirror.getLineNumber(l);
-        var lineText=l.text;
-        if (lineText.indexOf("movie.playbackRate")!=-1) {
-          myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
-        }
-      });
-      myCodeMirror.save();
-      labelLines();
-      $(".line-speed").effect("highlight",2000);
-    }
-  });
-
+  // $('#mouseScrubber').draggable({
+  //   drag: function (event, ui){
+  //     labelLines();
+  //     var x = Math.max(0,ui.position.left/100);
+  //     var y = Math.max(0,ui.position.top/100);
+  //     myCodeMirror.eachLine( function(l){
+  //       var lineNum = myCodeMirror.getLineNumber(l);
+  //       var lineText=l.text;
+  //       if (lineText.indexOf("movie.playbackRate")!=-1) {
+  //         myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
+  //         myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
+  //       }
+  //     });
+  //     myCodeMirror.save();
+  //     labelLines();
+  //     $(".line-speed").effect("highlight",2000);
+  //   }
+  // });
 
   var lessonIsActive = function(newLesson){
     $(newLesson).show();
@@ -427,4 +494,34 @@ $( document ).ready(function() {
 
 });
 
+//MixPanel Tracking for Learn More
 
+$('.learning-pop-container').click(function(){
+  var LM_targets = {
+    '#lesson-1-222': '1. What are we writing?',
+    '#lesson-2-222':'2. How is it changing my video?',
+    '#lesson-3-222':'3. Pieces of our code',
+    '#lesson-4-222': '4. Values: An Overview',
+    '#lesson-4-2-222': '4a. Types of Values',
+    '#lesson-4-3-222': '4b. Booleans',
+    '#lesson-objects-222': '5. Objects!',
+    "#effects222": '5b. Effects'
+  }
+
+  var clicked = $(this).attr('data-target');
+  if (clicked) {
+    mixpanel.track('LM '+LM_targets[clicked]+' clicked');
+  }
+});
+
+$('.learning-pop-link').click(function(){
+  var LM_targets = {
+    '#movies222': '5a. Movie',
+    '#function222': '6. Functions!',
+    '#play222': '6a. Play'
+  }
+  var clicked = $(this).attr('data-target');
+  if (clicked) {
+    mixpanel.track('LM '+LM_targets[clicked]+' clicked');
+  }
+});

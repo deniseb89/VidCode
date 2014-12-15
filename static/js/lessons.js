@@ -31,7 +31,7 @@ $( document ).ready(function() {
 
   $('.js-slide-right-final').click(function(){
     slideRight('.js-slide-1', '.js-slide-title');
-    movie.load();
+    movie.play();
     movie.muted = true;
     $('.js-share').attr('href','#');    
     $('.js-share').addClass('is-inactive-btn');    
