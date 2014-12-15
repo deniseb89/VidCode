@@ -40,7 +40,7 @@
         <div class="addthis_sharing_toolbox"></div>
       </div>
       <div class="text-center js-s-onload is-hidden">
-        <a href="#" class="js-share">go to video's page</a>
+        <a href="#" class="js-share" target="_blank">go to video's page</a>
       </div>
     </div>
   </div>
@@ -63,7 +63,8 @@
         </div>
       </div>
       <div class="js-s-onload btn-center is-hidden">
-        <a class="a-share-btn s-btn js-share">save</a>
+        <a class="a-share-btn s-btn js-share" target="_blank">save</a>
+        <p class="share-link"></p>
       </div>
     </div>
   </div>
@@ -90,18 +91,12 @@
 
 	</div>
 
-
-  <span class="big-action-btn js-save-m">
-    Save
-  </span>
-  <span class="big-action-btn js-share-m">
-    Share
-  </span>
-
-	<span class="next-progress-btn">
-		<a id="tooltip-stop-4" class="is-inactive-btn js-activate-btn" href="#">I'm Done!▸</a>
-    <a id="tooltip-stop-4a" class="is-hidden js-slide-right-final" href="#">I'm Done!▸</a>
-	</span>
+    <span href="#" class="big-action-btn js-save-m">
+      Save
+    </span>
+    <span class="big-action-btn js-share-m">
+      Share
+    </span>
 
 	<div class="lesson-container">
 		<div class="col-md-4">
@@ -693,7 +688,7 @@
   <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
   <li data-id="tooltip-stop-3" data-options="tip_location:left">Click on the buttons to the right to "Learn More" about the code you're writing!</li>
 
-  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, click "I'm Done!"</li>
+  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, you can save it or share it with your friends</li>
 
   <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own Instagram content.</li>
 </ol>
@@ -715,7 +710,7 @@
     mixpanel.track_links("#mix-return2code", "Returned to code" );
     mixpanel.track_links("#mix-again", "Try It Again clicked" );
     mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
-    mixpanel.track_links("#tooltip-stop-4a", "I'm Done clicked" );
+    mixpanel.track_links("#tooltip-stop-4", "Save clicked" );
       mixpanel.track('Main UI page viewed', {
     'page name' : document.title,
     'url' : window.location.pathname

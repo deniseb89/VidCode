@@ -37,30 +37,6 @@ var showVid = function() {
   }
 };
 
-//account for different browsers with requestAnimationFrame
-var requestAnimationFrame = window.requestAnimationFrame ||
-                            window.mozRequestAnimationFrame ||
-                            window.webkitRequestAnimationFrame ||
-                            window.msRequestAnimationFrame;
-window.requestAnimationFrame = requestAnimationFrame;
-
-function drawVideoFrame(time) {
-  rafId = requestAnimationFrame(drawVideoFrame);
-  capture = frames.length*60/1000;
-  captureTxt = Math.floor(100*capture/vidLen)+'%';
-  $('.dl-progress').css('width',captureTxt);
-  $('.dl-progress').text('saving...');
-  frames.push(canvas.toDataURL('image/webp', 1));
-  if (capture>=vidLen){ stopDL();}
-};
-
-function stopDL() {
-  cancelAnimationFrame(rafId);
-  var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-  //save the video + title + desc
-  submitVideo(webmBlob);
-}
-
 var uploadFromComp = function (ev) {
   $('.loader').removeClass('is-hidden');
   var file = ev.target.files[0];
@@ -88,9 +64,38 @@ var uploadFromComp = function (ev) {
   reader.readAsDataURL(file);
 }
 
+//account for different browsers with requestAnimationFrame
+var requestAnimationFrame = window.requestAnimationFrame ||
+                            window.mozRequestAnimationFrame ||
+                            window.webkitRequestAnimationFrame ||
+                            window.msRequestAnimationFrame;
+window.requestAnimationFrame = requestAnimationFrame;
+
+function drawVideoFrame(time) {
+  rafId = requestAnimationFrame(drawVideoFrame);
+  capture = frames.length*60/1000;
+  captureTxt = Math.floor(100*capture/vidLen)+'%';
+  $('.dl-progress').css('width',captureTxt);
+  $('.dl-progress').text('saving...');
+  frames.push(canvas.toDataURL('image/webp', 1));
+  if (capture>=vidLen){ stopDL();}
+};
+
+function stopDL() {
+  $('.progressDiv').addClass('is-hidden');
+  cancelAnimationFrame(rafId);
+  var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+
+  console.log($('#loading-title').val());
+  console.log($('#loading-descr').val());
+  //Don't auto save
+  // submitVideo(webmBlob);
+}
+
 var submitVideo = function (blob) {
   var formData = new FormData();
   //append input #formTitle #formDesc
+
   formData.append('title', $(".kaytitle").text());
   formData.append('desc', $(".kaydesc").text());
   formData.append('video',blob);
@@ -106,8 +111,15 @@ var submitVideo = function (blob) {
       videoDLurl = window.URL.createObjectURL(blob);
       videoDisplay.src = videoDLurl;
       videoDisplay.controls = true;
+      $('.js-share').removeClass('is-inactive-btn');
+      $('.share-p-text-container').removeClass('is-hidden');
+      $('.js-lesson-prompt').text('Looks amazing!');
+      $('#vid-display').removeClass('is-hidden');
+      $('.js-h-onload').addClass('is-hidden');
+      $('.js-s-onload').removeClass('is-hidden');      
       $('.js-share').attr('href','/share/'+token);
-      $('meta[property=og\\:url]').attr('content', 'http://app.vidcode.io/share/'+token);
+      $('.share-link').text('Copy this link: /share/'+token);
+      $('meta[property=og\\:url]').attr('content', '/share/'+token);
   	},
   	error: function(jqXHR, textStatus, errorThrown){
   	}
@@ -123,14 +135,6 @@ $( document ).ready(function() {
   seriously.go();
   movie.addEventListener('canplay', InitSeriously, false);
   movie.load();
-  videoDisplay.addEventListener('loadeddata', function(){
-    $('.js-share').removeClass('is-inactive-btn');
-    $('.share-p-text-container').removeClass('is-hidden');
-    $('.js-lesson-prompt').text('Looks amazing!');
-    $('#vid-display').removeClass('is-hidden');
-    $('.js-h-onload').addClass('is-hidden');
-    $('.js-s-onload').removeClass('is-hidden');
-  }, false);
 
   inputFile.addEventListener('change',uploadFromComp, false);
 
@@ -267,7 +271,6 @@ $( document ).ready(function() {
 
     $('.' + mname + '-modal').removeClass('is-hidden');
     $('.cover50').removeClass('is-hidden');
-    movie.load();
     $('.progressDiv').removeClass('is-hidden');
     frames=[];
     rafId = requestAnimationFrame(drawVideoFrame);
