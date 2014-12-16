@@ -42,7 +42,7 @@ var requestAnimationFrame = window.requestAnimationFrame ||
                             window.msRequestAnimationFrame;
 window.requestAnimationFrame = requestAnimationFrame;
 
-function drawVideoFrame(time) {
+var drawVideoFrame = function(time) {
   rafId = requestAnimationFrame(drawVideoFrame);
   capture = frames.length*60/1000;
   captureTxt = Math.floor(100*capture/vidLen)+'%';
@@ -52,19 +52,58 @@ function drawVideoFrame(time) {
   if (capture>=vidLen){ stopDL();}
 };
 
-function stopDL() {
+var stopDL = function() {
+  $('.progressDiv').addClass('is-hidden');
   cancelAnimationFrame(rafId);
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-  //save the video + title + desc
-  submitVideo(webmBlob);
+
+  console.log($('#loading-title').val());
+  console.log($('#loading-descr').val());
+  //Don't auto save
+  // submitVideo(webmBlob);
+}
+
+var submitVideo = function (blob) {
+  var formData = new FormData();
+  //append input #formTitle #formDesc
+  formData.append('video',blob);
+  console.log(blob);
+  $.ajax({
+    url: '/uploadFinished',
+    type: 'POST',
+    data:  formData,
+    mimeType:"multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData:false,
+    success: function(token, textStatus, jqXHR){
+      videoDLurl = window.URL.createObjectURL(blob);
+      videoDisplay.src = videoDLurl;
+      videoDisplay.controls = true;
+
+      $('.progressDiv').addClass('is-hidden');
+      $('.share-p-text-container').removeClass('is-hidden');
+      $('.js-lesson-prompt').text('Looks amazing!');
+      $('.js-h-onload').addClass('is-hidden');
+      $('.js-s-onload').removeClass('is-hidden');
+      $('.js-share').removeClass('is-inactive-btn');
+      $('.js-share').attr('href','/share/'+token);
+      $('.share-link').text('Copy this link: /share/'+token);
+      $('meta[property=og\\:url]').attr('content', '/share/'+token);
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+    }
+   });
 }
 
 var uploadFromComp = function (ev) {
   var files = ev.target.files;
-  for (var i in files){
+  //TODO: implement multiple file upload
+
+  // for (var i in files){
     // if (i.hasOwnPropery('file')){}
     // console.log(files[i]);
-  }
+  // }
 
   var formData = new FormData();
   formData.append('file',files[0]);
@@ -92,9 +131,6 @@ var uploadFromComp = function (ev) {
 var updateMediaLibrary = function (file){
   //create div and img/video tag
 
-  // <div class="media-container">
-  //   <img class="js-vid-click" src=""></img>
-  // </div>
   var $mediaLibary = $('#media-library');
   // for (var i in file){
     // if (i.hasOwnPropery('file')){
@@ -103,37 +139,6 @@ var updateMediaLibrary = function (file){
       $mediaLibary.append($div);         
     // }
   // }
-}
-
-var submitVideo = function (blob) {
-  var formData = new FormData();
-  //append input #formTitle #formDesc
-  formData.append('title', $(".kaytitle").text());
-  formData.append('desc', $(".kaydesc").text());
-  formData.append('video',blob);
-  console.log(blob);
-  $.ajax({
-    url: '/uploadFinished',
-    type: 'POST',
-    data:  formData,
-    mimeType:"multipart/form-data",
-    contentType: false,
-    cache: false,
-    processData:false,
-    success: function(token, textStatus, jqXHR){
-      videoDLurl = window.URL.createObjectURL(blob);
-      videoDisplay.src = videoDLurl;
-      videoDisplay.controls = true;
-      $('.js-share').attr('href','/share/'+token);
-      $('#vid-display').removeClass('is-hidden');
-      $('.progressDiv').addClass('is-hidden');
-      $('.js-share').removeClass('is-inactive-btn');
-      $('.share-p-text-container').removeClass('is-hidden');
-      $('.js-lesson-prompt').text('Looks amazing!');
-  	},
-  	error: function(jqXHR, textStatus, errorThrown){
-  	}
-   });
 }
 
 /*old filters.js*/
@@ -152,7 +157,7 @@ var InitSeriously = function(){
   } 
 
   seriouslyEffects = Seriously.effects();
-  //generalize to my media
+  //TODO: generalize to my media
   video = seriously.source('#myvideo');
   target = seriously.target('#canvas');
 
@@ -167,13 +172,12 @@ var InitSeriously = function(){
     thisEffect.amount = 0;
   }
   target.source = effects[allEffects[allEffects.length-1]];    
-  // target.source = video;
 };
 
 var updateScript = function() {
   //TODO: Check to see if the active effects have changed from before to now
   //if so, reinit seriously. if not, do nothing
-  //Also, don't add and remove the script each time. Just update the script string
+  //Also, don't add and remove the script each time. Just update the script string via html
   var scriptOld = document.getElementById('codeScript');
   if (scriptOld) { scriptOld.remove();}
   var scriptNew   = document.createElement('script');
@@ -280,11 +284,6 @@ $( document ).ready(function() {
   seriously.go();
   movie.addEventListener('canplay', InitSeriously, false);
   movie.load();
-  videoDisplay.addEventListener('loadeddata', function(){
-    // $('.js-share').removeClass('is-inactive-btn');
-    // $('.share-p-text-container').removeClass('is-hidden');
-    // $('.js-lesson-prompt').text('Looks amazing!');
-  }, false);
 
   inputFile.addEventListener('change',uploadFromComp, false);
 
@@ -326,9 +325,6 @@ $( document ).ready(function() {
     $(".popup").removeClass("is-hidden");
   });
 
-  // $(".uploadform").submit(function(){
-  // })
-
   $(".js-hide-upload").click(function(){
     $('.loader').addClass('is-hidden');
     $(".popup").addClass("is-hidden");
@@ -350,8 +346,38 @@ $( document ).ready(function() {
     movie.playbackRate = 1;
   });
 
-  $( "ul, li" ).disableSelection();
+  $('.js-share-m').click(function(){
+    modalVideoLoad('share');
+  });
+  $('.js-save-m').click(function(){
+    modalVideoLoad('save');
+  });
 
+  var modalVideoLoad = function(mname){
+    addThisStyles();
+
+    $('.' + mname + '-modal').removeClass('is-hidden');
+    $('.cover50').removeClass('is-hidden');
+    $('.progressDiv').removeClass('is-hidden');
+    frames=[];
+    rafId = requestAnimationFrame(drawVideoFrame);
+  }
+
+  $('.js-hide-a-m').click(function(){
+    $('.share-modal').addClass('is-hidden');
+    $('.save-modal').addClass('is-hidden');
+    $(this).addClass('is-hidden');
+    $('.js-s-onload').addClass('is-hidden');
+    $('.js-h-onload').removeClass('is-hidden');
+  });
+
+  //addthis functionality and appearance
+  var addThisStyles = function(){
+    $('.at15t_facebook').attr('id', 'fb-btn-styling');
+    $('.at15t_facebook').html('<img src="/img/icons/fb-icon.png"> share with facebook');
+    $('.at15t_twitter').attr('id', 'tw-btn-styling');
+    $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
+  }
 
   $(".tabs-2").droppable({
     drop: function( event, ui ) {
@@ -522,6 +548,7 @@ $( document ).ready(function() {
   });
 
   $('.js-vid-click').click(function(){
+    console.log('clicking');  
     $('.loader').removeClass('is-hidden');
     $('.js-vid-click').removeClass('js-selected-video');
     $(this).addClass('js-selected-video');
@@ -529,6 +556,9 @@ $( document ).ready(function() {
     var thisSrc = $(this).attr('src');
     movie.src = thisSrc;
   });
+
+
+//sliding functionality that we have to get rid of
 
   $('.js-slide-right-final').click(function(){
     slideRight('.js-slide-1', '.js-slide-title');

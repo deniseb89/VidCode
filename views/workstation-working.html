@@ -1,7 +1,6 @@
 
-
-
   <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
+
 
 <div class="compatibility-error is-hidden">
   <div class="error-message">
@@ -18,69 +17,12 @@
   </div>
 </div>
 
-<div class="action-modal">
-  <div class="share-modal action-m is-hidden">
-    <div class="a-header">
-      <p>Share</p>
-    </div>
-    <div class="a-body">
-      <p class="c-desc js-h-onload">Your video is loading</p>
-
-      <label for="loading-title">Title</label>
-      <input type="text" id="loading-title" class="generalInput">
-
-      <label for="loading-descr">Optional Video Description</label>
-      <textarea id="loading-descr" rows="4"></textarea>
-
-      <div class="progressDiv progress progress-striped">
-        <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-        </div>
-      </div>
-      <div class="addthis-container js-s-onload is-hidden">
-        <div class="addthis_sharing_toolbox"></div>
-      </div>
-      <div class="text-center js-s-onload is-hidden">
-        <a href="#" class="js-share" target="_blank">go to video's page</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="save-modal action-m is-hidden">
-    <div class="a-header">
-      <p>Save</p>
-    </div>
-    <div class="a-body">
-      <p class="c-desc js-h-onload">Your video is loading</p>
-
-      <label for="loading-title">Title</label>
-      <input type="text" id="loading-title" class="generalInput">
-
-      <label for="loading-descr">Optional Video Description</label>
-      <textarea id="loading-descr" rows="4"></textarea>
-
-      <div class="progressDiv progress progress-striped">
-        <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-        </div>
-      </div>
-      <div class="js-s-onload btn-center is-hidden">
-        <a class="a-share-btn s-btn js-share" target="_blank">save</a>
-        <p class="share-link"></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="cover50 cover is-hidden js-hide-a-m">
-  </div>
-
-</div>
-
-
 <div class="container-fixed">
   <div class="popup is-hidden">
     <form class="uploadform" enctype="multipart/form-data">
       10 mb max file size
-      <input type="file" action="" method="" id="inputFile" name="file" value="Select a File" />
-<!--       <button class="btn btn-primary uploadfile">Upload</button>-->
+      <input type="file" name="file" id="inputFile" value="Select a File" multiple/>
+       <button class="btn btn-primary uploadfile">Upload</button>
       <button class="btn js-hide-upload uploadfile">Cancel</button>
       <p></p>
     </form>
@@ -91,12 +33,16 @@
 
 	</div>
 
-    <span href="#" class="big-action-btn js-save-m">
-      Save
-    </span>
-    <span class="big-action-btn js-share-m">
-      Share
-    </span>
+	<span class="next-progress-btn">
+		<a id="tooltip-stop-4" class="is-inactive-btn js-activate-btn" href="#">I'm Done!▸</a>
+    <a id="tooltip-stop-4a" class="is-hidden js-slide-right-final" href="#">I'm Done!▸</a>
+	</span>
+
+  <div class="view-controller">
+    <button class="js-switch-view" id="basic-filter-method">Basic</button>
+    <button class="js-switch-view" id="adv-filter-method">Advanced</button>
+    <button class="js-switch-view" id="stop-motion-method" >Stop Motion</button>
+  </div>
 
 	<div class="lesson-container">
 		<div class="col-md-4">
@@ -105,7 +51,7 @@
 				<div class="vid-placeholder overlay">
 					<h3>Select a video below</h3>
 				</div>
-        <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' autoplay loop></video>
+        <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
         <canvas class="video2 is-hidden tabs-2" id="canvas">
           </canvas>
         <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
@@ -114,8 +60,11 @@
 			<div class="js-switch-appear">
 
         <div class="video-container clearfix">
-
+          <p>Your Media Library</p>
+          CLIPS STILLS GRAPHICS
+          <div id="media-library">
           <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
+          </div>
 
           <p id="tooltip-stop-1">Instagram Videos</p>
           <div class="insta-thumbnails">
@@ -149,26 +98,16 @@
               <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
             </div>
           </div>
+			
+      </div> <!--end of js-switch-appear-->
 
-			</div>
-
-	  	<div class="methodsBox js-appear is-hidden clearfix">
-	  	  <p class="vidtip">Drag & drop the buttons into the code editor on the right. Change the numbers to customize the filters!</p>
-  			<div class="clearfix">
-	        <ul class="methodList" id="filterList">
-	          {{#filters}}
-	          <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-	          {{/filters}}
-	        </ul>
-	      </div>
+	  	<div class="methodsBox js-appear clearfix">
 	      <div class="clearfix">
-	        <button type="button" class="sm-btn show-inline js-switch-videos btn purple-btn-main">Switch Video</button>
 	        <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
 	      </div>
       </div>
 
 		</div>
-
 
 		<div class="col-md-5">
 			<div class="tabs-2">
@@ -181,112 +120,38 @@
   	<div class="col-md-3">
 				<div id="tooltip-stop-3" class="learnMore">
 
+        {{#each content}}
+        <div class="is-hidden {{this.class}}">
+            {{#each this.instructions}}
           <div class="learning-pop-container" data-toggle="modal" data-target="#lesson-1-222">
             <span class="progress-num cc-6">
-              1
+              {{@index}}
             </span>
             <span class="learning-pop-link cc-6">
-              What are we writing?
+              {{.}}
             </span>
           </div>
-
-          <div class="learning-pop-container" data-toggle="modal" data-target="#lesson-2-222">
-            <span class="progress-num cc-6">
-              2
-            </span>
-            <span class="learning-pop-link cc-6">
-              How is it changing my video?
-            </span>
+          {{/each}}
           </div>
-
-          <div class="learning-pop-container" data-toggle="modal" data-target="#lesson-3-222">
-            <span class="progress-num cc-6">
-              3
-            </span>
-            <span class="learning-pop-link cc-6">
-              The pieces of our code
-            </span>
-          </div>
-
-          <div class="learning-pop-container l-color-2 js-values" data-toggle="modal" data-target="#lesson-4-222">
-            <span class="progress-num cc-6 l-color-2">
-              4
-            </span>
-            <span class="learning-pop-link cc-6 l-color-2">
-              Values: An Overview
-            </span>
-          </div>
-
-          <div class="learning-pop-container l-color-2 js-values" data-toggle="modal" data-target="#lesson-4-2-222">
-            <ul>
-              <li>
-                <span class="learning-pop-link cc-6 l-color-2">
-                  Types of Values
-                </span>
-              </li>
-            </ul>
-          </div>
-          <div class="learning-pop-container l-color-2 js-boolean" data-toggle="modal" data-target="#lesson-4-3-222">
-            <ul>
-              <li>
-                <span class="learning-pop-link cc-6 l-color-2">
-                  Booleans
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="learning-pop-container l-color-3 js-object" data-toggle="modal" data-target="#lesson-objects-222">
-            <span class="progress-num cc-6 l-color-3">
-              5
-            </span>
-            <span class="learning-pop-link cc-6 l-color-3">
-              Objects!
-            </span>
-          </div>
-
-          <div class="learning-pop-container l-color-3 js-movie">
-            <ul>
-              <li>
-                <span class="learning-pop-link cc-6 l-color-3" data-toggle="modal" data-target="#movies222">
-                  Movie
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="learning-pop-container l-color-3 js-effects" data-toggle="modal" data-target="#effects222">
-            <ul>
-              <li>
-                <span class="learning-pop-link cc-6 l-color-3">
-                  Effects
-                </span>
-              </li>
-            </ul>
-          </div>
-          <div class="learning-pop-container l-color-4 js-play">
-            <span class="progress-num cc-6 l-color-4">
-              6
-            </span>
-            <span class="learning-pop-link cc-6 l-color-4" data-toggle="modal" data-target="#function222">
-              Functions!
-            </span>
-          </div>
-
-          <div class="learning-pop-container l-color-4 js-play">
-            <ul>
-              <li>
-                <span class="learning-pop-link cc-6 l-color-4" data-toggle="modal" data-target="#play222">
-                  Play
-                </span>
-              </li>
-            </ul>
-          </div>
+        {{/each}}
 
           <a href="http://www.vidcode.io/contact">Feedback? Yes, Please!</a>
         </div>
-      </div>
-  	</div>
+
+        <div class="clearfix">
+            {{#each content}}
+            <div class="is-hidden {{this.class}}">
+              <ul class="methodList">
+               {{#each this.elements}}
+                 <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+              {{/each}}
+              </ul>
+            </div>
+            {{/each}}
+        </div>
+           
+      </div>      
+  	</div> <!--end of lesson container-->
 
 
 	</div>
@@ -688,29 +553,19 @@
   <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
   <li data-id="tooltip-stop-3" data-options="tip_location:left">Click on the buttons to the right to "Learn More" about the code you're writing!</li>
 
-  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, you can save it or share it with your friends</li>
+  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, click "I'm Done!"</li>
 
   <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own Instagram content.</li>
 </ol>
 
-<script src="/js/filters.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/lessons.js"></script>
-
+<script src="/js/workstation.js"></script>
 
 <script>
-	$(window).load(function() {
-    //should only turn on when error message doesn't appear
-	  // $("#joyRideTipContent").joyride({
-	  // 	autoStart: false
-	  // });
-	});
-
     mixpanel.track_links("#mix-share", "Share clicked" );
     mixpanel.track_links("#mix-return2code", "Returned to code" );
     mixpanel.track_links("#mix-again", "Try It Again clicked" );
     mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
-    mixpanel.track_links("#tooltip-stop-4", "Save clicked" );
+    mixpanel.track_links("#tooltip-stop-4a", "I'm Done clicked" );
       mixpanel.track('Main UI page viewed', {
     'page name' : document.title,
     'url' : window.location.pathname
