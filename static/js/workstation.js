@@ -11,8 +11,6 @@ var movie,
     rafId,
     frames = [],
     capture,
-    videoDLurl,
-    videoDisplay,
     windowObjectReference = null;
     numVidSelect = 0;
     allEffects = ['blur','noise','vignette','exposure','fader','kaleidoscope', 'saturation'];
@@ -56,18 +54,13 @@ var stopDL = function() {
   $('.progressDiv').addClass('is-hidden');
   cancelAnimationFrame(rafId);
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-
-  console.log($('#loading-title').val());
-  console.log($('#loading-descr').val());
-  //Don't auto save
-  // submitVideo(webmBlob);
+  submitVideo(webmBlob);
 }
 
 var submitVideo = function (blob) {
   var formData = new FormData();
   //append input #formTitle #formDesc
   formData.append('video',blob);
-  console.log(blob);
   $.ajax({
     url: '/uploadFinished',
     type: 'POST',
@@ -77,10 +70,6 @@ var submitVideo = function (blob) {
     cache: false,
     processData:false,
     success: function(token, textStatus, jqXHR){
-      videoDLurl = window.URL.createObjectURL(blob);
-      videoDisplay.src = videoDLurl;
-      videoDisplay.controls = true;
-
       $('.progressDiv').addClass('is-hidden');
       $('.share-p-text-container').removeClass('is-hidden');
       $('.js-lesson-prompt').text('Looks amazing!');
@@ -98,47 +87,75 @@ var submitVideo = function (blob) {
 
 var uploadFromComp = function (ev) {
   var files = ev.target.files;
-  //TODO: implement multiple file upload
+  var maxSize = 10000000;
 
-  // for (var i in files){
-    // if (i.hasOwnPropery('file')){}
-    // console.log(files[i]);
-  // }
+  //TODO: implement multiple file upload on the server
 
-  var formData = new FormData();
-  formData.append('file',files[0]);
-  $.ajax({
-    url: '/uploadMedia',
-    type: 'POST',
-    data:  formData,
-    mimeType:"multipart/form-data",
-    contentType: false,
-    cache: false,
-    processData:false,
-    success: function(file, textStatus, jqXHR){
-      var file = JSON.parse(file);
-      var fileName = "/video/?file="+file                
-      movie.src = fileName;
-      movie.addEventListener("loadeddata", showVid, false);
-      updateMediaLibrary(file);
-    },
-    error: function(file, textStatus, jqXHR){
-      console.log('file error');
-    }
-  });      
+  for (var i=0; i<files.length; i++){
+    var file = files[i];
+    var reader = new FileReader();
+
+    reader.onload = (function(theFile) {
+      return function(e) {
+        if ( file.size < maxSize ) {
+          // var formData = new FormData();
+          // formData.append('file',file);
+          // $.ajax({
+          //   url: '/uploadMedia',
+          //   type: 'POST',
+          //   data:  formData,
+          //   mimeType:"multipart/form-data",
+          //   contentType: false,
+          //   cache: false,
+          //   processData:false,
+          //   success: function(data, textStatus, jqXHR){
+          //     var data = JSON.parse(data);
+              updateMediaLibrary(file,e.target.result);
+              $(".popup").addClass("is-hidden");
+              $(".fileError").text("");            
+          //   },
+          //   error: function(file, textStatus, jqXHR){
+          //     console.log('file error');
+          //   }
+          // });    
+          } else {
+          $('.loader').addClass('is-hidden');
+          $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
+        }
+      };
+    })(file);
+
+    reader.readAsDataURL(file); 
+  }
 }
 
-var updateMediaLibrary = function (file){
-  //create div and img/video tag
+var updateMediaLibrary = function (file,data){
+  //create div and img/video tags
+    var type;
+    var style;
+    if ( file.type.match(/image.*/) ){
+      type = 'img';
+      style = 'js-img-click';
+    } else if (file.type.match(/video.*/) ) {
+      type = 'video';
+      style = 'js-vid-click';
+    }
 
-  var $mediaLibary = $('#media-library');
-  // for (var i in file){
-    // if (i.hasOwnPropery('file')){
-      var $div = $('<div></div').addClass('i-vid-container');
-      $div.append('<video class="js-vid-click" src="video/?file='+file+'"></video');
-      $mediaLibary.append($div);         
-    // }
-  // }
+    var div = document.createElement('div');
+    div.className += 'i-vid-container';
+    var media = document.createElement(type);
+    media.className += style;
+    media.src = data;    
+    media.addEventListener('click', function(){
+      $('.loader').removeClass('is-hidden');
+      $('.js-vid-click').removeClass('js-selected-video');
+      $(this).addClass('js-selected-video');
+      movie.addEventListener("loadeddata", showVid, false);
+      var thisSrc = $(this).attr('src');
+      movie.src = thisSrc;
+    }, false);
+    div.appendChild(media);
+    document.getElementById('media-library').appendChild(div);
 }
 
 /*old filters.js*/
@@ -278,7 +295,6 @@ var slideRight = function(oldSlide, newSlide){
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
   canvas = document.getElementById('canvas');
-  videoDisplay = document.getElementById('vid-display');
   inputFile = document.getElementById('inputFile');
   seriously = new Seriously();
   seriously.go();
@@ -386,22 +402,29 @@ $( document ).ready(function() {
 
       eff = ui.draggable.attr("name");
       $('[name='+eff+']').addClass("is-active");
-
-      var thisEffect = seriouslyEffects[eff];
-      var input;
-      var lineText;
-      for (var i in thisEffect.inputs) {
-        input = thisEffect.inputs[i];
-        if( (i != 'source') || (i === 'time' || i === 'timer') ){
-
-          lineText = '\n\ effects.'+eff+'.'+i+' = '+defaultValue[input.type]+';';
-          myCodeMirror.replaceRange(lineText,CodeMirror.Pos(myCodeMirror.lastLine()));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      var filter = seriouslyEffects[eff];
+      if (filter) {
+        var input;
+        for (var i in filter.inputs) {
+          input = filter.inputs[i];
+          if( (i != 'source') || (i === 'time' || i === 'timer') ){
+            lineText = '\n\ effects.'+eff+'.'+i+' = '+defaultValue[input.type]+';';
+            myCodeMirror.replaceRange(lineText,CodeMirror.Pos(myCodeMirror.lastLine()));
+            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+          }
         }
-      } 
+      } else if (eff=="play"){
+          myCodeMirror.replaceRange('\n\ movie.'+eff+'();',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if (eff=="pause"){
+          myCodeMirror.replaceRange('\n\ movie.'+eff+'();',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if (eff=="playbackRate"){
+          myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      }
 
       myCodeMirror.save();
-      // labelLines();
       $(".line-"+eff).effect("highlight",2000);
     }
   });
@@ -548,7 +571,6 @@ $( document ).ready(function() {
   });
 
   $('.js-vid-click').click(function(){
-    console.log('clicking');  
     $('.loader').removeClass('is-hidden');
     $('.js-vid-click').removeClass('js-selected-video');
     $(this).addClass('js-selected-video');
@@ -589,9 +611,11 @@ $( document ).ready(function() {
 
   //Switch between content
   $('.js-switch-view').click(function(){
+    //Todo: Template these
     var view = ($(this).attr('id'));
     $('.basic-filter-method').addClass('is-hidden');
     $('.adv-filter-method').addClass('is-hidden');
+    $('.movie-control-method').addClass('is-hidden');    
     $('.stop-motion-method').addClass('is-hidden');
     $('.'+view).removeClass('is-hidden');
   })

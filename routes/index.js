@@ -13,6 +13,7 @@ exports.signin = function (req, res) {
 
 exports.intro = function (db) {
   return function (req, res) {
+    console.log(req.user);
     var social = req.params.social;
     var id = req.params.id;
     if (id&&social){
@@ -138,34 +139,9 @@ exports.workstation = function (db) {
 };
 
 exports.partone = function (db) {  
-  return function (req, res) {
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
-    var codeText =
-"\
- \n\
- //This line of code makes your movie play!\n\
- movie.play();\n\
-\n\
- //The code below lets you add, remove, and alter your video filters.\n\
- //Change the numbers and make your video all your own!\n\
-    ";
-    var user = req.user;
-    if (user){
-      var social = user.provider;
-      var vc = db.collection('vidcode');
-
-      var successcb = function(doc) {
-        //todo:if instagram user...
-        //refresh API call with user.acessToken to get recent videos
-        res.render("partone", {code: codeText, filters: filters, user: doc});
-      };  
-      findOrCreate(db,user,successcb);
-      
-    } else {
-        res.render("partone", {code: codeText, filters: filters});
-      //res.redirect('/signin');   //when users arent logged in, make them log in
-    }
-  };
+  return function(req, res){
+    res.redirect ('/workstation');
+  }
 };
 
 exports.lessontwo = function (db) {
@@ -385,10 +361,9 @@ exports.uploadMedia = function(db, gfs, crypto) {
     var video = {};
     var user = req.user || null;
     if (!user){
-      console.log('you must be logged in to upload media');
-      return;
+      // console.log('you must be logged in to upload media');
+      // return;
     } else {
-      console.log('uploading media for '+user.id);
       var id = user.id;
       var social = user.provider;
     }
@@ -397,12 +372,18 @@ exports.uploadMedia = function(db, gfs, crypto) {
     var filename;
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+      console.log(fieldname);
+      console.log(file);
+      console.log(filename);
+      console.log(encoding);
+      console.log(mimetype);
 
       var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
       file.pipe(ws);
-      ws.on('close', function(file) {
-          console.log("read user's uploaded media file: "+file._id + " with content-type: "+mimetype);
-          res.send(file._id);    
+      ws.on('close', function(savefile) {
+          console.log(savefile);
+          console.log("read user's uploaded media file: "+savefile._id + " with content-type: "+mimetype);
+          res.send(savefile._id);    
       });
       ws.on('error', function(err){
         console.log('An error occurred in writing');

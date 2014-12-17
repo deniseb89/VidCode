@@ -472,6 +472,10 @@ z-index: 100000;}
     background-color: rgba(128, 0, 0, 0.61);    
 }
 
+.movie-control-method .btn{
+    background-color: rgb(0, 0, 255);
+}
+
 .stop-motion-method .btn{
     background-color: rgb(134, 0, 255);
 }

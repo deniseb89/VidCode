@@ -36,7 +36,7 @@
         <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
         </div>
       </div>
-      <div class="addthis-container js-s-onload is-hidden">
+      <div class="addthis-container    is-hidden">
         <div class="addthis_sharing_toolbox"></div>
       </div>
       <div class="text-center js-s-onload is-hidden">
@@ -77,13 +77,10 @@
 
 <div class="container-fixed">
   <div class="popup is-hidden">
-    <!-- <form class="uploadform" enctype="multipart/form-data"> -->
       10 mb max file size
-      <input type="file" action="" method="" id="inputFile" name="file" value="Select a File" />
-<!--       <button class="btn btn-primary uploadfile">Upload</button>-->
+      <input type="file" id="inputFile" name="file" multiple value="Select a File" />
       <button class="btn js-hide-upload uploadfile">Cancel</button>
-      <p></p>
-    <!-- </form> -->
+      <p class="fileError"></p>
   </div>
 
 <div class="set-container lesson-page clearfix js-slide-1">
@@ -99,8 +96,10 @@
     </span>
 
   <div class="view-controller">
+  <!-- Todo: Template these -->
     <button class="js-switch-view" id="basic-filter-method">Basic</button>
     <button class="js-switch-view" id="adv-filter-method">Advanced</button>
+    <button class="js-switch-view" id="movie-control-method">Movie Controls</button>
     <button class="js-switch-view" id="stop-motion-method" >Stop Motion</button>
   </div>
 
@@ -123,7 +122,7 @@
           <p>Your Media Library</p>
           CLIPS STILLS GRAPHICS
           <div id="media-library">
-            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Video</button>
+            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button>
           </div>
 
           <p id="tooltip-stop-1">Instagram Videos</p>
@@ -182,13 +181,13 @@
         <div id="tooltip-stop-3" class="learnMore">
         {{#each content}}
         <div class="is-hidden {{this.class}}">
-            {{#each this.instructions}}
-          <div class="learning-pop-container" data-toggle="modal" data-target="#lesson-1-222">
+            {{#each this.learnMore}}
+          <div class="learning-pop-container" data-toggle="modal" data-target="{{this.target}}">
             <span class="progress-num cc-6">
               {{@index}}
             </span>
             <span class="learning-pop-link cc-6">
-              {{.}}
+              {{this.topic}}
             </span>
           </div>
           {{/each}}
