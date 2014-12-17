@@ -9,15 +9,21 @@ var labelLines = function() {
   }
 }
 
-var InitSeriously = function(){
-  //check Seriously compatibility. Seriously.incompatible ?
+var InitSetup = function(){
+  console.log('setting up');
+  //check Seriously compatibility
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
     $('.compatibility-error').removeClass('is-hidden');
   } else {
     $("#joyRideTipContent").joyride({
       autoStart: true
     });
-  }
+    InitSeriously();
+  }  
+  movie.removeEventListener('canplay', InitSetup, false);
+}
+
+var InitSeriously = function(){
   video = seriously.source('#myvideo');
   target = seriously.target('#canvas');
   var thisEffect;
@@ -30,7 +36,6 @@ var InitSeriously = function(){
     thisEffect.amount = 0;
   }
   target.source = effects[allEffects[allEffects.length-1]];
-  movie.removeEventListener('canplay', InitSeriously, false);
 };
 
 var updateScript = function() {

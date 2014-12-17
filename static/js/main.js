@@ -125,7 +125,7 @@ $( document ).ready(function() {
   inputFile = document.getElementById('inputFile');
   seriously = new Seriously();
   seriously.go();
-  movie.addEventListener('canplay', InitSeriously, false);
+  movie.addEventListener('canplay', InitSetup, false);
   movie.load();
   videoDisplay.addEventListener('loadeddata', function(){
     // $('.js-share').removeClass('is-inactive-btn');

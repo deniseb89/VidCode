@@ -1,0 +1,580 @@
+
+
+
+  <link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
+
+<div class="compatibility-error is-hidden">
+  <div class="error-message">
+    <div class="panelhead">
+      <h2>Sorry!</h2>
+    </div>
+    <div class="panelbody">
+      <p>Your browser doesn't appear to support WebGL or it isn't enabled. Visit <a href="http://get.webgl.org/">get.webgl.org</a> to learn more or try the latest version of Chrome.</p>
+
+      <p>Don't worry, you can still learn all about vidcode at <a href="http://www.vidcode.io/">vidcode.io</a>.</p>
+    </div>
+  </div>
+  <div class="cover90 cover">
+  </div>
+</div>
+
+<div class="action-modal">
+  <div class="share-modal action-m is-hidden">
+    <div class="a-header">
+      <p>Share</p>
+    </div>
+    <div class="a-body">
+      <p class="c-desc js-h-onload">Your video is loading</p>
+
+      <label for="loading-title">Title</label>
+      <input type="text" id="loading-title" class="generalInput">
+
+      <label for="loading-descr">Optional Video Description</label>
+      <textarea id="loading-descr" rows="4"></textarea>
+
+      <div class="progressDiv progress progress-striped">
+        <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        </div>
+      </div>
+      <div class="addthis-container    is-hidden">
+        <div class="addthis_sharing_toolbox"></div>
+      </div>
+      <div class="text-center js-s-onload is-hidden">
+        <a href="#" class="js-share" target="_blank">go to video's page</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-modal action-m is-hidden">
+    <div class="a-header">
+      <p>Save</p>
+    </div>
+    <div class="a-body">
+      <p class="c-desc js-h-onload">Your video is loading</p>
+
+      <label for="loading-title">Title</label>
+      <input type="text" id="loading-title" class="generalInput">
+
+      <label for="loading-descr">Optional Video Description</label>
+      <textarea id="loading-descr" rows="4"></textarea>
+
+      <div class="progressDiv progress progress-striped">
+        <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        </div>
+      </div>
+      <div class="js-s-onload btn-center is-hidden">
+        <a class="a-share-btn s-btn js-share" target="_blank">save</a>
+        <p class="share-link"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover50 cover is-hidden js-hide-a-m">
+  </div>
+
+</div>
+
+
+<div class="container-fixed">
+  <div class="popup is-hidden">
+      10 mb max file size
+      <input type="file" id="inputFile" name="file" multiple value="Select a File" />
+      <button class="btn js-hide-upload uploadfile">Cancel</button>
+      <p class="fileError"></p>
+  </div>
+
+<div class="set-container lesson-page clearfix js-slide-1">
+	<div class="progress-set">
+
+	</div>
+
+    <span href="#" class="big-action-btn js-save-m">
+      Save
+    </span>
+    <span class="big-action-btn js-share-m">
+      Share
+    </span>
+
+  <div class="view-controller">
+  <!-- Todo: Template these -->
+    <button class="js-switch-view" id="basic-filter-method">Basic</button>
+    <button class="js-switch-view" id="adv-filter-method">Advanced</button>
+    <button class="js-switch-view" id="movie-control-method">Movie Controls</button>
+    <button class="js-switch-view" id="stop-motion-method" >Stop Motion</button>
+  </div>
+
+	<div class="lesson-container">
+		<div class="col-md-4">
+		  <div class="loader is-hidden"><img src="/img/loader.gif"></div>
+			<span class="js-active-vid active-vid">
+				<div class="vid-placeholder overlay">
+					<h3>Select a video below</h3>
+				</div>
+        <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
+        <canvas class="video2 is-hidden tabs-2" id="canvas">
+          </canvas>
+        <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
+			</span>
+
+			<div class="js-switch-appear">
+
+        <div class="video-container clearfix">
+          <p>Your Media Library</p>
+          VIDEOS IMAGES
+          <div id="media-library">
+            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button>
+          </div>
+
+          <p id="tooltip-stop-1">Instagram Videos</p>
+          <div class="insta-thumbnails">
+            <span class="i-error"></span>
+            <div class="i-vid-container">
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid0" src=""></video>
+            </div>
+            <div class="i-vid-container">
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid1" src=""></video>
+            </div>
+            <div class="i-vid-container">
+              <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid2" src=""></video>
+            </div>
+          </div>
+
+          <div class="insta-import is-hidden">
+            <a href="/auth/instagram" id="tooltip-stop-1">Import Videos from Instagram</a>
+          </div>
+
+        </div>
+
+        <div class="video-container clearfix">
+          <p>Sample Videos</p>
+            <div class="i-vid-container">
+              <video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
+            </div>
+            <div class="i-vid-container">
+              <video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
+            </div>
+            <div class="i-vid-container">
+              <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
+            </div>
+          </div>
+
+			</div>
+
+	  	<div class="methodsBox js-appear is-hidden clearfix">
+	      <div class="clearfix">
+	        <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
+	      </div>
+      </div>
+
+		</div>
+
+
+		<div class="col-md-5">
+			<div class="tabs-2">
+				<form>
+					<textarea id="codemirror" name="codemirror">{{code}}</textarea>
+		  	</form>
+		  </div>
+  	</div>
+
+  	<div class="col-md-3">
+        <div id="tooltip-stop-3" class="learnMore">
+        {{#each content}}
+        <div class="is-hidden {{this.class}}">
+            {{#each this.learnMore}}
+          <div class="learning-pop-container" data-toggle="modal" data-target="{{this.target}}">
+            <span class="progress-num cc-6">
+              {{@index}}
+            </span>
+            <span class="learning-pop-link cc-6">
+              {{this.topic}}
+            </span>
+          </div>
+          {{/each}}
+          </div>
+        {{/each}}
+
+          <a href="http://www.vidcode.io/contact">Feedback? Yes, Please!</a>
+        </div> <!--end of learn more-->
+
+        <div class="clearfix">
+            {{#each content}}
+            <div class="is-hidden {{this.class}}">
+              <ul class="methodList">
+               {{#each this.elements}}
+                 <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+              {{/each}}
+              </ul>
+            </div>
+            {{/each}}
+        </div>
+      </div>
+  	</div> <!--end of lesson container-->
+	</div> <!--end of set-container lesson-page-->
+</div>
+
+
+<!--begin learn more modals-->
+
+      <div class="modal fade" id="lesson-1-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">1. What are we writing? JavaScript!</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                JavaScript?
+              </p>
+              <p>
+                <strong>Javascript</strong> is a <strong>programming language.</strong> Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.
+              </p>
+              <p>
+                All your favorite apps are made by talking to computers with programming languages.
+              </p>
+              <img class="lessonimg lesson-img-1" src="/img/lessons/lesson-1-left.png"><img class="lessonimg lesson-img-2" src="/img/lessons/lesson-1-right.png">
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#lesson-2-222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="lesson-2-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <h4 class="modal-title">2. How is it changing my video?</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Your code is your input, and your video is the output created once the computer translates your code.
+              </p>
+              <p>
+                When you change the words and numbers in your code (your input), you'll see your video (your output) change as well.
+              </p>
+              <p>
+                Think about it like baking. Depending on what ingredients you put into your cake (your output) will be different.
+              </p>
+              <div class="l-game-input l-g-container">
+                <p>input</p>
+                <img class="l-g-i-1 tooltip-lesson" data-toggle="tooltip" data-placement="top" title="mix(ingredients);" src="/img/lessons/c-v-game/bowl.png">
+                <img class="l-g-i-2 tooltip-lesson" data-toggle="tooltip" data-placement="top" title="ingredients.butter;" src="/img/lessons/c-v-game/butter.png">
+                <img class="l-g-i-3 tooltip-lesson" data-toggle="tooltip" data-placement="top" title="ingredients.cherries;" src="/img/lessons/c-v-game/cherries.png">
+                <img class="l-g-i-4 tooltip-lesson" data-toggle="tooltip" data-placement="top" title="ingredients.eggs;" src="/img/lessons/c-v-game/eggs.png">
+                <img class="l-g-i-5 tooltip-lesson" data-toggle="tooltip" data-placement="top" title="ingredients.flour;" src="/img/lessons/c-v-game/flour.png">
+                <img class="l-g-i-6 tooltip-lesson" data-toggle="tooltip" data-placement="top" title="ingredients.sugar;" src="/img/lessons/c-v-game/sugar.png">
+              </div>
+              <div class="l-game-output l-g-container">
+                <p>output</p>
+                <img class="l-g-o-1 tooltip-lesson" data-toggle="tooltip" data-placement="top" title="A cake!" src="/img/lessons/c-v-game/cakeoutput.png">
+              </div>
+
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#lesson-1-222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#lesson-3-222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="lesson-3-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">3. The pieces of our code</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Some of the pieces of JavaScript include <strong>values</strong>, <strong>variables</strong>, <strong>objects</strong> and <strong>functions</strong>.
+              </p>
+              <p>
+                Have you changed the numbers and words around in your code? Then you've already worked with some of these pieces!
+              </p>
+              <p>
+                First, let's talk about <strong>values</strong>.
+              </p>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#lesson-2-222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#lesson-4-222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="lesson-4-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">4. Let's talk about values</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The numbers in your code, such as
+              </p>
+              <p>
+                effects.noise.amount = 7;
+              </p>
+              <p>
+                are a type of value called a number (but you already knew that!)
+              </p>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#lesson-3-222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#lesson-4-2-222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="lesson-4-2-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">4a. Types of Values</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Some types of values are:
+              </p>
+              <p>
+                <strong>Numbers</strong>: <span class="exampleText">1, 12, 178</span>
+              </p>
+              <p>
+                <strong>Strings</strong> (text in quotes): <span class="exampleText">"hello", "12 is a cool number"</span>
+              </p>
+              <p>
+                <strong>Booleans</strong> (whether something is true or false): <span class="exampleText">videoPlaying = true;</span>
+              </p>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#lesson-4-222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#lesson-4-3-222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="lesson-4-3-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">4b. Booleans</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <div class="boolean-game">
+                <img class="f-s-1" src="/img/lessons/f-game/flower-center.png">
+                <img class="f-s-2 js-f-b-click" src="/img/lessons/f-game/flower-1.png">
+                <img class="f-s-3 js-f-b-click" src="/img/lessons/f-game/flower-2.png">
+                <img class="f-s-4 js-f-b-click" src="/img/lessons/f-game/flower-3.png">
+                <img class="f-s-5 js-f-b-click" src="/img/lessons/f-game/flower-4.png">
+                <img class="f-s-6 js-f-b-click" src="/img/lessons/f-game/flower-5.png">
+                <img class="f-s-7 js-f-b-click" src="/img/lessons/f-game/flower-6.png">
+                <img class="f-s-8 js-f-b-click" src="/img/lessons/f-game/flower-7.png">
+                <img class="f-s-9 js-f-b-click" src="/img/lessons/f-game/flower-8.png">
+              </div>
+              <div class="g-text-container">
+                <p>Booleans set variables to true or false.</p>
+                <p>Pick petals off the flower to change this boolean value from true to false</p>
+
+                <p class="line-1">my_cat_loves_me? <span class="l-text">=</span></p>
+                <p class="js-bool-switch is-showing-true l-text line-2">
+                  True
+                </p>
+              </div>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#lesson-4-2-222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#lesson-objects-222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class="modal fade" id="lesson-objects-222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+
+              <h4 class="modal-title">5. Another value: objects!</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                Let's move on to a fourth type of value, objects!
+              </p>
+              <p>
+                Objects in JavaScript hold your data.
+              </p>
+              <p>
+                Think about a picnic basket, that holds the lots of different things that we need for a picnic. Our one basket can hold foods, such as salads and cheese, but it can also hold our picnic blanket and plates.
+              </p>
+              <p>
+                In your code, effects and movie are both objects.
+              </p>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#lesson-4-3-222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#movies222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="movies222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">5a. Your movie!</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The word "movie" is an object that uses the canvas element in HTML5 to play your video.
+              </p>
+              <p>
+                Remember, an object is just a word that contains data under the hood.
+              </p>
+              <p>
+                With code, and computers, there are many things happening "behind the scenes" which we don't see.
+              </p>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#lesson-objects-222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#effects222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+    	</div>
+
+      <div class="modal fade" id="effects222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">5b. So many effects!</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                The word effects is an object that keeps track of all of the effects you can apply to your video, such as blur and vignette.
+              </p>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#movies222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#function222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="function222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">6. Functions</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                A function is a an instruction. You can think of it like a verb.
+              </p>
+              <p>
+                Imagine if you were training your cat. If you gave your cat an obstacle course, and told her to complete it, your cat would probably be pretty confused.
+              </p>
+              <p>
+                But if instead, you broke it up into smaller instructions, and told her
+              </p>
+              <p>
+                'go down this slide'
+              </p>
+              <p>
+                it would be much less confusing.
+              </p>
+              <p>
+                Functions are kind of like that! Lots of smaller instructions to make coding easier.
+              </p>
+              <p>
+                play() is an example of a function.
+              </p>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#effects222" aria-hidden="true">Prev</button>
+              <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal" href="#play222" aria-hidden="true">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="play222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <h4 class="modal-title">6a. play() is a function</h4>
+              <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img src="/img/x-btn-modal.png"></span>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                When you type 'play()' or 'pause()' after the word movie, you are sending a function (a verb!) directly to the movie object.
+              </p>
+              <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal" href="#function222" aria-hidden="true">Prev</button>
+
+              <button type="button" class="btn btn-method btn-warning" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="interval222" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog2">
+          <div class="modal-content">
+            <div class="modal-header instruct-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="xbtn" src="/img/xbtn.png"></button>
+              <h4 class="modal-title">"interval" is also a method</h4>
+            </div>
+            <div class="modal-body instruct-body">
+              <p>
+                It tells the movie object how many times a second to be processed.
+                <br>
+                <br>
+                The number "1000" is in milliseconds.  So it is processing your video 1,000 times a second!  That's a lot of work!
+              </p>
+              <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!--end learn more modals-->
+
+<h4 id="username" class="is-hidden">{{user.username}}</h4>
+<h4 id="social" class="is-hidden">{{user.social}}</h4>
+
+
+<ol id="joyRideTipContent">
+  <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
+  <li data-id="tooltip-stop-3" data-options="tip_location:left">Click on the buttons to the right to "Learn More" about the code you're writing!</li>
+
+  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, you can save it or share it with your friends</li>
+
+  <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own Instagram content.</li>
+</ol>
+
+<script src="/js/workstation.js"></script>
+
+<script>
+    mixpanel.track_links("#mix-share", "Share clicked" );
+    mixpanel.track_links("#mix-return2code", "Returned to code" );
+    mixpanel.track_links("#mix-again", "Try It Again clicked" );
+    mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
+    mixpanel.track_links("#tooltip-stop-4", "Save clicked" );
+      mixpanel.track('Main UI page viewed', {
+    'page name' : document.title,
+    'url' : window.location.pathname
+});
+
+</script>
+
