@@ -10,8 +10,7 @@ var labelLines = function() {
 }
 
 var InitSetup = function(){
-  console.log('setting up');
-  //check Seriously compatibility
+   //check Seriously compatibility
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
     $('.compatibility-error').removeClass('is-hidden');
   } else {
@@ -44,40 +43,34 @@ var updateScript = function() {
   var scriptNew   = document.createElement('script');
   scriptNew.id = 'codeScript';
   var cmScript = myCodeMirror.getValue();
-  eval(cmScript);
   var adjScript = "";
   var textScript = "\n\ try {\n\ "+cmScript;
 
   if (textScript.indexOf('effects.sepia')>=0) {
     if (allEffects.indexOf('sepia')<0) {
       allEffects.push('sepia');
-      var thisEffect;
-      effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
-      effects[allEffects[0]]["source"] = video;
-      for (var i=1;i<allEffects.length;i++){
-        effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
-        effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
-      }
-      target.source = effects[allEffects[allEffects.length-1]];
-      }
-    } else {
-      var si = allEffects.indexOf('sepia');
-      if (si>=0) {
-        allEffects.splice(si,1);
-        InitSeriously();
-      }
+      InitSeriously();
     }
+  } else {
+    var si = allEffects.indexOf('sepia');
+    if (si>=0) {
+      allEffects.splice(si,1);
+      InitSeriously();
+    }
+  }
 
   labelLines();
   var matchEff = document.querySelectorAll(".active-effect");
-
   var matchNames = [];
+
   $('.btn-method').removeClass('is-active');
   for (var t = 0; t < matchEff.length; t++) {
     var matchE = matchEff[t];
     matchNames.push($(matchE).attr("name"));
     checkBtnStatus(matchE);
   }
+
+  eval(cmScript);
 
   for (var c = 0; c < allEffects.length; c++) {
     var thisEffect = allEffects[c];
