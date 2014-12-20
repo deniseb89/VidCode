@@ -2,6 +2,23 @@ var fs = require('fs');
 var request = require('request');
 var Busboy = require('busboy');
 var util = require('util');
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    cryptopassword = 'b3fd81b8-b8ed-4cf4-be59-7482d3a4b8a2';
+
+function encrypt(text){
+    var cipher = crypto.createCipher(algorithm,cryptopassword)
+    var crypted = cipher.update(text,'utf8','hex')
+    crypted += cipher.final('hex');
+    return crypted;
+}
+
+function decrypt(text){
+    var decipher = crypto.createDecipher(algorithm,cryptopassword)
+    var dec = decipher.update(text,'hex','utf8')
+    dec += decipher.final('utf8');
+    return dec;
+}
 
 exports.notFound = function(req, res){
   res.render('404', {layout:false});  
@@ -530,11 +547,21 @@ exports.signup = function (db, crypto) {
   return function (req, res) {
     var user = {};
     var successcb = function(doc) {
-      res.redirect ('/intro');
+        if(doc.auth ===true)
+        {
+            res.redirect ('/intro');
+        }
+        else
+        {
+            res.redirect ('/');
+        }
     };
+
     user.username = req.body.email;
+    user.password = req.body.password;
     user.id = req.body.email;
     user.provider = 'vidcode';
+
     findOrCreate(db,user,successcb);
   };
 };
@@ -549,11 +576,13 @@ function generateToken(crypto) {
 function findOrCreate(db, user, cb) {
 
     var vc = db.collection('vidcode');
-    vc.findOne({ id: user.id , social: user.provider}, function (err, doc) {
+    vc.findOne({ id: user.id, social: user.provider}, function (err, doc) {
+
       if (!doc) {
         //insert all the user info we care about
         doc = { id: user.id };
         doc.username = user.username;
+        doc.password = encrypt(user.password);
         doc.social = user.provider;        
         if (user.IGvideos){
           doc.IGvideos = user.IGvideos;
@@ -567,7 +596,17 @@ function findOrCreate(db, user, cb) {
               console.log('err in adding IGvideos '+social+'/'+id+':' + err);            
             }
           });          
-        }      
+        }
+
+        if ((doc.social == 'vidcode') && (decrypt(doc.password) == user.password))
+        {
+            doc.auth = true;
+        }
+        else
+        {
+            doc.auth = false;
+        }
+
       cb(doc);
     });
 }
