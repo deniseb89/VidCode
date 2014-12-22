@@ -16,7 +16,7 @@
   <!-- Facebook Open Graph tags -->
   <meta property="og:url" content={{url}}/>
   <meta property="og:title" content="Check out my vidcode!"/>
-  <meta property="og:image" content="/img/heart-icon.png"/>
+  <meta property="og:image" content="/img/share-holiday-vidcode.jpg"/>
 <!--   <meta property="og:video" content="/img/gallery-samples/emma_coaster.webm"/> -->
   <meta property="og:site_name" content="Vidcode"/>
   <meta property="og:description" content="Vidcode lets you customize your own videos with code. You can upload videos from Instagram and hack the filters. Start coding your own videos now!"/>
@@ -30,6 +30,7 @@
   <link href='http://fonts.googleapis.com/css?family=Copse' rel='stylesheet' type='text/css'>
 
   <script src="/js/jquery.js"></script>
+  <script src="/js/snowstorm.js"></script>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -54,7 +55,11 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
     <li><a class="show-inline" href="/"><img src="/img/logo.png" id="image"></a>
       <a class="small nudge-left show-inline" href="http://vidcode.io/" target="_blank">
         <span class="glyphicon glyphicon-star"></span>About & Updates
-      </a></li>
+      </a>
+    </li>
+    <li class="pull-right">
+      <a class="small" href="#" onclick="snowStorm.stop();return false">Turn off snow</a>
+    </li>
   </ul>
 
   <div class="mobile-display">
@@ -73,21 +78,21 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
 	        {{#if user.username}}
 	    	  <h3 class>Made by {{user.username}}</h3>
 	        {{/if}}
-	    {{/if}}   
+	    {{/if}}
 	    </div>
 	    <h3 id="file" class="is-hidden">{{file}}</h3>
 		<video id="vid-display" controls src=""></video>
     <div class="share-p-text-container">
       <h3 class="kaytitle">{{title}}</h3>
       <p class="kaydesc">{{desc}}</p>
-    </div>    
+    </div>
 		<h2>Share your video using:</h2>
 		<div class="addthis-container">
 			<div class="addthis_sharing_toolbox"></div>
 		</div>
 		<p class="greentext">Thank you for vidcoding!</p>
 		<a class="btn" id="mix-return-to-editor" href="/lesson/cs1">Return to Editor</a>
-	</div>    
+	</div>
   </div>
 
 <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
