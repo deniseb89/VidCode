@@ -81,7 +81,7 @@ exports.share = function (db) {
           file:file,
           title:title,
           desc:desc,
-          url:"/share/"+token
+          url:"http://staging-vidcode.herokuapp.com/share/"+token
         });        
       }
     });
