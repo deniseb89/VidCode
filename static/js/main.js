@@ -77,10 +77,10 @@ var uploadFromComp = function (ev) {
       if ( ( file.size < maxSize ) && ( exts.indexOf(ext) != -1 ) ) {
         movie.addEventListener("loadeddata", showVid, false);
         movie.src = e.target.result;
-        $(".uploadform p").text("");
+        $(".fileError").text("");
       } else {
         $('.loader').addClass('is-hidden');
-        $(".uploadform p").text("Video must be smaller than 10MB and a '.mp4' or '.webm' file. Select a different video and try again!");
+        $(".fileError").text("Video must be smaller than 10MB and a '.mp4' or '.webm' file. Select a different video and try again!");
       }
     };
   })(file);

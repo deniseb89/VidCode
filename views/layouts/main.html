@@ -59,7 +59,7 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
       {{/if}}
     </li>
     <li class="pull-right">
-      <a class="small" href="#" onclick="snowStorm.stop();return false">Turn off snow</a>
+      <a class="small snowToggle" href="#">Turn off snow</a>
     </li>
   </ul>
 
@@ -92,6 +92,24 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
 
   <script type="text/javascript">
       $('.tooltip-lesson').tooltip();
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('.snowToggle').click(function(){
+        if (snowStorm.disabled) {
+          snowStorm.show();
+          snowStorm.resume();          
+          $(this).text('Turn off snow');
+        } else {
+          snowStorm.stop();
+          // snowStorm.freeze();
+          $(this).text('Turn on snow');
+        }
+        return false;
+      });
+
+    });
   </script>
 
 </body>

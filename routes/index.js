@@ -81,7 +81,7 @@ exports.share = function (db) {
           file:file,
           title:title,
           desc:desc,
-          url:"http://app.vidcode.io/share/"+token
+          url:"/share/"+token
         });        
       }
     });
