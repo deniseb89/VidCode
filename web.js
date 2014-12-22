@@ -32,17 +32,12 @@ passport.deserializeUser(function(user, done) {
     });
 });
 
-/*
-Adam J. Mendoza
-NOTE: Disabled facebook and Instagram authentication for now since I don't have 
-the tockens to put in the package Strategy files.
-*/
 
 // passport-facebook auth
-//var passport = require('passport')
-//  , FacebookStrategy = require('passport-facebook').Strategy;
+var passport = require('passport')
+  , FacebookStrategy = require('passport-facebook').Strategy;
 
-/*
+
 passport.use(new FacebookStrategy({
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -54,10 +49,10 @@ passport.use(new FacebookStrategy({
     })
   }
 ));
-*/
+
 
 // passport-instagram auth
-/*
+
 passport.use(new InstagramStrategy({
     clientID: process.env.INSTAGRAM_CLIENT_ID,
     clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
@@ -69,10 +64,11 @@ passport.use(new InstagramStrategy({
     });
   }
 ));
-*/
+
+
 // configure express
 var app = express();
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 5000);
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
