@@ -15,4 +15,4 @@ var loopStills = function(stills){
     i++;
     if (i >= stills.length) { i = 0; }
   }, interval)
-}
+};

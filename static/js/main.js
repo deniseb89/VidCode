@@ -57,7 +57,7 @@ var stopDL = function() {
   cancelAnimationFrame(rafId);
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
   submitVideo(webmBlob);
-}
+};
 
 var submitVideo = function (blob) {
   var formData = new FormData();
@@ -85,7 +85,7 @@ var submitVideo = function (blob) {
     error: function(jqXHR, textStatus, errorThrown){
     }
    });
-}
+};
 
 var uploadFromComp = function (ev) {
   var files = ev.target.files;
@@ -129,7 +129,7 @@ var uploadFromComp = function (ev) {
 
     reader.readAsDataURL(file); 
   }
-}
+};
 
 var updateMediaLibrary = function (file,data){
   //create div and img/video tags
@@ -167,7 +167,7 @@ var updateMediaLibrary = function (file,data){
     media.addEventListener('click',fn,false);
     div.appendChild(media);
     document.getElementById('media-library').appendChild(div);
-}
+};
 
 /*old filters.js*/
 var labelLines = function() {
@@ -176,7 +176,7 @@ var labelLines = function() {
     $("pre:contains('effects."+allEffects[e]+"')").addClass('active-effect');
     $("pre:contains('effects."+allEffects[e]+"')").attr('name',allEffects[e]);
   }
-}
+};
 
 var InitSeriously = function(){
   movie.removeEventListener('canplay', InitSeriously, false);
@@ -241,14 +241,13 @@ var updateScript = function() {
   scriptNew.text = textScript;
 
   document.body.appendChild(scriptNew);
-}
+};
 
 var checkBtnStatus = function(effect) {
   //compare the names of effect buttons to the names in activeEffects
   var effectName = $(effect).attr("name");
   $('li[name=' + effectName + ']').addClass("is-active")
-
-}
+};
 
 /*old lessons.js*/
 
@@ -280,7 +279,7 @@ var loadThumbnails = function() {
   } else {
     $('.insta-import').removeClass('is-hidden');
   }
-}
+};
 
 var slideLeft = function(oldSlide, newSlide){
   $(newSlide).addClass('is-hidden');
@@ -289,7 +288,7 @@ var slideLeft = function(oldSlide, newSlide){
     opacity: 1,
     'margin-left': "0px"
     });
-}
+};
 
 var slideRight = function(oldSlide, newSlide){
   $(oldSlide).animate({
@@ -301,7 +300,7 @@ var slideRight = function(oldSlide, newSlide){
   setTimeout(function(){
     $(newSlide).removeClass('is-hidden');
   }, 500);
-}
+};
 
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
@@ -388,7 +387,7 @@ $( document ).ready(function() {
     $('.progressDiv').removeClass('is-hidden');
     frames=[];
     rafId = requestAnimationFrame(drawVideoFrame);
-  }
+  };
 
   $('.js-hide-a-m').click(function(){
     $('.share-modal').addClass('is-hidden');
@@ -404,7 +403,7 @@ $( document ).ready(function() {
     $('.at15t_facebook').html('<img src="/img/icons/fb-icon.png"> share with facebook');
     $('.at15t_twitter').attr('id', 'tw-btn-styling');
     $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
-  }
+  };
 
   $(".tabs-2").droppable({
     drop: function( event, ui ) {
@@ -469,7 +468,7 @@ $( document ).ready(function() {
     $(newLesson).animate({
       margin: "0px"
     }, 350);
-  }
+  };
 
   //hover state of learn more section
 
