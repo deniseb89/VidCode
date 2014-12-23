@@ -13,7 +13,6 @@ exports.signin = function (req, res) {
 
 exports.intro = function (db) {
   return function (req, res) {
-    console.log(req.user);
     var social = req.params.social;
     var id = req.params.id;
     if (id&&social){

@@ -24,7 +24,6 @@ var loopStills = function(stills){
 var InitSeriously = function(){
   //check Seriously compatibility. Seriously.incompatible ?
   var thisEffect;
-  console.log(effects);
   stills = document.querySelectorAll('.js-img-still');
   var still = seriously.source(stills[0]);
   target = seriously.target(canvas);
