@@ -415,19 +415,6 @@ margin-top: -57px;
 margin-left: 148px;
 z-index: 100000;}
 
-.displaysecond{
-    position: absolute!important;
-    width: 480px!important;
-    z-index: 501;
-    background-color: #fff;
-}
-
-.hidden2{
-    margin-top: 3px;
-    height: 5px;
-    opacity: 0;
-}
-
 .tabs-1{
     border: #BDBFBF solid 1px;
     height: 600px;
@@ -469,7 +456,7 @@ z-index: 100000;}
 }
 
 .adv-filter-method .btn{
-    background-color: rgba(128, 0, 0, 0.61);    
+    background-color: rgba(128, 0, 0, 0.61);
 }
 
 .movie-control-method .btn{
@@ -942,6 +929,7 @@ canvas{vertical-align: bottom;}
 .is-inactive-btn:hover{background-color: #441B4B!important;}
 
 .push-15{margin-top: 15px!important;}
+.push-40{margin-top: 40px!important;}
 
 .header-text-s{color: rgb(0,121,184); margin-bottom: 11px;}
 .header-text-s h3{font-weight: 400; float: left;}
