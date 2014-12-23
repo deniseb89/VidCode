@@ -59,7 +59,7 @@ exports.share = function (db) {
     var title;
     var desc;
     if (!token){
-      res.render('404', {layout: false});
+      res.render('share-static', {layout: false});
       return;
     }
 
@@ -81,7 +81,7 @@ exports.share = function (db) {
           file:file,
           title:title,
           desc:desc,
-          url:"http://vidcode.herokuapp.com/share/"+token
+          url:"http://app.vidcode.io/share/"+token
         });        
       }
     });
