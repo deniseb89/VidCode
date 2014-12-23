@@ -76,7 +76,7 @@ exports.share = function (db) {
     var title;
     var desc;
     if (!token){
-      res.render('404', {layout: false});
+      res.render('share-static', {layout: false});
       return;
     }
 
