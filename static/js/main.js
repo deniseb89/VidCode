@@ -6,14 +6,16 @@ var movie,
     video,
     vidLen,
     target,
+    seriouslyEffects,
     effects = {},
     rafId,
     frames = [],
     capture,
-    videoDLurl,
-    videoDisplay,
     windowObjectReference = null;
     numVidSelect = 0;
+    allEffects = ['blur','noise','vignette','exposure','fader','kaleidoscope', 'saturation'];
+    mult = {'blur':.01, 'noise':.1, 'vignette': 1, 'exposure':.04,'fader':.04, 'kaleidoscope':1, 'saturation':.1};
+    defaultValue =  {'number':5 , 'color': '"red"'};
 
 var showVid = function() {
   numVidSelect++;
@@ -26,43 +28,10 @@ var showVid = function() {
   $(".buttons").addClass("is-aware");
   $(".runbtn").removeClass("is-hidden");
   $(".video2").removeClass("is-hidden");
-  $(".js-appear").removeClass("is-hidden");
-  $(".js-switch-appear").addClass("is-hidden");
   $('.CodeMirror-code').removeClass('is-hidden');
   labelLines();
   vidLen = Math.round(this.duration);
-  if (numVidSelect === 1) {
-    $('.steps').addClass('is-hidden');
-    $('.step1').removeClass('is-hidden');
-  }
 };
-
-var uploadFromComp = function (ev) {
-  $('.loader').removeClass('is-hidden');
-  var file = ev.target.files[0];
-  var maxSize = 10000000;
-  var exts = ['.mp4','.webm'];
-  var reader = new FileReader();
-  reader.onload = (function(theFile) {
-    return function(e) {
-      var fileName = file.name;
-      var i = fileName.lastIndexOf('.');
-      var ext = (i < 0) ? '' : fileName.substr(i);
-      var ext = ext.toLowerCase();
-
-      if ( ( file.size < maxSize ) && ( exts.indexOf(ext) != -1 ) ) {
-        movie.addEventListener("loadeddata", showVid, false);
-        movie.src = e.target.result;
-        $(".uploadform p").text("");
-      } else {
-        $('.loader').addClass('is-hidden');
-        $(".uploadform p").text("Video must be smaller than 10MB and a '.mp4' or '.webm' file. Select a different video and try again!");
-      }
-    };
-  })(file);
-
-  reader.readAsDataURL(file);
-}
 
 //account for different browsers with requestAnimationFrame
 var requestAnimationFrame = window.requestAnimationFrame ||
@@ -71,7 +40,7 @@ var requestAnimationFrame = window.requestAnimationFrame ||
                             window.msRequestAnimationFrame;
 window.requestAnimationFrame = requestAnimationFrame;
 
-function drawVideoFrame(time) {
+var drawVideoFrame = function(time) {
   rafId = requestAnimationFrame(drawVideoFrame);
   capture = frames.length*60/1000;
   captureTxt = Math.floor(100*capture/vidLen)+'%';
@@ -81,23 +50,16 @@ function drawVideoFrame(time) {
   if (capture>=vidLen){ stopDL();}
 };
 
-function stopDL() {
+var stopDL = function() {
   $('.progressDiv').addClass('is-hidden');
   cancelAnimationFrame(rafId);
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-
-  console.log($('#loading-title').val());
-  console.log($('#loading-descr').val());
-  //Don't auto save
-  // submitVideo(webmBlob);
+  submitVideo(webmBlob);
 }
 
 var submitVideo = function (blob) {
   var formData = new FormData();
   //append input #formTitle #formDesc
-
-  formData.append('title', $(".kaytitle").text());
-  formData.append('desc', $(".kaydesc").text());
   formData.append('video',blob);
   $.ajax({
     url: '/uploadFinished',
@@ -108,28 +70,240 @@ var submitVideo = function (blob) {
     cache: false,
     processData:false,
     success: function(token, textStatus, jqXHR){
-      videoDLurl = window.URL.createObjectURL(blob);
-      videoDisplay.src = videoDLurl;
-      videoDisplay.controls = true;
-      $('.js-share').removeClass('is-inactive-btn');
+      $('.progressDiv').addClass('is-hidden');
       $('.share-p-text-container').removeClass('is-hidden');
       $('.js-lesson-prompt').text('Looks amazing!');
-      $('#vid-display').removeClass('is-hidden');
       $('.js-h-onload').addClass('is-hidden');
-      $('.js-s-onload').removeClass('is-hidden');      
+      $('.js-s-onload').removeClass('is-hidden');
+      $('.js-share').removeClass('is-inactive-btn');
       $('.js-share').attr('href','/share/'+token);
       $('.share-link').text('Copy this link: /share/'+token);
       $('meta[property=og\\:url]').attr('content', '/share/'+token);
-  	},
-  	error: function(jqXHR, textStatus, errorThrown){
-  	}
-  });
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+    }
+   });
+}
+
+var uploadFromComp = function (ev) {
+  var files = ev.target.files;
+  var maxSize = 10000000;
+
+  //TODO: implement multiple file upload on the server
+
+  for (var i=0; i<files.length; i++){
+    var file = files[i];
+    var reader = new FileReader();
+
+    reader.onload = (function(theFile) {
+      return function(e) {
+        if ( file.size < maxSize ) {
+          // var formData = new FormData();
+          // formData.append('file',file);
+          // $.ajax({
+          //   url: '/uploadMedia',
+          //   type: 'POST',
+          //   data:  formData,
+          //   mimeType:"multipart/form-data",
+          //   contentType: false,
+          //   cache: false,
+          //   processData:false,
+          //   success: function(data, textStatus, jqXHR){
+          //     var data = JSON.parse(data);
+              updateMediaLibrary(file,e.target.result);
+              $(".popup").addClass("is-hidden");
+              $(".fileError").text("");            
+          //   },
+          //   error: function(file, textStatus, jqXHR){
+          //     console.log('file error');
+          //   }
+          // });    
+          } else {
+          $('.loader').addClass('is-hidden');
+          $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
+        }
+      };
+    })(file);
+
+    reader.readAsDataURL(file); 
+  }
+}
+
+var updateMediaLibrary = function (file,data){
+  //create div and img/video tags
+    var type;
+    var style;
+    var fn;
+    if ( file.type.match(/image.*/) ){
+      type = 'img';
+      style = 'js-img-click';
+      fn = function() {
+        $(this).toggleClass('js-selected-video');
+        $(this).toggleClass('js-img-still');
+        // replace this instead with something to switch the target source
+        var stills = document.querySelectorAll('.js-img-still');
+        loopStills(stills);        
+      };  
+    } else if (file.type.match(/video.*/) ) {
+      type = 'video';
+      style = 'js-vid-click';
+      fn = function() {
+        $('.loader').removeClass('is-hidden');
+        $('.js-vid-click').removeClass('js-selected-video');
+        $(this).addClass('js-selected-video');
+        movie.addEventListener("loadeddata", showVid, false);
+        var thisSrc = $(this).attr('src');
+        movie.src = thisSrc;        
+      };
+    }
+
+    var div = document.createElement('div');
+    div.className += 'i-vid-container';
+    var media = document.createElement(type);
+    media.className += style;
+    media.src = data;    
+    media.addEventListener('click',fn,false);
+    div.appendChild(media);
+    document.getElementById('media-library').appendChild(div);
+}
+
+/*old filters.js*/
+var labelLines = function() {
+  //this function should take an input for the relevant effect, not brute force for all
+  for (var e=0; e< allEffects.length; e++){
+    $("pre:contains('effects."+allEffects[e]+"')").addClass('active-effect');
+    $("pre:contains('effects."+allEffects[e]+"')").attr('name',allEffects[e]);
+  }
+}
+
+var InitSeriously = function(){
+  movie.removeEventListener('canplay', InitSeriously, false);
+  if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
+    $('.compatibility-error').removeClass('is-hidden');
+  } 
+
+  seriouslyEffects = Seriously.effects();
+  //TODO: generalize to my media
+  video = seriously.source('#myvideo');
+  target = seriously.target('#canvas');
+
+  //Set up Seriously.js effects
+  var thisEffect;
+  effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
+  effects[allEffects[0]]["source"] = video;
+  thisEffect.amount = 0;
+  for (var i=1;i<allEffects.length;i++){
+    effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
+    effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
+    thisEffect.amount = 0;
+  }
+  target.source = effects[allEffects[allEffects.length-1]];    
+};
+
+var updateScript = function() {
+  //TODO: Check to see if the active effects have changed from before to now
+  //if so, reinit seriously. if not, do nothing
+  //Also, don't add and remove the script each time. Just update the script string via html
+  var scriptOld = document.getElementById('codeScript');
+  if (scriptOld) { scriptOld.remove();}
+  var scriptNew   = document.createElement('script');
+  scriptNew.id = 'codeScript';
+  var cmScript = myCodeMirror.getValue();
+  eval(cmScript);
+  var adjScript = "";
+  var textScript = "\n\ try {\n\ "+cmScript;
+
+  labelLines();
+  var matchEff = document.querySelectorAll(".active-effect");
+
+  var matchNames = [];
+  $('.btn-method').removeClass('is-active');
+  for (var t = 0; t < matchEff.length; t++) {
+    var matchE = matchEff[t];
+    matchNames.push($(matchE).attr("name"));
+    checkBtnStatus(matchE);
+  }
+
+  for (var c = 0; c < allEffects.length; c++) {
+    var thisEffect = allEffects[c];
+    if (matchNames.indexOf(thisEffect) < 0) {
+      adjScript+="\n\ effects." + thisEffect + ".amount = 0;";
+    } else {
+      var adjAmt = effects[thisEffect]['amount']*mult[thisEffect];
+      adjScript+="\n\ effects." + thisEffect +".amount = " +adjAmt+ ";";
+    }
+  }
+
+  textScript+=adjScript;
+  textScript+="\n\ } catch(e){"+ adjScript +"\n\ }";
+  scriptNew.text = textScript;
+
+  document.body.appendChild(scriptNew);
+}
+
+var checkBtnStatus = function(effect) {
+  //compare the names of effect buttons to the names in activeEffects
+  var effectName = $(effect).attr("name");
+  $('li[name=' + effectName + ']').addClass("is-active")
+
+}
+
+/*old lessons.js*/
+
+var loadThumbnails = function() {
+  var social = $('#social').text();
+
+  if (social=="instagram"){
+    $.ajax('/instagramVids',{
+      success: function(data, textStatus, jqXHR){
+        var igVids = data;
+        if (igVids.length){
+          for (var i=0; i < Math.min(igVids.length,3); i++){
+            $('#js-fetch-vid'+i).error(function(){
+              $(this).addClass('is-hidden');              
+            });
+            $('#js-fetch-vid'+i).removeClass('is-hidden');
+            document.getElementById('js-fetch-vid'+i).src = '/instagram/'+i;
+            document.getElementById('js-fetch-vid'+i).addEventListener("loadeddata", function(){
+            }, false);
+          }
+        } else {
+          $('.i-error').text("You don't have any Instagram videos :(");          
+        }
+      },
+      error: function(data, textStatus, jqXHR){
+        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");          
+      }
+    });
+  } else {
+    $('.insta-import').removeClass('is-hidden');
+  }
+}
+
+var slideLeft = function(oldSlide, newSlide){
+  $(newSlide).addClass('is-hidden');
+  $(oldSlide).removeClass('is-hidden');
+  $(oldSlide).animate({
+    opacity: 1,
+    'margin-left': "0px"
+    });
+}
+
+var slideRight = function(oldSlide, newSlide){
+  $(oldSlide).animate({
+    'margin-left': "-200px",
+    opacity: 0
+    }, function() {
+      $(oldSlide).addClass('is-hidden');
+    });
+  setTimeout(function(){
+    $(newSlide).removeClass('is-hidden');
+  }, 500);
 }
 
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
   canvas = document.getElementById('canvas');
-  videoDisplay = document.getElementById('vid-display');
   inputFile = document.getElementById('inputFile');
   seriously = new Seriously();
   seriously.go();
@@ -172,49 +346,6 @@ $( document ).ready(function() {
 
   // End video events section
 
-
-  $('.js-step-prev').click(function(){
-    var step = this.name;
-    var prevStep = parseInt(step,10)-1;
-    $('.step'+step).addClass('is-hidden');
-    $('.step'+prevStep).removeClass('is-hidden');
-    if(prevStep===1) {
-      $('.methodList').addClass('is-hidden');
-      $('#filterList').removeClass('is-hidden');
-    }
-    if(prevStep===3) {
-      $('.methodList').addClass('is-hidden');
-      $('#advFilterList').removeClass('is-hidden');
-    }
-    if(prevStep===5) {
-      $('.methodList').addClass('is-hidden');
-      $('#speedList').removeClass('is-hidden');
-    }
-  });
-
-  $('.js-step-next').click(function(){
-    var step = this.name;
-    var nextStep = parseInt(step,10)+1;
-    $('.step'+step).addClass('is-hidden');
-    $('.step'+nextStep).removeClass('is-hidden');
-    if(nextStep===1) {
-      $('.methodList').addClass('is-hidden');
-      $('#filterList').removeClass('is-hidden');
-    }
-    if(nextStep===3) {
-      $('.methodList').addClass('is-hidden');
-      $('#advFilterList').removeClass('is-hidden');
-    }
-    if(nextStep===5) {
-      $('.methodList').addClass('is-hidden');
-      $('#speedList').removeClass('is-hidden');
-    }
-  });
-
-  $('.js-steps-close').click(function(){
-    $('.steps').addClass('is-hidden');
-  })
-
   $(".js-upload-video").click(function(){
     $(".popup").removeClass("is-hidden");
   });
@@ -239,25 +370,6 @@ $( document ).ready(function() {
     $('.methodList').removeClass('is-hidden');
     movie.playbackRate = 1;
   });
-
-  $(".tab2").click(function(){
-      $(".tabs-2").removeClass("is-hidden");
-  });
-
-  $(".tab1").click(function(){
-      $(".tabs-1").removeClass("is-hidden");
-      $(".tabs-2").addClass("is-hidden");
-  });
-
-  $(".layer1").click(function(){
-      $(".displaysecond").animate({
-          "margin-left": 0}, "ease", function(){
-              $(".displayfirst").addClass("hidden2");
-          });
-      $(".tabs-1").removeClass("is-hidden");
-  });
-
-  $( "ul, li" ).disableSelection();
 
   $('.js-share-m').click(function(){
     modalVideoLoad('share');
@@ -292,69 +404,41 @@ $( document ).ready(function() {
     $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
   }
 
-//filters page
-  //checks for current status of buttons, for lesson steps
-  var timeshasdropped = 0;
-
   $(".tabs-2").droppable({
     drop: function( event, ui ) {
 
       lessonIsActive(".js-effects");
 
-      //lesson steps---
-      // timeshasdropped++;
-      // if (timeshasdropped ){
-      //   $('.steps').removeClass('is-hidden');
-      //   $('.step0').addClass('is-hidden');
-      // }
-      //---
-
       eff = ui.draggable.attr("name");
       $('[name='+eff+']').addClass("is-active");
-
-      // var thisEffect = seriously.effect(eff);
-      //generalize for all effect inputs
-
-      if (eff=="playbackRate"){
-        myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
-        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-      } else if (eff!="sepia"){
-        myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
-        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-        if (eff=="fader") {
-          myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      var filter = seriouslyEffects[eff];
+      if (filter) {
+        var input;
+        for (var i in filter.inputs) {
+          input = filter.inputs[i];
+          if( (i != 'source') || (i === 'time' || i === 'timer') ){
+            lineText = '\n\ effects.'+eff+'.'+i+' = '+defaultValue[input.type]+';';
+            myCodeMirror.replaceRange(lineText,CodeMirror.Pos(myCodeMirror.lastLine()));
+            myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+          }
         }
-      } else {
-        myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
-        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if (eff=="play"){
+          myCodeMirror.replaceRange('\n\ movie.'+eff+'();',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if (eff=="pause"){
+          myCodeMirror.replaceRange('\n\ movie.'+eff+'();',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if (eff=="playbackRate"){
+          myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
       }
 
       myCodeMirror.save();
-      // labelLines();
       $(".line-"+eff).effect("highlight",2000);
     }
   });
 
-  $('#filterList li').each(function(){
-    var e = $(this).attr("name");
-    if (e!="sepia") { allEffects.push(e); }
-    $(this).draggable({
-      helper: "clone",
-      revert: "invalid"
-    });
-  });
-
-  $('#advFilterList li').each(function(){
-    var e = $(this).attr("name");
-    if (e!="sepia") { allEffects.push(e); }
-    $(this).draggable({
-      helper: "clone",
-      revert: "invalid"
-    });
-  });
-
-  $('#speedList li').each(function(){
+  $('.methodList li').each(function(){
     $(this).draggable({
       helper: "clone",
       revert: "invalid"
@@ -375,34 +459,12 @@ $( document ).ready(function() {
     myCodeMirror.save();
   });
 
-//scrubbing page
-
-  // $('#mouseScrubber').draggable({
-  //   drag: function (event, ui){
-  //     labelLines();
-  //     var x = Math.max(0,ui.position.left/100);
-  //     var y = Math.max(0,ui.position.top/100);
-  //     myCodeMirror.eachLine( function(l){
-  //       var lineNum = myCodeMirror.getLineNumber(l);
-  //       var lineText=l.text;
-  //       if (lineText.indexOf("movie.playbackRate")!=-1) {
-  //         myCodeMirror.replaceRange(" movie.playbackRate = "+x+";", CodeMirror.Pos(lineNum,0), CodeMirror.Pos(lineNum));
-  //         myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-speed"});
-  //       }
-  //     });
-  //     myCodeMirror.save();
-  //     labelLines();
-  //     $(".line-speed").effect("highlight",2000);
-  //   }
-  // });
-
   var lessonIsActive = function(newLesson){
     $(newLesson).show();
     $(newLesson).animate({
       margin: "0px"
     }, 350);
   }
-
 
   //hover state of learn more section
 
@@ -496,6 +558,99 @@ $( document ).ready(function() {
   };
 
 });
+
+  $(".js-desc").click(function() {
+      $('.share-p-text-container').removeClass('is-hidden');
+      var buttonTitle = document.getElementById("formTitle").value;
+      $(".kaytitle").text(buttonTitle);
+      var buttonDesc = document.getElementById("formDesc").value;
+      $(".kaydesc").text(buttonDesc);
+      //resend form here if title/desc is updated      
+  });
+
+  loadThumbnails();
+
+  $('.js-img-click').click(function(){
+    $(this).addClass('js-selected-video');
+    // replace this instead with something to switch the target source
+    $(this).addClass('js-img-still');
+    var stills = document.querySelectorAll('.js-img-still');
+    loopStills(stills);
+    $('.CodeMirror-code').removeClass('is-hidden');
+  });
+
+  $('.js-vid-click').click(function(){
+    $('.loader').removeClass('is-hidden');
+    $('.js-vid-click').removeClass('js-selected-video');
+    $(this).addClass('js-selected-video');
+    movie.addEventListener("loadeddata", showVid, false);
+    var thisSrc = $(this).attr('src');
+    movie.src = thisSrc;
+  });
+
+
+//sliding functionality that we have to get rid of
+
+  $('.js-slide-right-final').click(function(){
+    slideRight('.js-slide-1', '.js-slide-title');
+    movie.play();
+    movie.muted = true;
+    $('.js-share').attr('href','#');    
+    $('.js-share').addClass('is-inactive-btn');    
+    $('.js-lesson-prompt').text('');    
+    $('#vid-display').addClass('is-hidden');
+    $('.progressDiv').removeClass('is-hidden');
+    frames=[];
+    rafId = requestAnimationFrame(drawVideoFrame);
+  });
+
+  $('.js-slide-left-title').click(function(){
+    movie.muted = false;  
+    slideLeft('.js-slide-1', '.js-slide-title');
+  });
+
+  $('.js-slide-left-first').click(function(){
+    slideLeft('.js-slide-title', '.js-slide-final');
+  });
+
+  $('.js-switch-videos').click(function(){
+    $('.methodsBox').addClass('is-hidden');
+    $(".js-switch-appear").removeClass("is-hidden");
+  });
+
+  //Switch between content
+  $('.js-switch-view').click(function(){
+    //Todo: Template these
+    var view = ($(this).attr('id'));
+    $('.basic-filter-method').addClass('is-hidden');
+    $('.adv-filter-method').addClass('is-hidden');
+    $('.movie-control-method').addClass('is-hidden');    
+    $('.stop-motion-method').addClass('is-hidden');
+    $('.'+view).removeClass('is-hidden');
+  })
+
+  //boolean game
+  var fclicks = 0;
+  $('.js-f-b-click').click(function(){
+    $(this).fadeOut('fast');
+    if($('.js-bool-switch').hasClass('is-showing-true')){
+      $('.js-bool-switch').removeClass('is-showing-true');
+      $('.js-bool-switch').addClass('is-showing-false');
+      $('.js-bool-switch').text('False');
+      fclicks++
+    }
+    else{
+      $('.js-bool-switch').removeClass('is-showing-false');
+      $('.js-bool-switch').addClass('is-showing-true');
+      $('.js-bool-switch').text('True');
+      fclicks++
+      if(fclicks === 8){
+        fclicks = 0;
+        $('.js-f-b-click').fadeIn();
+      }
+    }
+
+  });
 
 //MixPanel Tracking for Learn More
 
