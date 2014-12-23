@@ -118,7 +118,7 @@ var submitVideo = function (blob) {
       $('.js-h-onload').addClass('is-hidden');
       $('.js-s-onload').removeClass('is-hidden');
       $('.js-share').attr('href','/share/'+token);
-      $('.share-link').text('Copy this link: /share/'+token);
+      $('.share-link').text('Copy this link: '+window.location.host+'/share/'+token);
       $('meta[property=og\\:url]').attr('content', window.location.host+'/share/'+token);
       addthis.layers.refresh();
   	},
