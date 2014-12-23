@@ -79,6 +79,7 @@ var submitVideo = function (blob) {
       $('.js-share').attr('href','/share/'+token);
       $('.share-link').text('Copy this link: '+window.location.host+'/share/'+token);
       $('meta[property=og\\:url]').attr('content', window.location.host+'/share/'+token);
+      addthis.layers.refresh();
     },
     error: function(jqXHR, textStatus, errorThrown){
     }
