@@ -17,6 +17,8 @@ var movie,
     mult = {'blur':.01, 'noise':.1, 'vignette': 1, 'exposure':.04,'fader':.04, 'kaleidoscope':1, 'saturation':.1};
     defaultValue =  {'number':5 , 'color': '"red"'};
 
+    stopMotionEffects = {'interval': 500, 'frames': 'function() { //rate = 100; }', 'rate': '"in milliseconds"'};
+
 var showVid = function() {
   numVidSelect++;
   $('.vid-placeholder').addClass('is-hidden');
@@ -203,7 +205,7 @@ var InitSeriously = function(){
 var updateScript = function() {
   //TODO: Check to see if the active effects have changed from before to now
   //if so, reinit seriously. if not, do nothing
-  //Also, don't add and remove the script each time. Just update the script string via html
+  //Also, don't add and remove the script each time. Just update the script string via innerhtml
   var scriptOld = document.getElementById('codeScript');
   if (scriptOld) { scriptOld.remove();}
   var scriptNew   = document.createElement('script');
@@ -430,6 +432,9 @@ $( document ).ready(function() {
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
       } else if (eff=="playbackRate"){
           myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
+          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if ( stopMotionEffects.hasOwnProperty(eff) ){
+          myCodeMirror.replaceRange('\n\ var '+eff+' = '+stopMotionEffects[eff]+';',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
       }
 
