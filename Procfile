@@ -1,1 +1,1 @@
-web: node web.js
+web: INSTAGRAM_CLIENT_ID = 0307a79f00a740668137e4d62e3dd97a INSTAGRAM_CLIENT_SECRET = 703be67161c64e4891d09ecdc052e091 FACEBOOK_APP_ID = 318702334960399 FACEBOOK_APP_SECRET = 69bd6d08b0330cdb9e0e874b2476d774 FACEBOOK_CB = http://vidcode-dev.herokuapp.com/auth/facebook/cb INSTAGRAM_CB = http://vidcode-dev.herokuapp.com/auth/instagram/cb node web.js
