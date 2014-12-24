@@ -1,6 +1,6 @@
 .DS_Store
-
 .env
+Procfile
 node_modules
 npm-debug.log
 config.json
