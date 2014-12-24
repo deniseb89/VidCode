@@ -99,13 +99,13 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/intro/:social?/:id?', routes.intro(db));
   app.get('/csweek', routes.csweek);
   app.get('/lesson/1', routes.partone(db));
-  // app.get('/lesson/tc2', routes.lessontwo(db));
-  // app.get('/lesson/tc3', routes.lessonthree(db));
+
   app.get('/share/:token?', routes.share(db));
   app.get('/profile', routes.profilePage(db))
   app.get('/gallery', routes.gallery);
   app.get('/galleryshow', routes.galleryshow);
 
+  app.get('/holidays', routes.cs1(db));
   app.get('/lesson/cs1', routes.cs1(db));
 
   // sign up + sign in

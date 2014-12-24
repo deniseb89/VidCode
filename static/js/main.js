@@ -266,14 +266,6 @@ $( document ).ready(function() {
 
       lessonIsActive(".js-effects");
 
-      //lesson steps---
-      // timeshasdropped++;
-      // if (timeshasdropped ){
-      //   $('.steps').removeClass('is-hidden');
-      //   $('.step0').addClass('is-hidden');
-      // }
-      //---
-
       eff = ui.draggable.attr("name");
       $('[name='+eff+']').addClass("is-active");
 
@@ -283,16 +275,21 @@ $( document ).ready(function() {
       if (eff=="playbackRate"){
         myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
         myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-      } else if (eff!="sepia"){
+      } else if (holiday.effects.hasOwnProperty(eff)){
+        myCodeMirror.replaceRange('\n\ holiday.colors = ['+holiday.effects[eff]+'];',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+        myCodeMirror.replaceRange('\n\ holiday.amount = 50;',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else if (eff=="sepia"){
+        myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+      } else {
         myCodeMirror.replaceRange('\n\ effects.'+eff+'.amount = 5;',CodeMirror.Pos(myCodeMirror.lastLine()));
         myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
         if (eff=="fader") {
           myCodeMirror.replaceRange('\n\ effects.'+eff+'.color = "red";',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
         }
-      } else {
-        myCodeMirror.replaceRange('\n\ effects.'+eff+';',CodeMirror.Pos(myCodeMirror.lastLine()));
-        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
       }
 
       myCodeMirror.save();
@@ -312,7 +309,6 @@ $( document ).ready(function() {
 
   $('#advFilterList li').each(function(){
     var e = $(this).attr("name");
-    if (e!="sepia") { allEffects.push(e); }
     $(this).draggable({
       helper: "clone",
       revert: "invalid"

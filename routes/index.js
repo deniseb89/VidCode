@@ -219,8 +219,7 @@ exports.lessonthree = function (db) {
 exports.cs1 = function (db) {
    return function (req, res) {
     var filters = ['blur','noise','vignette', 'exposure'];
-    var advFilters = ['fader'];          
-    // var advFilters = ['fader','kaleidoscope'];          
+    var advFilters = ['christmas','chanukah'];          
     var codeText =
 '\
  movie.play();\n\

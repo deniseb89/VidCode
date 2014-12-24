@@ -1,5 +1,35 @@
-var allEffects = [];
+var allEffects = ['fader'];
 var mult = {'blur':.01, 'fader':.04, 'exposure':.04, 'noise':.1, 'vignette': 1 };
+
+//holiday objects
+var holiday = { 
+  on : false,
+  amount : 0,
+  colors : [],
+  effects : {'christmas': ['"red"','"green"'] , 'chanukah': ['"blue"','"white"'] , 'new-years': ['"red"','"green"','"blue"','"pink"'] },
+  start: function(){
+    clearInterval(holiday.animate);
+    var ix;
+    var color;
+      holiday.animate = setInterval(function (){
+        ix = Math.floor(holiday.colors.length * Math.random() );
+        color = holiday.colors[ix];
+        effects.fader.amount = .01 * holiday.amount;
+        effects.fader.color = color;
+      }, 500);
+    holiday.on = true;
+  },
+  stop : function(){
+    clearInterval(holiday.animate);
+    holiday.on = false;
+  }
+};
+
+// var holidays = function(colors) {
+
+// };
+
+//end holidays 
 
 var labelLines = function() {
   //this function should take an input for the relevant effect, not brute force for all
@@ -56,6 +86,17 @@ var updateScript = function() {
     if (si>=0) {
       allEffects.splice(si,1);
       InitSeriously();
+    }
+  }
+
+  if (textScript.indexOf('holiday.')>=0) {
+    if (!holiday.on) {
+      holiday.start();
+    }
+  } else {
+    if (holiday.on) {
+      effects.fader.amount = 0;
+      holiday.stop();
     }
   }
 
