@@ -15,7 +15,8 @@ var Grid = require("gridfs-stream");
 // create mongodb
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
-var host = process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/vidcode';
+//var host = process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/vidcode';
+var host = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/vidcode';
 var gfs; //grid-fs object
 var db; //a copy of db object
 //var monk = require('monk');
