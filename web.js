@@ -98,7 +98,9 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/signin', routes.signin);
   app.get('/intro/:social?/:id?', routes.intro(db));
   app.get('/csweek', routes.csweek);
-  app.get('/lesson/1', routes.partone(db));
+  app.get('/lesson/1', function(req, res){
+      res.redirect ('/holidays');    
+  });
 
   app.get('/share/:token?', routes.share(db));
   app.get('/profile', routes.profilePage(db))
@@ -106,7 +108,9 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/galleryshow', routes.galleryshow);
 
   app.get('/holidays', routes.cs1(db));
-  app.get('/lesson/cs1', routes.cs1(db));
+  app.get('/lesson/cs1', function(req, res){
+      res.redirect ('/holidays');
+  });
 
   // sign up + sign in
   app.post('/signup', routes.signup(db));
