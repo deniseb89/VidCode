@@ -15,8 +15,11 @@ var Grid = require("gridfs-stream");
 // create mongodb
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
+console.log('MongoClient var set');
 //var host = process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/vidcode';
 var host = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/vidcode';
+console.log('host value');
+console.log(host);
 var gfs; //grid-fs object
 var db; //a copy of db object
 //var monk = require('monk');
@@ -93,6 +96,7 @@ var routes = require('./routes');
 
 // create server
 // connect to Mongo
+console.log('connect to Mongo database');
 MongoClient.connect(host, function(err, Db) {
   if (err) throw err;
   db = Db;
