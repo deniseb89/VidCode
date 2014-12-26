@@ -1,18 +1,29 @@
+//stopMotion object
 
-var stopMotion;
-var frameArray=[];
-var interval;
+var stopMotion = {
+  temp: 1, 
+  on : false,
+  reserve: false,
+  interval : 500,
+  controls : {'interval': 500, 'frames': '[ , ]','reverse': 'stopMotion.reverse = false'},
 
-var loopStills = function(stills){
+  start: function(){
+  	clearInterval(stopMotion.animate);
+  	var i = 0;
+  	var stills = document.querySelectorAll('.js-selected-still'); 
+  	stopMotion.animate = setInterval(function(){
+  		var still = seriously.source(stills[i]); 
+  		target.source = still; 
+  		i++; 
+  		if (i >= stills.length) { i = 0; } 
+  	}, stopMotion.interval); 
+  	stopMotion.on = true; 
+  },
+  reserve: function(){
 
-	//only run this if stopMotion has been initialized in the editor
-
-  clearInterval(stopMotion);
-  var i = 0;
-  stopMotion = setInterval(function(){
-    var still = seriously.source(stills[i]);
-    target.source = still;
-    i++;
-    if (i >= stills.length) { i = 0; }
-  }, interval)
+  },
+  stop : function(){
+  	clearInterval(stopMotion.animate); 
+  	stopMotion.on = false; 
+  } 
 };

@@ -17,13 +17,9 @@ var movie,
     mult = {'blur':.01, 'noise':.1, 'vignette': 1, 'exposure':.04,'fader':.04, 'kaleidoscope':1, 'saturation':.1};
     defaultValue =  {'number':5 , 'color': '"red"'};
 
-    stopMotionEffects = {'interval': 500, 'frames': 'function() { //rate = 100; }', 'rate': '"in milliseconds"'};
-
 var showVid = function() {
   numVidSelect++;
   $('.vid-placeholder').addClass('is-hidden');
-  $('.js-activate-btn').addClass('is-hidden');
-  $('.js-slide-right-final').removeClass('is-hidden');
   $('.loader').addClass('is-hidden');
   $(".popup").addClass("is-hidden");
   $(".clearHover").addClass("is-hidden");
@@ -141,10 +137,7 @@ var updateMediaLibrary = function (file,data){
       style = 'js-img-click';
       fn = function() {
         $(this).toggleClass('js-selected-video');
-        $(this).toggleClass('js-img-still');
-        // replace this instead with something to switch the target source
-        var stills = document.querySelectorAll('.js-img-still');
-        loopStills(stills);        
+        $(this).toggleClass('js-selected-still');
       };  
     } else if (file.type.match(/video.*/) ) {
       type = 'video';
@@ -178,19 +171,27 @@ var labelLines = function() {
   }
 };
 
-var InitSeriously = function(){
-  movie.removeEventListener('canplay', InitSeriously, false);
+var setup = function(){
+   //check Seriously compatibility
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
     $('.compatibility-error').removeClass('is-hidden');
-  } 
+  } else {
+    $("#joyRideTipContent").joyride({
+      autoStart: true
+    });
+    InitSeriously();
+  }  
+  movie.removeEventListener('canplay', setup, false);
+}
 
-  seriouslyEffects = Seriously.effects();
+var InitSeriously = function(){
   //TODO: generalize to my media
   video = seriously.source('#myvideo');
   target = seriously.target('#canvas');
 
   //Set up Seriously.js effects
   var thisEffect;
+  seriouslyEffects = Seriously.effects();
   effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
   effects[allEffects[0]]["source"] = video;
   thisEffect.amount = 0;
@@ -203,9 +204,6 @@ var InitSeriously = function(){
 };
 
 var updateScript = function() {
-  //TODO: Check to see if the active effects have changed from before to now
-  //if so, reinit seriously. if not, do nothing
-  //Also, don't add and remove the script each time. Just update the script string via innerhtml
   var scriptOld = document.getElementById('codeScript');
   if (scriptOld) { scriptOld.remove();}
   var scriptNew   = document.createElement('script');
@@ -214,6 +212,34 @@ var updateScript = function() {
   eval(cmScript);
   var adjScript = "";
   var textScript = "\n\ try {\n\ "+cmScript;
+
+  /*TODO: Check to see if the active effects have changed from before to now
+  if so, reinit seriously. if not, do nothing
+  Also, don't add and remove the script each time. Just update the script string via innerhtml
+  */
+
+  // if (textScript.indexOf('effects.sepia')>=0) {
+  //   if (allEffects.indexOf('sepia')<0) {
+  //     allEffects.push('sepia');
+  //     InitSeriously();
+  //   }
+  // } else {
+  //   var si = allEffects.indexOf('sepia');
+  //   if (si>=0) {
+  //     allEffects.splice(si,1);
+  //     InitSeriously();
+  //   }
+  // }
+
+  if (textScript.indexOf('stopMotion.interval')>=0) {
+    // if (!stopMotion.on) {
+      stopMotion.start();
+    // }
+  } else {
+    if (stopMotion.on) {
+      stopMotion.stop();
+    }
+  }
 
   labelLines();
   var matchEff = document.querySelectorAll(".active-effect");
@@ -308,7 +334,7 @@ $( document ).ready(function() {
   inputFile = document.getElementById('inputFile');
   seriously = new Seriously();
   seriously.go();
-  movie.addEventListener('canplay', InitSeriously, false);
+  movie.addEventListener('canplay', setup, false);
   movie.load();
 
   inputFile.addEventListener('change',uploadFromComp, false);
@@ -410,7 +436,7 @@ $( document ).ready(function() {
 
       lessonIsActive(".js-effects");
 
-      eff = ui.draggable.attr("name");
+      var eff = ui.draggable.attr("name");
       $('[name='+eff+']').addClass("is-active");
       var filter = seriouslyEffects[eff];
       if (filter) {
@@ -432,8 +458,8 @@ $( document ).ready(function() {
       } else if (eff=="playbackRate"){
           myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-      } else if ( stopMotionEffects.hasOwnProperty(eff) ){
-          myCodeMirror.replaceRange('\n\ var '+eff+' = '+stopMotionEffects[eff]+';',CodeMirror.Pos(myCodeMirror.lastLine()));
+      } else if ( stopMotion.controls.hasOwnProperty(eff) ){
+          myCodeMirror.replaceRange('\n\ '+eff+' = '+stopMotion.controls[eff]+';',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
       }
 
@@ -576,11 +602,7 @@ $( document ).ready(function() {
 
   $('.js-img-click').click(function(){
     $(this).addClass('js-selected-video');
-    // replace this instead with something to switch the target source
-    $(this).addClass('js-img-still');
-    var stills = document.querySelectorAll('.js-img-still');
-    loopStills(stills);
-    $('.CodeMirror-code').removeClass('is-hidden');
+    $(this).addClass('js-selected-still');
   });
 
   $('.js-vid-click').click(function(){
