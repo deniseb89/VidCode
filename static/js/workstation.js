@@ -29,8 +29,18 @@ var showVid = function() {
   $(".runbtn").removeClass("is-hidden");
   $(".video2").removeClass("is-hidden");
   $('.CodeMirror-code').removeClass('is-hidden');
+  activateEndButtons('save');
+  activateEndButtons('share');
   labelLines();
   vidLen = Math.round(this.duration);
+};
+
+
+
+var activateEndButtons = function(bType){
+  $('.inactive-js-' + bType + '-m').addClass('js-' + bType + '-m');
+  $('.inactive-js-' + bType + '-m').removeClass('inactive-b-a-btn');
+  $('.inactive-js-' + bType + '-m').removeClass('inactive-js-' + bType + '-m');
 };
 
 //account for different browsers with requestAnimationFrame
@@ -364,12 +374,14 @@ $( document ).ready(function() {
     movie.playbackRate = 1;
   });
 
-  $('.js-share-m').click(function(){
+  $('.save-btns-container').on('click', ".js-share-m", function(){
     modalVideoLoad('share');
   });
-  $('.js-save-m').click(function(){
+
+  $('.save-btns-container').on('click', ".js-save-m", function(){
     modalVideoLoad('save');
   });
+
 
   var modalVideoLoad = function(mname){
     addThisStyles();
