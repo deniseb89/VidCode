@@ -21,7 +21,6 @@ var showVid = function() {
   numVidSelect++;
   $('.vid-placeholder').addClass('is-hidden');
   $('.js-activate-btn').addClass('is-hidden');
-  $('.js-slide-right-final').removeClass('is-hidden');
   $('.loader').addClass('is-hidden');
   $(".popup").addClass("is-hidden");
   $(".clearHover").addClass("is-hidden");
@@ -399,6 +398,7 @@ $( document ).ready(function() {
     $(this).addClass('is-hidden');
     $('.js-s-onload').addClass('is-hidden');
     $('.js-h-onload').removeClass('is-hidden');
+    $('.dl-progress').css('width','1px');
   });
 
   //addthis functionality and appearance
