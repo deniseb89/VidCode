@@ -27,8 +27,18 @@ var showVid = function() {
   $(".runbtn").removeClass("is-hidden");
   $(".video2").removeClass("is-hidden");
   $('.CodeMirror-code').removeClass('is-hidden');
+  activateEndButtons('save');
+  activateEndButtons('share');
   labelLines();
   vidLen = Math.round(this.duration);
+};
+
+
+
+var activateEndButtons = function(bType){
+  $('.inactive-js-' + bType + '-m').addClass('js-' + bType + '-m');
+  $('.inactive-js-' + bType + '-m').removeClass('inactive-b-a-btn');
+  $('.inactive-js-' + bType + '-m').removeClass('inactive-js-' + bType + '-m');
 };
 
 //account for different browsers with requestAnimationFrame
@@ -53,7 +63,7 @@ var stopDL = function() {
   cancelAnimationFrame(rafId);
   var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
   submitVideo(webmBlob);
-};
+}
 
 var submitVideo = function (blob) {
   var formData = new FormData();
@@ -73,15 +83,17 @@ var submitVideo = function (blob) {
       $('.js-lesson-prompt').text('Looks amazing!');
       $('.js-h-onload').addClass('is-hidden');
       $('.js-s-onload').removeClass('is-hidden');
+      $('.js-share').removeClass('is-inactive-btn');
       $('.js-share').attr('href','/share/'+token);
-      $('.share-link').text('Copy this link: '+window.location.host+'/share/'+token);
-      $('meta[property=og\\:url]').attr('content', window.location.host+'/share/'+token);
+      $('.js-share-link-to-copy').val(window.location.host+'/share/'+token);
+      //$('meta[property=og\\:url]').attr('content', window.location.host+'/share/'+token);
+      window.history.pushState("Share", "Share Your Video", '/share/'+token);
       addthis.layers.refresh();
     },
     error: function(jqXHR, textStatus, errorThrown){
     }
-  });
-};
+   });
+}
 
 var uploadFromComp = function (ev) {
   var files = ev.target.files;
@@ -110,12 +122,12 @@ var uploadFromComp = function (ev) {
           //     var data = JSON.parse(data);
               updateMediaLibrary(file,e.target.result);
               $(".popup").addClass("is-hidden");
-              $(".fileError").text("");            
+              $(".fileError").text("");
           //   },
           //   error: function(file, textStatus, jqXHR){
           //     console.log('file error');
           //   }
-          // });    
+          // });
           } else {
           $('.loader').addClass('is-hidden');
           $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
@@ -123,44 +135,38 @@ var uploadFromComp = function (ev) {
       };
     })(file);
 
-    reader.readAsDataURL(file); 
+    reader.readAsDataURL(file);
   }
-};
+}
 
 var updateMediaLibrary = function (file,data){
   //create div and img/video tags
     var type;
     var style;
-    var fn;
     if ( file.type.match(/image.*/) ){
       type = 'img';
       style = 'js-img-click';
-      fn = function() {
-        $(this).toggleClass('js-selected-video');
-        $(this).toggleClass('js-selected-still');
-      };  
     } else if (file.type.match(/video.*/) ) {
       type = 'video';
       style = 'js-vid-click';
-      fn = function() {
-        $('.loader').removeClass('is-hidden');
-        $('.js-vid-click').removeClass('js-selected-video');
-        $(this).addClass('js-selected-video');
-        movie.addEventListener("loadeddata", showVid, false);
-        var thisSrc = $(this).attr('src');
-        movie.src = thisSrc;        
-      };
     }
 
     var div = document.createElement('div');
     div.className += 'i-vid-container';
     var media = document.createElement(type);
     media.className += style;
-    media.src = data;    
-    media.addEventListener('click',fn,false);
+    media.src = data;
+    media.addEventListener('click', function(){
+      $('.loader').removeClass('is-hidden');
+      $('.js-vid-click').removeClass('js-selected-video');
+      $(this).addClass('js-selected-video');
+      movie.addEventListener("loadeddata", showVid, false);
+      var thisSrc = $(this).attr('src');
+      movie.src = thisSrc;
+    }, false);
     div.appendChild(media);
     document.getElementById('media-library').appendChild(div);
-};
+}
 
 /*old filters.js*/
 var labelLines = function() {
@@ -169,29 +175,21 @@ var labelLines = function() {
     $("pre:contains('effects."+allEffects[e]+"')").addClass('active-effect');
     $("pre:contains('effects."+allEffects[e]+"')").attr('name',allEffects[e]);
   }
-};
-
-var setup = function(){
-   //check Seriously compatibility
-  if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
-    $('.compatibility-error').removeClass('is-hidden');
-  } else {
-    $("#joyRideTipContent").joyride({
-      autoStart: true
-    });
-    InitSeriously();
-  }  
-  movie.removeEventListener('canplay', setup, false);
 }
 
 var InitSeriously = function(){
+  movie.removeEventListener('canplay', InitSeriously, false);
+  if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
+    $('.compatibility-error').removeClass('is-hidden');
+  }
+
+  seriouslyEffects = Seriously.effects();
   //TODO: generalize to my media
   video = seriously.source('#myvideo');
   target = seriously.target('#canvas');
 
   //Set up Seriously.js effects
   var thisEffect;
-  seriouslyEffects = Seriously.effects();
   effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
   effects[allEffects[0]]["source"] = video;
   thisEffect.amount = 0;
@@ -200,10 +198,13 @@ var InitSeriously = function(){
     effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
     thisEffect.amount = 0;
   }
-  target.source = effects[allEffects[allEffects.length-1]];    
+  target.source = effects[allEffects[allEffects.length-1]];
 };
 
 var updateScript = function() {
+  //TODO: Check to see if the active effects have changed from before to now
+  //if so, reinit seriously. if not, do nothing
+  //Also, don't add and remove the script each time. Just update the script string via html
   var scriptOld = document.getElementById('codeScript');
   if (scriptOld) { scriptOld.remove();}
   var scriptNew   = document.createElement('script');
@@ -212,34 +213,6 @@ var updateScript = function() {
   eval(cmScript);
   var adjScript = "";
   var textScript = "\n\ try {\n\ "+cmScript;
-
-  /*TODO: Check to see if the active effects have changed from before to now
-  if so, reinit seriously. if not, do nothing
-  Also, don't add and remove the script each time. Just update the script string via innerhtml
-  */
-
-  // if (textScript.indexOf('effects.sepia')>=0) {
-  //   if (allEffects.indexOf('sepia')<0) {
-  //     allEffects.push('sepia');
-  //     InitSeriously();
-  //   }
-  // } else {
-  //   var si = allEffects.indexOf('sepia');
-  //   if (si>=0) {
-  //     allEffects.splice(si,1);
-  //     InitSeriously();
-  //   }
-  // }
-
-  if (textScript.indexOf('stopMotion.interval')>=0) {
-    // if (!stopMotion.on) {
-      stopMotion.start();
-    // }
-  } else {
-    if (stopMotion.on) {
-      stopMotion.stop();
-    }
-  }
 
   labelLines();
   var matchEff = document.querySelectorAll(".active-effect");
@@ -267,13 +240,14 @@ var updateScript = function() {
   scriptNew.text = textScript;
 
   document.body.appendChild(scriptNew);
-};
+}
 
 var checkBtnStatus = function(effect) {
   //compare the names of effect buttons to the names in activeEffects
   var effectName = $(effect).attr("name");
   $('li[name=' + effectName + ']').addClass("is-active")
-};
+
+}
 
 /*old lessons.js*/
 
@@ -287,7 +261,7 @@ var loadThumbnails = function() {
         if (igVids.length){
           for (var i=0; i < Math.min(igVids.length,3); i++){
             $('#js-fetch-vid'+i).error(function(){
-              $(this).addClass('is-hidden');              
+              $(this).addClass('is-hidden');
             });
             $('#js-fetch-vid'+i).removeClass('is-hidden');
             document.getElementById('js-fetch-vid'+i).src = '/instagram/'+i;
@@ -295,17 +269,17 @@ var loadThumbnails = function() {
             }, false);
           }
         } else {
-          $('.i-error').text("You don't have any Instagram videos :(");          
+          $('.i-error').text("You don't have any Instagram videos :(");
         }
       },
       error: function(data, textStatus, jqXHR){
-        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");          
+        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");
       }
     });
   } else {
     $('.insta-import').removeClass('is-hidden');
   }
-};
+}
 
 var slideLeft = function(oldSlide, newSlide){
   $(newSlide).addClass('is-hidden');
@@ -314,7 +288,7 @@ var slideLeft = function(oldSlide, newSlide){
     opacity: 1,
     'margin-left': "0px"
     });
-};
+}
 
 var slideRight = function(oldSlide, newSlide){
   $(oldSlide).animate({
@@ -326,7 +300,7 @@ var slideRight = function(oldSlide, newSlide){
   setTimeout(function(){
     $(newSlide).removeClass('is-hidden');
   }, 500);
-};
+}
 
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
@@ -334,7 +308,7 @@ $( document ).ready(function() {
   inputFile = document.getElementById('inputFile');
   seriously = new Seriously();
   seriously.go();
-  movie.addEventListener('canplay', setup, false);
+  movie.addEventListener('canplay', InitSeriously, false);
   movie.load();
 
   inputFile.addEventListener('change',uploadFromComp, false);
@@ -354,6 +328,11 @@ $( document ).ready(function() {
   myCodeMirror.on("change", function() {
     clearTimeout(codeDelay);
     codeDelay = setTimeout(updateScript, 300);
+  });
+
+  //share success on copy click
+  $('.js-copy-sucess').click(function(){
+    $(this).text('✓');
   });
 
 
@@ -398,12 +377,14 @@ $( document ).ready(function() {
     movie.playbackRate = 1;
   });
 
-  $('.js-share-m').click(function(){
+  $('.save-btns-container').on('click', ".js-share-m", function(){
     modalVideoLoad('share');
   });
-  $('.js-save-m').click(function(){
+
+  $('.save-btns-container').on('click', ".js-save-m", function(){
     modalVideoLoad('save');
   });
+
 
   var modalVideoLoad = function(mname){
     addThisStyles();
@@ -413,7 +394,7 @@ $( document ).ready(function() {
     $('.progressDiv').removeClass('is-hidden');
     frames=[];
     rafId = requestAnimationFrame(drawVideoFrame);
-  };
+  }
 
   $('.js-hide-a-m').click(function(){
     $('.share-modal').addClass('is-hidden');
@@ -421,6 +402,7 @@ $( document ).ready(function() {
     $(this).addClass('is-hidden');
     $('.js-s-onload').addClass('is-hidden');
     $('.js-h-onload').removeClass('is-hidden');
+    $('.dl-progress').css('width','1px');
   });
 
   //addthis functionality and appearance
@@ -429,14 +411,14 @@ $( document ).ready(function() {
     $('.at15t_facebook').html('<img src="/img/icons/fb-icon.png"> share with facebook');
     $('.at15t_twitter').attr('id', 'tw-btn-styling');
     $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
-  };
+  }
 
   $(".tabs-2").droppable({
     drop: function( event, ui ) {
 
       lessonIsActive(".js-effects");
 
-      var eff = ui.draggable.attr("name");
+      eff = ui.draggable.attr("name");
       $('[name='+eff+']').addClass("is-active");
       var filter = seriouslyEffects[eff];
       if (filter) {
@@ -457,9 +439,6 @@ $( document ).ready(function() {
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
       } else if (eff=="playbackRate"){
           myCodeMirror.replaceRange('\n\ movie.'+eff+' = 1.0;',CodeMirror.Pos(myCodeMirror.lastLine()));
-          myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
-      } else if ( stopMotion.controls.hasOwnProperty(eff) ){
-          myCodeMirror.replaceRange('\n\ stopMotion.'+eff+' = '+stopMotion.controls[eff]+';',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
       }
 
@@ -494,7 +473,7 @@ $( document ).ready(function() {
     $(newLesson).animate({
       margin: "0px"
     }, 350);
-  };
+  }
 
   //hover state of learn more section
 
@@ -595,14 +574,18 @@ $( document ).ready(function() {
       $(".kaytitle").text(buttonTitle);
       var buttonDesc = document.getElementById("formDesc").value;
       $(".kaydesc").text(buttonDesc);
-      //resend form here if title/desc is updated      
+      //resend form here if title/desc is updated
   });
 
   loadThumbnails();
 
   $('.js-img-click').click(function(){
     $(this).addClass('js-selected-video');
-    $(this).addClass('js-selected-still');
+    // replace this instead with something to switch the target source
+    $(this).addClass('js-img-still');
+    var stills = document.querySelectorAll('.js-img-still');
+    loopStills(stills);
+    $('.CodeMirror-code').removeClass('is-hidden');
   });
 
   $('.js-vid-click').click(function(){
@@ -621,9 +604,9 @@ $( document ).ready(function() {
     slideRight('.js-slide-1', '.js-slide-title');
     movie.play();
     movie.muted = true;
-    $('.js-share').attr('href','#');    
-    $('.js-share').addClass('is-inactive-btn');    
-    $('.js-lesson-prompt').text('');    
+    $('.js-share').attr('href','#');
+    $('.js-share').addClass('is-inactive-btn');
+    $('.js-lesson-prompt').text('');
     $('#vid-display').addClass('is-hidden');
     $('.progressDiv').removeClass('is-hidden');
     frames=[];
@@ -631,7 +614,7 @@ $( document ).ready(function() {
   });
 
   $('.js-slide-left-title').click(function(){
-    movie.muted = false;  
+    movie.muted = false;
     slideLeft('.js-slide-1', '.js-slide-title');
   });
 
@@ -650,7 +633,7 @@ $( document ).ready(function() {
     var view = ($(this).attr('id'));
     $('.basic-filter-method').addClass('is-hidden');
     $('.adv-filter-method').addClass('is-hidden');
-    $('.movie-control-method').addClass('is-hidden');    
+    $('.movie-control-method').addClass('is-hidden');
     $('.stop-motion-method').addClass('is-hidden');
     $('.'+view).removeClass('is-hidden');
   })
