@@ -217,9 +217,11 @@ body.is-in-signup{overflow: hidden;}
 .a-share-btn:hover{opacity: .95; background-color: #1B2144;}
 
 .big-action-btn{background: #fff; border: 2px #58355F solid; border-radius: 1px; padding: 5px 13px;
-                color: #58355F; text-transform: uppercase; font-size: 1.3em;
+                color: #58355F; text-transform: uppercase; font-size: 1.3em; cursor: pointer;
 }
-.big-action-btn:hover{cursor: pointer;}
+.big-action-btn:hover{color: #fff; background: #58355F;}
+.inactive-b-a-btn{cursor: default; opacity: .4;}
+.inactive-b-a-btn:hover{background: #fff; color: #58355F;}
 
 .btn-purple{
     background-color: #441B4B; border: 0px;}
@@ -246,6 +248,10 @@ body.is-in-signup{overflow: hidden;}
 
 .cyan-btn{background-color: #3BE2D6;}
 .cyan-btn:hover{background-color: #24ADA4;}
+
+.save-btn-container .green-btn{height: 36px;border-radius: 0 4px 4px 0;
+text-align: center;padding: 8px 0;color: #fff;text-transform: uppercase;cursor: pointer;
+}
 
 
 
@@ -415,19 +421,6 @@ margin-top: -57px;
 margin-left: 148px;
 z-index: 100000;}
 
-.displaysecond{
-    position: absolute!important;
-    width: 480px!important;
-    z-index: 501;
-    background-color: #fff;
-}
-
-.hidden2{
-    margin-top: 3px;
-    height: 5px;
-    opacity: 0;
-}
-
 .tabs-1{
     border: #BDBFBF solid 1px;
     height: 600px;
@@ -469,7 +462,7 @@ z-index: 100000;}
 }
 
 .adv-filter-method .btn{
-    background-color: rgba(128, 0, 0, 0.61);    
+    background-color: rgba(128, 0, 0, 0.61);
 }
 
 .movie-control-method .btn{
@@ -767,6 +760,11 @@ canvas{vertical-align: bottom;}
 
 /* =============    Individual Lessons Code   ======== */
 .set-container{width: 95%; margin: 20px auto; background-color: #fff}
+
+
+.save-btns-container{margin: -7px 0 -12px 16px;}
+.save-btns-container span{margin-right: 9px;}
+
 .lesson-page .progress-set{ margin: 0 auto; width: 450px; padding: 20px;}
 .lesson-page .progress-set h2{font-size: 1.3em; display: inline;}
 .lesson-page .progress-num{border: 1px solid #441B4B;
@@ -942,6 +940,7 @@ canvas{vertical-align: bottom;}
 .is-inactive-btn:hover{background-color: #441B4B!important;}
 
 .push-15{margin-top: 15px!important;}
+.push-40{margin-top: 40px!important;}
 
 .header-text-s{color: rgb(0,121,184); margin-bottom: 11px;}
 .header-text-s h3{font-weight: 400; float: left;}
@@ -990,7 +989,9 @@ canvas{vertical-align: bottom;}
 .btn-center{width: 97%; margin: 0 auto;}
 .action-m{z-index: 10;position: relative;}
 .action-modal .generalInput{width: 100%; margin: 0 auto 15px;}
+.share-link .generalInput{width: 300px;float: left;}
 .s-btn{padding: 10px 28px;margin-left: 355px;}
+.text-share-link{position: relative; right: -47px; top: 8px;}
 
 
 /* ======================       AddThis          ============================= */

@@ -117,16 +117,16 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/instagramVids/', routes.igUrlGet(db));
   app.get('/instagram/:ix', routes.igVidGet(db));
   app.get('/sample/:file', routes.getSample);
-  app.get('/getVideos', routes.getAllVids(db));  
+  app.get('/getVideos', routes.getAllVids(db));
   app.get('/video', routes.getUserVid(gfs));
   app.post('/uploadFinished', routes.uploadFinished(db,gfs,crypto));
   app.post('/uploadMedia', routes.uploadMedia(db,gfs,crypto));
- 
+
   //catch all for any other request attempts
   app.get('*', function(req,res){
     res.render('404',{layout: false});
   });
-  
+
   http.createServer(app).listen(app.get('port'),function(){
     console.log("Listening on " + app.get('port'));
   });

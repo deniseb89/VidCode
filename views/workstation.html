@@ -36,7 +36,7 @@
         <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
         </div>
       </div>
-      <div class="addthis-container    is-hidden">
+      <div class="addthis-container js-s-onload is-hidden">
         <div class="addthis_sharing_toolbox"></div>
       </div>
       <div class="text-center js-s-onload is-hidden">
@@ -62,9 +62,15 @@
         <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
         </div>
       </div>
-      <div class="js-s-onload btn-center is-hidden">
-        <a class="a-share-btn s-btn js-share" target="_blank">save</a>
-        <p class="share-link"></p>
+      <div class="js-s-onload btn-center push-40 is-hidden">
+        <p class="share-link">
+          <input class="generalInput js-share-link-to-copy" type="text" readonly>
+          <div class="save-btn-container">
+            <div class="green-btn js-copy-sucess">Copy</div>
+          </div>
+        </p>
+        <a class="js-share text-share-link" target="_blank">go to video ➜</a>
+
       </div>
     </div>
   </div>
@@ -87,13 +93,14 @@
 	<div class="progress-set">
 
 	</div>
-
-    <span href="#" class="big-action-btn js-save-m">
+  <div class="save-btns-container">
+    <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
       Save
     </span>
-    <span class="big-action-btn js-share-m">
+    <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
       Share
     </span>
+  </div>
 
   <div class="view-controller">
   <!-- Todo: Template these -->
