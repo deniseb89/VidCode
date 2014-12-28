@@ -249,6 +249,10 @@ body.is-in-signup{overflow: hidden;}
 .cyan-btn{background-color: #3BE2D6;}
 .cyan-btn:hover{background-color: #24ADA4;}
 
+.save-btn-container .green-btn{height: 36px;border-radius: 0 4px 4px 0;
+text-align: center;padding: 8px 0;color: #fff;text-transform: uppercase;cursor: pointer;
+}
+
 
 
 /*Header */
@@ -985,7 +989,9 @@ canvas{vertical-align: bottom;}
 .btn-center{width: 97%; margin: 0 auto;}
 .action-m{z-index: 10;position: relative;}
 .action-modal .generalInput{width: 100%; margin: 0 auto 15px;}
+.share-link .generalInput{width: 300px;float: left;}
 .s-btn{padding: 10px 28px;margin-left: 355px;}
+.text-share-link{position: relative; right: -47px; top: 8px;}
 
 
 /* ======================       AddThis          ============================= */

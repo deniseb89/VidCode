@@ -86,7 +86,7 @@ var submitVideo = function (blob) {
       $('.js-s-onload').removeClass('is-hidden');
       $('.js-share').removeClass('is-inactive-btn');
       $('.js-share').attr('href','/share/'+token);
-      $('.share-link').text('Copy this link: '+window.location.host+'/share/'+token);
+      $('.js-share-link-to-copy').val(window.location.host+'/share/'+token);
       //$('meta[property=og\\:url]').attr('content', window.location.host+'/share/'+token);
       window.history.pushState("Share", "Share Your Video", '/share/'+token);
       addthis.layers.refresh();
@@ -329,6 +329,11 @@ $( document ).ready(function() {
   myCodeMirror.on("change", function() {
     clearTimeout(codeDelay);
     codeDelay = setTimeout(updateScript, 300);
+  });
+
+  //share success on copy click
+  $('.js-copy-sucess').click(function(){
+    $(this).text('✓');
   });
 
 
