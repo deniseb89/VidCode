@@ -178,6 +178,17 @@
   	</div>
 
   	<div class="col-md-3">
+      <div>
+    Steps
+{{#each content}}
+        <div class="learning-pop-container is-hidden {{this.class}}">
+            {{#each this.instructions}}
+            <div>{{.}}
+            </div>
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
         <div id="tooltip-stop-3" class="learnMore">
         {{#each content}}
         <div class="is-hidden {{this.class}}">

@@ -11,7 +11,7 @@ var lessonContent =
       'class' : 'basic-filter-method'
     },
     'advFilters' : {
-      'instructions': ['advanced step', 'advanced step', 'advanced step'],
+      'instructions': ['adv speed speed', 'adv speed speed ', 'adv speed speed'],
       'learnMore' : [
         {'topic':'More Effects!', 'target':'#lesson-2-222'},
         {'topic':'Booleans', 'target': '#lesson-4-3-222'}
@@ -30,13 +30,13 @@ var lessonContent =
       'class' : 'movie-control-method'
     },
     'stopMotion' : {
-      'instructions': ['stop Motion step', 'stop Motion step', 'stop Motion step', 'stop Motion step', 'stop Motion step'],
+      'instructions': ['select images for your animation by clicking the thumbnails you want in your stop-motion animation.', 'drag the "interval" button. This controls how quickly your animation moves! This code uses milliseconds so 1000 is the same as 1 second!'],
       'learnMore' : [
         {'topic':'Objects', 'target':'#lesson-objects-222'},
         {'topic':'Functions', 'target': '#function222'},
         {'topic':'Frame Rate', 'target': ''}
       ],      
-      'elements' : ['interval', 'frames','rate'],
+      'elements' : ['interval', 'frames','reverse'],
       'class' : 'stop-motion-method',
     }
   };
