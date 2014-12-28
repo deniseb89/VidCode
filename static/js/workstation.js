@@ -33,8 +33,6 @@ var showVid = function() {
   vidLen = Math.round(this.duration);
 };
 
-
-
 var activateEndButtons = function(bType){
   $('.inactive-js-' + bType + '-m').addClass('js-' + bType + '-m');
   $('.inactive-js-' + bType + '-m').removeClass('inactive-b-a-btn');
@@ -150,6 +148,18 @@ var updateMediaLibrary = function (file,data){
       fn = function() {
         $(this).toggleClass('js-selected-video');
         $(this).toggleClass('js-selected-still');
+        //update frame array with stills. Maybe add some kind of enumeration to the frames
+        movie.src = "";
+        showVid();
+        var stills = document.querySelectorAll('.js-selected-still');
+        var frameArr = new Array(stills.length);
+        for (var i=1; i<=frameArr.length; i++){
+          frameArr[i-1]=i; 
+        }
+        frameArr.join(",");
+        myCodeMirror.replaceRange('\n\ stopMotion.frames = ['+frameArr+'];',CodeMirror.Pos(myCodeMirror.lastLine())); 
+        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-frames" });
+
       };  
     } else if (file.type.match(/video.*/) ) {
       type = 'video';

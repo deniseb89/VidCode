@@ -5,7 +5,7 @@ var stopMotion = {
   on : false,
   reserve: false,
   interval : 500,
-  controls : {'interval': 500, 'frames': '[ , ]','reverse': 'stopMotion.reverse = false'},
+  controls : {'interval': 500, 'frames': '[ , ]','reverse': 'false'},
 
   start: function(){
   	clearInterval(stopMotion.animate);
@@ -13,6 +13,7 @@ var stopMotion = {
   	var stills = document.querySelectorAll('.js-selected-still'); 
   	stopMotion.animate = setInterval(function(){
   		var still = seriously.source(stills[i]); 
+      console.log(stills[i]);
   		target.source = still; 
   		i++; 
   		if (i >= stills.length) { i = 0; } 
