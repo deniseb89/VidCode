@@ -1,0 +1,20 @@
+<div class="s-container">
+    <div class="s-background">
+    </div>
+    <div class="s-popup">
+        <p>Set your new password</p>
+        {{#if message}}
+        <div class="alert alert-danger">{{message}}</div>
+        {{/if}}
+        <form method="post" id="email-reset" action="/reset" onsubmit="return false">
+            <input id="token" name="token" type="hidden" value={{user.resetPasswordToken}}>
+            <input type="password" name="password" class="sign-in-input-pw" required placeholder="password">
+            <input type="password" name="passwordconfirm" class="sign-in-input-pw" required placeholder="confirm password">
+            <input type="submit" value="Set new password" class="reset-btn r-u-login"/>
+        </form>
+    </div>
+</div>
+
+<script>
+    mixpanel.track_forms("#email-reset", "reset email");
+</script>

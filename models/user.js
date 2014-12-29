@@ -7,6 +7,8 @@ var userSchema = mongoose.Schema({
     created: {type: Date, default: Date.now},
     username: String,
     social: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
     vidcodes: [{}],
     vidcode: {
         email: {type: String, trim: true},
@@ -47,7 +49,7 @@ userSchema.methods.generateHash = function (password) {
 
 // checking if password is valid
 userSchema.methods.validPassword = function (password) {
-    return bcrypt.compareSync(password, this.local.password);
+    return bcrypt.compareSync(password, this.vidcode.password);
 };
 
 // create the model for users and expose it to our app

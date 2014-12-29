@@ -1677,6 +1677,28 @@ canvas {
     padding: 10px 0;
 }
 
+.forgot-btn {
+    width: 90%;
+    display: block;
+    margin: 7px auto;
+    border-radius: 2px;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    border: 1px solid #fff;
+    padding: 10px 0;
+}
+
+.reset-btn {
+    width: 90%;
+    display: block;
+    margin: 7px auto;
+    border-radius: 2px;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    border: 1px solid #fff;
+    padding: 10px 0;
+}
+
 .fb-login {
     background-color: #323761;
     color: #fff;
@@ -1733,6 +1755,26 @@ canvas {
 
 .s-u-login:hover {
     background-color: #A3DAFF;
+}
+
+.f-u-login {
+    background-color: #778899;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.f-u-login:hover {
+    background-color: #B0C4DE;
+}
+
+.r-u-login {
+    background-color: #B22222;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.r-u-login:hover {
+    background-color: #FF6347;
 }
 
 /* ======================       Modal Lessons          ============================= */

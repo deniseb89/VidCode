@@ -1,9 +1,13 @@
 var crypto = require('crypto');
 var request = require('request');
 var Busboy = require('busboy');
+var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
+var async = require('async');
 var mongoose = require("mongoose");
 var Grid = require('gridfs-stream');
 var gfs = Grid(mongoose.connection.db, mongoose.mongo);
+var User = require('../models/user');
 
 module.exports = function (app, passport) {
 
@@ -13,7 +17,8 @@ module.exports = function (app, passport) {
 
     // show the home page (will also have our login links)
     app.get('/', function (req, res) {
-        res.render('signin', {title: 'Vidcode'});
+       // res.render('signin', {title: 'Vidcode'});
+        res.render('signin', {title: 'Vidcode', message: req.flash('message')});
     });
 
     // PROFILE SECTION =========================
@@ -207,6 +212,165 @@ module.exports = function (app, passport) {
 // =============================================================================
 
     //Not implemented. Is this something we want?
+
+// =============================================================================
+// PASSWORD RESET ROUTES =======================================================
+// =============================================================================
+
+    app.get('/forgot', function (req, res) {
+        res.render('forgot', {
+            user: req.user, message: req.flash('message')
+        });
+    });
+
+    app.post('/forgot', function (req, res, next) {
+        async.waterfall([
+            function (done) {
+                crypto.randomBytes(20, function (err, buf) {
+                    var token = buf.toString('hex');
+                    done(err, token);
+                });
+            },
+            function (token, done) {
+                //mongoose.connection.db.collection('users').findOne({'vidcode.email': req.body.email}, function (err, user) {
+                User.findOne({'vidcode.email': req.body.email}, function (err, user) {
+                    if (!user) {
+                        req.flash('message', 'No account with that email address exists.');
+                        return res.redirect('/forgot');
+                    }
+
+                    user.resetPasswordToken = token;
+                    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+                    user.save(function (err) {
+                        done(err, token, user);
+                    });
+                });
+            },
+            function (token, user, done) {
+
+                var sendgridOptions = {
+                    auth: {
+                        api_user: process.env.SENDGRID_USERNAME,
+                        api_key: process.env.SENDGRID_PASSWORD
+                    }
+                };
+
+                var mailer = nodemailer.createTransport(sgTransport(sendgridOptions));
+
+                var email = {
+                    to: [user.vidcode.email],
+                    from: 'no-reply@vidcode.io',
+                    subject: 'Vidcode Password Reset',
+                    text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                };
+
+                mailer.sendMail(email, function (err) {
+                    req.flash('message', 'An e-mail has been sent to ' + user.vidcode.email + ' with further instructions.');
+                    done(err, 'done');
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/forgot');
+        });
+    });
+
+    app.get('/reset', function (req, res) {
+        res.render('forgot', {
+            user: req.user, message: req.flash('message')
+        });
+    });
+
+    app.get('/reset/:token', function (req, res) {
+        User.findOne({
+            resetPasswordToken: req.params.token,
+            resetPasswordExpires: {$gt: Date.now()}
+        }, function (err, user) {
+            if (!user) {
+                req.flash('message', 'Password reset token is invalid or has expired.');
+                return res.redirect('/forgot');
+            }
+            res.render('reset', {
+                user: user, message: req.flash('message')
+            });
+        });
+    });
+
+    app.post('/reset', function (req, res) {
+
+        var password = req.body.password;
+
+        // check password complexity
+        if (password != req.body.passwordconfirm) {
+            return res.redirect('back', false, req.flash('message', 'Passwords do not match.'));
+        }
+        if (password.length < 6) {
+            return res.redirect('back', false, req.flash('message', 'Password length must be at least 6 characters.'));
+        }
+        if (!(/[0-9]/).test(password)) {
+            return res.redirect('back', false, req.flash('message', 'Password must contain at least one number.'));
+        }
+        if (!(/[a-z]/).test(password)) {
+            return res.redirect('back', false, req.flash('message', 'Password must contain at least one lower case letter.'));
+        }
+        if (!(/[A-Z]/).test(password)) {
+            return res.redirect('back', false, req.flash('message', 'Password must contain at least one upper case letter.'));
+        }
+
+        async.waterfall([
+            function (done) {
+                User.findOne({
+                    resetPasswordToken: req.body.token,
+                    resetPasswordExpires: {$gt: Date.now()}
+                }, function (err, user) {
+                    if (!user) {
+                        req.flash('message', 'Password reset token is invalid or has expired.');
+                        return res.redirect('back');
+                    }
+
+                    user.vidcode.password = user.generateHash(req.body.password);
+                    user.resetPasswordToken = undefined;
+                    user.resetPasswordExpires = undefined;
+
+                    user.save(function (err) {
+                        req.logIn(user, function (err) {
+                            done(err, user);
+                        });
+                    });
+                });
+            },
+            function (user, done) {
+
+                var sendgridOptions = {
+                    auth: {
+                        api_user: process.env.SENDGRID_USERNAME,
+                        api_key: process.env.SENDGRID_PASSWORD
+                    }
+                };
+
+                var mailer = nodemailer.createTransport(sgTransport(sendgridOptions));
+
+                var email = {
+                    to: [user.vidcode.email],
+                    from: 'no-reply@vidcode.io',
+                    subject: 'Your password has been changed',
+                    text: 'Hello,\n\n' +
+                    'This is a confirmation that the password for your account ' + user.vidcode.email + ' has just been changed.\n'
+                };
+
+                mailer.sendMail(email, function (err) {
+                    req.flash('message', 'Success! Your password has been changed.');
+                    done(err);
+                });
+            }
+        ], function (err) {
+            res.redirect('/');
+        });
+    });
 
 // =============================================================================
 // GET AND SEND VIDEO ==========================================================
@@ -464,7 +628,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    
+
     app.get('/scrubbing', isLoggedIn, function (req, res) {
         var user = req.user;
         if (user) {
