@@ -1,77 +1,54 @@
-var fs = require('fs');
+var crypto = require('crypto');
 var request = require('request');
 var Busboy = require('busboy');
-var util = require('util');
-var crypto = require('crypto'),
-    algorithm = 'aes-256-ctr',
-    cryptopassword = 'b3fd81b8-b8ed-4cf4-be59-7482d3a4b8a2';
+var mongoose = require("mongoose");
+var Grid = require('gridfs-stream');
+var gfs = Grid(mongoose.connection.db, mongoose.mongo);
 
-function encrypt(text) {
-    var cipher = crypto.createCipher(algorithm, cryptopassword)
-    var crypted = cipher.update(text, 'utf8', 'hex')
-    crypted += cipher.final('hex');
-    return crypted;
-}
+module.exports = function (app, passport) {
 
-function decrypt(text) {
-    var decipher = crypto.createDecipher(algorithm, cryptopassword)
-    var dec = decipher.update(text, 'hex', 'utf8')
-    dec += decipher.final('utf8');
-    return dec;
-}
+// =============================================================================
+// HOME, PROFILE, GALLERY AND SHARE ROUTES =====================================
+// =============================================================================
 
-exports.notFound = function (req, res) {
-    res.render('404', {layout: false});
-}
+    // show the home page (will also have our login links)
+    app.get('/', function (req, res) {
+        res.render('signin', {title: 'Vidcode'});
+    });
 
-exports.signin = function (req, res) {
-    res.render('signin', {title: 'Vidcode'});
-};
-
-exports.intro = function (db) {
-    return function (req, res) {
-        var social = req.params.social;
-        var id = req.params.id;
-        if (id && social) {
-            var vc = db.collection('vidcode');
-            vc.findOne({id: id, 'social': social}, function (err, doc) {
-                if (!doc) {
-                    res.render('404', {layout: false});
-                    return;
-                }
-                res.render('intro', {user: doc});
-                return;
+    // PROFILE SECTION =========================
+    app.get('/profile', isLoggedIn, function (req, res) {
+        if (req.user.vidcodes) {
+            res.render('profile', {
+                videos: req.user.vidcodes
             });
         } else {
-            // There is no logged in user
-            // res.redirect('/signin');
-            res.render('intro');
-
+            res.render('profile', {
+                user: req.user
+            });
         }
-    }
-};
+    });
 
-exports.csweek = function (req, res) {
-    res.redirect('/intro');
-};
+    // ACCOUNT SECTION =========================
+    app.get('/account', isLoggedIn, function (req, res) {
+        res.render('account', {
+            user: req.user
+        });
+    });
 
-exports.gallery = function (req, res) {
-    var userVidURL = req.query.userVidURL;
-    if (userVidURL) {
-        userVidURL = "blob:" + userVidURL.substr(5).replace(/:/g, "%3A");
-    }
-    ;
+    app.get('/gallery', function (req, res) {
+        var userVidURL = req.query.userVidURL;
+        if (userVidURL) {
+            userVidURL = "blob:" + userVidURL.substr(5).replace(/:/g, "%3A");
+        }
+        res.render('gallery', {title: 'VidCode Gallery', userVidURL: userVidURL});
+    });
 
-    res.render('gallery', {title: 'VidCode Gallery', userVidURL: userVidURL});
+    app.get('/galleryshow', function (req, res) {
+        res.render('galleryshow', {title: 'Vidcode Gallery'});
+    });
 
-};
-
-exports.galleryshow = function (req, res) {
-    res.render('galleryshow', {title: 'VidCode Gallery'});
-};
-
-exports.share = function (db) {
-    return function (req, res) {
+    app.get('/share/:token?', function (req, res) {
         var token = req.params.token;
         var file;
         var title;
@@ -81,34 +58,224 @@ exports.share = function (db) {
             return;
         }
 
-        var vc = db.collection('vidcode');
-        vc.findOne({'vidcodes.token': token}, function (err, doc) {
-            if (!doc) {
-                res.render('404', {layout: false});
-            } else {
-                for (var item in doc.vidcodes) {
-                    if (doc.vidcodes[item]['token'] == token) {
-                        file = doc.vidcodes[item]['file'];
-                        title = doc.vidcodes[item]['title'];
-                        desc = doc.vidcodes[item]['desc'];
+        process.nextTick(function () {
+            mongoose.connection.db.collection('users').findOne({'vidcodes.token': token}, function (err, user) {
+                if (!user) {
+                    res.render('404', {layout: false});
+                } else {
+                    for (var item in user.vidcodes) {
+                        if (user.vidcodes[item]['token'] == token) {
+                            file = user.vidcodes[item]['file'];
+                            title = user.vidcodes[item]['title'];
+                            desc = user.vidcodes[item]['desc'];
+                        }
                     }
-                }
-                ;
-                res.render('share', {
-                    layout: false,
-                    user: doc,
-                    file: file,
-                    title: title,
-                    desc: desc,
-                    url: "http://app.vidcode.io/share/" + token
-                });
-            }
-        });
-    }
-}
 
-exports.getUserVid = function (gfs) {
-    return function (req, res) {
+                    res.render('share', {
+                        layout: false,
+                        user: user,
+                        file: file,
+                        title: title,
+                        desc: desc,
+                        url: "http://app.vidcode.io/share/" + token
+                    });
+                }
+            });
+        });
+    });
+
+// =============================================================================
+// AUTHENTICATION ROUTES =======================================================
+// =============================================================================
+
+    // locally --------------------------------
+    // LOGIN ===============================
+    // show the login form
+    app.get('/signin', function (req, res) {
+        res.render('signin', {title: 'Vidcode', message: req.flash('loginMessage')});
+    });
+
+    // process the login form
+    app.post('/signin', passport.authenticate('local-login', {
+        successRedirect: '/intro', // redirect to the secure profile section
+        failureRedirect: '/signin', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
+
+    // SIGNUP =================================
+    // show the signup form
+    app.get('/signup', function (req, res) {
+        res.render('signup', {message: req.flash('signupMessage')});
+    });
+
+    // process the signup form
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect: '/intro', // redirect to the secure profile section
+        failureRedirect: '/signup', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
+
+    // facebook ==============================
+
+    // send to facebook to do the authentication
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/cb',
+        passport.authenticate('facebook', {
+            successRedirect: '/intro',
+            failureRedirect: '/'
+        }));
+
+    // instagram ==============================
+
+    // send to instagram to do the authentication
+    app.get('/auth/instagram', passport.authenticate('instagram'));
+
+    // handle the callback after instagram has authenticated the user
+    app.get('/auth/instagram/cb',
+        passport.authenticate('instagram', {
+            successRedirect: '/intro',
+            failureRedirect: '/'
+        }));
+
+
+    // twitter ==============================
+
+    // send to twitter to do the authentication
+    app.get('/auth/twitter', passport.authenticate('twitter', {scope: 'email'}));
+
+    // handle the callback after twitter has authenticated the user
+    app.get('/auth/twitter/cb',
+        passport.authenticate('twitter', {
+            successRedirect: '/intro',
+            failureRedirect: '/'
+        }));
+
+
+    // google ==============================
+
+    // send to google to do the authentication
+    app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+
+    // the callback after google has authenticated the user
+    app.get('/auth/google/cb',
+        passport.authenticate('google', {
+            successRedirect: '/intro',
+            failureRedirect: '/'
+        }));
+
+
+    // LOGOUT ==============================
+    app.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+
+// =============================================================================
+// AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
+// =============================================================================
+
+
+    // facebook -------------------------------
+
+    // send to facebook to do the authentication
+    app.get('/connect/facebook', passport.authorize('facebook', {scope: 'email'}));
+
+    // handle the callback after facebook has authorized the user
+    app.get('/connect/facebook/cb',
+        passport.authorize('facebook', {
+            successRedirect: '/profile',
+            failureRedirect: '/'
+        }));
+
+    // instagram -------------------------------
+
+    // send to instagram to do the authentication
+    app.get('/connect/instagram', passport.authorize('instagram'));
+
+    // handle the callback after facebook has authorized the user
+    app.get('/connect/instagram/cb',
+        passport.authorize('instagram', {
+            successRedirect: '/profile',
+            failureRedirect: '/'
+        }));
+
+// =============================================================================
+// UNLINK ACCOUNTS =============================================================
+// =============================================================================
+
+    //Not implemented. Is this something we want?
+
+// =============================================================================
+// GET AND SEND VIDEO ==========================================================
+// =============================================================================
+
+    app.get('/instagramVids/', getInstagramVideos, function (req, res) {
+        res.send(req.user.instagram.IGvideos);
+    });
+
+    app.get('/instagram/:ix', isLoggedIn, function (req, res) {
+        var videoURL = req.user.instagram.IGvideos[req.params.ix];
+        if (videoURL) {
+            request(videoURL).pipe(res);
+        } else {
+            res.status(500).end();
+        }
+    });
+
+    app.get('/sample/:file', function (req, res) {
+        var file = req.params.file;
+        var cdn = 'http://dg786cztanvmc.cloudfront.net';
+        request(cdn + '/videos/' + file).pipe(res);
+    });
+
+    app.get('/getVideos', isLoggedIn, function (req, res) {
+        var user = req.user;
+        if (user.vidcodes) {
+            res.send(user.vidcodes);
+        } else {
+            //handle if there are none
+            console.log('you have not created any vidcodes');
+        }
+    });
+
+    app.post('/uploadFinished', isLoggedIn, function (req, res) {
+        var video = {};
+        var busboy = new Busboy({headers: req.headers});
+
+        busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+            var token = generateToken(crypto);
+            filename = token + '.webm';
+            var ws = gfs.createWriteStream({filename: filename, mode: "w", content_type: mimetype});
+            file.pipe(ws);
+            ws.on('close', function (file) {
+                video.file = file._id;
+                video.token = token;
+
+                saveVideo(gfs.db, req.user._id, video, function () {
+                    res.send(token);
+                });
+            });
+            ws.on('error', function (err) {
+                console.log('An error occurred in writing');
+                res.end();
+            })
+        });
+
+        busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
+            video[fieldname] = val;
+        });
+
+        busboy.on('finish', function () {
+            console.log('busboy finished');
+        });
+
+        req.pipe(busboy);
+    });
+
+    app.get('/video', function (req, res) {
         var file = req.query.file;
         var rs = gfs.createReadStream({
             _id: file
@@ -121,11 +288,24 @@ exports.getUserVid = function (gfs) {
 
         res.setHeader("content-type", "video/webm");
         rs.pipe(res);
-    };
-};
+    });
 
-exports.partone = function (db) {
-    return function (req, res) {
+// =============================================================================
+// ROUTES TO LESSONS ===========================================================
+// =============================================================================
+
+
+    app.get('/csweek', function (req, res) {
+        res.redirect('/intro');
+    });
+
+    app.get('/intro', isLoggedIn, function (req, res) {
+        res.render('intro', {
+            user: req.user
+        });
+    });
+
+    app.get('/lesson/1', isLoggedIn, function (req, res) {
         var filters = ['blur', 'noise', 'vignette', 'sepia', 'fader', 'exposure'];
         var codeText =
             "\
@@ -136,27 +316,31 @@ exports.partone = function (db) {
              //The code below lets you add, remove, and alter your video filters.\n\
              //Change the numbers and make your video all your own!\n\
                 ";
+
+        res.render("partone", {code: codeText, filters: filters, user: req.user});
+    });
+
+
+    app.get('/lesson/cs1', isLoggedIn, function (req, res) {
+        var filters = ['blur', 'noise', 'vignette', 'exposure'];
+        var advFilters = ['fader'];
+        var codeText =
+            '\
+             movie.play();\n\
+                ';
         var user = req.user;
         if (user) {
-            var social = user.provider;
-            var vc = db.collection('vidcode');
-
-            var successcb = function (doc) {
-                //todo:if instagram user...
-                //refresh API call with user.acessToken to get recent videos
-                res.render("partone", {code: codeText, filters: filters, user: doc});
-            };
-            findOrCreate(db, user, successcb);
-
-        } else {
-            res.render("partone", {code: codeText, filters: filters});
-            //res.redirect('/signin');   //when users arent logged in, make them log in
+            //todo:if instagram user...
+            //refresh API call with user.acessToken to get recent videos
+            res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters, user: req.user});
         }
-    };
-};
+        else {
+            res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters});
+        }
+    });
 
-exports.lessontwo = function (db) {
-    return function (req, res) {
+
+    app.get('/lesson/tc2', isLoggedIn, function (req, res) {
         var filters = ['blur', 'noise', 'vignette', 'sepia', 'fader', 'exposure'];
         var codeText =
             '\
@@ -183,23 +367,18 @@ exports.lessontwo = function (db) {
                 ';
         var user = req.user;
         if (user) {
-            var vc = db.collection('vidcode');
 
-            var successcb = function (doc) {
-                //todo:if instagram user...
-                //refresh API call with user.acessToken to get recent videos
-                res.render("lessontwo", {code: codeText, filters: filters, user: doc});
-            };
-            findOrCreate(db, user, successcb);
+            //todo:if instagram user...
+            //refresh API call with user.acessToken to get recent videos
+            res.render("lessontwo", {code: codeText, filters: filters, user: req.user});
 
         } else {
             res.render("lessontwo", {code: codeText, filters: filters});
         }
-    };
-};
+    });
 
-exports.lessonthree = function (db) {
-    return function (req, res) {
+
+    app.get('/lesson/tc3', isLoggedIn, function (req, res) {
         var filters = ['blur', 'noise', 'vignette', 'sepia', 'fader', 'exposure'];
         var codeText =
             '\
@@ -220,89 +399,39 @@ exports.lessonthree = function (db) {
 
         var user = req.user;
         if (user) {
-            var vc = db.collection('vidcode');
+            //todo:if instagram user...
+            //refresh API call with user.acessToken to get recent videos
+            res.render("lessonthree", {code: codeText, filters: filters, user: req.user});
 
-            var successcb = function (doc) {
-                //todo:if instagram user...
-                //refresh API call with user.acessToken to get recent videos
-                res.render("lessonthree", {code: codeText, filters: filters, user: doc});
-            };
-            findOrCreate(db, user, successcb);
-
-        } else {
+        }
+        else {
             res.render("lessonthree", {code: codeText, filters: filters});
         }
-    };
-};
+    });
 
-exports.cs1 = function (db) {
-    return function (req, res) {
-        var filters = ['blur', 'noise', 'vignette', 'exposure'];
-        var advFilters = ['fader'];
-        // var advFilters = ['fader','kaleidoscope'];
-        var codeText =
-            '\
-             movie.play();\n\
-                ';
+    app.get('/lesson/2', isLoggedIn, function (req, res) {
+        res.render('parttwo', {
+            title: 'VidCode Lesson'
+        });
+    });
 
-        var user = req.user;
-        if (user) {
-            var vc = db.collection('vidcode');
+    app.get('/lesson/3', isLoggedIn, function (req, res) {
+        res.render('partthree', {
+            title: 'VidCode Lesson'
+        });
+    });
 
-            var successcb = function (doc) {
-                //todo:if instagram user...
-                //refresh API call with user.acessToken to get recent videos
-                res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters, user: doc});
-            };
-            findOrCreate(db, user, successcb);
+    app.get('/lesson/4', isLoggedIn, function (req, res) {
+        res.render('partfour', {
+            title: 'VidCode Lesson'
+        });
+    });
 
-        } else {
-            res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters});
-        }
-    };
-};
+    app.get('/codealone', isLoggedIn, function (req, res) {
+        res.render('codeAlone');
+    });
 
-exports.profilePage = function (db) {
-    return function (req, res) {
-        var user = req.user;
-        if (user) {
-            var social = user.provider;
-            var vc = db.collection('vidcode');
-            var data;
-
-            var successcb = function (doc) {
-                res.render('profile', {videos: doc.vidcodes});
-            };
-
-            vc.findOne({id: user.id, social: social}, function (err, doc) {
-                successcb(doc);
-            });
-
-        } else {
-            res.render('profile');
-        }
-    }
-}
-
-exports.parttwo = function (req, res) {
-    res.render('parttwo', {title: 'VidCode Lesson'});
-};
-
-exports.partthree = function (req, res) {
-    res.render('partthree', {title: 'VidCode Lesson'});
-};
-
-
-exports.partfour = function (req, res) {
-    res.render('partfour', {title: 'VidCode Lesson'});
-};
-
-exports.codeAlone = function (req, res) {
-    res.render('codeAlone');
-};
-
-exports.filters = function (db) {
-    return function (req, res) {
+    app.get('/filters', isLoggedIn, function (req, res) {
         var user = req.user;
         if (user) {
             var username = user.username;
@@ -326,18 +455,17 @@ exports.filters = function (db) {
             return;
         }
 
-        var vc = db.collection('vidcode');
+        var vc = mongoose.connection.db.collection('users');
         vc.findOne({token: token}, function (err, doc) {
             if (!doc) {
                 res.status(404);
             }
             res.render('filters', {code: doc.code, filters: filters});
         });
-    };
-};
+    });
 
-exports.scrubbing = function (db) {
-    return function (req, res) {
+    
+    app.get('/scrubbing', isLoggedIn, function (req, res) {
         var user = req.user;
         if (user) {
             var username = user.username;
@@ -358,214 +486,85 @@ exports.scrubbing = function (db) {
             return;
         }
 
-        var vc = db.collection('vidcode');
+        var vc = mongoose.connection.db.collection('users');
         vc.findOne({token: token}, function (err, doc) {
             if (!doc) {
                 res.status(404);
             }
             res.render('scrubbing', {code: doc.code});
         });
-    };
-};
+    });
 
-exports.uploadFinished = function (db, gfs, crypto) {
-    return function (req, res) {
-        var video = {};
-        var user = req.user || null;
-        if (user) {
-            var id = user.id;
-            var social = user.provider;
-        } else {
-            var id = social = null;
-        }
 
-        var busboy = new Busboy({headers: req.headers});
-        var filename;
+// =============================================================================
+// ROUTE TO PAGE NOT FOUND =====================================================
+// =============================================================================
 
-        busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-            var token = generateToken(crypto);
-            filename = token + '.webm';
-            var ws = gfs.createWriteStream({filename: filename, mode: "w", content_type: mimetype});
-            file.pipe(ws);
-            ws.on('close', function (file) {
-                video.file = file._id;
-                video.token = token;
-                saveVideo(db, id, social, video, function () {
-                    res.send(token);
-                });
-            });
-            ws.on('error', function (err) {
-                console.log('An error occurred in writing');
-                res.end();
-            })
 
-        });
+    app.get('*', function (req, res) {
+        res.render('404', {layout: false});
+    });
 
-        busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
-            video[fieldname] = val;
-        });
+}
 
-        busboy.on('finish', function () {
-            console.log('busboy finished');
-        })
 
-        req.pipe(busboy);
-    };
-};
+// =============================================================================
+// MIDDLEWARE AND UTILITY FUNCTIONS  ===========================================
+// =============================================================================
 
-exports.igCB = function (db) {
-    return function (req, res) {
+// route middleware to ensure user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
 
-        var user = req.user;
-        if (user) {
-            var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
-            var token = user.accessToken;
-            var username = user.username;
-            var uid = user.id;
-            var media_json,
-                media,
-                url,
-                next_max_id = "",
-                pages = 0;
+    res.redirect('/');
+}
+
+function getInstagramVideos(req, res, next) {
+
+    var user = req.user;
+    if (user) {
+        var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
+        var token = user.instagram.token;
+        var media_json,
+            media,
+            next_max_id = "",
+            pages = 0,
             urls = [];
 
-            function igApiCall(next_page) {
-                request.get(apiCall + token + "&max_id=" + next_page, function (err, resp, body) {
-                    if (!err) {
-                        pages++;
-                        media_json = JSON.parse(body);
-                        next_page = media_json.pagination.next_max_id;
-                        media = media_json.data;
-                        var item;
-                        var i = 0;
+        function igApiCall(next_page) {
+            request.get(apiCall + token + "&max_id=" + next_page, function (err, resp, body) {
+                if (!err) {
+                    pages++;
+                    media_json = JSON.parse(body);
+                    next_page = media_json.pagination.next_max_id;
+                    media = media_json.data;
+                    var item;
 
-                        for (var i = 0; i < media.length; i++) {
-                            item = media[i];
-                            if (item.hasOwnProperty("videos") && (urls.length < 4)) {
-                                urls.push(item.videos.standard_resolution.url);
-                            }
+                    for (var i = 0; i < media.length; i++) {
+                        item = media[i];
+                        if (item.hasOwnProperty("videos") && (urls.length < 4)) {
+                            urls.push(item.videos.standard_resolution.url);
                         }
-                    } else {
-                        res.send('error with Instagram API');
-                        return;
                     }
-                    if (next_page && (pages < 5)) {
-                        igApiCall(next_page);
-                    } else {
-
-                        for (var i = 0; i < urls.length; i++) {
-                            url = urls[i];
-                        }
-                        user.IGvideos = urls;
-
-                        var successcb = function (doc) {
-                            res.redirect('/intro');
-                        };
-
-                        findOrCreate(db, user, successcb);
-                    }
-                });
-
-            }
-
-            igApiCall(next_max_id);
-        }
-    };
-};
-
-exports.getSample = function (req, res) {
-    var file = req.params.file;
-    var cdn = 'http://dg786cztanvmc.cloudfront.net';
-    request(cdn + '/videos/' + file).pipe(res);
-}
-
-exports.igVidGet = function (db) {
-    return function (req, res) {
-        var user = req.user;
-        var vc = db.collection('vidcode');
-        vc.findOne({'id': user.id, 'social': "instagram"}, function (err, doc) {
-            if (err) {
-                console.log('error getting IG videos from Mongo');
-            }
-            var videoURL = doc.IGvideos[req.params.ix];
-            if (videoURL) {
-                request(videoURL).pipe(res);
-            } else {
-                res.status(500).end();
-            }
-        });
-    };
-};
-
-exports.igUrlGet = function (db) {
-    return function (req, res) {
-        var user = req.user;
-        var vc = db.collection('vidcode');
-        vc.findOne({'id': user.id, 'social': "instagram"}, function (err, doc) {
-            if (err) {
-                console.log('error getting IG video urls from Mongo');
-            }
-            res.send(doc.IGvideos);
-        });
-    }
-}
-
-exports.getAllVids = function (db) {
-    return function (req, res) {
-        //return vidcodes
-        var user = req.user;
-        var vc = db.collection('vidcode');
-
-        vc.findOne({'id': user.id, 'social': user.provider}, function (err, doc) {
-            if (!doc) {
-                console.log('no doc found');
-                //there's no doc for this user
-            } else {
-                if (doc.vidcodes) {
-                    console.log(doc.vidcodes);
-                    res.send(doc.vidcodes);
                 } else {
-                    //handle if there are none
-                    console.log('you have not created any vidcodes');
+                    res.send('error with Instagram API');
+                    return;
                 }
-            }
-        });
+                if (next_page && (pages < 5)) {
+                    igApiCall(next_page);
+                } else {
 
-    };
-};
+                    req.user.instagram.IGvideos = urls;
+                    req.user.save();
+                    return next();
+                }
+            });
+        }
 
-exports.fbCB = function (db) {
-    return function (req, res) {
-        var successcb = function (doc) {
-            res.redirect('/intro');
-        };
-
-        var user = req.user;
-        user.username = user.displayName;
-        findOrCreate(db, user, successcb);
+        igApiCall(next_max_id);
     }
 }
-
-exports.signup = function (db, crypto) {
-    return function (req, res) {
-        var user = {};
-        var successcb = function (doc) {
-            if (doc.auth === true) {
-                res.redirect('/intro');
-            }
-            else {
-                res.redirect('/');
-            }
-        };
-
-        user.username = req.body.email;
-        user.password = req.body.password;
-        user.id = req.body.email;
-        user.provider = 'vidcode';
-
-        findOrCreate(db, user, successcb);
-    };
-};
 
 function generateToken(crypto) {
     var tokenLength = 10;
@@ -574,55 +573,21 @@ function generateToken(crypto) {
     return token;
 }
 
-function findOrCreate(db, user, cb) {
-
-    var vc = db.collection('vidcode');
-    vc.findOne({id: user.id, social: user.provider}, function (err, doc) {
-
-        if (!doc) {
-            //insert all the user info we care about
-            doc = {id: user.id};
-            doc.social = user.provider;
-            doc.username = user.username;
-            doc.password = encrypt(user.password || 'NoPassword' );
-            if (user.IGvideos) {
-                doc.IGvideos = user.IGvideos;
-            }
-            // ideally w:1
-            vc.insert(doc, {w: 0});
-        }
-        if (user.IGvideos) {
-            vc.update(doc, {$set: {IGvideos: user.IGvideos}}, function (err, updated) {
-                if (err) {
-                    console.log('Error in adding IGvideos ' + social + '/' + id + ':' + err);
-                }
-            });
-        }
-
-        if ((doc.social == 'vidcode') && (decrypt(doc.password) == user.password)) {
-            doc.auth = true;
-        }
-        else {
-            doc.auth = false;
-        }
-
-        cb(doc);
-    });
-}
-
-function saveVideo(db, id, social, video, cb) {
-    var vc = db.collection('vidcode');
-    if (id && social) {
-        vc.findOne({id: id, social: social}, function (err, doc) {
+function saveVideo(db, id, video, cb) {
+    var vc = db.collection('users');
+    if (id) {
+        vc.findOne({_id: id}, function (err, doc) {
             if (!doc) {
-                doc = {id: id};
+                console.log("created new doc with video");
+                doc = {_id: id};
                 doc.videos = {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token};
                 vc.insert(doc, function (err, insert) {
                     if (err) {
-                        console.log('err in inserting doc ' + social + '/' + id + ':' + err);
+                        console.log('err in inserting doc ' + id + ':' + err);
                     }
                 });
             } else {
+                console.log("updated doc with video");
                 vc.update(doc, {
                     $addToSet: {
                         vidcodes: {
@@ -634,7 +599,7 @@ function saveVideo(db, id, social, video, cb) {
                     }
                 }, function (err, updated) {
                     if (err) {
-                        console.log('err in updating doc ' + social + '/' + id + ':' + err);
+                        console.log('err in updating doc ' + id + ':' + err);
                     }
                 });
             }
@@ -648,17 +613,3 @@ function saveVideo(db, id, social, video, cb) {
         cb();
     }
 }
-
-
-function oc(a) {
-    var o = {};
-    for (var i = 0; i < a.length; i++) {
-        o[a[i]] = '';
-    }
-    return o;
-}
-
-function ensureAuthenticated(user) {
-    console.log('authentication = ' + user);
-    return next();
-};
