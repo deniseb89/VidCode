@@ -151,7 +151,7 @@ module.exports = function (passport) {
                             user.vidcode.email = email;
                             user.vidcode.password = user.generateHash(password);
                             user.social = "vidcode";
-                            user.username = user.vidcode.username;
+                            user.username = user.username;
 
                             user.save(function (err) {
                                 if (err)
@@ -201,7 +201,7 @@ module.exports = function (passport) {
                                 user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                                 user.facebook.email = (profile.emails[0].value || '').toLowerCase();
                                 user.social = "facebook";
-                                user.username = user.facebook.username;
+                                user.username = user.username;
 
                                 user.save(function (err) {
                                     if (err)
@@ -221,7 +221,7 @@ module.exports = function (passport) {
                             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                             newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
                             newUser.social = "facebook";
-                            newUser.username = newUser.facebook.username;
+                            newUser.username = newUser.facebook.name;
 
                             newUser.save(function (err) {
                                 if (err)
@@ -241,7 +241,7 @@ module.exports = function (passport) {
                     user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                     user.facebook.email = (profile.emails[0].value || '').toLowerCase();
                     user.social = "facebook";
-                    user.username = user.facebook.username;
+                    user.username = user.username;
 
                     user.save(function (err) {
                         if (err)
@@ -287,7 +287,7 @@ module.exports = function (passport) {
                                 user.instagram.username = profile.username;
                                 user.instagram.displayName = profile.displayName;
                                 user.social = "instagram";
-                                user.username = user.instagram.username;
+                                user.username = user.username;
 
                                 user.save(function (err) {
                                     if (err)
@@ -329,7 +329,7 @@ module.exports = function (passport) {
                     user.instagram.displayName = profile.displayName;
                     user.instagram.IGvideos = profile.IGvideos;
                     user.social = "instagram";
-                    user.username = user.instagram.username;
+                    user.username = user.username;
 
                     user.save(function (err) {
                         if (err)
