@@ -19,14 +19,21 @@ module.exports = function (app, passport) {
 
     // show the home page (will also have our login links)
     app.get('/', function (req, res) {
-        // res.render('signin', {title: 'Vidcode'});
-        res.render('signin', {title: 'Vidcode', message: req.flash('message')});
+        if (req.user) {
+            res.redirect('/profile');
+
+        } else {
+            res.render('signin', {
+                user: req.user, title: 'Vidcode', message: req.flash('message')
+            });
+        }
     });
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function (req, res) {
         if (req.user.vidcodes) {
             res.render('profile', {
+                user: req.user,
                 videos: req.user.vidcodes
             });
         } else {

@@ -67,8 +67,29 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
     <li class="pull-right">
       {{#if user}}
         {{#if user.username}}
-        <a href="#" class="small">Hey, {{user.username}}!</a>
+          <a href="/logout" class="small">Logout</a>
         {{/if}}
+      {{/if}}
+    </li>
+    <li class="pull-right">
+      {{#if user}}
+      {{#if user.username}}
+      <a href="/account" class="small">Account</a>
+      {{/if}}
+      {{/if}}
+    </li>
+    <li class="pull-right">
+      {{#if user}}
+      {{#if user.username}}
+      <a href="/workstation" class="small">Workstation</a>
+      {{/if}}
+      {{/if}}
+    </li>
+    <li class="pull-right">
+      {{#if user}}
+      {{#if user.username}}
+      <a href="#" class="small">Hey, {{user.username}}!</a>
+      {{/if}}
       {{/if}}
     </li>
   </ul>
