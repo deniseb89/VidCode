@@ -130,7 +130,7 @@ textarea {
     padding: 13px;
     margin-left: 17px;
     width: 90%;
-    background-image: url('/img/envelope-icon.png');
+    background-image: url('../img/envelope-icon.png');
     background-repeat: no-repeat;
     background-position: right;
 }
@@ -139,7 +139,7 @@ textarea {
     padding: 13px;
     margin-left: 17px;
     width: 90%;
-    background-image: url('/img/env-empty-icon.png');
+    background-image: url('../img/env-empty-icon.png');
     background-repeat: no-repeat;
     background-position: right;
 }
@@ -186,7 +186,7 @@ img.filterSelect.active {
    Index Intro Page
    ========================================================================== */
 
-.vidcodeIntro {
+.vidcodeIntro, .text-center {
     text-align: center;
 }
 
@@ -277,6 +277,51 @@ body.is-in-signup {
 
 /*///////////////// Button Styles Custom ////////////////*/
 
+.a-share-btn {
+    cursor: pointer;
+    color: #fff;
+    background-color: #323762;
+    padding: 10px 16px;
+    font-size: 1.1em;
+    margin: 0 9px;
+}
+
+.a-share-btn img {
+    margin-right: 4px;
+    width: 5%;
+}
+
+.a-share-btn:hover {
+    opacity: .95;
+    background-color: #1B2144;
+}
+
+.big-action-btn {
+    background: #fff;
+    border: 2px #58355F solid;
+    border-radius: 1px;
+    padding: 5px 13px;
+    color: #58355F;
+    text-transform: uppercase;
+    font-size: 1.3em;
+    cursor: pointer;
+}
+
+.big-action-btn:hover {
+    color: #fff;
+    background: #58355F;
+}
+
+.inactive-b-a-btn {
+    cursor: default;
+    opacity: .4;
+}
+
+.inactive-b-a-btn:hover {
+    background: #fff;
+    color: #58355F;
+}
+
 .btn-purple {
     background-color: #441B4B;
     border: 0px;
@@ -342,6 +387,16 @@ body.is-in-signup {
     background-color: #24ADA4;
 }
 
+.save-btn-container .green-btn {
+    height: 36px;
+    border-radius: 0 4px 4px 0;
+    text-align: center;
+    padding: 8px 0;
+    color: #fff;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
 /*Header */
 .nav {
     background-color: #fff;
@@ -370,14 +425,8 @@ body.is-in-signup {
     padding: 3px 15px !important;
 }
 
-.alliebutton {
-    float: right;
-    margin-left: 30px;
-}
-
 .centerObject {
     margin: 0 auto;
-    width: 470px;
 }
 
 .show-inline {
@@ -583,19 +632,6 @@ body.is-in-signup {
     z-index: 100000;
 }
 
-.displaysecond {
-    position: absolute !important;
-    width: 480px !important;
-    z-index: 501;
-    background-color: #fff;
-}
-
-.hidden2 {
-    margin-top: 3px;
-    height: 5px;
-    opacity: 0;
-}
-
 .tabs-1 {
     border: #BDBFBF solid 1px;
     height: 600px;
@@ -628,6 +664,30 @@ body.is-in-signup {
 
 #methodList {
     margin-left: -30px;
+}
+
+/**Throwing in temp colors for each lesson*/
+/**Really hacky, Leandra. I'm sorry!! */
+
+.basic-filter-method .btn {
+    background-color: #319665;
+}
+
+.adv-filter-method .btn {
+    background-color: rgba(128, 0, 0, 0.61);
+}
+
+.movie-control-method .btn {
+    background-color: rgb(0, 0, 255);
+}
+
+.stop-motion-method .btn {
+    background-color: rgb(134, 0, 255);
+}
+
+.view-controller {
+    margin-left: 100px !important;
+    float: right;
 }
 
 #editor {
@@ -823,7 +883,7 @@ canvas {
 
 /* The effects/ learn more area */
 .learnMore {
-    height: 600px;
+    height: 200px;
     width: 100%;
     padding-left: 15px;
 }
@@ -1107,6 +1167,14 @@ canvas {
     width: 95%;
     margin: 20px auto;
     background-color: #fff
+}
+
+.save-btns-container {
+    margin: -7px 0 -12px 16px;
+}
+
+.save-btns-container span {
+    margin-right: 9px;
 }
 
 .lesson-page .progress-set {
@@ -1577,7 +1645,6 @@ canvas {
     margin-top: 30px
 }
 
-;
 .greentext {
     color: #319665 !important;
 }
@@ -1604,7 +1671,7 @@ canvas {
 .s-background {
     width: 100%;
     height: 100%;
-    background: url(/img/signin-bg.png) no-repeat center center fixed;
+    background: url(../img/signin-bg.png) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -1702,7 +1769,7 @@ canvas {
 .fb-login {
     background-color: #323761;
     color: #fff;
-    background-image: url('/img/icons/fb-logo.png');
+    background-image: url('../img/icons/fb-logo.png');
     background-repeat: no-repeat;
     background-position: 12px 8px;
 }
@@ -1714,7 +1781,7 @@ canvas {
 .insta-login {
     background-color: #94689F;
     color: #fff;
-    background-image: url('/img/icons/insta-logo.png');
+    background-image: url('../img/icons/insta-logo.png');
     background-repeat: no-repeat;
     background-position: 5px 8px;
 }
@@ -1727,7 +1794,7 @@ canvas {
     background-color: #fff;
     border: 1px solid #94689F;
     color: #414049;
-    background-image: url('/img/icons/g-plus-logo.png');
+    background-image: url('../img/icons/g-plus-logo.png');
     background-repeat: no-repeat;
     background-position: 2px 1px;
 }
@@ -1813,6 +1880,10 @@ canvas {
     margin-top: 15px !important;
 }
 
+.push-40 {
+    margin-top: 40px !important;
+}
+
 .header-text-s {
     color: rgb(0, 121, 184);
     margin-bottom: 11px;
@@ -1828,9 +1899,17 @@ canvas {
     width: 100%;
     height: 100%;
     position: fixed;
-    background-color: rgba(46, 48, 58, .98);
     z-index: 9;
     top: 0;
+    left: 0;
+}
+
+.cover90 {
+    background-color: rgba(46, 48, 58, .98);
+}
+
+.cover50 {
+    background-color: rgba(46, 48, 58, .35);
 }
 
 .error-message {
@@ -1860,6 +1939,117 @@ canvas {
     padding: 22px 24px 17px;
     font-size: 1.1em;
     line-height: 1.7em;
+}
+
+/* ======================       Share and Save: Action Modals          ============================= */
+
+.action-modal {
+    position: absolute;
+    top: 23%;
+    left: 50%;
+    z-index: 10;
+    width: 500px;
+    margin-left: -250px;
+}
+
+.action-modal .a-header {
+    width: 100%;
+    background: #329766;
+    padding: 12px 0 1px;
+    text-align: center;
+    color: #fff;
+    font-size: 1.7em;
+    text-transform: uppercase;
+}
+
+.action-modal .a-body {
+    width: 100%;
+    background-color: #EFF3F4;
+    color: #323762;
+    padding: 23px 25px 25px;
+}
+
+.action-modal .c-desc {
+    text-align: center;
+    color: #323762;
+    font-size: 1.7em;
+    padding: 0 0 15px;
+}
+
+.action-modal label {
+    display: block;
+}
+
+.action-modal textarea {
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.action-modal .progressDiv {
+    width: 100%;
+    margin-top: 21px;
+}
+
+.action-modal .progress-bar {
+    background: #58355F !important;
+}
+
+.btn-center {
+    width: 97%;
+    margin: 0 auto;
+}
+
+.action-m {
+    z-index: 10;
+    position: relative;
+}
+
+.action-modal .generalInput {
+    width: 100%;
+    margin: 0 auto 15px;
+}
+
+.share-link .generalInput {
+    width: 300px;
+    float: left;
+}
+
+.s-btn {
+    padding: 10px 28px;
+    margin-left: 355px;
+}
+
+.text-share-link {
+    position: relative;
+    right: -47px;
+    top: 8px;
+}
+
+/* ======================       AddThis          ============================= */
+#fb-btn-styling {
+    background: #323762 !important;
+    width: 204px !important;
+    padding: 9px 16px !important;
+    height: 47px !important;
+    color: #fff !important;
+    margin-left: 10px !important;
+}
+
+#fb-btn-styling img {
+    padding-right: 5px !important
+}
+
+#tw-btn-styling {
+    background: #323762 !important;
+    width: 197px !important;
+    padding: 9px 16px !important;
+    height: 47px !important;
+    color: #fff !important;
+    margin-left: 15px !important;
+}
+
+#tw-btn-styling img {
+    padding-right: 5px !important
 }
 
 /* ==========================================================================

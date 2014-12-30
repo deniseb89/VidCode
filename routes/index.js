@@ -8,6 +8,8 @@ var mongoose = require("mongoose");
 var Grid = require('gridfs-stream');
 var gfs = Grid(mongoose.connection.db, mongoose.mongo);
 var User = require('../models/user');
+var Vidcode = require('../models/vidcode');
+var content = require('../models/content');
 
 module.exports = function (app, passport) {
 
@@ -17,7 +19,7 @@ module.exports = function (app, passport) {
 
     // show the home page (will also have our login links)
     app.get('/', function (req, res) {
-       // res.render('signin', {title: 'Vidcode'});
+        // res.render('signin', {title: 'Vidcode'});
         res.render('signin', {title: 'Vidcode', message: req.flash('message')});
     });
 
@@ -467,6 +469,10 @@ module.exports = function (app, passport) {
         res.render('intro', {
             user: req.user
         });
+    });
+
+    app.get('/workstation', isLoggedIn, function (req, res) {
+        res.render("workstation", {content: content, user: req.user});
     });
 
     app.get('/lesson/1', isLoggedIn, function (req, res) {

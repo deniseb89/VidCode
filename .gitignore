@@ -1,4 +1,5 @@
 .DS_Store
+.idea
 .env
 Procfile
 node_modules
@@ -7,4 +8,3 @@ config.json
 video/**
 img/**
 static/img/temp/**
-.idea
