@@ -99,7 +99,7 @@ module.exports = function (passport) {
                         if (password.length < 6) {
                             return done(null, false, req.flash('signupMessage', 'Password length must be at least 6 characters.'));
                         }
-                        if (password == email ) {
+                        if (password == email) {
                             return done(null, false, req.flash('signupMessage', 'Password must be different from email.'));
                         }
                         if (!(/[0-9]/).test(password)) {
@@ -201,7 +201,7 @@ module.exports = function (passport) {
                                 user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                                 user.facebook.email = (profile.emails[0].value || '').toLowerCase();
                                 user.social = "facebook";
-                                user.username = user.username;
+                                user.username = user.username || user.facebook.name;
 
                                 user.save(function (err) {
                                     if (err)
@@ -241,7 +241,7 @@ module.exports = function (passport) {
                     user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                     user.facebook.email = (profile.emails[0].value || '').toLowerCase();
                     user.social = "facebook";
-                    user.username = user.username;
+                    user.username = user.username || user.facebook.name;
 
                     user.save(function (err) {
                         if (err)
@@ -287,7 +287,7 @@ module.exports = function (passport) {
                                 user.instagram.username = profile.username;
                                 user.instagram.displayName = profile.displayName;
                                 user.social = "instagram";
-                                user.username = user.username;
+                                user.username = user.username || user.instagram.username;
 
                                 user.save(function (err) {
                                     if (err)
@@ -329,7 +329,7 @@ module.exports = function (passport) {
                     user.instagram.displayName = profile.displayName;
                     user.instagram.IGvideos = profile.IGvideos;
                     user.social = "instagram";
-                    user.username = user.username;
+                    user.username = user.username || user.instagram.username;
 
                     user.save(function (err) {
                         if (err)
@@ -374,7 +374,7 @@ module.exports = function (passport) {
                                 user.twitter.username = profile.username;
                                 user.twitter.displayName = profile.displayName;
                                 user.social = "twitter";
-                                user.username = user.twitter.username;
+                                user.username = user.username || user.twitter.username;
 
                                 user.save(function (err) {
                                     if (err)
@@ -414,7 +414,7 @@ module.exports = function (passport) {
                     user.twitter.username = profile.username;
                     user.twitter.displayName = profile.displayName;
                     user.social = "twitter";
-                    user.username = user.twitter.username;
+                    user.username = user.username || user.twitter.username;
 
                     user.save(function (err) {
                         if (err)
@@ -459,7 +459,7 @@ module.exports = function (passport) {
                                 user.google.name = profile.displayName;
                                 user.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
                                 user.social = "google";
-                                user.username = user.google.username;
+                                user.username = user.username || user.google.username;
 
                                 user.save(function (err) {
                                     if (err)
@@ -498,7 +498,7 @@ module.exports = function (passport) {
                     user.google.name = profile.displayName;
                     user.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
                     user.social = "google";
-                    user.username = user.google.username;
+                    user.username = user.username || user.google.username;
 
                     user.save(function (err) {
                         if (err)
