@@ -475,21 +475,6 @@ module.exports = function (app, passport) {
         res.render("workstation", {content: content, user: req.user});
     });
 
-    app.get('/lesson/1', isLoggedIn, function (req, res) {
-        var filters = ['blur', 'noise', 'vignette', 'sepia', 'fader', 'exposure'];
-        var codeText =
-            "\
-             \n\
-             //This line of code makes your movie play!\n\
-             movie.play();\n\
-            \n\
-             //The code below lets you add, remove, and alter your video filters.\n\
-             //Change the numbers and make your video all your own!\n\
-                ";
-
-        res.render("partone", {code: codeText, filters: filters, user: req.user});
-    });
-
 
     app.get('/lesson/cs1', isLoggedIn, function (req, res) {
         var filters = ['blur', 'noise', 'vignette', 'exposure'];
