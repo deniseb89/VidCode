@@ -120,12 +120,12 @@ var uploadFromComp = function (ev) {
           //     var data = JSON.parse(data);
               updateMediaLibrary(file,e.target.result);
               $(".popup").addClass("is-hidden");
-              $(".fileError").text("");            
+              $(".fileError").text("");
           //   },
           //   error: function(file, textStatus, jqXHR){
           //     console.log('file error');
           //   }
-          // });    
+          // });
           } else {
           $('.loader').addClass('is-hidden');
           $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
@@ -133,7 +133,7 @@ var uploadFromComp = function (ev) {
       };
     })(file);
 
-    reader.readAsDataURL(file); 
+    reader.readAsDataURL(file);
   }
 };
 
@@ -154,13 +154,13 @@ var updateMediaLibrary = function (file,data){
         var stills = document.querySelectorAll('.js-selected-still');
         var frameArr = new Array(stills.length);
         for (var i=1; i<=frameArr.length; i++){
-          frameArr[i-1]=i; 
+          frameArr[i-1]=i;
         }
         frameArr.join(",");
-        myCodeMirror.replaceRange('\n\ stopMotion.frames = ['+frameArr+'];',CodeMirror.Pos(myCodeMirror.lastLine())); 
+        myCodeMirror.replaceRange('\n\ stopMotion.frames = ['+frameArr+'];',CodeMirror.Pos(myCodeMirror.lastLine()));
         myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-frames" });
 
-      };  
+      };
     } else if (file.type.match(/video.*/) ) {
       type = 'video';
       style = 'js-vid-click';
@@ -170,7 +170,7 @@ var updateMediaLibrary = function (file,data){
         $(this).addClass('js-selected-video');
         movie.addEventListener("loadeddata", showVid, false);
         var thisSrc = $(this).attr('src');
-        movie.src = thisSrc;        
+        movie.src = thisSrc;
       };
     }
 
@@ -178,7 +178,7 @@ var updateMediaLibrary = function (file,data){
     div.className += 'i-vid-container';
     var media = document.createElement(type);
     media.className += style;
-    media.src = data;    
+    media.src = data;
     media.addEventListener('click',fn,false);
     div.appendChild(media);
     document.getElementById('media-library').appendChild(div);
@@ -202,7 +202,7 @@ var setup = function(){
       autoStart: true
     });
     InitSeriously();
-  }  
+  }
   movie.removeEventListener('canplay', setup, false);
 }
 
@@ -222,7 +222,7 @@ var InitSeriously = function(){
     effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
     thisEffect.amount = 0;
   }
-  target.source = effects[allEffects[allEffects.length-1]];    
+  target.source = effects[allEffects[allEffects.length-1]];
 };
 
 var updateScript = function() {
@@ -309,7 +309,7 @@ var loadThumbnails = function() {
         if (igVids.length){
           for (var i=0; i < Math.min(igVids.length,3); i++){
             $('#js-fetch-vid'+i).error(function(){
-              $(this).addClass('is-hidden');              
+              $(this).addClass('is-hidden');
             });
             $('#js-fetch-vid'+i).removeClass('is-hidden');
             document.getElementById('js-fetch-vid'+i).src = '/instagram/'+i;
@@ -317,11 +317,11 @@ var loadThumbnails = function() {
             }, false);
           }
         } else {
-          $('.i-error').text("You don't have any Instagram videos :(");          
+          $('.i-error').text("You don't have any Instagram videos :(");
         }
       },
       error: function(data, textStatus, jqXHR){
-        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");          
+        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");
       }
     });
   } else {
@@ -358,6 +358,9 @@ $( document ).ready(function() {
   seriously.go();
   movie.addEventListener('canplay', setup, false);
   movie.load();
+
+  //filters is already showing when the page loads
+  $('.basic-filter-method').removeClass('is-hidden');
 
   inputFile.addEventListener('change',uploadFromComp, false);
 
@@ -625,7 +628,7 @@ $( document ).ready(function() {
       $(".kaytitle").text(buttonTitle);
       var buttonDesc = document.getElementById("formDesc").value;
       $(".kaydesc").text(buttonDesc);
-      //resend form here if title/desc is updated      
+      //resend form here if title/desc is updated
   });
 
   loadThumbnails();
@@ -651,9 +654,9 @@ $( document ).ready(function() {
     slideRight('.js-slide-1', '.js-slide-title');
     movie.play();
     movie.muted = true;
-    $('.js-share').attr('href','#');    
-    $('.js-share').addClass('is-inactive-btn');    
-    $('.js-lesson-prompt').text('');    
+    $('.js-share').attr('href','#');
+    $('.js-share').addClass('is-inactive-btn');
+    $('.js-lesson-prompt').text('');
     $('#vid-display').addClass('is-hidden');
     $('.progressDiv').removeClass('is-hidden');
     frames=[];
@@ -661,7 +664,7 @@ $( document ).ready(function() {
   });
 
   $('.js-slide-left-title').click(function(){
-    movie.muted = false;  
+    movie.muted = false;
     slideLeft('.js-slide-1', '.js-slide-title');
   });
 
@@ -678,12 +681,19 @@ $( document ).ready(function() {
   $('.js-switch-view').click(function(){
     //Todo: Template these
     var view = ($(this).attr('id'));
+    var lName = ($(this).attr('name'));
     $('.basic-filter-method').addClass('is-hidden');
-    $('.adv-filter-method').addClass('is-hidden');
-    $('.movie-control-method').addClass('is-hidden');    
+    $('.movie-control-method').addClass('is-hidden');
     $('.stop-motion-method').addClass('is-hidden');
     $('.'+view).removeClass('is-hidden');
+    $('.js-lesson-name').text(lName);
   })
+
+  $( "html" ).on( "click", ".js-switch-appear", function(){
+    $('.js-switch-view-container').toggleClass('is-hidden');
+    $('body').toggleClass('js-switch-appear');
+  });
+
 
   //boolean game
   var fclicks = 0;

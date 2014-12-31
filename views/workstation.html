@@ -89,26 +89,22 @@
       <p class="fileError"></p>
   </div>
 
-<div class="set-container lesson-page clearfix js-slide-1">
-	<div class="progress-set">
+  <div class="set-container lesson-page clearfix">
+    <div class="current-lesson-display">
+      <h3 class="js-switch-appear"><span class="js-lesson-name">Filters</span> <img src="img/header-down-arrow.png"></h3>
+      <div class="large-selection-dropdown js-switch-view-container is-hidden">
+        <ul>
+          <li class="js-switch-view" id="basic-filter-method" name="Filters">Filters</li>
+          <li class="js-switch-view" id="stop-motion-method" name="Stop Motion">Stop Motion</li>
+          <li class="js-switch-view" id="movie-control-method" name="Computer Vision">Computer Vision</li>
+      </div>
+    </div>
+  	<div class="progress-set">
 
-	</div>
-  <div class="save-btns-container">
-    <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
-      Save
-    </span>
-    <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
-      Share
-    </span>
-  </div>
+  	</div>
 
-  <div class="view-controller">
-  <!-- Todo: Template these -->
-    <button class="js-switch-view" id="basic-filter-method">Basic</button>
-    <button class="js-switch-view" id="adv-filter-method">Advanced</button>
-    <button class="js-switch-view" id="movie-control-method">Movie Controls</button>
-    <button class="js-switch-view" id="stop-motion-method" >Stop Motion</button>
-  </div>
+    <div class="view-controller">
+    </div>
 
 	<div class="lesson-container">
 		<div class="col-md-4">
@@ -182,6 +178,14 @@
 					<textarea id="codemirror" name="codemirror">{{code}}</textarea>
 		  	</form>
 		  </div>
+      <div class="save-btns-container">
+        <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
+          Save
+        </span>
+        <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
+          Share
+        </span>
+      </div>
   	</div>
 
   	<div class="col-md-3">
@@ -227,7 +231,10 @@
             {{/each}}
         </div>
       </div>
+
   	</div> <!--end of lesson container-->
+
+
 	</div> <!--end of set-container lesson-page-->
 </div>
 
