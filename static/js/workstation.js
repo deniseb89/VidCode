@@ -198,9 +198,9 @@ var setup = function(){
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
     $('.compatibility-error').removeClass('is-hidden');
   } else {
-    $("#joyRideTipContent").joyride({
-      autoStart: true
-    });
+    // $("#joyRideTipContent").joyride({
+    //   autoStart: true
+    // });
     InitSeriously();
   }  
   movie.removeEventListener('canplay', setup, false);
