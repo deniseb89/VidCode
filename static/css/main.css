@@ -29,7 +29,6 @@ body{
     font-family: 'Open Sans', sans-serif;
     height: 100%;
     background-color: #E6EFE9;
-    width: 101%;
 }
 
 h3{
@@ -101,7 +100,7 @@ fieldset {
 textarea {
     resize: vertical;
 }
-
+.general-display{padding: 7px 0px; background-color: #A2A4E5;}
 
 .instagram-form input, textarea, .sign-in-input, .generalInput {
     padding: 9px;
@@ -257,16 +256,18 @@ text-align: center;padding: 8px 0;color: #fff;text-transform: uppercase;cursor: 
 
 /*Header */
 .nav{background-color: #fff;}
-.nav li a:hover{background-color: #e8f4ed!important; }
+.nav li a:hover{background: none; }
+.nav-tabs{border-bottom: 3px solid #7E79C4; padding-bottom: 5px;}
 .nav a{
-    font-family: 'Open Sans', sans-serif!important;
-    font-weight: 700;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
     font-size: 1.7em;
-    color: #319665;
+    color: #58355F;
 }
-.nav .small{margin-top: 6px;}
-.nav a:hover{color: #1B4F33; }
-.nav > li > a {padding: 3px 15px!important;}
+.nav .small{margin-top: 3px;}
+.nav a:hover{color: #9469A0; }
+.nav > li > a {padding: 6px 15px; line-height: 1.5em;border: none;}
+.nav > li{border: none;}
 
 
 
@@ -320,6 +321,7 @@ font-size: .9em;}
     z-index: 5;
     margin-top: 1px;
     width: 103%;
+    width: 250px;
 }
 
 .steps{
@@ -435,7 +437,7 @@ z-index: 100000;}
 
 
 .small{
-    font-size: 1.1em!important;
+    font-size: 1em!important;
     }
 
 .hidden{
