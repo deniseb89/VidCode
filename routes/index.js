@@ -241,7 +241,6 @@ module.exports = function (app, passport) {
                 });
             },
             function (token, done) {
-                //mongoose.connection.db.collection('users').findOne({'vidcode.email': req.body.email}, function (err, user) {
                 User.findOne({'vidcode.email': req.body.email}, function (err, user) {
                     if (!user) {
                         req.flash('message', 'No account with that email address exists.');
