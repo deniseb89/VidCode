@@ -4,6 +4,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var InstagramStrategy = require('passport-instagram').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
 
 // load up the user model
 var User = require('../models/user');
@@ -123,12 +125,32 @@ module.exports = function (passport) {
                             newUser.vidcode.email = email;
                             newUser.vidcode.password = newUser.generateHash(password);
                             newUser.social = "vidcode";
-                            newUser.username = newUser.vidcode.username;
+                            newUser.username = newUser.vidcode.email;
 
                             newUser.save(function (err) {
                                 if (err)
                                     return done(err);
 
+                                    var sendgridOptions = {
+                                        auth: {
+                                            api_user: process.env.SENDGRID_USERNAME,
+                                            api_key: process.env.SENDGRID_PASSWORD
+                                        }
+                                    };
+
+                                    var mailer = nodemailer.createTransport(sgTransport(sendgridOptions));
+
+                                    var email = {
+                                        to: [newUser.vidcode.email],
+                                        from: 'no-reply@vidcode.io',
+                                        subject: 'Welcome to Vidcode',
+                                        text: 'Welcome to Vidcode!\n\n'
+                                    };
+
+                                    mailer.sendMail(email, function (err) {
+                                        req.flash('message', 'Welcome to Vidcode!.');
+                                        done(err, 'done');
+                                    });
 
                                 return done(null, newUser);
                             });
@@ -233,6 +255,27 @@ module.exports = function (passport) {
                             newUser.save(function (err) {
                                 if (err)
                                     return done(err);
+
+                                var sendgridOptions = {
+                                    auth: {
+                                        api_user: process.env.SENDGRID_USERNAME,
+                                        api_key: process.env.SENDGRID_PASSWORD
+                                    }
+                                };
+
+                                var mailer = nodemailer.createTransport(sgTransport(sendgridOptions));
+
+                                var email = {
+                                    to: [newUser.facebook.email],
+                                    from: 'no-reply@vidcode.io',
+                                    subject: 'Welcome to Vidcode',
+                                    text: 'Welcome to Vidcode!\n\n'
+                                };
+
+                                mailer.sendMail(email, function (err) {
+                                    req.flash('message', 'Welcome to Vidcode!.');
+                                    done(err, 'done');
+                                });
 
                                 return done(null, newUser);
                             });
