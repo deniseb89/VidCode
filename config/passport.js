@@ -200,6 +200,9 @@ module.exports = function (passport) {
                                 user.facebook.token = token;
                                 user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                                 user.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                                user.facebook.gender = profile.gender;
+                                user.facebook.publicProfile = profile.profileUrl;
+                                user.facebook.username = profile.displayName;
                                 user.social = "facebook";
                                 user.username = user.username || user.facebook.name;
 
@@ -220,8 +223,12 @@ module.exports = function (passport) {
                             newUser.facebook.token = token;
                             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                             newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                            newUser.facebook.gender = profile.gender;
+                            newUser.facebook.publicProfile = profile.profileUrl;
+                            newUser.facebook.username = profile.displayName;
                             newUser.social = "facebook";
                             newUser.username = newUser.facebook.name;
+
 
                             newUser.save(function (err) {
                                 if (err)
@@ -240,6 +247,9 @@ module.exports = function (passport) {
                     user.facebook.token = token;
                     user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                     user.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                    user.facebook.gender = profile.gender;
+                    user.facebook.publicProfile = profile.profileUrl;
+                    user.facebook.username = profile.displayName;
                     user.social = "facebook";
                     user.username = user.username || user.facebook.name;
 

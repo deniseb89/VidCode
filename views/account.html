@@ -6,7 +6,6 @@
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
-
     <div class="row">
 
         <!-- LOCAL INFORMATION -->
@@ -39,7 +38,9 @@
                     <strong>Name</strong>: {{user.facebook.name}}<br>
                     <strong>Email</strong>: {{user.facebook.email}}<br>
                     <strong>Id</strong>: {{user.facebook.id}}<br>
-                    <strong>Token</strong>: {{user.facebook.token}}><br>
+                    <strong>Token</strong>: {{user.facebook.token}}<br>
+                    <strong>Gender</strong>: {{user.facebook.gender}}<br>
+                    <strong>Public Profile</strong>: <a href="{{user.facebook.publicProfile}}">{{user.facebook.publicProfile}}</a><br>
                 </p>
 
                 {{else}}

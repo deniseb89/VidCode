@@ -18,7 +18,10 @@ var userSchema = mongoose.Schema({
         id: String,
         token: String,
         email: String,
-        name: String
+        name: String,
+        username: String,
+        gender: String,
+        publicProfile: String
     },
     instagram: {
         id: String,
