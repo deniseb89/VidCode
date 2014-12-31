@@ -26,7 +26,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
     secret: 'secret kitty',
-    maxAge: 1000 * 60 * 60 * 24 * 7 // 
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    resave: true,
+    saveUninitialized: true
     // secureProxy: false // if you do SSL outside of node
 }));
 app.use(passport.initialize());
