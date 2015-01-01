@@ -148,10 +148,18 @@ module.exports = function (app, passport) {
 
     // handle the callback after instagram has authenticated the user
     app.get('/auth/instagram/cb',
-        passport.authenticate('instagram', {
-            successRedirect: '/intro',
-            failureRedirect: '/'
-        }));
+        passport.authenticate('instagram', { failureRedirect: '/' }),
+        function(req, res) {
+            // successful auth, user is set at req.user.  redirect as necessary.
+            //if (req.user.isNew) { return res.redirect('/intro'); }
+            //res.redirect('/workstation');
+            if(req.headers.referer.toString().indexOf('/workstation') > -1){
+             res.redirect('/workstation')
+            }
+            else {
+                res.redirect('/intro');
+            }
+        });
 
 
     // twitter ==============================
