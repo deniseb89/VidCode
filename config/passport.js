@@ -131,26 +131,27 @@ module.exports = function (passport) {
                                 if (err)
                                     return done(err);
 
-                                    var sendgridOptions = {
-                                        auth: {
-                                            api_user: process.env.SENDGRID_USERNAME,
-                                            api_key: process.env.SENDGRID_PASSWORD
-                                        }
-                                    };
+                                var sendgridOptions = {
+                                    auth: {
+                                        api_user: process.env.SENDGRID_USERNAME,
+                                        api_key: process.env.SENDGRID_PASSWORD
+                                    }
+                                };
 
-                                    var mailer = nodemailer.createTransport(sgTransport(sendgridOptions));
+                                var mailer = nodemailer.createTransport(sgTransport(sendgridOptions));
 
-                                    var email = {
-                                        to: [newUser.vidcode.email],
-                                        from: 'no-reply@vidcode.io',
-                                        subject: 'Welcome to Vidcode',
-                                        text: 'Welcome to Vidcode!\n\n'
-                                    };
+                                var email = {
+                                    to: [newUser.vidcode.email],
+                                    from: 'no-reply@vidcode.io',
+                                    subject: 'Welcome to Vidcode',
+                                    text: 'Welcome to Vidcode!\n\n'
+                                };
 
-                                    mailer.sendMail(email, function (err) {
-                                        req.flash('message', 'Welcome to Vidcode!.');
-                                        done(err, 'done');
-                                    });
+                                mailer.sendMail(email, function (err) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                });
 
                                 return done(null, newUser);
                             });
@@ -273,8 +274,9 @@ module.exports = function (passport) {
                                 };
 
                                 mailer.sendMail(email, function (err) {
-                                    req.flash('message', 'Welcome to Vidcode!.');
-                                    done(err, 'done');
+                                    if (err) {
+                                        console.log(err);
+                                    }
                                 });
 
                                 return done(null, newUser);
