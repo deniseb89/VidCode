@@ -425,6 +425,9 @@ module.exports = function (app, passport) {
             ws.on('close', function (file) {
                 video.file = file._id;
                 video.token = token;
+                video.title = "My video created on " + getDateMMDDYYYY();
+                video.desc = "My video created on " + getDateMMDDYYYY();
+                video.code = req.body.code;
 
                 saveVideo(gfs.db, req.user._id, video, function () {
                     res.send(token);
@@ -666,7 +669,7 @@ module.exports = function (app, passport) {
         res.render('404', {layout: false});
     });
 
-}
+};
 
 
 // =============================================================================
@@ -741,7 +744,13 @@ function saveVideo(db, id, video, cb) {
             if (!doc) {
                 console.log("created new doc with video");
                 doc = {_id: id};
-                doc.videos = {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token};
+                doc.videos = {
+                    "file": video.file,
+                    "title": video.title,
+                    "desc": video.desc,
+                    "token": video.token,
+                    "code": video.code
+                };
                 vc.insert(doc, function (err, insert) {
                     if (err) {
                         console.log('err in inserting doc ' + id + ':' + err);
@@ -755,7 +764,8 @@ function saveVideo(db, id, video, cb) {
                             "file": video.file,
                             "title": video.title,
                             "desc": video.desc,
-                            "token": video.token
+                            "token": video.token,
+                            "code": video.code
                         }
                     }
                 }, function (err, updated) {
@@ -773,4 +783,14 @@ function saveVideo(db, id, video, cb) {
         });
         cb();
     }
+}
+
+function getDateMMDDYYYY() {
+    var date = new Date();
+
+    var m = date.getMonth().toString();
+    var d = date.getDate().toString();
+    var y = date.getFullYear().toString();
+
+    return m + "-" + d + "-" + y;
 }
