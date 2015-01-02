@@ -12,7 +12,7 @@ var movie,
     capture,
     windowObjectReference = null;
     numVidSelect = 0;
-    allEffects = ['blur','noise','vignette','exposure','fader','kaleidoscope', 'saturation'];
+    allEffects = ['blur','noise','vignette','exposure','fader','kaleidoscope'];
     mult = {'blur':.01, 'noise':.1, 'vignette': 1, 'exposure':.04,'fader':.04, 'kaleidoscope':1, 'saturation':.1};
     defaultValue =  {'number':5 , 'color': '"red"'};
 
@@ -119,12 +119,12 @@ var uploadFromComp = function (ev) {
           //     var data = JSON.parse(data);
               updateMediaLibrary(file,e.target.result);
               $(".popup").addClass("is-hidden");
-              $(".fileError").text("");            
+              $(".fileError").text("");
           //   },
           //   error: function(file, textStatus, jqXHR){
           //     console.log('file error');
           //   }
-          // });    
+          // });
           } else {
           $('.loader').addClass('is-hidden');
           $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
@@ -132,7 +132,7 @@ var uploadFromComp = function (ev) {
       };
     })(file);
 
-    reader.readAsDataURL(file); 
+    reader.readAsDataURL(file);
   }
 };
 
@@ -147,15 +147,15 @@ var updateMediaLibrary = function (file,data){
       fn = function() {
         $(this).toggleClass('js-selected-video');
         $(this).toggleClass('js-selected-still');
-        //update frame array with stills. Maybe add some kind of enumeration to the frames
-        
+
+        // figure out how to deal with video running in the backgroud        
         movie.src = "";
-        showVid();
+        // showVid();
 
         var stills = document.querySelectorAll('.js-selected-still');
         var frameArr = new Array(stills.length);
         for (var i=1; i<=frameArr.length; i++){
-          frameArr[i-1]=i; 
+          frameArr[i-1]=i;
         }
         frameArr.join(",");
         var allTM = myCodeMirror.getAllMarks();
@@ -164,11 +164,13 @@ var updateMediaLibrary = function (file,data){
           if (tm.className=="cm-frames"){
             var cmLine = tm.find();
             console.log(cmLine);           
-            myCodeMirror.replaceRange('\n\ stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+            myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
             myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
+            // myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()),{ className: "cm-frames" });
+
             //not marking text here? 
-            console.log(tm.find());
-            console.log(CodeMirror.Pos( cmLine.to.line ));
+            console.log({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ));
+            console.log({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()));
           }
         }
       };  
@@ -181,7 +183,7 @@ var updateMediaLibrary = function (file,data){
         $(this).addClass('js-selected-video');
         movie.addEventListener("loadeddata", showVid, false);
         var thisSrc = $(this).attr('src');
-        movie.src = thisSrc;        
+        movie.src = thisSrc;
       };
     }
 
@@ -189,7 +191,7 @@ var updateMediaLibrary = function (file,data){
     div.className += 'i-vid-container';
     var media = document.createElement(type);
     media.className += style;
-    media.src = data;    
+    media.src = data;
     media.addEventListener('click',fn,false);
     div.appendChild(media);
     document.getElementById('media-library').appendChild(div);
@@ -216,7 +218,7 @@ var setup = function(){
     //   autoStart: true
     // });
     InitSeriously();
-  }  
+  }
   movie.removeEventListener('canplay', setup, false);
 }
 
@@ -236,7 +238,7 @@ var InitSeriously = function(){
     effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
     thisEffect.amount = 0;
   }
-  target.source = effects[allEffects[allEffects.length-1]];    
+  target.source = effects[allEffects[allEffects.length-1]];
 };
 
 var updateScript = function() {
@@ -268,9 +270,9 @@ var updateScript = function() {
   // }
 
   if (textScript.indexOf('stopMotion.interval')>=0) {
-    // if (!stopMotion.on) {
+    if (!stopMotion.on) {
       stopMotion.start();
-    // }
+    }
   } else {
     if (stopMotion.on) {
       stopMotion.stop();
@@ -323,7 +325,7 @@ var loadThumbnails = function() {
         if (igVids.length){
           for (var i=0; i < Math.min(igVids.length,3); i++){
             $('#js-fetch-vid'+i).error(function(){
-              $(this).addClass('is-hidden');              
+              $(this).addClass('is-hidden');
             });
             $('#js-fetch-vid'+i).removeClass('is-hidden');
             document.getElementById('js-fetch-vid'+i).src = '/instagram/'+i;
@@ -331,11 +333,11 @@ var loadThumbnails = function() {
             }, false);
           }
         } else {
-          $('.i-error').text("You don't have any Instagram videos :(");          
+          $('.i-error').text("You don't have any Instagram videos :(");
         }
       },
       error: function(data, textStatus, jqXHR){
-        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");          
+        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");
       }
     });
   } else {
@@ -372,6 +374,9 @@ $( document ).ready(function() {
   seriously.go();
   movie.addEventListener('canplay', setup, false);
   movie.load();
+
+  //filters is already showing when the page loads
+  $('.basic-filter-method').removeClass('is-hidden');
 
   inputFile.addEventListener('change',uploadFromComp, false);
 
@@ -639,7 +644,7 @@ $( document ).ready(function() {
       $(".kaytitle").text(buttonTitle);
       var buttonDesc = document.getElementById("formDesc").value;
       $(".kaydesc").text(buttonDesc);
-      //resend form here if title/desc is updated      
+      //resend form here if title/desc is updated
   });
 
   loadThumbnails();
@@ -665,9 +670,9 @@ $( document ).ready(function() {
     slideRight('.js-slide-1', '.js-slide-title');
     movie.play();
     movie.muted = true;
-    $('.js-share').attr('href','#');    
-    $('.js-share').addClass('is-inactive-btn');    
-    $('.js-lesson-prompt').text('');    
+    $('.js-share').attr('href','#');
+    $('.js-share').addClass('is-inactive-btn');
+    $('.js-lesson-prompt').text('');
     $('#vid-display').addClass('is-hidden');
     $('.progressDiv').removeClass('is-hidden');
     frames=[];
@@ -675,7 +680,7 @@ $( document ).ready(function() {
   });
 
   $('.js-slide-left-title').click(function(){
-    movie.muted = false;  
+    movie.muted = false;
     slideLeft('.js-slide-1', '.js-slide-title');
   });
 
@@ -692,12 +697,21 @@ $( document ).ready(function() {
   $('.js-switch-view').click(function(){
     //Todo: Template these
     var view = ($(this).attr('id'));
+    var lName = ($(this).attr('name'));
+    var lessonNum = ($(this).attr('lessnum'));
     $('.basic-filter-method').addClass('is-hidden');
-    $('.adv-filter-method').addClass('is-hidden');
-    $('.movie-control-method').addClass('is-hidden');    
+    $('.movie-control-method').addClass('is-hidden');
     $('.stop-motion-method').addClass('is-hidden');
     $('.'+view).removeClass('is-hidden');
+    $('.js-lesson-name').text(lName);
+    $('.js-lesson-page-num').text(lessonNum);
   })
+
+  $( "html" ).on( "click", ".js-switch-menu-appear", function(){
+    $('.js-switch-view-container').toggleClass('is-hidden');
+    $('body').toggleClass('js-switch-menu-appear');
+  });
+
 
   //boolean game
   var fclicks = 0;

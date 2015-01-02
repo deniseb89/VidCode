@@ -1,23 +1,15 @@
-var lessonContent = 
+var lessonContent =
   {
     'basicFilters' : {
-      'instructions': ['basic step', 'basic step', 'basic step', 'basic step'],
+      'lessonName': ['What are we writing? Javascript!'],
+      'instructions': ['basic step', 'basic step', 'basic step 2', 'something else'],
       'learnMore' : [
         {'topic':'What are we writing?', 'target':'#lesson-1-222'},
         {'topic':'Pieces of our code', 'target': '#lesson-3-222'},
         {'topic':'Effects', 'target': '#effects222'}
       ],
-      'elements' : ['blur','noise','vignette','exposure'],
+      'elements' : ['blur','noise','vignette','exposure', 'fader','kaleidoscope'],
       'class' : 'basic-filter-method'
-    },
-    'advFilters' : {
-      'instructions': ['adv speed speed', 'adv speed speed ', 'adv speed speed'],
-      'learnMore' : [
-        {'topic':'More Effects!', 'target':'#lesson-2-222'},
-        {'topic':'Booleans', 'target': '#lesson-4-3-222'}
-      ],
-      'elements' : ['fader','kaleidoscope','saturation'],
-      'class' : 'adv-filter-method'
     },
     'movieControls' : {
       'instructions': ['speed step', 'speed step', 'speed step', 'speed step'],
@@ -35,11 +27,10 @@ var lessonContent =
         {'topic':'Objects', 'target':'#lesson-objects-222'},
         {'topic':'Functions', 'target': '#function222'},
         {'topic':'Frame Rate', 'target': ''}
-      ],      
+      ],
       'elements' : ['interval', 'frames','reverse'],
       'class' : 'stop-motion-method',
     }
   };
 
  module.exports = lessonContent;
- 

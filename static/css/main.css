@@ -100,7 +100,8 @@ fieldset {
 textarea {
     resize: vertical;
 }
-.general-display{padding: 7px 0px; background-color: #A2A4E5;}
+.general-display{}
+.workstation-container{padding: 7px 0px; background-color: #D4E4F5;}
 
 .instagram-form input, textarea, .sign-in-input, .generalInput {
     padding: 9px;
@@ -321,7 +322,7 @@ font-size: .9em;}
     z-index: 5;
     margin-top: 1px;
     width: 103%;
-    width: 250px;
+    height: 250px;
 }
 
 .steps{
@@ -687,6 +688,7 @@ canvas{vertical-align: bottom;}
 .lesson-img-1{width: 255px; margin-bottom: -57px;}
 .lesson-img-2{width: 385px; margin-bottom: -74px;}
 
+
 /* ---------------- Learn More Games ------------------ */
 
 
@@ -761,10 +763,20 @@ canvas{vertical-align: bottom;}
 
 
 /* =============    Individual Lessons Code   ======== */
+.current-lesson-display{float: left; padding-top: 5px;}
+.current-lesson-display h3{font-weight: 600;color: #323762; cursor: pointer; font-size: 1.8em;}
+
+.large-selection-dropdown{position: absolute;z-index: 1; background: #fff;
+    border: 3px solid #22275A;border-radius: 3px;margin: -3px 0 0 14px;}
+.large-selection-dropdown ul{padding: 0;margin:0;}
+.large-selection-dropdown li{font-size: 1.75em; color: #323762; padding: 5px 10px; cursor: pointer;}
+.large-selection-dropdown li:hover{color:#fff; background-color:#323762;}
+
+
 .set-container{width: 95%; margin: 20px auto; background-color: #fff}
 
 
-.save-btns-container{margin: -7px 0 -12px 16px;}
+.save-btns-container{float: right;margin-top: 24px;}
 .save-btns-container span{margin-right: 9px;}
 
 .lesson-page .progress-set{ margin: 0 auto; width: 450px; padding: 20px;}
@@ -799,7 +811,7 @@ canvas{vertical-align: bottom;}
 .lesson-page .video-container img{width: 44%; margin: 2%; cursor: pointer;}
 .lesson-page .video-container .js-selected-video{border: 2px solid #441B4B;}
 .lesson-page .video-container p{font-weight: bold; font-size: 1.2em; margin-top: 15px; color: #441B4B;}
-.lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
+.lesson-page p{font-size: 1.1em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
 /*Adding this as a temp fix for the instruction fonts*/
@@ -823,8 +835,8 @@ canvas{vertical-align: bottom;}
 .lesson-page .links-holder .link-two:hover{text-decoration: none; background-color: #50BA87;}
 
 .lesson-page .links-holder .link-three{color: #684770;}
-.lesson-page .vid-placeholder{background-color: blue; width: 100%; height: 222px; margin: -20px 0 0 0;}
-.lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 99px; font-size: 1.7em!important;}
+.lesson-page .vid-placeholder{background-color: blue; width: 100%; height: 250px; margin: -20px 0 0 0;}
+.lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 112px; font-size: 1.7em!important;}
 
 .lesson-page .vidtip{font-size: 1em;}
 
@@ -895,6 +907,10 @@ canvas{vertical-align: bottom;}
 .share-p-text-container p{font-weight: 400; font-size: 1.1em; color: #333;}
 
 
+.sm-header-bg{background: #58355F;padding: 7px 9px;}
+.sm-header-bg p{color: #fff;font-weight: 600;margin-bottom: 0;}
+.sm-header-bg .lesson-dropdown{font-weight: 400; font-size: 1em;cursor: pointer;}
+
 .s-background{
     width: 100%; height: 100%;
   background: url(/img/signin-bg.png) no-repeat center center fixed;
@@ -905,7 +921,7 @@ canvas{vertical-align: bottom;}
   position: fixed;
 }
 
-.s-container{height: 100%; position: fixed;}
+.s-container{height: 100%; position: fixed;margin-top: -7px;}
 .s-popup{width: 345px; position: fixed; background-color: rgba(255, 255, 255, 0.85); border-radius: 4px;
     top: 125px; left: 50%; margin-left: -172px; z-index: 5;}
 .s-popup p{font-family: 'Copse'; color: #807E8E; font-size: 1.3em; padding: 15px;}
