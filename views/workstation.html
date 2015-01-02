@@ -197,30 +197,29 @@
           </div>
 
           {{#each content}}
-          <div class="is-hidden {{this.class}} clearfix">
-              {{#each this.title}}
-              <h3 class="lm-title">
-                {{.}}
-              </h3>
-              {{/each}}
-              {{#each this.lessonText}}
-              <p>
-                {{.}}
-              </p>
-              {{/each}}
-              {{#each this.images}}
-              <div>
-                <img class="lessonImg" src="img/lessons/{{.}}">
-              </div>
-              {{/each}}
+          <div class="is-hidden {{this.class}} clearfix lesson-text-container">
+            {{#each this.title}}
+            <h3 class="lm-title">
+              {{.}}
+            </h3>
+            {{/each}}
+            {{#each this.lessonText}}
+            <p>
+              {{.}}
+            </p>
+            {{/each}}
+            {{#each this.images}}
+            <div>
+              <img class="lessonImg" src="img/lessons/{{.}}">
             </div>
-          {{/each}}
+            {{/each}}
           </div>
+          {{/each}}
 
-            <a href="http://www.vidcode.io/contact">Feedback? Yes, Please!</a>
 
 
-          <div class="clearfix">
+
+          <div class="clearfix buttons-container">
               {{#each content}}
               <div class="is-hidden {{this.class}}">
                 <ul class="methodList">

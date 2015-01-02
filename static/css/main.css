@@ -32,10 +32,9 @@ body{
 }
 
 h3{
-    padding-left: 15px;
     font-size: 2em;
     font-weight: 700;
-    }
+}
 
 h2{font-family: 'Copse', serif; color: #441B4B;}
 
@@ -763,11 +762,11 @@ canvas{vertical-align: bottom;}
 
 
 /* =============    Individual Lessons Code   ======== */
-.current-lesson-display{float: left; padding-top: 5px;}
+.current-lesson-display{float: left; padding-top: 5px; padding-left: 15px;}
 .current-lesson-display h3{font-weight: 600;color: #323762; cursor: pointer; font-size: 1.8em;}
 
 .large-selection-dropdown{position: absolute;z-index: 1; background: #fff;
-    border: 3px solid #22275A;border-radius: 3px;margin: -3px 0 0 14px;}
+    border: 3px solid #22275A;border-radius: 3px;margin: -3px 0 0 0;}
 .large-selection-dropdown ul{padding: 0;margin:0;}
 .large-selection-dropdown li{font-size: 1.75em; color: #323762; padding: 5px 10px; cursor: pointer;}
 .large-selection-dropdown li:hover{color:#fff; background-color:#323762;}
@@ -948,6 +947,10 @@ canvas{vertical-align: bottom;}
 /* ======================       In-Page Lessons          ============================= */
 .lessonImg{width: 100%;}
 .lm-title{font-size: 1.2em}
+.lesson-text-container{height: 300px; overflow: scroll;}
+.buttons-container{height: 275px; overflow: scroll;}
+
+.lesson-text-container p{font-size: .97em;}
 
 /* ======================       Modal Lessons          ============================= */
 
