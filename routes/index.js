@@ -48,6 +48,13 @@ module.exports = function (app, passport) {
                 if (!err) {
                     user.lessons.addToSet(req.params.lessonId);
                     user.save();
+
+                    var response = {
+                        status: 200,
+                        success: 'Updated Successfully'
+                    };
+
+                    res.end(JSON.stringify(response));
                 }
             }
         );

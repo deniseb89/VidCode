@@ -683,7 +683,7 @@ $( document ).ready(function() {
     $('.movie-control-method').addClass('is-hidden');    
     $('.stop-motion-method').addClass('is-hidden');
     $('.'+view).removeClass('is-hidden');
-  })
+  });
 
   //boolean game
   var fclicks = 0;
@@ -720,10 +720,11 @@ $('.learning-pop-container').click(function(){
     '#lesson-4-3-222': '4b. Booleans',
     '#lesson-objects-222': '5. Objects!',
     "#effects222": '5b. Effects'
-  }
+  };
 
   var clicked = $(this).attr('data-target');
   if (clicked) {
+   $.post('/lesson/'+ clicked.toString().replace('#',''));
     mixpanel.track('LM '+LM_targets[clicked]+' clicked');
   }
 });
@@ -733,9 +734,15 @@ $('.learning-pop-link').click(function(){
     '#movies222': '5a. Movie',
     '#function222': '6. Functions!',
     '#play222': '6a. Play'
-  }
+  };
+
   var clicked = $(this).attr('data-target');
   if (clicked) {
+    $.post('/lesson/'+ clicked.toString().replace('#',''));
     mixpanel.track('LM '+LM_targets[clicked]+' clicked');
   }
 });
+
+trackLesson = function(lessonName){
+  $.post('/lesson/' + lessonName);
+};
