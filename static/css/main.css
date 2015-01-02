@@ -471,14 +471,10 @@ z-index: 100000;}
     background-color: rgb(0, 0, 255);
 }
 
-.stop-motion-method .btn{
-    background-color: rgb(134, 0, 255);
-}
+.stop-motion-method .btn{background-color: #58355F;}
+.stop-motion-method .btn:hover{background-color: #412647;}
 
-.view-controller {
-    margin-left: 100px!important;
-    float: right;
-}
+
 
 #editor {
     margin: 0;
@@ -508,7 +504,6 @@ z-index: 100000;}
 .btn-method{
     background-color: #319665;
     color: #fff;
-    margin-right: 15px!important;
     z-index: 3;
     position: relative;
 }
@@ -636,9 +631,9 @@ canvas{vertical-align: bottom;}
 .draggable {
     position: relative;
     z-index: 1;
-    text-align: left!important;
+    text-align: left;
     /*background-color: rgba(49, 150, 101, .9)!important;*/
-    font-weight: 700!important;
+    font-weight: 700;
     margin-left: 4px;
     float: left;
     width:120px;
@@ -656,8 +651,8 @@ canvas{vertical-align: bottom;}
 
 /* The effects/ learn more area */
 .learnMore{height: 200px; width: 100%; padding-left: 15px;}
-.learnMore .btn{font-size: .9em; width: 92%; color: #fff; text-align: center; padding: 2px;}
-.learnMore .btn:hover{color: #fff!important;}
+.learnMore .btn{font-size: .9em; font-weight: 600; width: 43%; color: #fff; text-align: left; padding: 4px 5px; margin: 7px 5px;}
+.learnMore .btn:hover{color: #fff;}
 .learnMore .bold{font-weight: 700;}
 
 .methods .learnMore{background-color: #eee8d5;}
