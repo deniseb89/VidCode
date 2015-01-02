@@ -1,8 +1,9 @@
 var lessonContent =
   {
     'basicFilters' : {
-      'lessonName': ['What are we writing? Javascript!'],
-      'instructions': ['basic step', 'basic step', 'basic step 2', 'something else'],
+      'title': ['What are we writing? Javascript!'],
+      'lessonText': ["JavaScript?", "Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.", "All your favorite apps are made by talking to computers with programming languages."],
+      'images':['lesson-1-right.png'],
       'learnMore' : [
         {'topic':'What are we writing?', 'target':'#lesson-1-222'},
         {'topic':'Pieces of our code', 'target': '#lesson-3-222'},
@@ -12,7 +13,8 @@ var lessonContent =
       'class' : 'basic-filter-method'
     },
     'movieControls' : {
-      'instructions': ['speed step', 'speed step', 'speed step', 'speed step'],
+      'title': ['What are we writing? Javascript!'],
+      'lessonText': ['speed step', 'speed step', 'speed step', 'speed step'],
       'learnMore' : [
         {'topic':'My Movie', 'target':'#movies222'},
         {'topic':'Play', 'target': '#play222'},
@@ -22,7 +24,8 @@ var lessonContent =
       'class' : 'movie-control-method'
     },
     'stopMotion' : {
-      'instructions': ['select images for your animation by clicking the thumbnails you want in your stop-motion animation.', 'drag the "interval" button. This controls how quickly your animation moves! This code uses milliseconds so 1000 is the same as 1 second!'],
+      'title': ["Stop Motion with Code!"],
+      'lessonText': ['select images for your animation by clicking the thumbnails you want in your stop-motion animation.', 'drag the "interval" button. This controls how quickly your animation moves! This code uses milliseconds so 1000 is the same as 1 second!'],
       'learnMore' : [
         {'topic':'Objects', 'target':'#lesson-objects-222'},
         {'topic':'Functions', 'target': '#function222'},

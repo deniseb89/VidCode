@@ -123,7 +123,6 @@
 
           <div class="video-container clearfix">
             <p>Your Media Library</p>
-            VIDEOS IMAGES
             <div id="media-library">
               <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button>
             </div>
@@ -188,7 +187,7 @@
     	</div>
 
     	<div class="col-md-3">
-        <div>
+        <div class="learnMore" id="tooltip-stop-3">
           <div class="clearfix">
             <div class="sm-header-bg clearfix">
               <p class="js-lesson-name left">Filters</p>
@@ -196,33 +195,29 @@
             </div>
           </div>
 
-  {{#each content}}
-          <div class="learning-pop-container is-hidden {{this.class}}">
-              {{#each this.instructions}}
-              <div>{{.}}
+          {{#each content}}
+          <div class="is-hidden {{this.class}} clearfix">
+              {{#each this.title}}
+              <h3 class="lm-title">
+                {{.}}
+              </h3>
+              {{/each}}
+              {{#each this.lessonText}}
+              <p>
+                {{.}}
+              </p>
+              {{/each}}
+              {{#each this.images}}
+              <div>
+                <img class="lessonImg" src="img/lessons/{{.}}">
               </div>
               {{/each}}
             </div>
           {{/each}}
-        </div>
-          <div id="tooltip-stop-3" class="learnMore">
-          {{#each content}}
-          <div class="is-hidden {{this.class}}">
-              {{#each this.learnMore}}
-            <div class="learning-pop-container" data-toggle="modal" data-target="{{this.target}}">
-              <span class="progress-num cc-6">
-                {{@index}}
-              </span>
-              <span class="learning-pop-link cc-6">
-                {{this.topic}}
-              </span>
-            </div>
-            {{/each}}
-            </div>
-          {{/each}}
+          </div>
 
             <a href="http://www.vidcode.io/contact">Feedback? Yes, Please!</a>
-          </div> <!--end of learn more-->
+
 
           <div class="clearfix">
               {{#each content}}
