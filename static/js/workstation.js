@@ -1,7 +1,6 @@
 var movie,
     canvas,
     seriously,
-    InitSeriously,
     myCodeMirror,
     video,
     vidLen,
@@ -13,7 +12,7 @@ var movie,
     capture,
     windowObjectReference = null;
     numVidSelect = 0;
-    allEffects = ['blur','noise','vignette','exposure','fader','kaleidoscope', 'saturation'];
+    allEffects = ['blur','noise','vignette','exposure','fader','kaleidoscope'];
     mult = {'blur':.01, 'noise':.1, 'vignette': 1, 'exposure':.04,'fader':.04, 'kaleidoscope':1, 'saturation':.1};
     defaultValue =  {'number':5 , 'color': '"red"'};
 
@@ -148,19 +147,33 @@ var updateMediaLibrary = function (file,data){
       fn = function() {
         $(this).toggleClass('js-selected-video');
         $(this).toggleClass('js-selected-still');
-        //update frame array with stills. Maybe add some kind of enumeration to the frames
+
+        // figure out how to deal with video running in the backgroud        
         movie.src = "";
-        showVid();
+        // showVid();
+
         var stills = document.querySelectorAll('.js-selected-still');
         var frameArr = new Array(stills.length);
         for (var i=1; i<=frameArr.length; i++){
           frameArr[i-1]=i;
         }
         frameArr.join(",");
-        myCodeMirror.replaceRange('\n\ stopMotion.frames = ['+frameArr+'];',CodeMirror.Pos(myCodeMirror.lastLine()));
-        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-frames" });
+        var allTM = myCodeMirror.getAllMarks();
+        for (var m=0; m<allTM.length; m++){
+          var tm = allTM[m];
+          if (tm.className=="cm-frames"){
+            var cmLine = tm.find();
+            console.log(cmLine);           
+            myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+            myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
+            // myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()),{ className: "cm-frames" });
 
-      };
+            //not marking text here? 
+            console.log({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ));
+            console.log({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()));
+          }
+        }
+      };  
     } else if (file.type.match(/video.*/) ) {
       type = 'video';
       style = 'js-vid-click';
@@ -191,6 +204,9 @@ var labelLines = function() {
     $("pre:contains('effects."+allEffects[e]+"')").addClass('active-effect');
     $("pre:contains('effects."+allEffects[e]+"')").attr('name',allEffects[e]);
   }
+  for (var i in stopMotion.controls){
+    $("pre:contains('stopMotion."+i+"')").addClass('active-'+i);
+  }
 };
 
 var setup = function(){
@@ -198,9 +214,9 @@ var setup = function(){
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
     $('.compatibility-error').removeClass('is-hidden');
   } else {
-    $("#joyRideTipContent").joyride({
-      autoStart: true
-    });
+    // $("#joyRideTipContent").joyride({
+    //   autoStart: true
+    // });
     InitSeriously();
   }
   movie.removeEventListener('canplay', setup, false);
@@ -254,9 +270,9 @@ var updateScript = function() {
   // }
 
   if (textScript.indexOf('stopMotion.interval')>=0) {
-    // if (!stopMotion.on) {
+    if (!stopMotion.on) {
       stopMotion.start();
-    // }
+    }
   } else {
     if (stopMotion.on) {
       stopMotion.stop();
