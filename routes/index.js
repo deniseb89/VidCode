@@ -43,6 +43,16 @@ module.exports = function (app, passport) {
         }
     });
 
+    app.post('/lesson/:lessonId', isLoggedIn, function (req, res) {
+        User.findOne({_id: req.user._id}, function (err, user) {
+                if (!err) {
+                    user.lessons.addToSet(req.params.lessonId);
+                    user.save();
+                }
+            }
+        );
+    });
+
     // ACCOUNT SECTION =========================
     app.get('/account', isLoggedIn, function (req, res) {
         res.render('account', {
@@ -148,13 +158,13 @@ module.exports = function (app, passport) {
 
     // handle the callback after instagram has authenticated the user
     app.get('/auth/instagram/cb',
-        passport.authenticate('instagram', { failureRedirect: '/' }),
-        function(req, res) {
+        passport.authenticate('instagram', {failureRedirect: '/'}),
+        function (req, res) {
             // successful auth, user is set at req.user.  redirect as necessary.
             //if (req.user.isNew) { return res.redirect('/intro'); }
             //res.redirect('/workstation');
-            if(req.headers.referer.toString().indexOf('/workstation') > -1){
-             res.redirect('/workstation')
+            if (req.headers.referer.toString().indexOf('/workstation') > -1) {
+                res.redirect('/workstation')
             }
             else {
                 res.redirect('/intro');

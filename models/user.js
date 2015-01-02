@@ -9,6 +9,7 @@ var userSchema = mongoose.Schema({
     social: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+    lessons: {type: Array, default: []},
     vidcodes: [{}],
     vidcode: {
         email: {type: String, trim: true},
