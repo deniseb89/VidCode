@@ -100,7 +100,8 @@ fieldset {
 textarea {
     resize: vertical;
 }
-.general-display{padding: 7px 0px; background-color: #D4E4F5;}
+.general-display{}
+.workstation-container{padding: 7px 0px; background-color: #D4E4F5;}
 
 .instagram-form input, textarea, .sign-in-input, .generalInput {
     padding: 9px;
@@ -687,6 +688,7 @@ canvas{vertical-align: bottom;}
 .lesson-img-1{width: 255px; margin-bottom: -57px;}
 .lesson-img-2{width: 385px; margin-bottom: -74px;}
 
+
 /* ---------------- Learn More Games ------------------ */
 
 
@@ -809,7 +811,7 @@ canvas{vertical-align: bottom;}
 .lesson-page .video-container img{width: 44%; margin: 2%; cursor: pointer;}
 .lesson-page .video-container .js-selected-video{border: 2px solid #441B4B;}
 .lesson-page .video-container p{font-weight: bold; font-size: 1.2em; margin-top: 15px; color: #441B4B;}
-.lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
+.lesson-page p{font-size: 1.1em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
 /*Adding this as a temp fix for the instruction fonts*/
@@ -905,6 +907,10 @@ canvas{vertical-align: bottom;}
 .share-p-text-container p{font-weight: 400; font-size: 1.1em; color: #333;}
 
 
+.sm-header-bg{background: #58355F;padding: 7px 9px;}
+.sm-header-bg p{color: #fff;font-weight: 600;margin-bottom: 0;}
+.sm-header-bg .lesson-dropdown{font-weight: 400; font-size: 1em;cursor: pointer;}
+
 .s-background{
     width: 100%; height: 100%;
   background: url(/img/signin-bg.png) no-repeat center center fixed;
@@ -915,7 +921,7 @@ canvas{vertical-align: bottom;}
   position: fixed;
 }
 
-.s-container{height: 100%; position: fixed;}
+.s-container{height: 100%; position: fixed;margin-top: -7px;}
 .s-popup{width: 345px; position: fixed; background-color: rgba(255, 255, 255, 0.85); border-radius: 4px;
     top: 125px; left: 50%; margin-left: -172px; z-index: 5;}
 .s-popup p{font-family: 'Copse'; color: #807E8E; font-size: 1.3em; padding: 15px;}

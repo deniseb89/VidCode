@@ -682,16 +682,18 @@ $( document ).ready(function() {
     //Todo: Template these
     var view = ($(this).attr('id'));
     var lName = ($(this).attr('name'));
+    var lessonNum = ($(this).attr('lessnum'));
     $('.basic-filter-method').addClass('is-hidden');
     $('.movie-control-method').addClass('is-hidden');
     $('.stop-motion-method').addClass('is-hidden');
     $('.'+view).removeClass('is-hidden');
     $('.js-lesson-name').text(lName);
+    $('.js-lesson-page-num').text(lessonNum);
   })
 
-  $( "html" ).on( "click", ".js-switch-appear", function(){
+  $( "html" ).on( "click", ".js-switch-menu-appear", function(){
     $('.js-switch-view-container').toggleClass('is-hidden');
-    $('body').toggleClass('js-switch-appear');
+    $('body').toggleClass('js-switch-menu-appear');
   });
 
 

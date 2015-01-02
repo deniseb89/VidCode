@@ -1,6 +1,7 @@
 var lessonContent =
   {
     'basicFilters' : {
+      'lessonName': ['What are we writing? Javascript!'],
       'instructions': ['basic step', 'basic step', 'basic step 2', 'something else'],
       'learnMore' : [
         {'topic':'What are we writing?', 'target':'#lesson-1-222'},
