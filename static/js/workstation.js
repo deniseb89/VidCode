@@ -1,7 +1,6 @@
 var movie,
     canvas,
     seriously,
-    InitSeriously,
     myCodeMirror,
     video,
     vidLen,
@@ -149,17 +148,29 @@ var updateMediaLibrary = function (file,data){
         $(this).toggleClass('js-selected-video');
         $(this).toggleClass('js-selected-still');
         //update frame array with stills. Maybe add some kind of enumeration to the frames
+        
         movie.src = "";
         showVid();
+
         var stills = document.querySelectorAll('.js-selected-still');
         var frameArr = new Array(stills.length);
         for (var i=1; i<=frameArr.length; i++){
           frameArr[i-1]=i; 
         }
         frameArr.join(",");
-        myCodeMirror.replaceRange('\n\ stopMotion.frames = ['+frameArr+'];',CodeMirror.Pos(myCodeMirror.lastLine())); 
-        myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-frames" });
-
+        var allTM = myCodeMirror.getAllMarks();
+        for (var m=0; m<allTM.length; m++){
+          var tm = allTM[m];
+          if (tm.className=="cm-frames"){
+            var cmLine = tm.find();
+            console.log(cmLine);           
+            myCodeMirror.replaceRange('\n\ stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+            myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
+            //not marking text here? 
+            console.log(tm.find());
+            console.log(CodeMirror.Pos( cmLine.to.line ));
+          }
+        }
       };  
     } else if (file.type.match(/video.*/) ) {
       type = 'video';
@@ -190,6 +201,9 @@ var labelLines = function() {
   for (var e=0; e< allEffects.length; e++){
     $("pre:contains('effects."+allEffects[e]+"')").addClass('active-effect');
     $("pre:contains('effects."+allEffects[e]+"')").attr('name',allEffects[e]);
+  }
+  for (var i in stopMotion.controls){
+    $("pre:contains('stopMotion."+i+"')").addClass('active-'+i);
   }
 };
 
