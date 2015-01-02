@@ -813,7 +813,7 @@ function saveVideo(db, id, video, cb) {
 function getDateMMDDYYYY() {
     var date = new Date();
 
-    var m = date.getMonth().toString();
+    var m = (date.getMonth() + 1).toString();
     var d = date.getDate().toString();
     var y = date.getFullYear().toString();
 
