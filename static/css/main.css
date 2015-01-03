@@ -1733,6 +1733,17 @@ canvas {
     padding: 10px 0;
 }
 
+.save-video-desc-btn {
+    width: 90%;
+    display: block;
+    margin: 7px auto;
+    border-radius: 2px;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    border: 1px solid #fff;
+    padding: 10px 0;
+}
+
 .signup-btn {
     width: 90%;
     display: block;
@@ -1811,6 +1822,16 @@ canvas {
 }
 
 .n-a-login:hover {
+    background-color: #4EAD79;
+}
+
+.n-a-video-save-desc {
+    background-color: #329766;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.n-a-video-save-desc:hover {
     background-color: #4EAD79;
 }
 

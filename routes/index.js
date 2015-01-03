@@ -475,6 +475,28 @@ module.exports = function (app, passport) {
         req.pipe(busboy);
     });
 
+
+    app.post('/video-update-desc', isLoggedIn, function (req, res) {
+
+        var token = req.body.token;
+        var title = req.body.title;
+        var descr = req.body.descr;
+
+        mongoose.connection.db.collection('users').update({
+                'vidcodes.token': token
+            },
+            {$set: {'vidcodes.$.title': title, 'vidcodes.$.descr': descr}},
+            function (err, result) {
+                if (err) {
+                    console.log('err in updating vidcode token ' + token + ':' + err);
+                } else {
+
+                    console.log('successfully updated vidcode token ' + token);
+                }
+            });
+    });
+
+
     app.get('/video', function (req, res) {
         var file = req.query.file;
         var rs = gfs.createReadStream({
@@ -772,7 +794,7 @@ function saveVideo(db, id, video, cb) {
                 doc.videos = {
                     "file": video.file,
                     "title": video.title,
-                    "desc": video.desc,
+                    "descr": video.descr,
                     "token": video.token,
                     "code": video.code
                 };
@@ -788,7 +810,7 @@ function saveVideo(db, id, video, cb) {
                         vidcodes: {
                             "file": video.file,
                             "title": video.title,
-                            "desc": video.desc,
+                            "descr": video.descr,
                             "token": video.token,
                             "code": video.code
                         }
@@ -802,7 +824,7 @@ function saveVideo(db, id, video, cb) {
             cb();
         });
     } else {
-        doc = {vidcodes: [{"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}]};
+        doc = {vidcodes: [{"file": video.file, "title": video.title, "desc": video.descr, "token": video.token}]};
         vc.insert(doc, function () {
             console.log('error in inserting anonymous video');
         });
