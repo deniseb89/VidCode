@@ -214,9 +214,6 @@ var setup = function(){
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
     $('.compatibility-error').removeClass('is-hidden');
   } else {
-    // $("#joyRideTipContent").joyride({
-    //   autoStart: true
-    // });
     InitSeriously();
   }
   movie.removeEventListener('canplay', setup, false);
@@ -271,6 +268,7 @@ var updateScript = function() {
 
   if (textScript.indexOf('stopMotion.interval')>=0) {
     if (!stopMotion.on) {
+      console.log($(".cm-frames").html());
       stopMotion.start();
     }
   } else {

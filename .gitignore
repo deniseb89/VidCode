@@ -4,6 +4,3 @@
 node_modules
 npm-debug.log
 config.json
-video/**
-img/**
-static/img/temp/**
