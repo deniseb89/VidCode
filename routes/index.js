@@ -31,16 +31,36 @@ module.exports = function (app, passport) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function (req, res) {
+
+         var _units = {};
+
+            mongoose.connection.db.collection('units').find().toArray(function(err, result) {
+                if (err) {
+                    console.log('err in getting units ' + err);
+                } else {
+                    _units = result;
+                   // console.log(result);
+                   // console.log(_units);
+                    console.log('successfully got units ');
+                }
+            });
+
+
+
         if (req.user.vidcodes) {
             res.render('profile', {
                 user: req.user,
-                videos: req.user.vidcodes
+                videos: req.user.vidcodes,
+                units: _units
             });
         } else {
+            console.log(_units);
             res.render('profile', {
-                user: req.user
+                user: req.user,
+                units: _units
             });
         }
+
     });
 
     app.post('/lesson/:lessonId', isLoggedIn, function (req, res) {
@@ -451,7 +471,7 @@ module.exports = function (app, passport) {
                 video.file = file._id;
                 video.token = token;
                 video.title = "My video created on " + getDateMMDDYYYY();
-                video.desc = "My video created on " + getDateMMDDYYYY();
+                video.descr = "My video created on " + getDateMMDDYYYY();
                 video.code = req.body.code;
 
                 saveVideo(gfs.db, req.user._id, video, function () {
@@ -481,11 +501,12 @@ module.exports = function (app, passport) {
         var token = req.body.token;
         var title = req.body.title;
         var descr = req.body.descr;
+        var code = req.body.code;
 
         mongoose.connection.db.collection('users').update({
                 'vidcodes.token': token
             },
-            {$set: {'vidcodes.$.title': title, 'vidcodes.$.descr': descr}},
+            {$set: {'vidcodes.$.title': title, 'vidcodes.$.descr': descr , 'vidcodes.$.code': code}},
             function (err, result) {
                 if (err) {
                     console.log('err in updating vidcode token ' + token + ':' + err);
@@ -496,6 +517,25 @@ module.exports = function (app, passport) {
             });
     });
 
+    app.post('/lesson-update-code', isLoggedIn, function (req, res) {
+
+        var token = req.body.token;
+        var code = req.body.code;
+
+
+        mongoose.connection.db.collection('users').update({
+                'vidcodes.token': token
+            },
+            {$set: {'vidcodes.$.code': code}},
+            function (err, result) {
+                if (err) {
+                    console.log('err in updating vidcode token ' + token + ':' + err);
+                } else {
+
+                    console.log('successfully updated vidcode token ' + token);
+                }
+            });
+    });
 
     app.get('/video', function (req, res) {
         var file = req.query.file;

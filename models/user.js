@@ -7,9 +7,15 @@ var userSchema = mongoose.Schema({
     created: {type: Date, default: Date.now},
     username: String,
     social: String,
+    currentPage: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     lessons: {type: Array, default: []},
+    lastSession: {
+        lessonId: String,
+        videoSource: {type: String, trim: true},
+        code: String
+    },
     vidcodes: [{}],
     vidcode: {
         email: {type: String, trim: true},

@@ -1521,6 +1521,45 @@ canvas {
     width: 530px;
 }
 
+/* =============    Profile Page    ======== */
+.profileheader {
+  margin: 20px 0 15px 15px;
+}
+
+.profile {
+  margin: 20px 0;
+}
+
+.profile .video {
+  width: 25%;
+  margin: 0 auto;
+  display: block;
+  cursor: pointer;
+}
+
+.profile .vid-row {
+  width: 25%;
+  margin: 8px auto;
+}
+
+.profile .title {
+  margin: 10px 0 0 3px;
+  font-weight: 600;
+  color: #441B4B;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.profile .username {
+  color: #333;
+  margin: -6px 0 0 3px;
+  font-size: .9em;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+
+
 /* =============    Gallery Page    ======== */
 .galleryheader {
     margin: 20px 0 15px 15px;
