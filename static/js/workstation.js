@@ -84,7 +84,13 @@ var submitVideo = function (blob) {
       $('.js-share').removeClass('is-inactive-btn');
       $('.js-share').attr('href','/share/'+token);
       $('.js-share-link-to-copy').val(window.location.host+'/share/'+token);
+
       //$('meta[property=og\\:url]').attr('content', window.location.host+'/share/'+token);
+
+      $('.js-video-token').attr('value',token);
+      $('.js-video-title').attr('value',"My vidcode created on " + getDateMMDDYYYY());
+      $('.js-video-descr').val("My vidcode created on " + getDateMMDDYYYY());
+
       window.history.pushState("Share", "Share Your Video", '/share/'+token);
       addthis.layers.refresh();
     },
@@ -746,3 +752,13 @@ $('.learning-pop-link').click(function(){
 trackLesson = function(lessonName){
   $.post('/lesson/' + lessonName);
 };
+
+getDateMMDDYYYY =function () {
+  var date = new Date();
+
+  var m = (date.getMonth() + 1).toString();
+  var d = date.getDate().toString();
+  var y = date.getFullYear().toString();
+
+  return m + "-" + d + "-" + y;
+}
