@@ -120,13 +120,18 @@ exports.getUserVid = function(gfs){
 exports.workstation = function (db) {
   var content = require('../models/content');  
   return function (req, res) {
+    var codeText =
+'\
+ movie.play();\n\
+    ';
+
     var user = req.user;
     if (user){
       var social = user.provider;
       var vc = db.collection('vidcode');
 
       var successcb = function(doc) {
-        res.render("workstation", {content: content, user: doc});
+        res.render("workstation", {code: codeText, content: content, user: doc});
       };  
 
       findOrCreate(db,user,successcb);

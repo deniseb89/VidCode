@@ -12,11 +12,13 @@ var movie,
     capture,
     windowObjectReference = null;
     numVidSelect = 0;
+    numFilterSelect = 0;
     allEffects = ['blur','noise','vignette','exposure','fader','kaleidoscope'];
     mult = {'blur':.01, 'noise':.1, 'vignette': 1, 'exposure':.04,'fader':.04, 'kaleidoscope':1, 'saturation':.1};
     defaultValue =  {'number':5 , 'color': '"red"'};
 
 var showVid = function() {
+  console.log ('First Learn More')
   numVidSelect++;
   $('.vid-placeholder').addClass('is-hidden');
   $('.loader').addClass('is-hidden');
@@ -30,6 +32,10 @@ var showVid = function() {
   activateEndButtons('share');
   labelLines();
   vidLen = Math.round(this.duration);
+};
+
+var showImg = function() {
+
 };
 
 var activateEndButtons = function(bType){
@@ -267,10 +273,10 @@ var updateScript = function() {
   // }
 
   if (textScript.indexOf('stopMotion.interval')>=0) {
-    if (!stopMotion.on) {
-      console.log($(".cm-frames").html());
+    // if (!stopMotion.on) {
+      // console.log($(".cm-frames").html());
       stopMotion.start();
-    }
+    // }
   } else {
     if (stopMotion.on) {
       stopMotion.stop();
@@ -487,10 +493,16 @@ $( document ).ready(function() {
       $('[name='+eff+']').addClass("is-active");
       var filter = seriouslyEffects[eff];
       if (filter) {
+        numFilterSelect++;
+        if (numFilterSelect==1) {
+          console.log('show Learn More filter 1');
+        } else if (numFilterSelect==2){
+          console.log('show Learn More filter 2');          
+        }
         var input;
         for (var i in filter.inputs) {
           input = filter.inputs[i];
-          if( (i != 'source') || (i === 'time' || i === 'timer') ){
+          if( (i != 'source') && (i != 'time') && (i != 'overlay') ){
             lineText = '\n\ effects.'+eff+'.'+i+' = '+defaultValue[input.type]+';';
             myCodeMirror.replaceRange(lineText,CodeMirror.Pos(myCodeMirror.lastLine()));
             myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
@@ -508,6 +520,9 @@ $( document ).ready(function() {
       } else if ( stopMotion.controls.hasOwnProperty(eff) ){
           myCodeMirror.replaceRange('\n\ stopMotion.'+eff+' = '+stopMotion.controls[eff]+';',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
+          if (eff=="interval") {
+            console.log('show Learn More Interval');
+          }
       }
 
       myCodeMirror.save();
@@ -648,8 +663,29 @@ $( document ).ready(function() {
   loadThumbnails();
 
   $('.js-img-click').click(function(){
-    $(this).addClass('js-selected-video');
-    $(this).addClass('js-selected-still');
+    console.log('Learn More Upload Stills');
+    $(this).toggleClass('js-selected-video');
+    $(this).toggleClass('js-selected-still');
+
+    // figure out how to deal with video running in the backgroud        
+    movie.src = "";
+    // showVid();
+
+    var stills = document.querySelectorAll('.js-selected-still');
+    var frameArr = new Array(stills.length);
+    for (var i=1; i<=frameArr.length; i++){
+      frameArr[i-1]=i;
+    }
+    frameArr.join(",");
+    var allTM = myCodeMirror.getAllMarks();
+    for (var m=0; m<allTM.length; m++){
+      var tm = allTM[m];
+      if (tm.className=="cm-frames"){
+        var cmLine = tm.find();
+        myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+        myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
+      }
+    }
   });
 
   $('.js-vid-click').click(function(){
