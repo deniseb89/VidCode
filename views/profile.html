@@ -46,7 +46,7 @@
 
         <div class="col-md-3">
 				<span class="info">
-				<h2>	<p class="title">{{this.unitName}}</p></h2>
+				<h2><p class="title">{{this.unitName}}</p></h2>
 				</span>
         </div>
 
@@ -54,7 +54,11 @@
 
         <div class="col-md-3">
 				<span class="info">
-					<p class="title">{{this.name}}</p>
+					<p class="title">{{this.name}}
+                        {{#if this.viewed}}
+                             &nbsp; &nbsp;<img src="/img/checked.png" id="checked">
+                        {{/if}}
+                    </p>
 				</span>
         </div>
         {{/each}}
