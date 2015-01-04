@@ -10,33 +10,81 @@
         <a href="/workstation">START NEW PROJECT</a>
     </h2>
 
-    <div class="row profile">
-        {{#if videos}}
 
-        {{#each videos}}
-        <div class="row">
-            <div class="col-md-3">
-                <a>
-                    <video class="video" controls src="/video/?file={{this.file}}"/>
-                </a>
+    <div class="tabs">
+        <ul class="tab-links">
+            <li class="active"><a href="#tab1">IN PROGRESS PROJECTS</a></li>
+            <li><a href="#tab2">PUBLISHED PROJECTS</a></li>
+        </ul>
 
-                <div class="vid-row">
-                    <a href='/workstation/' + {{this.file}}>
-				<span class="info">
-					<p class="title">{{this.title}}</p>
-					<p class="descr">{{this.descr}}</p>
-                    <p class="videocode">see code</p>
-				</span>
-                    </a>
+        <div class="tab-content">
+            <div id="tab1" class="tab active">
+
+
+                <div class="row profile">
+                    {{#if videos}}
+
+                    {{#each videos}}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a>
+                                <video class="video" controls src="/video/?file={{this.file}}"/>
+                            </a>
+
+                            <div class="vid-row">
+                                <a href='/workstation/' + {{this.file}}>
+                                <span class="info">
+                                    <p class="title">{{this.title}}</p>
+                                    <p class="descr">{{this.descr}}</p>
+                                    <p class="videocode">see code</p>
+                                </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <h2 class="profileheader">You have no videos published! Start vidcoding, already!</h2>
+                    {{/if}}
                 </div>
+
+
             </div>
 
+            <div id="tab2" class="tab">
+                
 
-            {{/each}}
+                <div class="row profile">
+                    {{#if videos}}
+
+                    {{#each videos}}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a>
+                                <video class="video" controls src="/video/?file={{this.file}}"/>
+                            </a>
+
+                            <div class="vid-row">
+                                <a href='/workstation/' + {{this.file}}>
+                                <span class="info">
+                                    <p class="title">{{this.title}}</p>
+                                    <p class="descr">{{this.descr}}</p>
+                                    <p class="videocode">see code</p>
+                                </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <h2 class="profileheader">You have no videos published! Start vidcoding, already!</h2>
+                    {{/if}}
+                </div>
+
+
+            </div>
+
         </div>
-        {{else}}
-        <h2 class="profileheader">You have no videos in your workstation! Start vidcoding, already!</h2>
-        {{/if}}
     </div>
 
 
@@ -56,7 +104,7 @@
 				<span class="info">
 					<p class="title">{{this.name}}
                         {{#if this.viewed}}
-                             &nbsp; &nbsp;<img src="/img/checked.png" id="checked">
+                        &nbsp; &nbsp;<img src="/img/checked.png" id="checked">
                         {{/if}}
                     </p>
 				</span>
@@ -67,7 +115,10 @@
         {{/if}}
     </div>
 </div>
+
 </div>
+
+<script src="/js/profile.js"></script>
 <script>
     mixpanel.track_forms("#profile", "profile page");
 </script>
