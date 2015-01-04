@@ -21,7 +21,7 @@
                 </a>
 
                 <div class="vid-row">
-                    <a href='/workstation/' + {{this.file}} >
+                    <a href='/workstation/' + {{this.file}}>
 				<span class="info">
 					<p class="title">{{this.title}}</p>
 					<p class="descr">{{this.descr}}</p>
@@ -43,19 +43,27 @@
     <div class="row profile">
         {{#if units}}
         {{#each units}}
-        <div class="row">
-            <div class="col-md-3">
+
+        <div class="col-md-3">
 				<span class="info">
-					<p class="title">{{this.unitName}}</p>
+				<h2>	<p class="title">{{this.unitName}}</p></h2>
 				</span>
-            </div>
-            {{/each}}
         </div>
+
+        {{#each this.lessons}}
+
+        <div class="col-md-3">
+				<span class="info">
+					<p class="title">{{this.name}}</p>
+				</span>
+        </div>
+        {{/each}}
+
+        {{/each}}
         {{/if}}
     </div>
-
 </div>
-
+</div>
 <script>
     mixpanel.track_forms("#profile", "profile page");
 </script>

@@ -39,28 +39,24 @@ module.exports = function (app, passport) {
                     console.log('err in getting units ' + err);
                 } else {
                     _units = result;
-                   // console.log(result);
-                   // console.log(_units);
+
                     console.log('successfully got units ');
+
+                    if (req.user.vidcodes) {
+                        res.render('profile', {
+                            user: req.user,
+                            videos: req.user.vidcodes,
+                            units: _units
+                        });
+                    } else {
+                        console.log(_units);
+                        res.render('profile', {
+                            user: req.user,
+                            units: _units
+                        });
+                    }
                 }
             });
-
-
-
-        if (req.user.vidcodes) {
-            res.render('profile', {
-                user: req.user,
-                videos: req.user.vidcodes,
-                units: _units
-            });
-        } else {
-            console.log(_units);
-            res.render('profile', {
-                user: req.user,
-                units: _units
-            });
-        }
-
     });
 
     app.post('/lesson/:lessonId', isLoggedIn, function (req, res) {
@@ -457,6 +453,13 @@ module.exports = function (app, passport) {
             console.log('you have not created any vidcodes');
         }
     });
+
+    app.post('/addToLibrary', isLoggedIn, function(req, res){
+
+       // var io = require('socket-io');
+
+
+    } );
 
     app.post('/uploadFinished', isLoggedIn, function (req, res) {
         var video = {};
