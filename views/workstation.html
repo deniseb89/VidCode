@@ -84,10 +84,18 @@
 
 
     <div class="container-fixed">
+
         <div class="popup is-hidden">
             10 mb max file size
             <input type="file" id="inputFile" name="file" multiple value="Select a File"/>
             <button class="btn js-hide-upload uploadfile">Cancel</button>
+            <p class="fileError"></p>
+        </div>
+
+        <div class="popup-upload-to-library is-hidden">
+            10 mb max file size
+            <input type="file" id="inputFileToLibrary" name="file" multiple value="Select a File"/>
+            <button class="btn js-hide-upload-to-library uploadfile">Cancel</button>
             <p class="fileError"></p>
         </div>
 
@@ -102,6 +110,7 @@
                         <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
                         </li>
                         <li class="js-switch-view" id="movie-control-method" name="Computer Vision">Computer Vision</li>
+                    </ul>
                 </div>
             </div>
             <div class="progress-set">
@@ -247,64 +256,64 @@
                         </form>
                     </div>
                     <div class="save-btns-container">
-          <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
-            Save
-          </span>
-          <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
-            Share
-          </span>
+                          <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
+                            Save
+                          </span>
+                          <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
+                            Share
+                          </span>
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="learnMore">
-                        <div class="clearfix">
-                            <div class="sm-header-bg clearfix">
-                                <p class="js-lesson-name left">Filters</p>
+                    <div class="col-md-3">
+                        <div class="learnMore">
+                            <div class="clearfix">
+                                <div class="sm-header-bg clearfix">
+                                    <p class="js-lesson-name left">Filters</p>
 
-                                <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
-                                        class="js-lesson-page-num-total">4</span> ▾</p>
+                                    <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
+                                            class="js-lesson-page-num-total">4</span> ▾</p>
+                                </div>
                             </div>
-                        </div>
 
-                        {{#each content}}
-                        <div class="is-hidden {{this.class}} clearfix lesson-text-container">
-                            {{#each this.title}}
-                            <h3 class="lm-title">
-                                {{.}}
-                            </h3>
-                            {{/each}}
-                            <div class="js-lesson-text-update">
-                                {{#each this.lessonText}}
-                                <p>
+                            {{#each content}}
+                            <div class="is-hidden {{this.class}} clearfix lesson-text-container">
+                                {{#each this.title}}
+                                <h3 class="lm-title">
                                     {{.}}
-                                </p>
+                                </h3>
+                                {{/each}}
+                                <div class="js-lesson-text-update">
+                                    {{#each this.lessonText}}
+                                    <p>
+                                        {{.}}
+                                    </p>
+                                    {{/each}}
+                                </div>
+                                {{#each this.images}}
+                                <div class="js-lesson-img">
+                                    <img class="lessonImg" src="/img/lessons/{{.}}">
+                                </div>
                                 {{/each}}
                             </div>
-                            {{#each this.images}}
-                            <div class="js-lesson-img">
-                                <img class="lessonImg" src="/img/lessons/{{.}}">
-                            </div>
                             {{/each}}
-                        </div>
-                        {{/each}}
 
 
-                        <div class="clearfix buttons-container">
-                            {{#each content}}
-                            <div class="is-hidden {{this.class}}">
-                                <ul class="methodList">
-                                    {{#each this.elements}}
-                                    <li name={{.}} class='btn btn-method draggable'>{{.}}</li>
-                                    <img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-                                    {{/each}}
-                                </ul>
+                            <div class="clearfix buttons-container">
+                                {{#each content}}
+                                <div class="is-hidden {{this.class}}">
+                                    <ul class="methodList">
+                                        {{#each this.elements}}
+                                        <li name={{.}} class='btn btn-method draggable'>{{.}}</li>
+                                        <img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                                {{/each}}
                             </div>
-                            {{/each}}
                         </div>
+
                     </div>
-
-                </div>
                 <!--end of lesson container-->
 
 
@@ -774,7 +783,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <!--end learn more modals-->
 
     <h4 id="username" class="is-hidden">{{user.username}}</h4>
