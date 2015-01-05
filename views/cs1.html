@@ -1,7 +1,4 @@
 
-<link rel="stylesheet" href="/css/jquery.joyride-2.1.css">
-
-
 <div class="compatibility-error is-hidden">
   <div class="error-message">
     <div class="panelhead">
@@ -697,27 +694,11 @@
 <h4 id="username" class="is-hidden">{{user.username}}</h4>
 <h4 id="social" class="is-hidden">{{user.social}}</h4>
 
-<ol id="joyRideTipContent">
-  <li data-id="tooltip-stop-1">Choose a sample video or use your own from Instagram</li>
-  <li data-id="tooltip-stop-3" data-options="tip_location:left">Click on the buttons to the right to "Learn More" about the code you're writing!</li>
-
-  <li data-id="tooltip-stop-4" data-options="tip_location:left">Once you're finished with your video creation, click "I'm Done!"</li>
-
-  <li data-button="Done!">You can create as many vidcodes as you'd like, using all your own Instagram content.</li>
-</ol>
-
 <script src="/js/filters.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/lessons.js"></script>
 
 <script>
-	$(window).load(function() {
-    //should only turn on when error message doesn't appear
-	  //$("#joyRideTipContent").joyride({
-	  	//autoStart: false
-	  //});
-	});
-
     mixpanel.track_links("#mix-share", "Share clicked" );
     mixpanel.track_links("#mix-return2code", "Returned to code" );
     mixpanel.track_links("#mix-again", "Try It Again clicked" );

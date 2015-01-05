@@ -183,9 +183,6 @@ module.exports = function (app, passport) {
     app.get('/auth/instagram/cb',
         passport.authenticate('instagram', {failureRedirect: '/'}),
         function (req, res) {
-            // successful auth, user is set at req.user.  redirect as necessary.
-            //if (req.user.isNew) { return res.redirect('/intro'); }
-            //res.redirect('/workstation');
             if (req.headers.referer.toString().indexOf('/workstation') > -1) {
                 res.redirect('/workstation')
             }
@@ -604,12 +601,16 @@ module.exports = function (app, passport) {
 
     app.get('/workstation', isLoggedIn, function (req, res) {
 
-        // req.user.videoSrc = "http://scontent-b.cdninstagram.com/hphotos-xaf1/t50.2886-16/10894383_837646499630327_1184961282_n.mp4";
+      var codeText =
+      '\
+      movie.play();\n\
+      ';
 
         res.render("workstation",
             {
+                user: req.user,
                 content: content,
-                user: req.user
+                code: codeText
             });
     });
 
@@ -617,13 +618,18 @@ module.exports = function (app, passport) {
     app.get('/workstation/:token?',isLoggedIn, function (req, res) {
         var token = req.params.token;
         var file;
-        var code;
+        var codeText =
+        '\
+        movie.play();\n\
+        ';
+
 
         if (!token) {
             res.render("workstation",
                 {
+                    user: req.user,
                     content: content,
-                    user: req.user
+                    code: codeText
                 });
             return;
         }
@@ -652,7 +658,9 @@ module.exports = function (app, passport) {
                         user.sessionToLoad = _sessionToLoad;
 
                         res.render('workstation', {
-                            user: user
+                            user: user,
+                            content: content,
+                            code: codeText
                         });
 
                     }else{
@@ -665,6 +673,8 @@ module.exports = function (app, passport) {
 
                         res.render('workstation', {
                             user: user,
+                            content: content,
+                            code: codeText,
                             file: file,
                             token: token,
                             lastSession: true
