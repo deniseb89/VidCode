@@ -153,8 +153,108 @@ var uploadFromComp = function (ev) {
     }
 };
 
+var uploadFromCompToLibrary = function (ev) {
+    var files = ev.target.files;
+    var maxSize = 10000000;
+
+
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var reader = new FileReader();
+
+        reader.onload = (function (theFile) {
+            return function (e) {
+                if (file.size < maxSize) {
+                     var formData = new FormData();
+                     formData.append('file',file);
+                     $.ajax({
+                       url: '/addVideoToLibrary',
+                       type: 'POST',
+                       data:  formData,
+                       mimeType:"multipart/form-data",
+                       contentType: false,
+                       cache: false,
+                       processData:false,
+                       success: function(data, textStatus, jqXHR){
+                        // var data = JSON.parse(data);
+
+                        updateMediaLibraryFromComp(file, e.target.result);
+
+                        $(".popup-upload-to-library").addClass("is-hidden");
+                        //$(".fileError").text("");
+
+                       },
+                       error: function(file, textStatus, jqXHR){
+                         console.log('file error');
+                       }
+                     });
+                } else {
+                    $('.loader').addClass('is-hidden');
+                    $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
+                }
+            };
+        })(file);
+
+        reader.readAsDataURL(file);
+    }
+};
+
+var updateMediaLibraryFromComp = function (file, data) {
+    //create div and img/video tags
+
+    console.log("file: " + file);
+    console.log("data: " + data);
+
+    var type;
+    var style;
+    var fn;
+
+    if (file.type.match(/image.*/)) {
+        type = 'img';
+        style = 'js-img-click';
+        fn = function () {
+            $(this).toggleClass('js-selected-video');
+            $(this).toggleClass('js-selected-still');
+            //update frame array with stills. Maybe add some kind of enumeration to the frames
+            movie.src = "";
+            showVid();
+            var stills = document.querySelectorAll('.js-selected-still');
+            var frameArr = new Array(stills.length);
+            for (var i = 1; i <= frameArr.length; i++) {
+                frameArr[i - 1] = i;
+            }
+            frameArr.join(",");
+
+        };
+    } else if (file.type.match(/video.*/)) {
+        type = 'video';
+        style = 'js-vid-click';
+        fn = function () {
+            $('.loader').removeClass('is-hidden');
+            $('.js-vid-click').removeClass('js-selected-video');
+            $(this).addClass('js-selected-video');
+            movie.addEventListener("loadeddata", showVid, false);
+            var thisSrc = $(this).attr('src');
+            movie.src = thisSrc;
+        };
+    }
+
+    var div = document.createElement('div');
+    div.className += 'i-vid-container';
+    var media = document.createElement(type);
+    media.className += style;
+    media.src = data;
+    media.addEventListener('click', fn, false);
+    div.appendChild(media);
+    document.getElementById('media-library').appendChild(div);
+};
+
 var updateMediaLibrary = function (file, data) {
     //create div and img/video tags
+
+    console.log("file: " + file);
+    console.log("data: " + data);
+
     var type;
     var style;
     var fn;
@@ -378,12 +478,14 @@ $(document).ready(function () {
     movie = document.getElementById('myvideo');
     canvas = document.getElementById('canvas');
     inputFile = document.getElementById('inputFile');
+    inputFileToLibrary = document.getElementById('inputFileToLibrary');
     seriously = new Seriously();
     seriously.go();
     movie.addEventListener('canplay', setup, false);
     movie.load();
 
     inputFile.addEventListener('change', uploadFromComp, false);
+    inputFileToLibrary.addEventListener('change', uploadFromCompToLibrary, false);
 
     myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'), {
         mode: "javascript",
@@ -432,6 +534,19 @@ $(document).ready(function () {
         $('.loader').addClass('is-hidden');
         $(".popup").addClass("is-hidden");
     });
+
+    // Add video to library start
+
+    $(".js-upload-to-library").click(function () {
+      $(".popup-upload-to-library").removeClass("is-hidden");
+    });
+
+    $(".js-hide-upload-to-library").click(function () {
+      $('.loader-upload-to-library').addClass('is-hidden');
+      $(".popup-upload-to-library").addClass("is-hidden");
+    });
+
+    // Add video to library end
 
     $(".runbtn").click(function () {
         $(".video2").removeClass("is-hidden");
@@ -483,7 +598,7 @@ $(document).ready(function () {
         $('.at15t_facebook').html('<img src="/img/icons/fb-icon.png"> share with facebook');
         $('.at15t_twitter').attr('id', 'tw-btn-styling');
         $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
-    }
+    };
 
     $(".tabs-2").droppable({
         drop: function (event, ui) {
@@ -535,6 +650,11 @@ $(document).ready(function () {
             myCodeMirror.save();
             $(".line-" + eff).effect("highlight", 2000);
         }
+
+        //Load Last session
+
+
+
     });
 
     $('.methodList li').each(function () {
@@ -682,10 +802,8 @@ $('.js-vid-click').click(function () {
     var thisSrc = $(this).attr('src');
     console.log(thisSrc);
 
-
     movie.src = thisSrc;
 });
-
 
 //sliding functionality that we have to get rid of
 
@@ -788,6 +906,7 @@ $('.learning-pop-link').click(function () {
 trackLesson = function (lessonName) {
     $.post('/lesson/' + lessonName);
 };
+
 
 getDateMMDDYYYY = function () {
     var date = new Date();

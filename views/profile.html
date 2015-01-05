@@ -3,13 +3,12 @@
     <h2>WELCOME BACK {{user.username}} </h2>
 
     <h2>
-        <a href="/workstation">CONTINUE LAST SESSION</a>
+        <a href="/workstation/lastSession">CONTINUE LAST SESSION</a>
     </h2>
 
     <h2>
         <a href="/workstation">START NEW PROJECT</a>
     </h2>
-
 
     <div class="tabs">
         <ul class="tab-links">
@@ -22,30 +21,35 @@
 
 
                 <div class="row profile">
-                    {{#if videos}}
 
-                    {{#each videos}}
-                    <div class="row">
-                        <div class="col-md-3">
-                            <a>
-                                <video class="video" controls src="/video/?file={{this.file}}"/>
-                            </a>
+                    {{#if user.videoLibrary}}
 
-                            <div class="vid-row">
-                                <a href='/workstation/' + {{this.file}}>
+                    {{#each user.videoLibrary}}
+                    <div class="insta-thumbnails">
+                        <div class="row">
+                            <div class="i-vid-container">
+                                <a>
+                                    <video class="video js-vid-click" src="/video/?file={{this.file}}"/>
+                                </a>
+
+                                <div class="vid-row">
+                                    <a href='/workstation/' + {{this.file}}>
                                 <span class="info">
                                     <p class="title">{{this.title}}</p>
                                     <p class="descr">{{this.descr}}</p>
                                     <p class="videocode">see code</p>
                                 </span>
-                                </a>
+                                    </a>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                     {{/each}}
                     {{else}}
-                    <h2 class="profileheader">You have no videos published! Start vidcoding, already!</h2>
+                    <h2 class="profileheader">You have not uploaded videos to your library!</h2>
                     {{/if}}
+
                 </div>
 
 
@@ -59,9 +63,11 @@
 
                     {{#each videos}}
                     <div class="row">
-                        <div class="col-md-3">
+
+                        <div class="i-vid-container">
+
                             <a>
-                                <video class="video" controls src="/video/?file={{this.file}}"/>
+                                <video class="video" src="/video/?file={{this.file}}"/>
                             </a>
 
                             <div class="vid-row">
@@ -73,7 +79,9 @@
                                 </span>
                                 </a>
                             </div>
+
                         </div>
+
                     </div>
                     {{/each}}
                     {{else}}

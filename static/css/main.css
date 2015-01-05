@@ -562,6 +562,30 @@ body.is-in-signup {
     border-radius: 8px;
 }
 
+.popup-upload-to-library{
+    margin: 200px 0 0 300px;
+    position: fixed;
+    height: 50px;
+    width: 600px;
+    padding: 10px 50px 90px 50px;
+    background-color: #fff;
+    z-index: 10000000000;
+
+    -webkit-box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
+    -moz-box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
+    box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
+
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.loader-upload-to-library{
+    margin: 100px 0 0 275px;
+    position: fixed;
+    z-index: 10000000000;
+}
+
 .instagram-form input {
     margin-left: 15px;
 }

@@ -13,9 +13,10 @@ var userSchema = mongoose.Schema({
     lessons: {type: Array, default: []},
     lastSession: {
         lessonId: String,
-        videoSource: {type: String, trim: true},
+        token: String,
         code: String
     },
+    videoLibrary: [{}],
     vidcodes: [{}],
     vidcode: {
         email: {type: String, trim: true},

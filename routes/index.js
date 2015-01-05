@@ -32,31 +32,31 @@ module.exports = function (app, passport) {
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function (req, res) {
 
-         var _units = {};
+        var _units = {};
 
-            mongoose.connection.db.collection('units').find().toArray(function(err, result) {
-                if (err) {
-                    console.log('err in getting units ' + err);
+        mongoose.connection.db.collection('units').find().toArray(function (err, result) {
+            if (err) {
+                console.log('err in getting units ' + err);
+            } else {
+                _units = result;
+
+                console.log('successfully got units ');
+
+                if (req.user.vidcodes) {
+                    res.render('profile', {
+                        user: req.user,
+                        videos: req.user.vidcodes,
+                        units: _units
+                    });
                 } else {
-                    _units = result;
-
-                    console.log('successfully got units ');
-
-                    if (req.user.vidcodes) {
-                        res.render('profile', {
-                            user: req.user,
-                            videos: req.user.vidcodes,
-                            units: _units
-                        });
-                    } else {
-                        console.log(_units);
-                        res.render('profile', {
-                            user: req.user,
-                            units: _units
-                        });
-                    }
+                    console.log(_units);
+                    res.render('profile', {
+                        user: req.user,
+                        units: _units
+                    });
                 }
-            });
+            }
+        });
     });
 
     app.post('/lesson/:lessonId', isLoggedIn, function (req, res) {
@@ -454,12 +454,44 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.post('/addToLibrary', isLoggedIn, function(req, res){
+    app.post('/addVideoToLibrary', isLoggedIn, function (req, res) {
 
-       // var io = require('socket-io');
+        var video = {};
+        var busboy = new Busboy({headers: req.headers});
+
+        busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+            var token = generateToken(crypto);
+            filename = token + '.webm';
+            var ws = gfs.createWriteStream({filename: filename, mode: "w", content_type: mimetype});
+            file.pipe(ws);
+            ws.on('close', function (file) {
+                video.file = file._id;
+                video.token = token;
+                video.title = "My video added on " + getDateMMDDYYYY();
+                video.descr = "My video added on " + getDateMMDDYYYY();
+
+                saveVideoToLibrary(gfs.db, req.user._id, video, function () {
+                    res.send(token);
+                });
+            });
+            ws.on('error', function (err) {
+                console.log('An error occurred in writing');
+                res.end();
+            })
+        });
+
+        busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
+            video[fieldname] = val;
+        });
+
+        busboy.on('finish', function () {
+            console.log('busboy finished');
+        });
+
+        req.pipe(busboy);
 
 
-    } );
+    });
 
     app.post('/uploadFinished', isLoggedIn, function (req, res) {
         var video = {};
@@ -509,7 +541,7 @@ module.exports = function (app, passport) {
         mongoose.connection.db.collection('users').update({
                 'vidcodes.token': token
             },
-            {$set: {'vidcodes.$.title': title, 'vidcodes.$.descr': descr , 'vidcodes.$.code': code}},
+            {$set: {'vidcodes.$.title': title, 'vidcodes.$.descr': descr, 'vidcodes.$.code': code}},
             function (err, result) {
                 if (err) {
                     console.log('err in updating vidcode token ' + token + ':' + err);
@@ -571,7 +603,75 @@ module.exports = function (app, passport) {
     });
 
     app.get('/workstation', isLoggedIn, function (req, res) {
-        res.render("workstation", {content: content, user: req.user});
+
+        // req.user.videoSrc = "http://scontent-b.cdninstagram.com/hphotos-xaf1/t50.2886-16/10894383_837646499630327_1184961282_n.mp4";
+
+        res.render("workstation",
+            {
+                content: content,
+                user: req.user
+            });
+    });
+
+
+    app.get('/workstation/:token?',isLoggedIn, function (req, res) {
+        var token = req.params.token;
+        var file;
+        var code;
+
+        if (!token) {
+            res.render("workstation",
+                {
+                    content: content,
+                    user: req.user
+                });
+            return;
+        }
+
+        process.nextTick(function () {
+
+                User.findOne({_id: req.user._id}, function (err, user){
+
+                if (!user) {
+                    res.render('404', {layout: false});
+                } else {
+
+                    if (token == "lastSession"){
+
+                        var _sessionToLoad = {};
+
+                        for (var item in user.videoLibrary) {
+
+                            if (user.videoLibrary[item]['token'] == user.lastSession.token) {
+                                _sessionToLoad.file = user.videoLibrary[item]['file'];
+                                _sessionToLoad.code = user.videoLibrary[item]['code'];
+                            }
+                        }
+
+                        user.sessionToLoad = _sessionToLoad;
+
+                        res.render('workstation', {
+                            user: user
+                        });
+
+                    }else{
+                        for (var item in user.vidcodes) {
+                            if (user.videoLibrary[item]['token'] == token) {
+                                file = user.videoLibrary[item]['file'];
+                                code = user.videoLibrary[item]['code'];
+                            }
+                        }
+
+                        res.render('workstation', {
+                            user: user,
+                            file: file,
+                            token: token,
+                            lastSession: true
+                        });
+                    }
+                }
+            });
+        });
     });
 
 
@@ -856,6 +956,52 @@ function saveVideo(db, id, video, cb) {
                             "descr": video.descr,
                             "token": video.token,
                             "code": video.code
+                        }
+                    }
+                }, function (err, updated) {
+                    if (err) {
+                        console.log('err in updating doc ' + id + ':' + err);
+                    }
+                });
+            }
+            cb();
+        });
+    } else {
+        doc = {vidcodes: [{"file": video.file, "title": video.title, "desc": video.descr, "token": video.token}]};
+        vc.insert(doc, function () {
+            console.log('error in inserting anonymous video');
+        });
+        cb();
+    }
+}
+
+function saveVideoToLibrary(db, id, video, cb) {
+    var vc = db.collection('users');
+    if (id) {
+        vc.findOne({_id: id}, function (err, doc) {
+            if (!doc) {
+                console.log("created new doc with video");
+                doc = {_id: id};
+                doc.videos = {
+                    "file": video.file,
+                    "title": video.title,
+                    "descr": video.descr,
+                    "token": video.token
+                };
+                vc.insert(doc, function (err, insert) {
+                    if (err) {
+                        console.log('err in inserting doc ' + id + ':' + err);
+                    }
+                });
+            } else {
+                console.log("updated doc with video");
+                vc.update(doc, {
+                    $addToSet: {
+                        videoLibrary: {
+                            "file": video.file,
+                            "title": video.title,
+                            "descr": video.descr,
+                            "token": video.token
                         }
                     }
                 }, function (err, updated) {
