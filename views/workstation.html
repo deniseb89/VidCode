@@ -84,18 +84,10 @@
 
 
     <div class="container-fixed">
-
         <div class="popup is-hidden">
             10 mb max file size
             <input type="file" id="inputFile" name="file" multiple value="Select a File"/>
             <button class="btn js-hide-upload uploadfile">Cancel</button>
-            <p class="fileError"></p>
-        </div>
-
-        <div class="popup-upload-to-library is-hidden">
-            10 mb max file size
-            <input type="file" id="inputFileToLibrary" name="file" multiple value="Select a File"/>
-            <button class="btn js-hide-upload-to-library uploadfile">Cancel</button>
             <p class="fileError"></p>
         </div>
 
@@ -110,92 +102,62 @@
                         <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
                         </li>
                         <li class="js-switch-view" id="movie-control-method" name="Computer Vision">Computer Vision</li>
-                    </ul>
                 </div>
+            </div>
+            <div class="progress-set">
+
+            </div>
+
+            <div class="view-controller">
             </div>
 
             <div class="lesson-container">
                 <div class="col-md-4">
-                    <div class="loader is-hidden"><img src="/img/loader.gif">
-                    </div>
-                    <div class="loader-upload-to-library is-hidden"><img src="/img/loader.gif">
-                    </div>
-
-                    <span class="js-active-vid active-vid">
-
-                        {{#if user.sessionToLoad}}
-
-                            <div id="vid-load-from-profile">
-
-                                <video class="video1 is-hidden js-load-last-session" id="myvideo"
-                                       src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
-
-                                <canvas class="video2 tabs-2 ui-droppable" id="canvas">
-                                </canvas>
-                                <button type="button" class="runbtn btn btn-danger pullRight is-hidden">Pause</button>
-
-
-                            </div>
-
-
-                        {{else}}
-
-                            <div class="vid-placeholder overlay">
-                                <h3>Select a video below</h3>
-                            </div>
-
-                            <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
-                            <canvas class="video2 is-hidden tabs-2" id="canvas">
-                            </canvas>
-                            <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
-
-                        {{/if}}
-
-
-
-                    </span>
-
+                    <div class="loader is-hidden"><img src="/img/loader.gif"></div>
+            <span class="js-active-vid active-vid">
+              <div class="vid-placeholder overlay">
+                  <h3>Select a video below</h3>
+              </div>
+              <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
+              <canvas class="video2 is-hidden tabs-2" id="canvas">
+              </canvas>
+              <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
+            </span>
 
                     <div class="js-switch-appear">
 
-
                         <div class="video-container clearfix">
+                            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own
+                                Media
+                            </button>
+                            <p class="is-hidden stop-motion-method">Stills</p>
 
-                            <p>Your Media Library</p>
-                            VIDEOS IMAGES
-                            <div id="media-library">
-                                <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own
-                                    Media
-                                </button>
-
-                                <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media
-                                    to Library
-                                </button>
-
-                            </div>
-
-                            <div class="row profile">
-                                {{#if user.videoLibrary}}
-
-                                {{#each user.videoLibrary}}
-                                <div class="insta-thumbnails">
-                                    <div class="row">
-                                        <div class="i-vid-container">
-                                            <a>
-                                                <video class="video js-vid-click" src="/video/?file={{this.file}}"/>
-                                            </a>
-                                        </div>
-                                    </div>
+                            <div id="media-library" class="is-hidden stop-motion-method">
+                                <div class="i-vid-container">
+                                    <img class="js-selected-video js-selected-still js-img-click"
+                                         src="/img/still0.JPG"/>
                                 </div>
-                                {{/each}}
-                                {{else}}
-                                <h2 class="profileheader">You have not uploaded videos to your library!</h2>
-                                {{/if}}
+                                <div class="i-vid-container">
+                                    <img class="js-selected-video js-selected-still js-img-click"
+                                         src="/img/still1.JPG"/>
+                                </div>
+                                <div class="i-vid-container">
+                                    <img class="js-selected-video js-selected-still js-img-click"
+                                         src="/img/still2.JPG"/>
+                                </div>
+                                <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still3.JPG"/>
+                                </div>
+                                <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still4.JPG"/>
+                                </div>
+                                <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still5.JPG"/>
+                                </div>
                             </div>
+                            <p class="basic-filter-method">Instagram Videos</p>
 
-                            <p id="tooltip-stop-1">Instagram Videos</p>
-
-                            <div class="insta-thumbnails">
+                            <div class="insta-thumbnails basic-filter-method">
                                 <span class="i-error"></span>
 
                                 <div class="i-vid-container">
@@ -213,9 +175,8 @@
                             </div>
 
                             <div class="insta-import is-hidden">
-                                <a href="/auth/instagram" id="tooltip-stop-1">Import Videos from Instagram</a>
+                                <a href="/auth/instagram">Import Videos from Instagram</a>
                             </div>
-
                         </div>
 
                         <div class="video-container clearfix basic-filter-method">
@@ -240,6 +201,7 @@
                             </button>
                         </div>
                     </div>
+
                 </div>
 
 
@@ -250,64 +212,67 @@
                         </form>
                     </div>
                     <div class="save-btns-container">
-                          <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
-                            Save
-                          </span>
-                          <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
-                            Share
-                          </span>
+              <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
+                Save
+              </span>
+              <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
+                Share
+              </span>
                     </div>
                 </div>
 
-                    <div class="col-md-3">
-                        <div class="learnMore">
-                            <div class="clearfix">
-                                <div class="sm-header-bg clearfix">
-                                    <p class="js-lesson-name left">Filters</p>
+                <div class="col-md-3">
+                    <div class="learnMore">
+                        <div class="clearfix">
+                            <div class="sm-header-bg clearfix">
+                                <p class="js-lesson-name left">Filters</p>
 
-                                    <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
-                                            class="js-lesson-page-num-total">4</span> ▾</p>
-                                </div>
-                            </div>
-
-                            {{#each content}}
-                            <div class="is-hidden {{this.class}} clearfix lesson-text-container">
-                                {{#each this.title}}
-                                <h3 class="lm-title">
-                                    {{.}}
-                                </h3>
-                                {{/each}}
-                                <div class="js-lesson-text-update">
-                                    {{#each this.lessonText}}
-                                    <p>
-                                        {{.}}
-                                    </p>
-                                    {{/each}}
-                                </div>
-                                {{#each this.images}}
-                                <div class="js-lesson-img">
-                                    <img class="lessonImg" src="/img/lessons/{{.}}">
-                                </div>
-                                {{/each}}
-                            </div>
-                            {{/each}}
-
-
-                            <div class="clearfix buttons-container">
-                                {{#each content}}
-                                <div class="is-hidden {{this.class}}">
-                                    <ul class="methodList">
-                                        {{#each this.elements}}
-                                        <li name={{.}} class='btn btn-method draggable'>{{.}}</li>
-                                        <img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-                                        {{/each}}
-                                    </ul>
-                                </div>
-                                {{/each}}
+                                <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
+                                        class="js-lesson-page-num-total">4</span> ▾</p>
                             </div>
                         </div>
+
+                        {{#each content}}
+                        <div class="is-hidden {{this.class}} clearfix lesson-text-container">
+                            {{#each this.title}}
+                            <h3 class="lm-title">
+                                {{.}}
+                            </h3>
+                            {{/each}}
+                            <div class="js-lesson-text-update">
+                                {{#each this.lessonText}}
+                                <p>
+                                    {{.}}
+                                </p>
+                                {{/each}}
+                            </div>
+                            {{#each this.images}}
+                            <div class="js-lesson-img">
+                                <img class="lessonImg" src="/img/lessons/{{.}}">
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/each}}
+
+
+                        <div class="clearfix buttons-container">
+                            {{#each content}}
+                            <div class="is-hidden {{this.class}}">
+                                <ul class="methodList">
+                                    {{#each this.elements}}
+                                    <li name={{.}} class='btn btn-method draggable'>{{.}}</li>
+                                    <img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            {{/each}}
+                        </div>
                     </div>
+
+                </div>
                 <!--end of lesson container-->
+
+
             </div>
             <!--end of set-container lesson-page-->
         </div>
@@ -322,8 +287,8 @@
                 <div class="modal-header instruct-header">
 
                     <h4 class="modal-title">1. What are we writing? JavaScript!</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -332,8 +297,7 @@
 
                     <p>
                         <strong>Javascript</strong> is a <strong>programming language.</strong> Since computers don't
-                        speak
-                        human languages like English or Spanish, we use programming languages to talk to them.
+                        speak human languages like English or Spanish, we use programming languages to talk to them.
                     </p>
 
                     <p>
@@ -342,7 +306,7 @@
                     <img class="lessonimg lesson-img-1" src="/img/lessons/lesson-1-left.png"><img
                         class="lessonimg lesson-img-2" src="/img/lessons/lesson-1-right.png">
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-2-222" onclick="trackLesson('lesson-2-222')" aria-hidden="true">Next
+                            href="#lesson-2-222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -356,8 +320,8 @@
             <div class="modal-content">
                 <div class="modal-header instruct-header">
                     <h4 class="modal-title">2. How is it changing my video?</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -367,14 +331,12 @@
 
                     <p>
                         When you change the words and numbers in your code (your input), you'll see your video (your
-                        output)
-                        change as well.
+                        output) change as well.
                     </p>
 
                     <p>
                         Think about it like baking. Depending on what ingredients you put into your cake (your output)
-                        will
-                        be different.
+                        will be different.
                     </p>
 
                     <div class="l-game-input l-g-container">
@@ -399,10 +361,10 @@
                     </div>
 
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-1-222" onclick="trackLesson('lesson-1-222')" aria-hidden="true">Prev
+                            href="#lesson-1-222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-3-222" onclick="trackLesson('lesson-3-222')" aria-hidden="true">Next
+                            href="#lesson-3-222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -416,8 +378,8 @@
                 <div class="modal-header instruct-header">
 
                     <h4 class="modal-title">3. The pieces of our code</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -427,18 +389,17 @@
 
                     <p>
                         Have you changed the numbers and words around in your code? Then you've already worked with some
-                        of
-                        these pieces!
+                        of these pieces!
                     </p>
 
                     <p>
                         First, let's talk about <strong>values</strong>.
                     </p>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-2-222" onclick="trackLesson('lesson-2-222')" aria-hidden="true">Prev
+                            href="#lesson-2-222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-4-222" onclick="trackLesson('lesson-4-222')" aria-hidden="true">Next
+                            href="#lesson-4-222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -453,8 +414,8 @@
                 <div class="modal-header instruct-header">
 
                     <h4 class="modal-title">4. Let's talk about values</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -469,10 +430,10 @@
                         are a type of value called a number (but you already knew that!)
                     </p>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-3-222" onclick="trackLesson('lesson-3-222')" aria-hidden="true">Prev
+                            href="#lesson-3-222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-4-2-222" onclick="trackLesson('lesson-4-2-222')" aria-hidden="true">Next
+                            href="#lesson-4-2-222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -486,8 +447,8 @@
                 <div class="modal-header instruct-header">
 
                     <h4 class="modal-title">4a. Types of Values</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -499,18 +460,17 @@
                     </p>
 
                     <p>
-                        <strong>Strings</strong> (text in quotes): <span
-                            class="exampleText">"hello", "12 is a cool number"</span>
+                        <strong>Strings</strong> (text in quotes): <span class="exampleText">"hello", "12 is a cool number"</span>
                     </p>
 
                     <p>
                         <strong>Booleans</strong> (whether something is true or false): <span class="exampleText">videoPlaying = true;</span>
                     </p>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-4-222" onclick="trackLesson('lesson-4-222')" aria-hidden="true">Prev
+                            href="#lesson-4-222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-4-3-222" onclick="trackLesson('lesson-4-3-222')" aria-hidden="true">Next
+                            href="#lesson-4-3-222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -524,8 +484,8 @@
                 <div class="modal-header instruct-header">
 
                     <h4 class="modal-title">4b. Booleans</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <div class="boolean-game">
@@ -551,11 +511,10 @@
                         </p>
                     </div>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-4-2-222" onclick="trackLesson('lesson-4-2-222')" aria-hidden="true">Prev
+                            href="#lesson-4-2-222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-objects-222" onclick="trackLesson('lesson-objects-222')" aria-hidden="true">
-                        Next
+                            href="#lesson-objects-222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -570,8 +529,8 @@
                 <div class="modal-header instruct-header">
 
                     <h4 class="modal-title">5. Another value: objects!</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -584,21 +543,18 @@
 
                     <p>
                         Think about a picnic basket, that holds the lots of different things that we need for a picnic.
-                        Our
-                        one basket can hold foods, such as salads and cheese, but it can also hold our picnic blanket
-                        and
-                        plates.
+                        Our one basket can hold foods, such as salads and cheese, but it can also hold our picnic
+                        blanket and plates.
                     </p>
 
                     <p>
                         In your code, effects and movie are both objects.
                     </p>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-4-3-222" onclick="trackLesson('lesson-4-3-222')" aria-hidden="true">Prev
+                            href="#lesson-4-3-222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#movies222"
-                            onclick="trackLesson('movies222')" aria-hidden="true">Next
+                            href="#movies222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -614,8 +570,8 @@
                                                                                                      src="/img/xbtn.png">
                     </button>
                     <h4 class="modal-title">5a. Your movie!</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -631,12 +587,10 @@
                         see.
                     </p>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#lesson-objects-222" onclick="trackLesson('lesson-objects-222')" aria-hidden="true">
-                        Prev
+                            href="#lesson-objects-222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#effects222"
-                            onclick="trackLesson('effects-222')" aria-hidden="true">Next
+                            href="#effects222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -652,20 +606,19 @@
                                                                                                      src="/img/xbtn.png">
                     </button>
                     <h4 class="modal-title">5b. So many effects!</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
                         The word effects is an object that keeps track of all of the effects you can apply to your
-                        video,
-                        such as blur and vignette.
+                        video, such as blur and vignette.
                     </p>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#movies222" onclick="trackLesson('movies222')" aria-hidden="true">Prev
+                            href="#movies222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#function222" onclick="trackLesson('functions222')" aria-hidden="true">Next
+                            href="#function222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -682,8 +635,8 @@
                                                                                                      src="/img/xbtn.png">
                     </button>
                     <h4 class="modal-title">6. Functions</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -715,11 +668,10 @@
                         play() is an example of a function.
                     </p>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#effects222" onclick="trackLesson('effects-222')" aria-hidden="true">Prev
+                            href="#effects222" aria-hidden="true">Prev
                     </button>
                     <button type="button" class="btn btn-method" data-dismiss="modal" data-toggle="modal"
-                            href="#play222"
-                            onclick="trackLesson('play-222')" aria-hidden="true">Next
+                            href="#play222" aria-hidden="true">Next
                     </button>
                 </div>
             </div>
@@ -732,8 +684,8 @@
             <div class="modal-content">
                 <div class="modal-header instruct-header">
                     <h4 class="modal-title">6a. play() is a function</h4>
-                <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
-                        src="/img/x-btn-modal.png"></span>
+                    <span type="button" class="right btn-close-modal" data-dismiss="modal" aria-hidden="true"><img
+                            src="/img/x-btn-modal.png"></span>
                 </div>
                 <div class="modal-body instruct-body">
                     <p>
@@ -741,7 +693,7 @@
                         directly to the movie object.
                     </p>
                     <button type="button" class="btn btn-method prev-s-btn" data-dismiss="modal" data-toggle="modal"
-                            href="#function222" onclick="trackLesson('function222')" aria-hidden="true">Prev
+                            href="#function222" aria-hidden="true">Prev
                     </button>
 
                     <button type="button" class="btn btn-method btn-warning" data-dismiss="modal">Close</button>
@@ -766,8 +718,7 @@
                         <br>
                         <br>
                         The number "1000" is in milliseconds. So it is processing your video 1,000 times a second!
-                        That's a
-                        lot of work!
+                        That's a lot of work!
                     </p>
                     <button type="button" class="btn btn-method" data-dismiss="modal" aria-hidden="true">OK</button>
                 </div>
