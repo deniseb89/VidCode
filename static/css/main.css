@@ -146,6 +146,7 @@ img.filterSelect.active {opacity: .5;}
     padding: 0.2em 0;
 }
 
+.tcenter{text-align: center;}
 
 /* ==========================================================================
    Index Intro Page
@@ -471,8 +472,8 @@ z-index: 100000;}
     background-color: rgb(0, 0, 255);
 }
 
-.stop-motion-method .btn{background-color: #58355F;}
-.stop-motion-method .btn:hover{background-color: #412647;}
+.stop-motion-method .methodList .btn{background-color: #58355F;}
+.stop-motion-method .methodList .btn:hover{background-color: #412647;}
 
 
 
@@ -651,10 +652,12 @@ canvas{vertical-align: bottom;}
     background-position: right;}
 
 /* The effects/ learn more area */
-.learnMore{height: 200px; width: 100%; padding-left: 15px;}
+.learnMore{}
 .learnMore .btn{font-size: .9em; font-weight: 600; width: 43%; color: #fff; text-align: left; padding: 4px 5px; margin: 7px 5px;}
 .learnMore .btn:hover{color: #fff;}
 .learnMore .bold{font-weight: 700;}
+
+.learnMore .btn-primary{width: auto;}
 
 .methods .learnMore{background-color: #eee8d5;}
 .learnMore ul img{margin-right: 5px;}
@@ -768,7 +771,7 @@ canvas{vertical-align: bottom;}
 .large-selection-dropdown li:hover{color:#fff; background-color:#323762;}
 
 
-.set-container{width: 95%; margin: 20px auto; background-color: #fff}
+.set-container{width: 95%; padding: 0 0 25px; margin: 20px auto; background-color: #fff}
 
 
 .save-btns-container{float: right;margin-top: 24px;}
@@ -802,8 +805,8 @@ canvas{vertical-align: bottom;}
 .lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
 .lesson-page .active-vid img{width: 96%;}
 .lesson-page .video-container video{width: 100%; cursor: pointer;}
-.lesson-page .video-container .i-vid-container{float: left; overflow: hidden; width: 30%; height: auto; margin: 5px;}
-.lesson-page .video-container img{width: 44%; margin: 2%; cursor: pointer;}
+.lesson-page .video-container .i-vid-container{float: left; overflow: hidden; width: 30%; height:75px; margin: 5px;}
+.lesson-page .video-container img{width: 96%; margin: 2%; cursor: pointer;}
 .lesson-page .video-container .js-selected-video{border: 2px solid #441B4B;}
 .lesson-page .video-container p{font-weight: bold; font-size: 1.2em; margin-top: 15px; color: #441B4B;}
 .lesson-page p{font-size: 1.1em; color: #441B4B;}
@@ -943,10 +946,10 @@ canvas{vertical-align: bottom;}
 /* ======================       In-Page Lessons          ============================= */
 .lessonImg{width: 100%;}
 .lm-title{font-size: 1.2em}
-.lesson-text-container{height: 300px; overflow: scroll;}
-.buttons-container{height: 275px; overflow: scroll;}
+.lesson-text-container{max-height: 300px; overflow-y: auto;}
+.buttons-container{max-height: 275px; overflow-y: auto;}
 
-.lesson-text-container p{font-size: .97em;}
+.lesson-text-container p{font-size: .96em;line-height: 1.6em;}
 
 /* ======================       Modal Lessons          ============================= */
 
@@ -1010,9 +1013,9 @@ canvas{vertical-align: bottom;}
 .btn-center{width: 97%; margin: 0 auto;}
 .action-m{z-index: 10;position: relative;}
 .action-modal .generalInput{width: 100%; margin: 0 auto 15px;}
-.share-link .generalInput{width: 300px;float: left;}
+
 .s-btn{padding: 10px 28px;margin-left: 355px;}
-.text-share-link{position: relative; right: -47px; top: 8px;}
+
 
 
 /* ======================       AddThis          ============================= */

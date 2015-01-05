@@ -18,7 +18,7 @@ var movie,
     defaultValue =  {'number':5 , 'color': '"red"'};
 
 var showVid = function() {
-  console.log ('First Learn More')
+  updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
   numVidSelect++;
   $('.vid-placeholder').addClass('is-hidden');
   $('.loader').addClass('is-hidden');
@@ -154,7 +154,7 @@ var updateMediaLibrary = function (file,data){
         $(this).toggleClass('js-selected-video');
         $(this).toggleClass('js-selected-still');
 
-        // figure out how to deal with video running in the backgroud        
+        // figure out how to deal with video running in the backgroud
         movie.src = "";
         // showVid();
 
@@ -169,17 +169,17 @@ var updateMediaLibrary = function (file,data){
           var tm = allTM[m];
           if (tm.className=="cm-frames"){
             var cmLine = tm.find();
-            console.log(cmLine);           
+            console.log(cmLine);
             myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
             myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
             // myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()),{ className: "cm-frames" });
 
-            //not marking text here? 
+            //not marking text here?
             console.log({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ));
             console.log({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()));
           }
         }
-      };  
+      };
     } else if (file.type.match(/video.*/) ) {
       type = 'video';
       style = 'js-vid-click';
@@ -379,6 +379,25 @@ $( document ).ready(function() {
   movie.addEventListener('canplay', setup, false);
   movie.load();
 
+  //lesson updates for NYTM
+  $('#stop-motion-method').click(function(){
+    stillsSelectedLesson = false;
+    updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing then that?!</p><p>Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
+  });
+  $('#basic-filter-method').click(function(){
+    updateLearnMore(1, "<p>JavaScript?</p><p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="img/lessons/lesson-1-right.png">');
+  });
+  $('.learnMore').on('click', '.js-lesson-4-sm', function(){
+    updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
+  });
+  $('.learnMore').on('click', '.js-lesson-5-sm', function(){
+    updateLearnMore(5, "<p><strong>Drag over the 'Reverse' button.</strong></p><p>Reverse is a property that takes values that are either true or false (it's called a boolean, we'll go over more on that weird word later)</p><p>How can you make the video reverse? Give it a go! There are no wrong answers! Just discoveries on the way to the right answer! Coding is ALL about trying and failing then eventually… finding the answer! (cue triumphant music!)</p>", "Reverse it up!", '');
+  });
+
+  //turn tooltips on
+  $(".save-modal").tooltip({ selector: '[data-toggle=tooltip]' });
+
+
   //filters is already showing when the page loads
   $('.basic-filter-method').removeClass('is-hidden');
 
@@ -495,9 +514,9 @@ $( document ).ready(function() {
       if (filter) {
         numFilterSelect++;
         if (numFilterSelect==1) {
-          console.log('show Learn More filter 1');
+            updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
         } else if (numFilterSelect==2){
-          console.log('show Learn More filter 2');          
+          updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects"</p><p><strong>Effects is an Object</strong>. This is a word you will be hearing a lot. Objects hold data. In this case the effects Object holds ALL the effects inside of itself. When we write the word "effects" the program knows we are asking to retrieve a piece of data from the effects object.</p>', 'Notice anything about your code?', '');
         }
         var input;
         for (var i in filter.inputs) {
@@ -521,7 +540,7 @@ $( document ).ready(function() {
           myCodeMirror.replaceRange('\n\ stopMotion.'+eff+' = '+stopMotion.controls[eff]+';',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
           if (eff=="interval") {
-            console.log('show Learn More Interval');
+            updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
           }
       }
 
@@ -662,12 +681,17 @@ $( document ).ready(function() {
 
   loadThumbnails();
 
+  //ugh, sorry. we can get rid of this after nytm
+  var stillsSelectedLesson = false;
   $('.js-img-click').click(function(){
-    console.log('Learn More Upload Stills');
+    if(stillsSelectedLesson === false){
+      updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '');
+      stillsSelectedLesson = true;
+    }
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
-    // figure out how to deal with video running in the backgroud        
+    // figure out how to deal with video running in the backgroud
     movie.src = "";
     // showVid();
 
@@ -738,7 +762,7 @@ $( document ).ready(function() {
     $('.stop-motion-method').addClass('is-hidden');
     $('.'+view).removeClass('is-hidden');
     $('.js-lesson-name').text(lName);
-    $('.js-lesson-page-num').text(lessonNum);
+    $('.js-lesson-page-num-total').text(lessonNum);
   })
 
   $( "html" ).on( "click", ".js-switch-menu-appear", function(){
@@ -801,3 +825,10 @@ $('.learning-pop-link').click(function(){
     mixpanel.track('LM '+LM_targets[clicked]+' clicked');
   }
 });
+
+var updateLearnMore = function(stepNum, lessonText, lessonTitle, lessonImg){
+  $('.js-lesson-p-update').text(stepNum);
+  $('.js-lesson-text-update').html(lessonText);
+  $('.lm-title').text(lessonTitle);
+  $('.js-lesson-img').html(lessonImg);
+}
