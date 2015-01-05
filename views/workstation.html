@@ -150,12 +150,12 @@
 
                             <div id="vid-load-from-profile">
 
-                                <video class="video1 is-hidden js-load-last-session" id="myvideo" src="" autoplay loop></video>
+                                <video class="video1 is-hidden js-load-last-session" id="myvideo" src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
 
                                 <canvas class="video2 tabs-2 ui-droppable" id="canvas">
                                 </canvas>
                                 <button type="button" class="runbtn btn btn-danger pullRight is-hidden">Pause</button>
-                                
+
 
                             </div>
 
@@ -792,4 +792,3 @@
     });
 
 </script>
-

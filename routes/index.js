@@ -645,6 +645,7 @@ module.exports = function (app, passport) {
                             if (user.videoLibrary[item]['token'] == user.lastSession.token) {
                                 _sessionToLoad.file = user.videoLibrary[item]['file'];
                                 _sessionToLoad.code = user.videoLibrary[item]['code'];
+                                _sessionToLoad.video = user.videoLibrary[item];
                             }
                         }
 
