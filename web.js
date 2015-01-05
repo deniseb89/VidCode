@@ -106,6 +106,9 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/lesson/cs1', routes.cs1(db));
   app.get('/workstation', routes.workstation(db));
 
+  //for nytm
+  app.get('/nytm', routes.workstation(db));
+
   // sign up + sign in
   app.post('/signup', routes.signup(db));
   app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});

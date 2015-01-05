@@ -946,7 +946,7 @@ canvas{vertical-align: bottom;}
 /* ======================       In-Page Lessons          ============================= */
 .lessonImg{width: 100%;}
 .lm-title{font-size: 1.2em}
-.lesson-text-container{max-height: 300px; overflow-y: auto;}
+.lesson-text-container{overflow-y: auto;}
 .buttons-container{max-height: 275px; overflow-y: auto;}
 
 .lesson-text-container p{font-size: .96em;line-height: 1.6em;}

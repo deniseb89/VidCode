@@ -2,7 +2,7 @@ var lessonContent =
   {
     'basicFilters' : {
       'title': ['What are we writing? Javascript!'],
-      'lessonText': ["JavaScript?", "Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.", "All your favorite apps are made by talking to computers with programming languages."],
+      'lessonText': ["Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.", "All your favorite apps are made by talking to computers with programming languages."],
       'images':['lesson-1-right.png'],
       'learnMore' : [
         {'topic':'What are we writing?', 'target':'#lesson-1-222'},
