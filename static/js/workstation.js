@@ -521,7 +521,7 @@ $( document ).ready(function() {
         var input;
         for (var i in filter.inputs) {
           input = filter.inputs[i];
-          if( (i != 'source') && (i != 'time') && (i != 'overlay') ){
+          if( (i != 'source') && (i != 'timer') && (i != 'overlay') ){
             lineText = '\n\ effects.'+eff+'.'+i+' = '+defaultValue[input.type]+';';
             myCodeMirror.replaceRange(lineText,CodeMirror.Pos(myCodeMirror.lastLine()));
             myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
