@@ -18,7 +18,7 @@ var movie,
     defaultValue =  {'number':5 , 'color': '"red"'};
 
 var showVid = function() {
-  updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
+  updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!',  '<img class="lessonImg" src="/img/lessons/lesson-pixels.jpg">');
   numVidSelect++;
   $('.vid-placeholder').addClass('is-hidden');
   $('.loader').addClass('is-hidden');
@@ -31,7 +31,13 @@ var showVid = function() {
   activateEndButtons('save');
   activateEndButtons('share');
   labelLines();
-  vidLen = Math.round(this.duration);
+
+  if (this.tagName=='VIDEO') {
+    effects[allEffects[0]]["source"] = seriously.source(video);
+    vidLen = Math.round(this.duration);
+  } else {
+    vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
+  }
 };
 
 var showImg = function() {
@@ -151,34 +157,7 @@ var updateMediaLibrary = function (file,data){
       type = 'img';
       style = 'js-img-click';
       fn = function() {
-        $(this).toggleClass('js-selected-video');
-        $(this).toggleClass('js-selected-still');
-
-        // figure out how to deal with video running in the backgroud
-        movie.src = "";
-        // showVid();
-
-        var stills = document.querySelectorAll('.js-selected-still');
-        var frameArr = new Array(stills.length);
-        for (var i=1; i<=frameArr.length; i++){
-          frameArr[i-1]=i;
-        }
-        frameArr.join(",");
-        var allTM = myCodeMirror.getAllMarks();
-        for (var m=0; m<allTM.length; m++){
-          var tm = allTM[m];
-          if (tm.className=="cm-frames"){
-            var cmLine = tm.find();
-            console.log(cmLine);
-            myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
-            myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
-            // myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()),{ className: "cm-frames" });
-
-            //not marking text here?
-            console.log({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ));
-            console.log({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()));
-          }
-        }
+        //js-img-click event listener should go here
       };
     } else if (file.type.match(/video.*/) ) {
       type = 'video';
@@ -381,11 +360,13 @@ $( document ).ready(function() {
 
   //lesson updates for NYTM
   $('#stop-motion-method').click(function(){
+    $('.vid-placeholder').removeClass('is-hidden');
+    $(".video2").addClass("is-hidden");
     stillsSelectedLesson = false;
     updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing than that?!</p><p>Because we are using CODE to create our stop motion, we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
   });
   $('#basic-filter-method').click(function(){
-    updateLearnMore(1, "<p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="img/lessons/lesson-1-right.png">');
+    updateLearnMore(1, "<p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="/img/lessons/lesson-1-right.png">');
   });
   $('.learnMore').on('click', '.js-lesson-4-sm', function(){
     updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
@@ -545,7 +526,7 @@ $( document ).ready(function() {
       }
 
       myCodeMirror.save();
-      $(".line-"+eff).effect("highlight",2000);
+      $(".cm-"+eff).effect("highlight",2000);
     }
   });
 
@@ -693,7 +674,12 @@ $( document ).ready(function() {
 
     // figure out how to deal with video running in the backgroud
     movie.src = "";
-    // showVid();
+    //generalize this somewhere else so when source changes, target changes
+    if (!stopMotion.on){
+      console.log('stop mtoion is off so do this');
+      effects[allEffects[0]]["source"] = seriously.source(this);
+    }
+    showVid();
 
     var stills = document.querySelectorAll('.js-selected-still');
     var frameArr = new Array(stills.length);
@@ -708,6 +694,7 @@ $( document ).ready(function() {
         var cmLine = tm.find();
         myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
         myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
+        $(".cm-frames").effect("highlight",2000);
       }
     }
   });
@@ -719,36 +706,6 @@ $( document ).ready(function() {
     movie.addEventListener("loadeddata", showVid, false);
     var thisSrc = $(this).attr('src');
     movie.src = thisSrc;
-  });
-
-
-//sliding functionality that we have to get rid of
-
-  $('.js-slide-right-final').click(function(){
-    slideRight('.js-slide-1', '.js-slide-title');
-    movie.play();
-    movie.muted = true;
-    $('.js-share').attr('href','#');
-    $('.js-share').addClass('is-inactive-btn');
-    $('.js-lesson-prompt').text('');
-    $('#vid-display').addClass('is-hidden');
-    $('.progressDiv').removeClass('is-hidden');
-    frames=[];
-    rafId = requestAnimationFrame(drawVideoFrame);
-  });
-
-  $('.js-slide-left-title').click(function(){
-    movie.muted = false;
-    slideLeft('.js-slide-1', '.js-slide-title');
-  });
-
-  $('.js-slide-left-first').click(function(){
-    slideLeft('.js-slide-title', '.js-slide-final');
-  });
-
-  $('.js-switch-videos').click(function(){
-    $('.methodsBox').addClass('is-hidden');
-    $(".js-switch-appear").removeClass("is-hidden");
   });
 
   //Switch between content
