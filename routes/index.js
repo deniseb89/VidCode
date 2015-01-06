@@ -81,16 +81,25 @@ exports.share = function (db) {
           file:file,
           title:title,
           desc:desc,
-          url:"http://app.vidcode.io/share/"+token
+          url:"/share/"+token
         });        
       }
     });
   }
-}
+};
 
 exports.getUserVid = function(gfs){
   return function (req, res){
+
     var file = req.query.file;
+    var contentType;
+
+    // gfs.files.find({ _id : file }).toArray(function (err, results) {
+    //   console.log(file);
+    //   console.log(results[0]);
+    //   console.log(contentType);
+    // });
+
     var rs = gfs.createReadStream({
       _id: file
     });    
@@ -99,147 +108,42 @@ exports.getUserVid = function(gfs){
       console.log('An error occurred in reading file '+file+': '+err);
       res.status(500).end();
     });
-      
-    res.setHeader("content-type", "video/webm");
+
+    // res.setHeader("content-type", "video/webm");
     rs.pipe(res); 
   };
 };
 
-exports.partone = function (db) {
-   return function (req, res) {
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
+
+exports.workstation = function (db) {
+  var content = require('../models/content');  
+  return function (req, res) {
     var codeText =
-"\
- \n\
- //This line of code makes your movie play!\n\
+'\
  movie.play();\n\
-\n\
- //The code below lets you add, remove, and alter your video filters.\n\
- //Change the numbers and make your video all your own!\n\
-    ";
+    ';
+
     var user = req.user;
     if (user){
       var social = user.provider;
       var vc = db.collection('vidcode');
 
       var successcb = function(doc) {
-        //todo:if instagram user...
-        //refresh API call with user.acessToken to get recent videos
-        res.render("partone", {code: codeText, filters: filters, user: doc});
+        res.render("workstation", {code: codeText, content: content, user: doc});
       };  
+
       findOrCreate(db,user,successcb);
       
     } else {
-        res.render("partone", {code: codeText, filters: filters});
-      //res.redirect('/signin');   //when users arent logged in, make them log in
+      res.render("workstation", {content: content});
     }
   };
 };
 
-exports.lessontwo = function (db) {
-   return function (req, res) {
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];    
-    var codeText =
-'\
- \n\
- movie.play();\n\
-\n\
- //This code lets you animate the fader filter with a randomizing algorithm!\n\
- function colorSwitch() {\n\
-  var r = Math.floor(255*Math.random());\n\
-  var g = Math.floor(255*Math.random());\n\
-  var b = Math.floor(255*Math.random());\n\
-  var depth = 0.5;\n\
-  effects.fader.amount = depth;\n\
-  effects.fader.color = "rgb("+r+","+g+","+b+")";\n\
- }\n\
- \n\
- //animate = setInterval(colorSwitch, 500);\n\
- \n\
-//make it stop by uncommenting the line below\n\
-//clearInterval(animate);\n\
-\n\
-//**Note: In the real version, animation control will be fed by the visual controls, not the editor\n\
-\n\
-    ';
-    var user = req.user;
-    if (user){
-      var vc = db.collection('vidcode');
-
-      var successcb = function(doc) {
-        //todo:if instagram user...
-        //refresh API call with user.acessToken to get recent videos
-        res.render("lessontwo", {code: codeText, filters: filters, user: doc});
-      };  
-      findOrCreate(db,user,successcb);
-      
-    } else {
-        res.render("lessontwo", {code: codeText, filters: filters});
-    }
-  };
-};
-
-exports.lessonthree = function (db) {
-   return function (req, res) {
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];  
-    var codeText =
-'\
- movie.play();\n\
-\n\
- //This code lets you create stop-motion videos by controlling the frames!\n\
-\n\
- clearInterval(stopMotion);\n\
- var i = 0;\n\
- stopMotion = setInterval(function(){\n\
-    var still = seriously.source(stills[i]);\n\
-    target.source = still;\n\
-    i++\n\
-    if i(i >= stills.length) { i = 0; }\n\
-  }, 250)\n\
-\n\
-    ';
-
-    var user = req.user;
-    if (user){
-      var vc = db.collection('vidcode');
-
-      var successcb = function(doc) {
-        //todo:if instagram user...
-        //refresh API call with user.acessToken to get recent videos
-        res.render("lessonthree", {code: codeText, filters: filters, user: doc});
-      };  
-      findOrCreate(db,user,successcb);
-      
-    } else {
-        res.render("lessonthree", {code: codeText, filters: filters});
-    }
-  };
-};
-
-exports.cs1 = function (db) {
-   return function (req, res) {
-    var filters = ['blur','noise','vignette', 'exposure'];
-    var advFilters = ['christmas','chanukah'];          
-    var codeText =
-'\
- movie.play();\n\
-    ';
-
-    var user = req.user;
-    if (user){
-      var vc = db.collection('vidcode');
-
-      var successcb = function(doc) {
-        //todo:if instagram user...
-        //refresh API call with user.acessToken to get recent videos
-        res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters, user: doc});
-      };  
-      findOrCreate(db,user,successcb);
-      
-    } else {
-        res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters});
-    }
-  };
+exports.partone = function (db) {  
+  return function(req, res){
+    res.redirect ('/workstation');
+  }
 };
 
 exports.profilePage = function(db){
@@ -262,89 +166,48 @@ exports.profilePage = function(db){
         res.render('profile');
     }
   }
-}
-
-exports.parttwo = function (req, res) {
-  res.render('parttwo', {title: 'VidCode Lesson' });
 };
 
-exports.partthree = function (req, res) {
-  res.render('partthree', {title: 'VidCode Lesson' });
-};
-
-
-exports.partfour = function (req, res) {
-  res.render('partfour', {title: 'VidCode Lesson' });
-};
-
-exports.codeAlone = function (req, res) {
-  res.render('codeAlone');
-};
-
-exports.filters = function (db) {
+exports.uploadMedia = function(db, gfs, crypto) {
   return function (req, res) {
-    var user = req.user;
-    if (user){
-      var username = user.username;
-    }
-    var token = req.params.token;
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];
-
-    if (!token) {
-
-    var codeText =
-"\
- \n\
- //This line of code makes your movie play!\n\
- movie.play();\n\
-\n\
- //The code below lets you add, remove, and alter your video filters.\n\
- //Change the numbers and make your video all your own!\n\
-    ";
-
-      res.render('filters', {code: codeText, filters: filters, user: username});
-      return;
+    var video = {};
+    var user = req.user || null;
+    if (!user){
+      // console.log('you must be logged in to upload media');
+      // return;
+    } else {
+      var id = user.id;
+      var social = user.provider;
     }
 
-    var vc = db.collection('vidcode');
-    vc.findOne({ token: token }, function (err, doc) {
-      if (!doc) {
-        res.status(404);
-      }
-        res.render('filters', {code: doc.code , filters: filters});
+    var busboy = new Busboy({ headers: req.headers });
+    var filename;
+
+    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+      var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
+      file.pipe(ws);
+      ws.on('close', function(savefile) {
+          console.log(savefile);
+          console.log("read user's uploaded media file: "+savefile._id + " with content-type: "+mimetype);
+          res.send(savefile._id);    
+      });
+      ws.on('error', function(err){
+        console.log('An error occurred in writing');
+        res.end();
+      })
+
     });
-  };
-};
 
-exports.scrubbing = function (db) {
-  return function (req, res) {
-    var user = req.user;
-    if (user){
-      var username = user.username;
-    }    
-    var token = req.params.token;
-
-    if (!token) {
-      var codeText =
-"\
- \n\
- //Remember this?\n\
- movie.play();\n\
-\n\
- //playbackRate controls the speed of your video. The \"rate\" tells how fast your frames per second (FPS) are going.\n\
- movie.playbackRate = 1.0;\n\
-    ";
-      res.render('scrubbing', {code: codeText, user:username});
-      return;
-    }
-
-    var vc = db.collection('vidcode');
-    vc.findOne({ token: token }, function (err, doc) {
-      if (!doc) {
-        res.status(404);
-      }
-        res.render('scrubbing', {code: doc.code });
+    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
+      video[fieldname] = val;
     });
+
+    busboy.on('finish', function(){
+      console.log('busboy finished');
+    })
+
+    req.pipe(busboy);
   };
 };
 

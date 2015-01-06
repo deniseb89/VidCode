@@ -29,14 +29,12 @@ body{
     font-family: 'Open Sans', sans-serif;
     height: 100%;
     background-color: #E6EFE9;
-    width: 101%;
 }
 
 h3{
-    padding-left: 15px;
     font-size: 2em;
     font-weight: 700;
-    }
+}
 
 h2{font-family: 'Copse', serif; color: #441B4B;}
 
@@ -101,7 +99,8 @@ fieldset {
 textarea {
     resize: vertical;
 }
-
+.general-display{}
+.workstation-container{padding: 7px 0px; background-color: #D4E4F5;}
 
 .instagram-form input, textarea, .sign-in-input, .generalInput {
     padding: 9px;
@@ -147,12 +146,13 @@ img.filterSelect.active {opacity: .5;}
     padding: 0.2em 0;
 }
 
+.tcenter{text-align: center;}
 
 /* ==========================================================================
    Index Intro Page
    ========================================================================== */
 
-.vidcodeIntro{text-align: center;}
+.vidcodeIntro, .text-center{text-align: center;}
 .vidcodeIntro h1{font-family: 'Copse', serif; color: #441B4B; padding: 25px 0 10px;}
 .vidcodeIntro p{font-size: 1.4em; padding-bottom: 20px;}
 .vidcodeIntro h3{font-family: 'Copse', serif;}
@@ -211,6 +211,18 @@ body.is-in-signup{overflow: hidden;}
 
 /*///////////////// Button Styles Custom ////////////////*/
 
+
+.a-share-btn{cursor: pointer; color: #fff; background-color: #323762; padding: 10px 16px; font-size: 1.1em; margin: 0 9px;}
+.a-share-btn img{margin-right: 4px; width: 5%;}
+.a-share-btn:hover{opacity: .95; background-color: #1B2144;}
+
+.big-action-btn{background: #fff; border: 2px #58355F solid; border-radius: 1px; padding: 5px 13px;
+                color: #58355F; text-transform: uppercase; font-size: 1.3em; cursor: pointer;
+}
+.big-action-btn:hover{color: #fff; background: #58355F;}
+.inactive-b-a-btn{cursor: default; opacity: .4;}
+.inactive-b-a-btn:hover{background: #fff; color: #58355F;}
+
 .btn-purple{
     background-color: #441B4B; border: 0px;}
 .btn-purple:hover{
@@ -237,33 +249,31 @@ body.is-in-signup{overflow: hidden;}
 .cyan-btn{background-color: #3BE2D6;}
 .cyan-btn:hover{background-color: #24ADA4;}
 
+.save-btn-container .green-btn{height: 36px;border-radius: 0 4px 4px 0;
+text-align: center;padding: 8px 0;color: #fff;text-transform: uppercase;cursor: pointer;
+}
+
 
 
 /*Header */
 .nav{background-color: #fff;}
-.nav li a:hover{background-color: #e8f4ed!important; }
+.nav li a:hover{background: none; }
+.nav-tabs{border-bottom: 3px solid #7E79C4; padding-bottom: 5px;}
 .nav a{
-    font-family: 'Open Sans', sans-serif!important;
-    font-weight: 700;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
     font-size: 1.7em;
-    color: #319665;
+    color: #58355F;
 }
-.nav .small{margin-top: 6px;}
-.nav a:hover{color: #1B4F33; }
-.nav > li > a {padding: 3px 15px!important;}
-
-
-
-.alliebutton{
-    float: right;
-    margin-left: 30px;
-}
+.nav .small{margin-top: 3px;}
+.nav a:hover{color: #9469A0; }
+.nav > li > a {padding: 6px 15px; line-height: 1.5em;border: none;}
+.nav > li{border: none;}
 
 
 
 .centerObject{
     margin: 0 auto;
-    width: 470px;
 }
 
 .show-inline{display: inline!important;}
@@ -312,6 +322,7 @@ font-size: .9em;}
     z-index: 5;
     margin-top: 1px;
     width: 103%;
+    height: 250px;
 }
 
 .steps{
@@ -413,19 +424,6 @@ margin-top: -57px;
 margin-left: 148px;
 z-index: 100000;}
 
-.displaysecond{
-    position: absolute!important;
-    width: 480px!important;
-    z-index: 501;
-    background-color: #fff;
-}
-
-.hidden2{
-    margin-top: 3px;
-    height: 5px;
-    opacity: 0;
-}
-
 .tabs-1{
     border: #BDBFBF solid 1px;
     height: 600px;
@@ -440,7 +438,7 @@ z-index: 100000;}
 
 
 .small{
-    font-size: 1.1em!important;
+    font-size: 1em!important;
     }
 
 .hidden{
@@ -458,6 +456,26 @@ z-index: 100000;}
 }
 
 #methodList{margin-left: -30px;}
+
+/**Throwing in temp colors for each lesson*//
+/**Really hacky, Leandra. I'm sorry!! *//
+
+.basic-filter-method .btn{
+    background-color: #319665;
+}
+
+.adv-filter-method .btn{
+    background-color: rgba(128, 0, 0, 0.61);
+}
+
+.movie-control-method .btn{
+    background-color: rgb(0, 0, 255);
+}
+
+.stop-motion-method .methodList .btn{background-color: #58355F;}
+.stop-motion-method .methodList .btn:hover{background-color: #412647;}
+
+
 
 #editor {
     margin: 0;
@@ -487,7 +505,7 @@ z-index: 100000;}
 .btn-method{
     background-color: #319665;
     color: #fff;
-    margin-right: 15px!important;
+    margin-right: 15px;
     z-index: 3;
     position: relative;
 }
@@ -615,9 +633,9 @@ canvas{vertical-align: bottom;}
 .draggable {
     position: relative;
     z-index: 1;
-    text-align: left!important;
+    text-align: left;
     /*background-color: rgba(49, 150, 101, .9)!important;*/
-    font-weight: 700!important;
+    font-weight: 700;
     margin-left: 4px;
     float: left;
     width:120px;
@@ -634,10 +652,12 @@ canvas{vertical-align: bottom;}
     background-position: right;}
 
 /* The effects/ learn more area */
-.learnMore{height: 600px; width: 100%; padding-left: 15px;}
-.learnMore .btn{font-size: .9em; width: 92%; color: #fff; text-align: center; padding: 2px;}
-.learnMore .btn:hover{color: #fff!important;}
+.learnMore{}
+.learnMore .btn{font-size: .9em; font-weight: 600; width: 43%; color: #fff; text-align: left; padding: 4px 5px; margin: 7px 5px;}
+.learnMore .btn:hover{color: #fff;}
 .learnMore .bold{font-weight: 700;}
+
+.learnMore .btn-primary{width: auto;}
 
 .methods .learnMore{background-color: #eee8d5;}
 .learnMore ul img{margin-right: 5px;}
@@ -665,6 +685,7 @@ canvas{vertical-align: bottom;}
 
 .lesson-img-1{width: 255px; margin-bottom: -57px;}
 .lesson-img-2{width: 385px; margin-bottom: -74px;}
+
 
 /* ---------------- Learn More Games ------------------ */
 
@@ -740,7 +761,22 @@ canvas{vertical-align: bottom;}
 
 
 /* =============    Individual Lessons Code   ======== */
-.set-container{width: 95%; margin: 20px auto; background-color: #fff}
+.current-lesson-display{float: left; padding-top: 5px; padding-left: 15px;}
+.current-lesson-display h3{font-weight: 600;color: #323762; cursor: pointer; font-size: 1.8em;}
+
+.large-selection-dropdown{position: absolute;z-index: 1; background: #fff;
+    border: 3px solid #22275A;border-radius: 3px;margin: -3px 0 0 0;}
+.large-selection-dropdown ul{padding: 0;margin:0;}
+.large-selection-dropdown li{font-size: 1.75em; color: #323762; padding: 5px 10px; cursor: pointer;}
+.large-selection-dropdown li:hover{color:#fff; background-color:#323762;}
+
+
+.set-container{width: 95%; padding: 0 0 25px; margin: 20px auto; background-color: #fff}
+
+
+.save-btns-container{float: right;margin-top: 24px;}
+.save-btns-container span{margin-right: 9px;}
+
 .lesson-page .progress-set{ margin: 0 auto; width: 450px; padding: 20px;}
 .lesson-page .progress-set h2{font-size: 1.3em; display: inline;}
 .lesson-page .progress-num{border: 1px solid #441B4B;
@@ -769,11 +805,11 @@ canvas{vertical-align: bottom;}
 .lesson-page .previous-progress-btn a{font-weight: bold; color: #441B4B; float: left; font-size: 1.2em; margin: 32px 0 0 30px;}
 .lesson-page .active-vid img{width: 96%;}
 .lesson-page .video-container video{width: 100%; cursor: pointer;}
-.lesson-page .video-container .i-vid-container{float: left; overflow: hidden; width: 30%; height: auto; margin: 5px;}
-.lesson-page .video-container img{width: 44%; margin: 2%; cursor: pointer;}
+.lesson-page .video-container .i-vid-container{float: left; overflow: hidden; width: 30%; height:75px; margin: 5px;}
+.lesson-page .video-container img{width: 96%; margin: 2%; cursor: pointer;}
 .lesson-page .video-container .js-selected-video{border: 2px solid #441B4B;}
 .lesson-page .video-container p{font-weight: bold; font-size: 1.2em; margin-top: 15px; color: #441B4B;}
-.lesson-page p{font-weight: bold; font-size: 1.2em; color: #441B4B;}
+.lesson-page p{font-size: 1.1em; color: #441B4B;}
 .lesson-page .secondary{font-weight: normal; font-size: 1.1em;}
 
 /*Adding this as a temp fix for the instruction fonts*/
@@ -797,8 +833,8 @@ canvas{vertical-align: bottom;}
 .lesson-page .links-holder .link-two:hover{text-decoration: none; background-color: #50BA87;}
 
 .lesson-page .links-holder .link-three{color: #684770;}
-.lesson-page .vid-placeholder{background-color: blue; width: 100%; height: 222px; margin: -20px 0 0 0;}
-.lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 99px; font-size: 1.7em!important;}
+.lesson-page .vid-placeholder{background-color: blue; width: 100%; height: 250px; margin: -20px 0 0 0;}
+.lesson-page .vid-placeholder h3{font-family: 'Copse', serif; text-align: center; color: #fff; padding-top: 112px; font-size: 1.7em!important;}
 
 .lesson-page .vidtip{font-size: 1em;}
 
@@ -869,6 +905,10 @@ canvas{vertical-align: bottom;}
 .share-p-text-container p{font-weight: 400; font-size: 1.1em; color: #333;}
 
 
+.sm-header-bg{background: #58355F;padding: 7px 9px;}
+.sm-header-bg p{color: #fff;font-weight: 600;margin-bottom: 0;}
+.sm-header-bg .lesson-dropdown{font-weight: 400; font-size: 1em;cursor: pointer;}
+
 .s-background{
     width: 100%; height: 100%;
   background: url(/img/signin-bg.png) no-repeat center center fixed;
@@ -879,7 +919,7 @@ canvas{vertical-align: bottom;}
   position: fixed;
 }
 
-.s-container{height: 100%; position: fixed;}
+.s-container{height: 100%; position: fixed;margin-top: -7px;}
 .s-popup{width: 345px; position: fixed; background-color: rgba(255, 255, 255, 0.85); border-radius: 4px;
     top: 125px; left: 50%; margin-left: -172px; z-index: 5;}
 .s-popup p{font-family: 'Copse'; color: #807E8E; font-size: 1.3em; padding: 15px;}
@@ -903,6 +943,14 @@ canvas{vertical-align: bottom;}
 .n-a-login{background-color: #329766; color: #fff; margin-bottom: 20px;}
 .n-a-login:hover{background-color: #4EAD79;}
 
+/* ======================       In-Page Lessons          ============================= */
+.lessonImg{width: 100%;}
+.lm-title{font-size: 1.2em}
+.lesson-text-container{overflow-y: auto;padding: 0 9px;}
+.buttons-container{max-height: 275px; overflow-y: auto;}
+
+.lesson-text-container p{font-size: .96em;line-height: 1.6em;}
+
 /* ======================       Modal Lessons          ============================= */
 
 
@@ -916,13 +964,17 @@ canvas{vertical-align: bottom;}
 .is-inactive-btn:hover{background-color: #441B4B!important;}
 
 .push-15{margin-top: 15px!important;}
+.push-40{margin-top: 40px!important;}
 
 .header-text-s{color: rgb(0,121,184); margin-bottom: 11px;}
 .header-text-s h3{font-weight: 400; float: left;}
 
 
 /* ======================       Error          ============================= */
-.cover{width: 100%; height: 100%; position: fixed; background-color: rgba(46, 48, 58, .98); z-index: 9; top: 0;}
+.cover{width: 100%; height: 100%; position: fixed; z-index: 9; top: 0; left: 0;}
+.cover90{background-color: rgba(46, 48, 58, .98);}
+.cover50{background-color: rgba(46, 48, 58, .35);}
+
 .error-message{
     position: absolute;
     top: 23%; left:50%;
@@ -937,6 +989,41 @@ canvas{vertical-align: bottom;}
 .panelbody{background: #fff; padding: 22px 24px 17px; font-size: 1.1em; line-height: 1.7em;}
 
 
+
+/* ======================       Share and Save: Action Modals          ============================= */
+
+.action-modal{
+    position: absolute;
+    top: 23%; left:50%;
+    z-index: 10;
+    width:500px; margin-left:-250px;
+}
+
+.action-modal .a-header{width: 100%; background: #329766; padding: 12px 0 1px;
+    text-align:center; color: #fff;font-size: 1.7em; text-transform: uppercase;
+}
+
+.action-modal .a-body{width: 100%; background-color: #EFF3F4; color:#323762; padding: 23px 25px 25px;}
+.action-modal .c-desc{text-align: center; color: #323762; font-size: 1.7em; padding: 0 0 15px;}
+
+.action-modal label{display: block;}
+.action-modal textarea{width: 100%; margin-bottom: 4px;}
+.action-modal .progressDiv{width: 100%; margin-top:21px;}
+.action-modal .progress-bar{background:#58355F!important;}
+.btn-center{width: 97%; margin: 0 auto;}
+.action-m{z-index: 10;position: relative;}
+.action-modal .generalInput{width: 100%; margin: 0 auto 15px;}
+
+.s-btn{padding: 10px 28px;margin-left: 355px;}
+
+
+
+/* ======================       AddThis          ============================= */
+#fb-btn-styling{background:#323762!important;width: 204px!important;padding: 9px 16px!important;height: 47px!important; color: #fff!important;margin-left: 10px!important;}
+#fb-btn-styling img{padding-right: 5px!important}
+
+#tw-btn-styling{background:#323762!important;width: 197px!important;padding: 9px 16px!important;height: 47px!important; color: #fff!important;margin-left: 15px!important;}
+#tw-btn-styling img{padding-right: 5px!important}
 
 /* ==========================================================================
    Helper classes

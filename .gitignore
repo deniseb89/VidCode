@@ -6,5 +6,4 @@ npm-debug.log
 config.json
 video/**
 img/**
-static/img/temp/**
 .idea

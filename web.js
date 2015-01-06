@@ -1,4 +1,3 @@
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
@@ -97,20 +96,16 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/',routes.signin);
   app.get('/signin', routes.signin);
   app.get('/intro/:social?/:id?', routes.intro(db));
-  app.get('/csweek', routes.csweek);
-  app.get('/lesson/1', function(req, res){
-      res.redirect ('/holidays');    
-  });
-
+  app.get('/lesson/1', routes.partone(db));
   app.get('/share/:token?', routes.share(db));
   app.get('/profile', routes.profilePage(db))
   app.get('/gallery', routes.gallery);
   app.get('/galleryshow', routes.galleryshow);
 
-  app.get('/holidays', routes.cs1(db));
-  app.get('/lesson/cs1', function(req, res){
-      res.redirect ('/holidays');
-  });
+  app.get('/workstation', routes.workstation(db));
+
+  //for nytm
+  app.get('/nytm', routes.workstation(db));
 
   // sign up + sign in
   app.post('/signup', routes.signup(db));
@@ -123,15 +118,16 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/instagramVids/', routes.igUrlGet(db));
   app.get('/instagram/:ix', routes.igVidGet(db));
   app.get('/sample/:file', routes.getSample);
-  app.get('/getVideos', routes.getAllVids(db));  
+  app.get('/getVideos', routes.getAllVids(db));
   app.get('/video', routes.getUserVid(gfs));
   app.post('/uploadFinished', routes.uploadFinished(db,gfs,crypto));
+  app.post('/uploadMedia', routes.uploadMedia(db,gfs,crypto));
 
   //catch all for any other request attempts
   app.get('*', function(req,res){
     res.render('404',{layout: false});
   });
-  
+
   http.createServer(app).listen(app.get('port'),function(){
     console.log("Listening on " + app.get('port'));
   });
