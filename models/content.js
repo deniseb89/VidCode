@@ -26,6 +26,7 @@ var lessonContent =
     'stopMotion' : {
       'title': ["Stop Motion with Code!"],
       'lessonText': ['select images for your animation by clicking the thumbnails you want in your stop-motion animation.', 'drag the "interval" button. This controls how quickly your animation moves! This code uses milliseconds so 1000 is the same as 1 second!'],
+      'images':['lesson-stop-motion.jpg'],
       'learnMore' : [
         {'topic':'Objects', 'target':'#lesson-objects-222'},
         {'topic':'Functions', 'target': '#function222'},
