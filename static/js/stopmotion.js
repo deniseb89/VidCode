@@ -4,7 +4,7 @@ var stopMotion = {
   on : false,
   reverse: false,
   interval : 500,
-  controls : {'interval': 500, 'frames': '[ , ]','reverse': 'false'},
+  controls : {'interval': 500, 'frames': '[]','reverse': 'false'},
 
   start: function(){
   	clearInterval(stopMotion.animate);
