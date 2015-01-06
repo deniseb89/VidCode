@@ -26,11 +26,15 @@
             <div class="a-body">
                 <p class="c-desc js-h-onload">Your video is loading</p>
 
-                <label for="loading-title">Title</label>
-                <input type="text" id="loading-title" class="generalInput">
-
-                <label for="loading-descr">Optional Video Description</label>
-                <textarea id="loading-descr" rows="4"></textarea>
+                <form method="post" id="video-update-desc" action="/video-update-desc">
+                    <label for="video-title">Title</label>
+                    <input type="text" name="title" id="video-title" class="generalInput js-video-title">
+                    <label for="video-descr">Optional Video Description</label>
+                    <textarea id="video-descr" name="descr" rows="4" class="js-video-descr"></textarea>
+                    <input type="text" id="video-token" name="token" class="js-video-token" hidden="true" value="">
+                    <input type="submit" value="Save Description" onsubmit="return false;"
+                           class="save-video-desc-btn n-a-video-save-desc"/>
+                </form>
 
                 <div class="progressDiv progress progress-striped">
                     <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0"
@@ -91,6 +95,13 @@
             <p class="fileError"></p>
         </div>
 
+        <div class="popup-upload-to-library is-hidden">
+            10 mb max file size
+            <input type="file" id="inputFileToLibrary" name="file" multiple value="Select a File"/>
+            <button class="btn js-hide-upload-to-library uploadfile">Cancel</button>
+            <p class="fileError"></p>
+        </div>
+
         <div class="set-container lesson-page clearfix">
             <div class="current-lesson-display">
                 <h3 class="js-switch-menu-appear"><span class="js-lesson-name">Filters</span> <img
@@ -102,6 +113,7 @@
                         <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
                         </li>
                         <li class="js-switch-view" id="movie-control-method" name="Computer Vision">Computer Vision</li>
+                    </ul>
                 </div>
             </div>
             <div class="progress-set">
@@ -114,22 +126,71 @@
             <div class="lesson-container">
                 <div class="col-md-4">
                     <div class="loader is-hidden"><img src="/img/loader.gif"></div>
-            <span class="js-active-vid active-vid">
-              <div class="vid-placeholder overlay">
-                  <h3>Select a video below</h3>
-              </div>
-              <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
-              <canvas class="video2 is-hidden tabs-2" id="canvas">
-              </canvas>
-              <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
-            </span>
+
+                    <span class="js-active-vid active-vid">
+
+                        {{#if user.sessionToLoad}}
+
+                            <div id="vid-load-from-profile">
+
+                                <video class="video1 is-hidden js-load-last-session" id="myvideo"
+                                       src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
+
+                                <canvas class="video2 tabs-2 ui-droppable" id="canvas">
+                                </canvas>
+                                <button type="button" class="runbtn btn btn-danger pullRight is-hidden">Pause</button>
+
+                            </div>
+
+
+                        {{else}}
+
+                            <div class="vid-placeholder overlay">
+                                <h3>Select a video below</h3>
+                            </div>
+
+                            <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
+                            <canvas class="video2 is-hidden tabs-2" id="canvas">
+                            </canvas>
+                            <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
+
+                        {{/if}}
+
+
+                    </span>
+
 
                     <div class="js-switch-appear">
 
                         <div class="video-container clearfix">
-                            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own
-                                Media
-                            </button>
+                            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button>
+
+                            <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media to Library</button>
+
+
+
+                            <div class="row profile">
+                                {{#if user.videoLibrary}}
+
+                                {{#each user.videoLibrary}}
+                                <div class="insta-thumbnails">
+                                    <div class="row">
+                                        <div class="i-vid-container">
+                                            <a>
+                                                <video class="video js-vid-click" src="/video/?file={{this.file}}"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                                {{else}}
+                                <h2 class="profileheader">You have not uploaded videos to your library!</h2>
+                                {{/if}}
+                            </div>
+
+
+
+
                             <p class="is-hidden stop-motion-method">Stills</p>
 
                             <div id="media-library" class="is-hidden stop-motion-method">
@@ -726,23 +787,23 @@
         </div>
     </div>
 </div>
-    <!--end learn more modals-->
+<!--end learn more modals-->
 
-    <h4 id="username" class="is-hidden">{{user.username}}</h4>
-    <h4 id="social" class="is-hidden">{{user.social}}</h4>
+<h4 id="username" class="is-hidden">{{user.username}}</h4>
+<h4 id="social" class="is-hidden">{{user.social}}</h4>
 
-    <script src="/js/workstation.js"></script>
-    <script src="/js/stopmotion.js"></script>
+<script src="/js/workstation.js"></script>
+<script src="/js/stopmotion.js"></script>
 
-    <script>
-        mixpanel.track_links("#mix-share", "Share clicked");
-        mixpanel.track_links("#mix-return2code", "Returned to code");
-        mixpanel.track_links("#mix-again", "Try It Again clicked");
-        mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram");
-        mixpanel.track_links("#tooltip-stop-4", "Save clicked");
-        mixpanel.track('Main UI page viewed', {
-            'page name': document.title,
-            'url': window.location.pathname
-        });
+<script>
+    mixpanel.track_links("#mix-share", "Share clicked");
+    mixpanel.track_links("#mix-return2code", "Returned to code");
+    mixpanel.track_links("#mix-again", "Try It Again clicked");
+    mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram");
+    mixpanel.track_links("#tooltip-stop-4", "Save clicked");
+    mixpanel.track('Main UI page viewed', {
+        'page name': document.title,
+        'url': window.location.pathname
+    });
 
-    </script>
+</script>

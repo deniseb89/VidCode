@@ -141,6 +141,15 @@ textarea {
     background-position: right;
 }
 
+.sign-in-input-pw {
+    padding: 13px;
+    margin-left: 17px;
+    width: 90%;
+    background-image: url('/img/env-empty-icon.png');
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
 input:hover, textarea:hover,
 input:focus, textarea:focus {
     border-color: #C9C9C9;
@@ -573,6 +582,30 @@ body.is-in-signup {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
+}
+
+.popup-upload-to-library {
+    margin: 200px 0 0 300px;
+    position: fixed;
+    height: 50px;
+    width: 600px;
+    padding: 10px 50px 90px 50px;
+    background-color: #fff;
+    z-index: 10000000000;
+
+    -webkit-box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
+    -moz-box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
+    box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
+
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.loader-upload-to-library {
+    margin: 100px 0 0 275px;
+    position: fixed;
+    z-index: 10000000000;
 }
 
 .instagram-form input {
@@ -1576,6 +1609,104 @@ canvas {
     width: 530px;
 }
 
+/* =============    Profile Page    ======== */
+.profileheader {
+    margin: 20px 0 15px 15px;
+}
+
+.profile {
+    margin: 20px 0;
+}
+
+.profile .video {
+    width: 25%;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+}
+
+.profile .vid-row {
+    width: 25%;
+    margin: 8px auto;
+}
+
+.profile .title {
+    margin: 10px 0 0 3px;
+    font-weight: 600;
+    color: #441B4B;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.profile .username {
+    color: #333;
+    margin: -6px 0 0 3px;
+    font-size: .9em;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Profile page tabs.
+   ========================================================================== */
+
+/*----- Tabs -----*/
+.tabs {
+    width: 100%;
+    display: inline-block;
+}
+
+/*----- Tab Links -----*/
+/* Clearfix */
+.tab-links:after {
+    display: block;
+    clear: both;
+    content: '';
+}
+
+.tab-links li {
+    margin: 0px 5px;
+    float: left;
+    list-style: none;
+}
+
+.tab-links a {
+    padding: 9px 15px;
+    display: inline-block;
+    border-radius: 3px 3px 0px 0px;
+    background: #7FB5DA;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4c4c4c;
+    transition: all linear 0.15s;
+}
+
+.tab-links a:hover {
+    background: #a7cce5;
+    text-decoration: none;
+}
+
+li.active a, li.active a:hover {
+    background: #fff;
+    color: #4c4c4c;
+}
+
+/*----- Content of Tabs -----*/
+.tab-content {
+    padding: 15px;
+    border-radius: 3px;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
+    background: #fff;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
 /* =============    Gallery Page    ======== */
 .galleryheader {
     margin: 20px 0 15px 15px;
@@ -1700,7 +1831,6 @@ canvas {
     margin-top: 30px
 }
 
-;
 .greentext {
     color: #319665 !important;
 }
@@ -1796,7 +1926,61 @@ canvas {
     margin: -15px auto 25px 200px;
 }
 
+.save-video-desc-btn {
+    width: 90%;
+    display: block;
+    margin: 7px auto;
+    border-radius: 2px;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    border: 1px solid #fff;
+    padding: 10px 0;
+}
+
+.n-a-video-save-desc {
+    background-color: #329766;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.n-a-video-save-desc:hover {
+    background-color: #4EAD79;
+}
+
 .login-btn {
+    width: 90%;
+    display: block;
+    margin: 7px auto;
+    border-radius: 2px;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    border: 1px solid #fff;
+    padding: 10px 0;
+}
+
+.signup-btn {
+    width: 90%;
+    display: block;
+    margin: 7px auto;
+    border-radius: 2px;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    border: 1px solid #fff;
+    padding: 10px 0;
+}
+
+.forgot-btn {
+    width: 90%;
+    display: block;
+    margin: 7px auto;
+    border-radius: 2px;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    border: 1px solid #fff;
+    padding: 10px 0;
+}
+
+.reset-btn {
     width: 90%;
     display: block;
     margin: 7px auto;
@@ -1853,6 +2037,36 @@ canvas {
 
 .n-a-login:hover {
     background-color: #4EAD79;
+}
+
+.s-u-login {
+    background-color: #0099FF;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.s-u-login:hover {
+    background-color: #A3DAFF;
+}
+
+.f-u-login {
+    background-color: #778899;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.f-u-login:hover {
+    background-color: #B0C4DE;
+}
+
+.r-u-login {
+    background-color: #B22222;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.r-u-login:hover {
+    background-color: #FF6347;
 }
 
 /* ======================       In-Page Lessons          ============================= */
@@ -2299,4 +2513,65 @@ Inlined to avoid required HTTP connection: h5bp.com/r
     h3 {
         page-break-after: avoid;
     }
+}
+
+/* ==========================================================================
+Profile page tabs.
+========================================================================== */
+
+/*----- Tabs -----*/
+.tabs {
+    width: 100%;
+    display: inline-block;
+}
+
+/*----- Tab Links -----*/
+/* Clearfix */
+.tab-links:after {
+    display: block;
+    clear: both;
+    content: '';
+}
+
+.tab-links li {
+    margin: 0px 5px;
+    float: left;
+    list-style: none;
+}
+
+.tab-links a {
+    padding: 9px 15px;
+    display: inline-block;
+    border-radius: 3px 3px 0px 0px;
+    background: #7FB5DA;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4c4c4c;
+    transition: all linear 0.15s;
+}
+
+.tab-links a:hover {
+    background: #a7cce5;
+    text-decoration: none;
+}
+
+li.active a, li.active a:hover {
+    background: #fff;
+    color: #4c4c4c;
+}
+
+/*----- Content of Tabs -----*/
+.tab-content {
+    padding: 15px;
+    border-radius: 3px;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
+    background: #fff;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
 }
