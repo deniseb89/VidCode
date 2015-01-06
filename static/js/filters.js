@@ -44,9 +44,6 @@ var InitSetup = function(){
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
     $('.compatibility-error').removeClass('is-hidden');
   } else {
-    $("#joyRideTipContent").joyride({
-      autoStart: true
-    });
     InitSeriously();
   }  
   movie.removeEventListener('canplay', InitSetup, false);

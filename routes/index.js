@@ -142,7 +142,26 @@ exports.workstation = function (db) {
 
 exports.partone = function (db) {  
   return function(req, res){
-    res.redirect ('/workstation');
+    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];    
+    var codeText =
+'\
+ movie.play();\n\
+    ';
+
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var vc = db.collection('vidcode');
+
+      var successcb = function(doc) {
+        res.render("partone", {code: codeText, filters: filters, user: doc});
+      };  
+
+      findOrCreate(db,user,successcb);
+      
+    } else {
+      res.render("partone", {content: content});
+    }
   }
 };
 
