@@ -158,6 +158,39 @@ var updateMediaLibrary = function (file,data){
       style = 'js-img-click';
       fn = function() {
         //js-img-click event listener should go here
+
+        if(stillsSelectedLesson === false){
+          updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '');
+          stillsSelectedLesson = true;
+        }
+        $(this).toggleClass('js-selected-video');
+        $(this).toggleClass('js-selected-still');
+
+        // figure out how to deal with video running in the backgroud
+        movie.src = "";
+        //generalize this somewhere else so when source changes, target changes
+        if (!stopMotion.on){
+          console.log('stop mtoion is off so do this');
+          effects[allEffects[0]]["source"] = seriously.source(this);
+        }
+        showVid();
+
+        var stills = document.querySelectorAll('.js-selected-still');
+        var frameArr = new Array(stills.length);
+        for (var i=1; i<=frameArr.length; i++){
+          frameArr[i-1]=i;
+        }
+        frameArr.join(",");
+        var allTM = myCodeMirror.getAllMarks();
+        for (var m=0; m<allTM.length; m++){
+          var tm = allTM[m];
+          if (tm.className=="cm-frames"){
+            var cmLine = tm.find();
+            myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+            myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
+            $(".cm-frames").effect("highlight",2000);
+          }
+        }
       };
     } else if (file.type.match(/video.*/) ) {
       type = 'video';
