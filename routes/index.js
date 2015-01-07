@@ -232,7 +232,6 @@ exports.uploadMedia = function(db, gfs, crypto) {
     });
 
     busboy.on('finish', function(){
-      console.log('busboy finished');
     })
 
     req.pipe(busboy);
@@ -277,7 +276,6 @@ exports.uploadFinished = function(db, gfs, crypto) {
     });
 
     busboy.on('finish', function(){
-    	console.log('busboy finished');
     })
 
     req.pipe(busboy);
