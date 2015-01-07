@@ -352,7 +352,7 @@ var loadThumbnails = function() {
     });
   } else {
     $('.insta-import').removeClass('is-hidden');
-    // $('.insta-thumbnails').addClass('is-hidden');
+    $('.insta-thumbnails').addClass('is-hidden');
   }
 };
 
