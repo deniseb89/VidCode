@@ -160,7 +160,7 @@ exports.partone = function (db) {
       findOrCreate(db,user,successcb);
       
     } else {
-      res.render("partone", {content: content});
+      res.render("partone");
     }
   }
 };
