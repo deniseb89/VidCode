@@ -12,7 +12,7 @@ var stopMotion = {
   	var stills = document.querySelectorAll('.js-selected-still');
     if (stills.length){
     stopMotion.animate = setInterval(function(){
-      effects[allEffects[0]]["source"] = seriously.source(stills[i]);
+      effects[allEffects[0]]["bottom"] = seriously.source(stills[i]);
       i++; 
       if (i >= stills.length) { i = 0; } 
     }, stopMotion.interval); 

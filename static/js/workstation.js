@@ -5,6 +5,8 @@ var movie,
     video,
     vidLen,
     target,
+	blend,
+	graphic,
     seriouslyEffects,
     effects = {},
     rafId,
@@ -13,7 +15,7 @@ var movie,
     windowObjectReference = null;
     numVidSelect = 0;
     numFilterSelect = 0;
-    allEffects = ['blur','noise','vignette','exposure','fader','kaleidoscope'];
+    allEffects = ['blend', 'blur','noise','vignette','exposure','fader','kaleidoscope'];
     mult = {'blur':.01, 'noise':.1, 'vignette': 1, 'exposure':.04,'fader':.04, 'kaleidoscope':1, 'saturation':.1};
     defaultValue =  {'number':5 , 'color': '"red"'};
 
@@ -33,7 +35,7 @@ var showVid = function() {
   labelLines();
 
   if (this.tagName=='VIDEO') {
-    effects[allEffects[0]]["source"] = seriously.source(video);
+    effects[allEffects[0]]["bottom"] = seriously.source(video);	 
     vidLen = Math.round(this.duration);
   } else {
     vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
@@ -234,21 +236,29 @@ var setup = function(){
 }
 
 var InitSeriously = function(){
+  
   //TODO: generalize to my media
   video = seriously.source('#myvideo');
   target = seriously.target('#canvas');
-
+  graphic = seriously.source('#mygraphic');	
+  graphic = seriously.transform('reformat');
+  graphic.source = '#mygraphic';
+  graphic.width = 300;
+  graphic.height = 200;
+	
   //Set up Seriously.js effects
-  var thisEffect;
-  seriouslyEffects = Seriously.effects();
-  effects[allEffects[0]]= thisEffect = seriously.effect(allEffects[0]);
-  effects[allEffects[0]]["source"] = video;
-  thisEffect.amount = 0;
+   seriouslyEffects = Seriously.effects();
+	
+   var thisEffect;
+   effects[allEffects[0]] = thisEffect = seriously.effect(allEffects[0]);
+   thisEffect.top = graphic;
+   thisEffect.bottom = video;
+  
   for (var i=1;i<allEffects.length;i++){
     effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
     effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
     thisEffect.amount = 0;
-  }
+  }	
   target.source = effects[allEffects[allEffects.length-1]];
 };
 
@@ -305,10 +315,11 @@ var updateScript = function() {
     if (matchNames.indexOf(thisEffect) < 0) {
       adjScript+="\n\ effects." + thisEffect + ".amount = 0;";
     } else {
-      var adjAmt = effects[thisEffect]['amount']*mult[thisEffect];
+      var adjAmt = effects[allEffects[c]]['amount']*mult[thisEffect];
       adjScript+="\n\ effects." + thisEffect +".amount = " +adjAmt+ ";";
     }
   }
+	console.log("updated");
 
   textScript+=adjScript;
   textScript+="\n\ } catch(e){"+ adjScript +"\n\ }";
@@ -702,7 +713,7 @@ $( document ).ready(function() {
     movie.src = "";
     //generalize this somewhere else so when source changes, target changes
     if (!stopMotion.on){
-      effects[allEffects[0]]["source"] = seriously.source(this);
+      effects[allEffects[0]]["bottom"] = seriously.source(this);
     }
 
     var stills = document.querySelectorAll('.js-selected-still');
