@@ -139,7 +139,7 @@ var uploadFromComp = function (ev) {
                     //   processData:false,
                     //   success: function(data, textStatus, jqXHR){
                     //     var data = JSON.parse(data);
-                    updateMediaLibrary(file, e.target.result);
+                    updateMediaLibraryFromComp(file, e.target.result);
                     $(".popup").addClass("is-hidden");
                     $(".fileError").text("");
                     //   },
@@ -463,6 +463,8 @@ $(document).ready(function () {
     $('.basic-filter-method').removeClass('is-hidden');
 
     inputFile.addEventListener('change', uploadFromComp, false);
+    inputFileToLibrary.addEventListener('change', uploadFromCompToLibrary, false);
+
 
     myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'), {
         mode: "javascript",
