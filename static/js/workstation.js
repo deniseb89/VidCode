@@ -149,6 +149,7 @@ var updateMediaLibraryFromComp = function (file, data) {
     var fn;
 
     if (file.type.match(/image.*/)) {
+      console.log("the IF")
         type = 'img';
         style = 'js-img-click';
         parent = 'img-library';
@@ -185,6 +186,7 @@ var updateMediaLibraryFromComp = function (file, data) {
         }
     }
     else if (file.type.match(/video.*/)) {
+      console.log("the ELSE");
         type = 'video';
         style = 'js-vid-click';
         parent = 'vid-library';
@@ -197,6 +199,8 @@ var updateMediaLibraryFromComp = function (file, data) {
             movie.src = thisSrc;
         };
     }
+
+    console.log("the AFTER");
 
     var div = document.createElement('div');
     div.className += 'i-vid-container';
