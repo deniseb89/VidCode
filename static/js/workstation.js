@@ -526,7 +526,6 @@ $(document).ready(function () {
 
     var saveSession = function (blob) {
         var formData = new FormData();
-        console.log('uh, hey.');
         //Question: Can't we upload everything (video, title, desc, token, code) here by appending to form here?
         //and remove the $.post("/video-update-descr") below? I am testing this method below.
 
