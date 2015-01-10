@@ -10,13 +10,19 @@
 			<div class="text-special">or</div>
 			<hr class="line-r">
 		</div>
-	  	<form method="post" id="email-signin" action="/signup">
-			<input type="email" name="email" class="sign-in-input" required placeholder="Sign up with email">
-			<input type="submit" value="Sign Up" class="login-btn n-a-login" />
+		{{#if message}}
+		<div class="alert alert-danger">{{message}}</div>
+		{{/if}}
+	  	<form method="post" id="email-signin" action="/signin">
+			<input type="email" name="email" class="sign-in-input" required placeholder="email address">
+			<input type="password" name="password" class="sign-in-input-pw" required placeholder="password">
+			<input type="submit" value="Log in with email" class="login-btn n-a-login" />
 		</form>
+		<a href="/signup"><button class="signup-btn s-u-login">Sign up with email</button></a>
+		<a href="/forgot"><button class="forgot-btn f-u-login">Reset password</button>
 	</div>
 </div>
 
 <script>
-	mixpanel.track_forms("#email-signin", "created account");
+	mixpanel.track_forms("#email-signin", "logged in to account");
 </script>

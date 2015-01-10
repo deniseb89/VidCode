@@ -1,0 +1,18 @@
+<div class="s-container">
+    <div class="s-background">
+    </div>
+    <div class="s-popup">
+        <p>Request a password reset.</p>
+        {{#if message}}
+        <div class="alert alert-danger">{{message}}</div>
+        {{/if}}
+        <form method="post" id="email-forgot" action="/forgot" onsubmit="return false">
+            <input type="email" name="email" class="sign-in-input" required placeholder="email address">
+            <input type="submit" value="Reset password" class="reset-btn r-u-login"/>
+        </form>
+    </div>
+</div>
+
+<script>
+    mixpanel.track_forms("#email-forgot", "forgot email");
+</script>
