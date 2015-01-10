@@ -108,10 +108,12 @@ module.exports = function (passport) {
                             return done(null, false, req.flash('signupMessage', 'Password must contain at least one number.'));
                         }
                         if (!(/[a-z]/).test(password)) {
-                            return done(null, false, req.flash('signupMessage', 'Password must contain at least one lower case letter.'));
+                            return done(null, false, req.flash('signupMessage', 'Password must contain at least one lowercase and on uppercase letter.'));
                         }
                         if (!(/[A-Z]/).test(password)) {
-                            return done(null, false, req.flash('signupMessage', 'Password must contain at least one upper case letter.'));
+                            return done(null, false, req.flash('signupMessage', 'Password must contain at least one lowercase letter.'));
+
+                            return done(null, false, req.flash('signupMessage', 'Password must contain at least one uppercase letter.'));
                         }
                         // check to see if there's already a user with that email
                         if (user) {

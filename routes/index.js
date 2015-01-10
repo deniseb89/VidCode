@@ -99,7 +99,7 @@ module.exports = function (app, passport) {
         var token = req.params.token;
         var file;
         var title;
-        var desc;
+        var descr;
         if (!token) {
             res.render('share-static', {layout: false});
             return;
@@ -114,7 +114,7 @@ module.exports = function (app, passport) {
                         if (user.vidcodes[item]['token'] == token) {
                             file = user.vidcodes[item]['file'];
                             title = user.vidcodes[item]['title'];
-                            desc = user.vidcodes[item]['desc'];
+                            descr = user.vidcodes[item]['descr'];
                         }
                     }
 
@@ -123,7 +123,7 @@ module.exports = function (app, passport) {
                         user: user,
                         file: file,
                         title: title,
-                        desc: desc,
+                        descr: descr,
                         url: "http://app.vidcode.io/share/" + token
                     });
                 }
@@ -457,8 +457,10 @@ module.exports = function (app, passport) {
         var busboy = new Busboy({headers: req.headers});
 
         busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+
+            var ext = mimetype.split('/').pop();
             var token = generateToken(crypto);
-            filename = token + '.webm';
+            filename = token + ext;
             var ws = gfs.createWriteStream({filename: filename, mode: "w", content_type: mimetype});
             file.pipe(ws);
             ws.on('close', function (file) {
@@ -491,10 +493,12 @@ module.exports = function (app, passport) {
     });
 
     app.post('/uploadFinished', isLoggedIn, function (req, res) {
+        console.log('hi there');
         var video = {};
         var busboy = new Busboy({headers: req.headers});
 
         busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+
             var token = generateToken(crypto);
             filename = token + '.webm';
             var ws = gfs.createWriteStream({filename: filename, mode: "w", content_type: mimetype});
@@ -502,9 +506,9 @@ module.exports = function (app, passport) {
             ws.on('close', function (file) {
                 video.file = file._id;
                 video.token = token;
-                video.title = "My video created on " + getDateMMDDYYYY();
-                video.descr = "My video created on " + getDateMMDDYYYY();
-                video.code = req.body.code;
+                // video.title = "My video created on " + getDateMMDDYYYY();
+                // video.descr = "My video created on " + getDateMMDDYYYY();
+                // video.code = req.body.code;
 
                 saveVideo(gfs.db, req.user._id, video, function () {
                     res.send(token);
@@ -517,6 +521,7 @@ module.exports = function (app, passport) {
         });
 
         busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
+            console.log('collected '+fieldname+' with value '+val);
             video[fieldname] = val;
         });
 
@@ -528,7 +533,7 @@ module.exports = function (app, passport) {
     });
 
 
-    app.post('/video-update-desc', isLoggedIn, function (req, res) {
+    app.post('/video-update-descr', isLoggedIn, function (req, res) {
 
         var token = req.body.token;
         var title = req.body.title;
@@ -580,7 +585,7 @@ module.exports = function (app, passport) {
             res.status(500).end();
         });
 
-        res.setHeader("content-type", "video/webm");
+        // res.setHeader("content-type", "video/webm");
         rs.pipe(res);
     });
 
@@ -641,10 +646,9 @@ module.exports = function (app, passport) {
                 if (!user) {
                     res.render('404', {layout: false});
                 } else {
+                    var _sessionToLoad = {};
 
                     if (token == "lastSession"){
-
-                        var _sessionToLoad = {};
 
                         for (var item in user.videoLibrary) {
 
@@ -665,198 +669,27 @@ module.exports = function (app, passport) {
 
                     }else{
                         for (var item in user.vidcodes) {
-                            if (user.videoLibrary[item]['token'] == token) {
-                                file = user.videoLibrary[item]['file'];
-                                code = user.videoLibrary[item]['code'];
+                            if (user.vidcodes[item]['token'] == token) {
+                                _sessionToLoad.file = user.vidcodes[item]['file'];
+                                _sessionToLoad.code = user.vidcodes[item]['code'];
+                                _sessionToLoad.video = user.vidcodes[item];
                             }
                         }
 
+                        user.sessionToLoad = _sessionToLoad;
+
+                        //handle case that token is not found in the user's records anywhere. Should response with a 404
                         res.render('workstation', {
                             user: user,
                             content: content,
-                            code: codeText,
-                            file: file,
+                            code: _sessionToLoad.code,
+                            file: _sessionToLoad.file,
                             token: token,
                             lastSession: true
                         });
                     }
                 }
             });
-        });
-    });
-
-
-    app.get('/lesson/cs1', isLoggedIn, function (req, res) {
-        var filters = ['blur', 'noise', 'vignette', 'exposure'];
-        var advFilters = ['fader'];
-        var codeText =
-            '\
-             movie.play();\n\
-                ';
-        var user = req.user;
-        if (user) {
-            //todo:if instagram user...
-            //refresh API call with user.acessToken to get recent videos
-            res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters, user: req.user});
-        }
-        else {
-            res.render("cs1", {code: codeText, filters: filters, advFilters: advFilters});
-        }
-    });
-
-
-    app.get('/lesson/tc2', isLoggedIn, function (req, res) {
-        var filters = ['blur', 'noise', 'vignette', 'sepia', 'fader', 'exposure'];
-        var codeText =
-            '\
-             \n\
-             movie.play();\n\
-            \n\
-             //This code lets you animate the fader filter with a randomizing algorithm!\n\
-             function colorSwitch() {\n\
-              var r = Math.floor(255*Math.random());\n\
-              var g = Math.floor(255*Math.random());\n\
-              var b = Math.floor(255*Math.random());\n\
-              var depth = 0.5;\n\
-              effects.fader.amount = depth;\n\
-              effects.fader.color = "rgb("+r+","+g+","+b+")";\n\
-             }\n\
-             \n\
-             //animate = setInterval(colorSwitch, 500);\n\
-             \n\
-            //make it stop by uncommenting the line below\n\
-            //clearInterval(animate);\n\
-            \n\
-            //**Note: In the real version, animation control will be fed by the visual controls, not the editor\n\
-            \n\
-                ';
-        var user = req.user;
-        if (user) {
-
-            //todo:if instagram user...
-            //refresh API call with user.acessToken to get recent videos
-            res.render("lessontwo", {code: codeText, filters: filters, user: req.user});
-
-        } else {
-            res.render("lessontwo", {code: codeText, filters: filters});
-        }
-    });
-
-
-    app.get('/lesson/tc3', isLoggedIn, function (req, res) {
-        var filters = ['blur', 'noise', 'vignette', 'sepia', 'fader', 'exposure'];
-        var codeText =
-            '\
-             movie.play();\n\
-            \n\
-             //This code lets you create stop-motion videos by controlling the frames!\n\
-            \n\
-             clearInterval(stopMotion);\n\
-             var i = 0;\n\
-             stopMotion = setInterval(function(){\n\
-                var still = seriously.source(stills[i]);\n\
-                target.source = still;\n\
-                i++\n\
-                if i(i >= stills.length) { i = 0; }\n\
-              }, 250)\n\
-            \n\
-                ';
-
-        var user = req.user;
-        if (user) {
-            //todo:if instagram user...
-            //refresh API call with user.acessToken to get recent videos
-            res.render("lessonthree", {code: codeText, filters: filters, user: req.user});
-
-        }
-        else {
-            res.render("lessonthree", {code: codeText, filters: filters});
-        }
-    });
-
-    app.get('/lesson/2', isLoggedIn, function (req, res) {
-        res.render('parttwo', {
-            title: 'VidCode Lesson'
-        });
-    });
-
-    app.get('/lesson/3', isLoggedIn, function (req, res) {
-        res.render('partthree', {
-            title: 'VidCode Lesson'
-        });
-    });
-
-    app.get('/lesson/4', isLoggedIn, function (req, res) {
-        res.render('partfour', {
-            title: 'VidCode Lesson'
-        });
-    });
-
-    app.get('/codealone', isLoggedIn, function (req, res) {
-        res.render('codeAlone');
-    });
-
-    app.get('/filters', isLoggedIn, function (req, res) {
-        var user = req.user;
-        if (user) {
-            var username = user.username;
-        }
-        var token = req.params.token;
-        var filters = ['blur', 'noise', 'vignette', 'sepia', 'fader', 'exposure'];
-
-        if (!token) {
-
-            var codeText =
-                "\
-                 \n\
-                 //This line of code makes your movie play!\n\
-                 movie.play();\n\
-                \n\
-                 //The code below lets you add, remove, and alter your video filters.\n\
-                 //Change the numbers and make your video all your own!\n\
-                    ";
-
-            res.render('filters', {code: codeText, filters: filters, user: username});
-            return;
-        }
-
-        var vc = mongoose.connection.db.collection('users');
-        vc.findOne({token: token}, function (err, doc) {
-            if (!doc) {
-                res.status(404);
-            }
-            res.render('filters', {code: doc.code, filters: filters});
-        });
-    });
-
-
-    app.get('/scrubbing', isLoggedIn, function (req, res) {
-        var user = req.user;
-        if (user) {
-            var username = user.username;
-        }
-        var token = req.params.token;
-
-        if (!token) {
-            var codeText =
-                "\
-                 \n\
-                 //Remember this?\n\
-                 movie.play();\n\
-                \n\
-                 //playbackRate controls the speed of your video. The \"rate\" tells how fast your frames per second (FPS) are going.\n\
-                 movie.playbackRate = 1.0;\n\
-                    ";
-            res.render('scrubbing', {code: codeText, user: username});
-            return;
-        }
-
-        var vc = mongoose.connection.db.collection('users');
-        vc.findOne({token: token}, function (err, doc) {
-            if (!doc) {
-                res.status(404);
-            }
-            res.render('scrubbing', {code: doc.code});
         });
     });
 
@@ -978,7 +811,7 @@ function saveVideo(db, id, video, cb) {
             cb();
         });
     } else {
-        doc = {vidcodes: [{"file": video.file, "title": video.title, "desc": video.descr, "token": video.token}]};
+        doc = {vidcodes: [{"file": video.file, "title": video.title, "descr": video.descr, "token": video.token}]};
         vc.insert(doc, function () {
             console.log('error in inserting anonymous video');
         });
@@ -1024,7 +857,7 @@ function saveVideoToLibrary(db, id, video, cb) {
             cb();
         });
     } else {
-        doc = {vidcodes: [{"file": video.file, "title": video.title, "desc": video.descr, "token": video.token}]};
+        doc = {vidcodes: [{"file": video.file, "title": video.title, "descr": video.descr, "token": video.token}]};
         vc.insert(doc, function () {
             console.log('error in inserting anonymous video');
         });

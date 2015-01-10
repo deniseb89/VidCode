@@ -5,6 +5,7 @@ var movie,
     video,
     vidLen,
     target,
+    webmBlob,
     seriouslyEffects,
     effects = {},
     rafId,
@@ -30,8 +31,13 @@ var showVid = function () {
     $('.CodeMirror-code').removeClass('is-hidden');
     activateEndButtons('save');
     activateEndButtons('share');
-    labelLines();
-    vidLen = Math.round(this.duration);
+    labelLines(); 
+    if (this.tagName=='VIDEO') {
+        effects[allEffects[0]]["source"] = seriously.source(video);
+        vidLen = Math.round(this.duration);
+      } else {
+        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds 
+    }
 };
 
 var showImg = function () {
@@ -42,76 +48,6 @@ var activateEndButtons = function (bType) {
     $('.inactive-js-' + bType + '-m').addClass('js-' + bType + '-m');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-b-a-btn');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-js-' + bType + '-m');
-};
-
-//account for different browsers with requestAnimationFrame
-var requestAnimationFrame = window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.msRequestAnimationFrame;
-window.requestAnimationFrame = requestAnimationFrame;
-
-var drawVideoFrame = function (time) {
-    rafId = requestAnimationFrame(drawVideoFrame);
-    capture = frames.length * 60 / 1000;
-    captureTxt = Math.floor(100 * capture / vidLen) + '%';
-    $('.dl-progress').css('width', captureTxt);
-    $('.dl-progress').text('saving...');
-    frames.push(canvas.toDataURL('image/webp', 1));
-    if (capture >= vidLen) {
-        stopDL();
-    }
-};
-
-var stopDL = function () {
-    $('.progressDiv').addClass('is-hidden');
-    cancelAnimationFrame(rafId);
-    var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-    submitVideo(webmBlob);
-};
-
-var submitVideo = function (blob) {
-    var formData = new FormData();
-    formData.append('code', myCodeMirror.getValue());
-    formData.append('video', blob);
-
-    $.ajax({
-        url: '/uploadFinished',
-        type: 'POST',
-        data: formData,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function (token, textStatus, jqXHR) {
-            $('.progressDiv').addClass('is-hidden');
-            $('.share-p-text-container').removeClass('is-hidden');
-            $('.js-lesson-prompt').text('Looks amazing!');
-            $('.js-h-onload').addClass('is-hidden');
-            $('.js-s-onload').removeClass('is-hidden');
-            $('.js-share').removeClass('is-inactive-btn');
-            $('.js-share').attr('href', '/share/' + token);
-            $('.js-share-link-to-copy').val(window.location.host + '/share/' + token);
-
-            //$('meta[property=og\\:url]').attr('content', window.location.host+'/share/'+token);
-
-            var title = "My vidcode created on " + getDateMMDDYYYY();
-            var descr = "My vidcode created on " + getDateMMDDYYYY();
-            var code = myCodeMirror.getValue();
-
-            $('.js-video-token').attr('value', token);
-            $('.js-video-title').attr('value', title);
-            $('.js-video-descr').val(descr);
-            $('.js-video-code').val(code);
-
-            $.post("/video-update-desc", {'token': token, title: title, descr: descr, 'code': myCodeMirror.getValue()});
-
-            window.history.pushState("Share", "Share Your Video", '/share/' + token);
-            addthis.layers.refresh();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-        }
-    });
 };
 
 var uploadFromComp = function (ev) {
@@ -207,37 +143,51 @@ var uploadFromCompToLibrary = function (ev) {
 var updateMediaLibraryFromComp = function (file, data) {
     //create div and img/video tags
 
-    console.log("file: " + file);
-    console.log("data: " + data);
-
     var type;
     var style;
+    var parent;
     var fn;
 
     if (file.type.match(/image.*/)) {
         type = 'img';
         style = 'js-img-click';
+        parent = 'img-library';
         fn = function () {
+            showVid();
+            updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
+            
             $(this).toggleClass('js-selected-video');
             $(this).toggleClass('js-selected-still');
-            //update frame array with stills. Maybe add some kind of enumeration to the frames
+
+            // figure out how to deal with video running in the backgroud
             movie.src = "";
-            showVid();
+            //generalize this somewhere else so when source changes, target changes
+            if (!stopMotion.on){
+              effects[allEffects[0]]["source"] = seriously.source(this);
+            }
+
             var stills = document.querySelectorAll('.js-selected-still');
             var frameArr = new Array(stills.length);
-            for (var i = 1; i <= frameArr.length; i++) {
-                frameArr[i - 1] = i;
+            for (var i=1; i<=frameArr.length; i++){
+              frameArr[i-1]=i;
             }
             frameArr.join(",");
-
-            //not marking text here?
-            console.log({line: cmLine.to.line, ch: 0}, CodeMirror.Pos(cmLine.to.line));
-            console.log({line: myCodeMirror.lastLine(), ch: 0}, CodeMirror.Pos(myCodeMirror.lastLine()));
+            var allTM = myCodeMirror.getAllMarks();
+            for (var m=0; m<allTM.length; m++){
+              var tm = allTM[m];
+              if (tm.className=="cm-frames"){
+                var cmLine = tm.find();
+                myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+                myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
+                $(".cm-frames").effect("highlight",2000);
+              }
+            }
         }
     }
     else if (file.type.match(/video.*/)) {
         type = 'video';
         style = 'js-vid-click';
+        parent = 'vid-library';
         fn = function () {
             $('.loader').removeClass('is-hidden');
             $('.js-vid-click').removeClass('js-selected-video');
@@ -255,10 +205,9 @@ var updateMediaLibraryFromComp = function (file, data) {
     media.src = data;
     media.addEventListener('click', fn, false);
     div.appendChild(media);
-    document.getElementById('media-library').appendChild(div);
+    document.getElementById(parent).appendChild(div);
 };
 
-/*old filters.js*/
 var labelLines = function () {
     //this function should take an input for the relevant effect, not brute force for all
     for (var e = 0; e < allEffects.length; e++) {
@@ -365,9 +314,6 @@ var updateScript = function () {
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
     scriptNew.text = textScript;
 
-    console.log(cmScript);
-
-
     document.body.appendChild(scriptNew);
 };
 
@@ -407,27 +353,6 @@ var loadThumbnails = function () {
     } else {
         $('.insta-import').removeClass('is-hidden');
     }
-};
-
-var slideLeft = function (oldSlide, newSlide) {
-    $(newSlide).addClass('is-hidden');
-    $(oldSlide).removeClass('is-hidden');
-    $(oldSlide).animate({
-        opacity: 1,
-        'margin-left': "0px"
-    });
-};
-
-var slideRight = function (oldSlide, newSlide) {
-    $(oldSlide).animate({
-        'margin-left': "-200px",
-        opacity: 0
-    }, function () {
-        $(oldSlide).addClass('is-hidden');
-    });
-    setTimeout(function () {
-        $(newSlide).removeClass('is-hidden');
-    }, 500);
 };
 
 $(document).ready(function () {
@@ -475,7 +400,8 @@ $(document).ready(function () {
         matchBrackets: true
     });
 
-    $('.CodeMirror-code').addClass('is-hidden');
+    /*unhide the CodeMirror text while we test the sessions */
+    // $('.CodeMirror-code').addClass('is-hidden');
 
     var codeDelay;
     myCodeMirror.on("change", function () {
@@ -562,6 +488,77 @@ $(document).ready(function () {
         rafId = requestAnimationFrame(drawVideoFrame);
     }
 
+
+    //account for different browsers with requestAnimationFrame
+    var requestAnimationFrame = window.requestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.msRequestAnimationFrame;
+    window.requestAnimationFrame = requestAnimationFrame;
+
+    //begin Whammy video save
+    var drawVideoFrame = function (time) {
+        rafId = requestAnimationFrame(drawVideoFrame);
+        capture = frames.length * 60 / 1000;
+        captureTxt = Math.floor(100 * capture / vidLen) + '%';
+        $('.dl-progress').css('width', captureTxt);
+        $('.dl-progress').text('saving...');
+        frames.push(canvas.toDataURL('image/webp', 1));
+        if (capture >= vidLen) {
+            stopDL();
+        }
+    };
+
+    var stopDL = function () {
+        cancelAnimationFrame(rafId);
+        webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+        activateEndButtons('finish');
+    };
+    //end Whammy video save
+
+    $('.finish-btn-container').on('click', ".js-finish-m", function () {
+        saveSession(webmBlob);
+    });
+
+    var saveSession = function (blob) {
+        var formData = new FormData();
+        console.log('uh, hey.');
+        //Question: Can't we upload everything (video, title, desc, token, code) here by appending to form here?
+        //and remove the $.post("/video-update-descr") below? I am testing this method below.
+
+        formData.append('title', $('.js-video-title').val());
+        formData.append('descr', $('.js-video-descr').val());
+        formData.append('token', $('.js-video-token').val());        
+        formData.append('code', myCodeMirror.getValue());
+        formData.append('video', blob);
+
+        $.ajax({
+            url: '/uploadFinished',
+            type: 'POST',
+            data: formData,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (token, textStatus, jqXHR) {
+                $('.progressDiv').addClass('is-hidden');
+                $('.share-p-text-container').removeClass('is-hidden');
+                $('.js-h-onload').addClass('is-hidden');
+                $('.js-s-onload').removeClass('is-hidden');
+                $('.js-share').removeClass('is-inactive-btn');
+                $('.js-share').attr('href', '/share/' + token);
+                $('.js-share-link-to-copy').val(window.location.host + '/share/' + token);
+
+                // $.post("/video-update-descr", {'token': token, title: title, descr: descr, 'code': myCodeMirror.getValue()});
+
+                window.history.pushState("Share", "Share Your Video", '/share/' + token);
+                addthis.layers.refresh();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+    };
+
     $('.js-hide-a-m').click(function () {
         $('.share-modal').addClass('is-hidden');
         $('.save-modal').addClass('is-hidden');
@@ -569,6 +566,9 @@ $(document).ready(function () {
         $('.js-s-onload').addClass('is-hidden');
         $('.js-h-onload').removeClass('is-hidden');
         $('.dl-progress').css('width', '1px');
+        $('.js-finish-m').addClass('inactive-b-a-btn');
+        $('.js-finish-m').addClass('inactive-js-finish-m');
+        $('.js-finish-m').removeClass('js-finish-m');
     });
 
     //addthis functionality and appearance
@@ -764,51 +764,39 @@ $(document).ready(function () {
 
 });
 
-$(".js-desc").click(function () {
-    $('.share-p-text-container').removeClass('is-hidden');
-    var buttonTitle = document.getElementById("formTitle").value;
-    $(".kaytitle").text(buttonTitle);
-    var buttonDesc = document.getElementById("formDesc").value;
-    $(".kaydesc").text(buttonDesc);
-    //resend form here if title/desc is updated
-});
-
 loadThumbnails();
 
 //ugh, sorry. we can get rid of this after nytm
 var stillsSelectedLesson = false;
 $('.js-img-click').click(function () {
-    if (stillsSelectedLesson === false) {
-        updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '');
-        stillsSelectedLesson = true;
-    }
+    showVid();
+    updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
+    
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
     // figure out how to deal with video running in the backgroud
     movie.src = "";
-    // showVid();
+    //generalize this somewhere else so when source changes, target changes
+    if (!stopMotion.on){
+      effects[allEffects[0]]["source"] = seriously.source(this);
+    }
 
     var stills = document.querySelectorAll('.js-selected-still');
     var frameArr = new Array(stills.length);
-    for (var i = 1; i <= frameArr.length; i++) {
-        frameArr[i - 1] = i;
+    for (var i=1; i<=frameArr.length; i++){
+      frameArr[i-1]=i;
     }
     frameArr.join(",");
     var allTM = myCodeMirror.getAllMarks();
-    for (var m = 0; m < allTM.length; m++) {
-        var tm = allTM[m];
-        if (tm.className == "cm-frames") {
-            var cmLine = tm.find();
-            myCodeMirror.replaceRange(' stopMotion.frames = [' + frameArr + '];', {
-                line: cmLine.to.line,
-                ch: 0
-            }, CodeMirror.Pos(cmLine.to.line));
-            myCodeMirror.markText({
-                line: cmLine.to.line,
-                ch: 0
-            }, CodeMirror.Pos(cmLine.to.line), {className: "cm-frames"});
-        }
+    for (var m=0; m<allTM.length; m++){
+      var tm = allTM[m];
+      if (tm.className=="cm-frames"){
+        var cmLine = tm.find();
+        myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+        myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
+        $(".cm-frames").effect("highlight",2000);
+      }
     }
 });
 
@@ -818,38 +806,7 @@ $('.js-vid-click').click(function () {
     $(this).addClass('js-selected-video');
     movie.addEventListener("loadeddata", showVid, false);
     var thisSrc = $(this).attr('src');
-    console.log(thisSrc);
-
     movie.src = thisSrc;
-});
-
-//sliding functionality that we have to get rid of
-
-$('.js-slide-right-final').click(function () {
-    slideRight('.js-slide-1', '.js-slide-title');
-    movie.play();
-    movie.muted = true;
-    $('.js-share').attr('href', '#');
-    $('.js-share').addClass('is-inactive-btn');
-    $('.js-lesson-prompt').text('');
-    $('#vid-display').addClass('is-hidden');
-    $('.progressDiv').removeClass('is-hidden');
-    frames = [];
-    rafId = requestAnimationFrame(drawVideoFrame);
-});
-
-$('.js-slide-left-title').click(function () {
-    movie.muted = false;
-    slideLeft('.js-slide-1', '.js-slide-title');
-});
-
-$('.js-slide-left-first').click(function () {
-    slideLeft('.js-slide-title', '.js-slide-final');
-});
-
-$('.js-switch-videos').click(function () {
-    $('.methodsBox').addClass('is-hidden');
-    $(".js-switch-appear").removeClass("is-hidden");
 });
 
 //Switch between content
@@ -935,4 +892,19 @@ var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
     $('.js-lesson-text-update').html(lessonText);
     $('.lm-title').text(lessonTitle);
     $('.js-lesson-img').html(lessonImg);
+}
+
+trackLesson = function (lessonName) {
+    $.post('/lesson/' + lessonName);
+};
+
+
+getDateMMDDYYYY = function () {
+    var date = new Date();
+
+    var m = (date.getMonth() + 1).toString();
+    var d = date.getDate().toString();
+    var y = date.getFullYear().toString();
+
+    return m + "-" + d + "-" + y;
 }
