@@ -397,7 +397,7 @@ $( document ).ready(function() {
     updateLearnMore(1, "<p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="/img/lessons/lesson-1-right.png">');
   });
   $('.learnMore').on('click', '.js-lesson-4-sm', function(){
-    updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next? ➜</div>", "More about Interval ➜", '');
+    updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next? ➜</div>", "More about Interval", '');
   });
   $('.learnMore').on('click', '.js-lesson-5-sm', function(){
     updateLearnMore(5, "<p><strong>Drag over the 'Reverse' button.</strong></p><p>Reverse is a property that takes values that are either true or false (it's called a boolean, we'll go over more on that weird word later)</p><p>How can you make the video reverse? Give it a go! There are no wrong answers! Just discoveries on the way to the right answer! Coding is ALL about trying and failing then eventually… finding the answer! (cue triumphant music!)</p>", "Reverse it up!", '');
@@ -549,7 +549,7 @@ $( document ).ready(function() {
           myCodeMirror.replaceRange('\n\ stopMotion.'+eff+' = '+stopMotion.controls[eff]+';',CodeMirror.Pos(myCodeMirror.lastLine()));
           myCodeMirror.markText({ line: myCodeMirror.lastLine(), ch: 0 }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: "cm-" + eff });
           if (eff=="interval") {
-            updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
+            updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval ➜</div>", 'What did Interval change?', '');
           }
       }
 
@@ -695,7 +695,7 @@ $( document ).ready(function() {
   $('.js-img-click').click(function(){
     showVid();
     updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
-    
+
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
