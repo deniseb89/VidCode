@@ -19,7 +19,7 @@ var frame = 1;
 var frame1 = 1;
 var beat = 0.5;
 var length = movie.duration;
-var loop; 
+var loop;
 function stopMotion() {
  frame = frame + beat;
  frame = (frame <= length) ? frame: frame1;
@@ -38,12 +38,12 @@ clearInterval(loop);
   var load = function() {
 
     var ctx1 = canvas.getContext("2d");
-    
+
     //add a second canvas with image
     var canvas2 = document.getElementById("c2");
-    
+
     var ctx2 = canvas2.getContext("2d");
-   
+
     movie.addEventListener("play", function() {
         var w = movie.videoWidth / 2;
         var h = movie.videoHeight / 2;
@@ -65,5 +65,5 @@ clearInterval(loop);
     ctx2.putImageData(frame, 0, 0);
     return;
   }
-	
+
 </script>
