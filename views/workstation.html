@@ -17,11 +17,12 @@
         <div class="cover90 cover">
         </div>
     </div>
-
+=
     <div class="action-modal">
-        <div class="share-modal action-m is-hidden">
+
+        <div class="ss-modal action-m is-hidden">
             <div class="a-header">
-                <p>Share</p>
+                <p class="js-ss-title"></p>
             </div>
             <div class="a-body">
                 <p class="c-desc js-h-onload">Your video is loading</p>
@@ -41,45 +42,31 @@
                          aria-valuemin="0" aria-valuemax="100">
                     </div>
                 </div>
-                <div class="addthis-container js-s-onload is-hidden">
-                    <div class="addthis_sharing_toolbox"></div>
-                </div>
-                <div class="text-center js-s-onload is-hidden">
-                    <a href="#" class="js-share" target="_blank">go to video's page</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="save-modal action-m is-hidden">
-            <div class="a-header">
-                <p>Save</p>
-            </div>
-            <div class="a-body">
-                <p class="c-desc js-h-onload">Your video is loading</p>
-
-                <label for="loading-title">Title</label>
-                <input type="text" id="loading-title" class="generalInput">
-
-                <label for="loading-descr">Optional Video Description</label>
-                <textarea id="loading-descr" rows="4"></textarea>
-
-                <div class="progressDiv progress progress-striped">
-                    <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0"
-                         aria-valuemin="0" aria-valuemax="100">
+                <div class="js-share-content js-ss-both-content is-hidden">
+                    <div class="addthis-container js-s-onload is-hidden">
+                        <div class="addthis_sharing_toolbox"></div>
+                    </div>
+                    <div class="text-center js-s-onload is-hidden">
+                        <a href="#" class="js-share" target="_blank">go to video's page</a>
                     </div>
                 </div>
-                <div class="js-s-onload btn-center tcenter push-40 is-hidden">
-                    <p class="share-link">
 
-                    <p>This is the link to your video. Bookmark and come back any time.</p>
-                    <input class="generalInput js-share-link-to-copy" type="text" onClick="this.select();"
-                           data-toggle="tooltip" data-placement="top" title="Select and Press ⌘C to Copy" readonly>
-                    </p>
-                    <a class="js-share text-share-link" target="_blank">go to video ➜</a>
+                <div class="js-save-content js-ss-both-content is-hidden">
 
+                    <div class="js-s-onload btn-center tcenter push-40 is-hidden">
+                        <p class="share-link">
+
+                        <p>This is the link to your video. Bookmark and come back any time.</p>
+                        <input class="generalInput js-share-link-to-copy" type="text" onClick="this.select();" data-toggle="tooltip" data-placement="top" title="Select and Press ⌘C to Copy" readonly>
+                        </p>
+                        <a class="js-share text-share-link" target="_blank">go to video ➜</a>
+
+                    </div>
                 </div>
+
             </div>
         </div>
+
 
         <div class="cover50 cover is-hidden js-hide-a-m">
         </div>

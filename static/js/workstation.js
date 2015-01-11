@@ -456,7 +456,7 @@ $(document).ready(function () {
     });
 
     //turn tooltips on
-    $(".save-modal").tooltip({selector: '[data-toggle=tooltip]'});
+    $(".action-modal").tooltip({selector: '[data-toggle=tooltip]'});
 
 
     //filters is already showing when the page loads
@@ -482,12 +482,6 @@ $(document).ready(function () {
         clearTimeout(codeDelay);
         codeDelay = setTimeout(updateScript, 300);
     });
-
-    //share success on copy click
-    $('.js-copy-sucess').click(function () {
-        $(this).text('✓');
-    });
-
 
     // video events section
 
@@ -543,6 +537,7 @@ $(document).ready(function () {
         movie.playbackRate = 1;
     });
 
+
     $('.save-btns-container').on('click', ".js-share-m", function () {
         modalVideoLoad('share');
     });
@@ -555,16 +550,21 @@ $(document).ready(function () {
     var modalVideoLoad = function (mname) {
         addThisStyles();
 
-        $('.' + mname + '-modal').removeClass('is-hidden');
+        $('.ss-modal').removeClass('is-hidden');
         $('.cover50').removeClass('is-hidden');
         $('.progressDiv').removeClass('is-hidden');
+
+        $('.js-ss-title').text(mname);
+
+        $('.js-' + mname + '-content').removeClass('is-hidden');
+
         frames = [];
         rafId = requestAnimationFrame(drawVideoFrame);
     }
 
     $('.js-hide-a-m').click(function () {
-        $('.share-modal').addClass('is-hidden');
-        $('.save-modal').addClass('is-hidden');
+        $('.ss-modal').addClass('is-hidden');
+        $('.js-ss-both-content').addClass('is-hidden');
         $(this).addClass('is-hidden');
         $('.js-s-onload').addClass('is-hidden');
         $('.js-h-onload').removeClass('is-hidden');
