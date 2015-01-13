@@ -1,6 +1,0 @@
-export FACEBOOK_APP_ID="318702334960399"
-export FACEBOOK_APP_SECRET="69bd6d08b0330cdb9e0e874b2476d774"
-export FACEBOOK_CB="http://localhost:5000/auth/facebook/cb"
-export INSTAGRAM_CLIENT_ID="0307a79f00a740668137e4d62e3dd97a"
-export INSTAGRAM_CLIENT_SECRET="703be67161c64e4891d09ecdc052e091"
-export INSTAGRAM_CB="http://localhost:5000/auth/instagram/cb"

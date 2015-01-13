@@ -1,498 +1,876 @@
-var fs = require('fs');
+var crypto = require('crypto');
 var request = require('request');
 var Busboy = require('busboy');
-var util = require('util');
+var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
+var async = require('async');
+var mongoose = require("mongoose");
+var Grid = require('gridfs-stream');
+var gfs = Grid(mongoose.connection.db, mongoose.mongo);
+var User = require('../models/user');
+var Vidcode = require('../models/vidcode');
+var content = require('../models/content');
 
-exports.notFound = function(req, res){
-  res.render('404', {layout:false});  
-}
+module.exports = function (app, passport) {
 
-exports.signin = function (req, res) {
-  res.render('signin', { title: 'Vidcode' });
-};
+// =============================================================================
+// HOME, PROFILE, GALLERY AND SHARE ROUTES =====================================
+// =============================================================================
 
-exports.intro = function (db) {
-  return function (req, res) {
-    var social = req.params.social;
-    var id = req.params.id;
-    if (id&&social){
-      var vc = db.collection('vidcode');
-      vc.findOne({ id: id, 'social':social }, function (err, doc) {
-        if (!doc) {
-          res.render('404', {layout:false});
-          return;
+    // show the home page (will also have our login links)
+    app.get('/', function (req, res) {
+        if (req.user) {
+            res.redirect('/profile');
+
+        } else {
+            res.render('signin', {
+                user: req.user, title: 'Vidcode', message: req.flash('message')
+            });
         }
-          res.render('intro', {user: doc});
-          return;
-      });      
-    } else {
-      // There is no logged in user
-      // res.redirect('/signin');
-      res.render('intro');
-
-    }
-  }
-};
-
-exports.csweek = function (req, res) {
-  res.redirect ('/intro');
-};
-
-exports.gallery = function (req, res) {
-  var userVidURL = req.query.userVidURL;
-  if(userVidURL){
-    userVidURL = "blob:"+ userVidURL.substr(5).replace(/:/g,"%3A");
-  };
-
-  res.render('gallery', {title: 'VidCode Gallery', userVidURL:userVidURL});
-
-};
-
-exports.galleryshow = function (req, res) {
-  res.render('galleryshow', {title: 'VidCode Gallery' });
-};
-
-exports.share = function (db) {
-  return function (req, res){
-    var token = req.params.token;
-    var file;
-    var title;
-    var desc;
-    if (!token){
-      res.render('share-static', {layout: false});
-      return;
-    }
-
-    var vc = db.collection('vidcode');    
-    vc.findOne({ 'vidcodes.token' : token }, function (err, doc) { 
-      if (!doc) {
-        res.render('404', {layout: false});
-      } else {
-        for (var item in doc.vidcodes){
-          if(doc.vidcodes[item]['token']==token){
-            file = doc.vidcodes[item]['file'];
-            title = doc.vidcodes[item]['title'];
-            desc = doc.vidcodes[item]['desc'];
-          }
-        };
-        res.render('share', {
-          layout: false,
-          user: doc,
-          file:file,
-          title:title,
-          desc:desc,
-          url:"/share/"+token
-        });        
-      }
-    });
-  }
-};
-
-exports.getUserVid = function(gfs){
-  return function (req, res){
-
-    var file = req.query.file;
-    var contentType;
-
-    // gfs.files.find({ _id : file }).toArray(function (err, results) {
-    //   console.log(file);
-    //   console.log(results[0]);
-    //   console.log(contentType);
-    // });
-
-    var rs = gfs.createReadStream({
-      _id: file
-    });    
-
-    rs.on('error', function (err) {
-      console.log('An error occurred in reading file '+file+': '+err);
-      res.status(500).end();
     });
 
-    // res.setHeader("content-type", "video/webm");
-    rs.pipe(res); 
-  };
-};
+    // PROFILE SECTION =========================
+    app.get('/profile', isLoggedIn, function (req, res) {
 
+        var _units = {};
 
-exports.workstation = function (db) {
-  var content = require('../models/content');  
-  return function (req, res) {
-    var codeText =
-'\
- movie.play();\n\
-    ';
+        mongoose.connection.db.collection('units').find().toArray(function (err, result) {
+            if (err) {
+                console.log('err in getting units ' + err);
+            } else {
+                _units = result;
 
-    var user = req.user;
-    if (user){
-      var social = user.provider;
-      var vc = db.collection('vidcode');
+                console.log('successfully got units ');
 
-      var successcb = function(doc) {
-        res.render("workstation", {code: codeText, content: content, user: doc});
-      };  
-
-      findOrCreate(db,user,successcb);
-      
-    } else {
-      res.render("workstation", {content: content});
-    }
-  };
-};
-
-exports.partone = function (db) {  
-  return function(req, res){
-    var filters = ['blur','noise','vignette', 'sepia', 'fader', 'exposure'];    
-    var codeText =
-'\
- movie.play();\n\
-    ';
-
-    var user = req.user;
-    if (user){
-      var social = user.provider;
-      var vc = db.collection('vidcode');
-
-      var successcb = function(doc) {
-        res.render("partone", {code: codeText, filters: filters, user: doc});
-      };  
-
-      findOrCreate(db,user,successcb);
-      
-    } else {
-      res.render("partone");
-    }
-  }
-};
-
-exports.profilePage = function(db){
-  return function(req, res) {
-    var user = req.user;
-    if (user){
-      var social = user.provider;
-      var vc = db.collection('vidcode');
-      var data;
-      
-      var successcb = function(doc) {
-        res.render('profile', {videos: doc.vidcodes});
-      };
-
-      vc.findOne({ id: user.id , social: social}, function(err, doc){
-        successcb(doc);
-      });
-      
-    } else {
-        res.render('profile');
-    }
-  }
-};
-
-exports.uploadMedia = function(db, gfs, crypto) {
-  return function (req, res) {
-    var video = {};
-    var user = req.user || null;
-    if (!user){
-      // console.log('you must be logged in to upload media');
-      // return;
-    } else {
-      var id = user.id;
-      var social = user.provider;
-    }
-
-    var busboy = new Busboy({ headers: req.headers });
-    var filename;
-
-    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-
-      var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
-      file.pipe(ws);
-      ws.on('close', function(savefile) {
-          console.log(savefile);
-          console.log("read user's uploaded media file: "+savefile._id + " with content-type: "+mimetype);
-          res.send(savefile._id);    
-      });
-      ws.on('error', function(err){
-        console.log('An error occurred in writing');
-        res.end();
-      })
-
-    });
-
-    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-      video[fieldname] = val;
-    });
-
-    busboy.on('finish', function(){
-      console.log('busboy finished');
-    })
-
-    req.pipe(busboy);
-  };
-};
-
-exports.uploadFinished = function(db, gfs, crypto) {
-  return function (req, res) {
-    var video = {};
-    var user = req.user || null;
-    if (user){
-      var id = user.id;
-      var social = user.provider;
-    } else {
-      var id = social = null;
-    }
-
-    var busboy = new Busboy({ headers: req.headers });
-    var filename;
-
-    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      var token = generateToken(crypto);
-      filename = token + '.webm';
-      var ws = gfs.createWriteStream({filename: filename, mode:"w", content_type: mimetype});
-      file.pipe(ws);
-      ws.on('close', function(file) {
-        video.file = file._id;
-        video.token = token;
-        saveVideo(db, id, social, video, function(){
-          res.send(token);
-        });          
-      });
-      ws.on('error', function(err){
-        console.log('An error occurred in writing');
-        res.end();
-      })
-
-    });
-
-    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-      video[fieldname] = val;
-    });
-
-    busboy.on('finish', function(){
-    	console.log('busboy finished');
-    })
-
-    req.pipe(busboy);
-  };
-};
-
-exports.igCB = function (db) {
-  return function (req, res) {    
-
-    var user = req.user;
-    if (user){
-      var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
-      var token = user.accessToken;
-      var username = user.username;
-      var uid = user.id;
-      var media_json,
-          media,
-          url,
-          next_max_id="",
-          pages=0;
-          urls=[];
-
-   function igApiCall(next_page){
-      request.get(apiCall+token+"&max_id="+next_page, function(err, resp, body) {
-        if(!err){
-          pages++;
-          media_json= JSON.parse(body);
-          next_page = media_json.pagination.next_max_id;
-          media = media_json.data;
-          var item;
-          var i = 0;
-
-          for (var i=0; i < media.length; i++){
-            item = media[i];
-            if (item.hasOwnProperty("videos")&&(urls.length<4)) {
-              urls.push(item.videos.standard_resolution.url);
+                if (req.user.vidcodes) {
+                    res.render('profile', {
+                        user: req.user,
+                        videos: req.user.vidcodes,
+                        units: _units
+                    });
+                } else {
+                    console.log(_units);
+                    res.render('profile', {
+                        user: req.user,
+                        units: _units
+                    });
+                }
             }
-          }
-        } else {
-          res.send('error with Instagram API');
-          return;
-        }
-      if(next_page && (pages<5)){
-        igApiCall(next_page);
-      } else {
-
-        for (var i=0; i<urls.length; i++) {
-          url = urls[i];
-        }
-        user.IGvideos = urls;
-        
-        var successcb = function(doc) {
-          res.redirect ('/intro');
-        };
-
-        findOrCreate(db,user,successcb);
-      }
+        });
     });
 
-  }
-    igApiCall(next_max_id);
+    app.post('/lesson/:lessonId', isLoggedIn, function (req, res) {
+        User.findOne({_id: req.user._id}, function (err, user) {
+                if (!err) {
+                    user.lessons.addToSet(req.params.lessonId);
+                    user.save();
+
+                    var response = {
+                        status: 200,
+                        success: 'Updated Successfully'
+                    };
+
+                    res.end(JSON.stringify(response));
+                }
+            }
+        );
+    });
+
+    // ACCOUNT SECTION =========================
+    app.get('/account', isLoggedIn, function (req, res) {
+        res.render('account', {
+            user: req.user
+        });
+    });
+
+    app.get('/gallery', function (req, res) {
+        var userVidURL = req.query.userVidURL;
+        if (userVidURL) {
+            userVidURL = "blob:" + userVidURL.substr(5).replace(/:/g, "%3A");
+        }
+        res.render('gallery', {title: 'VidCode Gallery', userVidURL: userVidURL});
+    });
+
+    app.get('/galleryshow', function (req, res) {
+        res.render('galleryshow', {title: 'Vidcode Gallery'});
+    });
+
+    app.get('/share/:token?', function (req, res) {
+        var token = req.params.token;
+        var file;
+        var title;
+        var descr;
+        if (!token) {
+            res.render('share-static', {layout: false});
+            return;
+        }
+
+        process.nextTick(function () {
+            mongoose.connection.db.collection('users').findOne({'vidcodes.token': token}, function (err, user) {
+                if (!user) {
+                    res.render('404', {layout: false});
+                } else {
+                    for (var item in user.vidcodes) {
+                        if (user.vidcodes[item]['token'] == token) {
+                            file = user.vidcodes[item]['file'];
+                            title = user.vidcodes[item]['title'];
+                            descr = user.vidcodes[item]['descr'];
+                        }
+                    }
+
+                    res.render('share', {
+                        layout: false,
+                        user: user,
+                        file: file,
+                        title: title,
+                        descr: descr,
+                        url: "http://app.vidcode.io/share/" + token
+                    });
+                }
+            });
+        });
+    });
+
+// =============================================================================
+// AUTHENTICATION ROUTES =======================================================
+// =============================================================================
+
+    // locally --------------------------------
+    // LOGIN ===============================
+    // show the login form
+    app.get('/signin', function (req, res) {
+        res.render('signin', {title: 'Vidcode', message: req.flash('loginMessage')});
+    });
+
+    // process the login form
+    app.post('/signin', passport.authenticate('local-login', {
+        successRedirect: '/intro', // redirect to the secure profile section
+        failureRedirect: '/signin', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
+
+    // SIGNUP =================================
+    // show the signup form
+    app.get('/signup', function (req, res) {
+        res.render('signup', {message: req.flash('signupMessage')});
+    });
+
+    // process the signup form
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect: '/intro', // redirect to the secure profile section
+        failureRedirect: '/signup', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
+
+    // facebook ==============================
+
+    // send to facebook to do the authentication
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/cb',
+        passport.authenticate('facebook', {
+            successRedirect: '/intro',
+            failureRedirect: '/'
+        }));
+
+    // instagram ==============================
+
+    // send to instagram to do the authentication
+    app.get('/auth/instagram', passport.authenticate('instagram'));
+
+    // handle the callback after instagram has authenticated the user
+    app.get('/auth/instagram/cb',
+        passport.authenticate('instagram', {failureRedirect: '/'}),
+        function (req, res) {
+            if (req.headers.referer.toString().indexOf('/workstation') > -1) {
+                res.redirect('/workstation')
+            }
+            else {
+                res.redirect('/intro');
+            }
+        });
+
+
+    // twitter ==============================
+
+    // send to twitter to do the authentication
+    app.get('/auth/twitter', passport.authenticate('twitter', {scope: 'email'}));
+
+    // handle the callback after twitter has authenticated the user
+    app.get('/auth/twitter/cb',
+        passport.authenticate('twitter', {
+            successRedirect: '/intro',
+            failureRedirect: '/'
+        }));
+
+
+    // google ==============================
+
+    // send to google to do the authentication
+    app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+
+    // the callback after google has authenticated the user
+    app.get('/auth/google/cb',
+        passport.authenticate('google', {
+            successRedirect: '/intro',
+            failureRedirect: '/'
+        }));
+
+
+    // LOGOUT ==============================
+    app.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+
+// =============================================================================
+// AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
+// =============================================================================
+
+
+    // facebook -------------------------------
+
+    // send to facebook to do the authentication
+    app.get('/connect/facebook', passport.authorize('facebook', {scope: 'email'}));
+
+    // handle the callback after facebook has authorized the user
+    app.get('/connect/facebook/cb',
+        passport.authorize('facebook', {
+            successRedirect: '/profile',
+            failureRedirect: '/'
+        }));
+
+    // instagram -------------------------------
+
+    // send to instagram to do the authentication
+    app.get('/connect/instagram', passport.authorize('instagram'));
+
+    // handle the callback after facebook has authorized the user
+    app.get('/connect/instagram/cb',
+        passport.authorize('instagram', {
+            successRedirect: '/profile',
+            failureRedirect: '/'
+        }));
+
+// =============================================================================
+// UNLINK ACCOUNTS =============================================================
+// =============================================================================
+
+    //Not implemented. Is this something we want?
+
+// =============================================================================
+// PASSWORD RESET ROUTES =======================================================
+// =============================================================================
+
+    app.get('/forgot', function (req, res) {
+        res.render('forgot', {
+            user: req.user, message: req.flash('message')
+        });
+    });
+
+    app.post('/forgot', function (req, res, next) {
+        async.waterfall([
+            function (done) {
+                crypto.randomBytes(20, function (err, buf) {
+                    var token = buf.toString('hex');
+                    done(err, token);
+                });
+            },
+            function (token, done) {
+                User.findOne({'vidcode.email': req.body.email}, function (err, user) {
+                    if (!user) {
+                        req.flash('message', 'No account with that email address exists.');
+                        return res.redirect('/forgot');
+                    }
+
+                    user.resetPasswordToken = token;
+                    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+                    user.save(function (err) {
+                        done(err, token, user);
+                    });
+                });
+            },
+            function (token, user, done) {
+
+                var sendgridOptions = {
+                    auth: {
+                        api_user: process.env.SENDGRID_USERNAME,
+                        api_key: process.env.SENDGRID_PASSWORD
+                    }
+                };
+
+                var mailer = nodemailer.createTransport(sgTransport(sendgridOptions));
+
+                var email = {
+                    to: [user.vidcode.email],
+                    from: 'no-reply@vidcode.io',
+                    subject: 'Vidcode Password Reset',
+                    text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                };
+
+                mailer.sendMail(email, function (err) {
+                    req.flash('message', 'An e-mail has been sent to ' + user.vidcode.email + ' with further instructions.');
+                    done(err, 'done');
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/forgot');
+        });
+    });
+
+    app.get('/reset', function (req, res) {
+        res.render('forgot', {
+            user: req.user, message: req.flash('message')
+        });
+    });
+
+    app.get('/reset/:token', function (req, res) {
+        User.findOne({
+            resetPasswordToken: req.params.token,
+            resetPasswordExpires: {$gt: Date.now()}
+        }, function (err, user) {
+            if (!user) {
+                req.flash('message', 'Password reset token is invalid or has expired.');
+                return res.redirect('/forgot');
+            }
+            res.render('reset', {
+                user: user, message: req.flash('message')
+            });
+        });
+    });
+
+    app.post('/reset', function (req, res) {
+
+        var password = req.body.password;
+
+        // check password complexity
+        if (password != req.body.passwordconfirm) {
+            return res.redirect('back', false, req.flash('message', 'Passwords do not match.'));
+        }
+        if (password.length < 6) {
+            return res.redirect('back', false, req.flash('message', 'Password length must be at least 6 characters.'));
+        }
+        if (!(/[0-9]/).test(password)) {
+            return res.redirect('back', false, req.flash('message', 'Password must contain at least one number.'));
+        }
+        if (!(/[a-z]/).test(password)) {
+            return res.redirect('back', false, req.flash('message', 'Password must contain at least one lower case letter.'));
+        }
+        if (!(/[A-Z]/).test(password)) {
+            return res.redirect('back', false, req.flash('message', 'Password must contain at least one upper case letter.'));
+        }
+
+        async.waterfall([
+            function (done) {
+                User.findOne({
+                    resetPasswordToken: req.body.token,
+                    resetPasswordExpires: {$gt: Date.now()}
+                }, function (err, user) {
+                    if (!user) {
+                        req.flash('message', 'Password reset token is invalid or has expired.');
+                        return res.redirect('back');
+                    }
+
+                    user.vidcode.password = user.generateHash(req.body.password);
+                    user.resetPasswordToken = undefined;
+                    user.resetPasswordExpires = undefined;
+
+                    user.save(function (err) {
+                        req.logIn(user, function (err) {
+                            done(err, user);
+                        });
+                    });
+                });
+            },
+            function (user, done) {
+
+                var sendgridOptions = {
+                    auth: {
+                        api_user: process.env.SENDGRID_USERNAME,
+                        api_key: process.env.SENDGRID_PASSWORD
+                    }
+                };
+
+                var mailer = nodemailer.createTransport(sgTransport(sendgridOptions));
+
+                var email = {
+                    to: [user.vidcode.email],
+                    from: 'no-reply@vidcode.io',
+                    subject: 'Your password has been changed',
+                    text: 'Hello,\n\n' +
+                    'This is a confirmation that the password for your account ' + user.vidcode.email + ' has just been changed.\n'
+                };
+
+                mailer.sendMail(email, function (err) {
+                    req.flash('message', 'Success! Your password has been changed.');
+                    done(err);
+                });
+            }
+        ], function (err) {
+            res.redirect('/');
+        });
+    });
+
+// =============================================================================
+// GET AND SEND VIDEO ==========================================================
+// =============================================================================
+
+    app.get('/instagramVids/', getInstagramVideos, function (req, res) {
+        res.send(req.user.instagram.IGvideos);
+    });
+
+    app.get('/instagram/:ix', isLoggedIn, function (req, res) {
+        var videoURL = req.user.instagram.IGvideos[req.params.ix];
+        if (videoURL) {
+            request(videoURL).pipe(res);
+        } else {
+            res.status(500).end();
+        }
+    });
+
+    app.get('/sample/:file', function (req, res) {
+        var file = req.params.file;
+        var cdn = 'http://dg786cztanvmc.cloudfront.net';
+        request(cdn + '/videos/' + file).pipe(res);
+    });
+
+    app.get('/getVideos', isLoggedIn, function (req, res) {
+        var user = req.user;
+        if (user.vidcodes) {
+            res.send(user.vidcodes);
+        } else {
+            //handle if there are none
+            console.log('you have not created any vidcodes');
+        }
+    });
+
+    app.post('/addVideoToLibrary', isLoggedIn, function (req, res) {
+
+        var video = {};
+        var busboy = new Busboy({headers: req.headers});
+
+        busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+
+            var ext = mimetype.split('/').pop();
+            var token = generateToken(crypto);
+            filename = token + ext;
+            var ws = gfs.createWriteStream({filename: filename, mode: "w", content_type: mimetype});
+            file.pipe(ws);
+            ws.on('close', function (file) {
+                video.file = file._id;
+                video.token = token;
+                video.title = "My video added on " + getDateMMDDYYYY();
+                video.descr = "My video added on " + getDateMMDDYYYY();
+
+                saveVideoToLibrary(gfs.db, req.user._id, video, function () {
+                    res.send(token);
+                });
+            });
+            ws.on('error', function (err) {
+                console.log('An error occurred in writing');
+                res.end();
+            })
+        });
+
+        busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
+            video[fieldname] = val;
+        });
+
+        busboy.on('finish', function () {
+            console.log('busboy finished');
+        });
+
+        req.pipe(busboy);
+
+
+    });
+
+    app.post('/uploadFinished', isLoggedIn, function (req, res) {
+        console.log('hi there');
+        var video = {};
+        var busboy = new Busboy({headers: req.headers});
+
+        busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+
+            var token = generateToken(crypto);
+            filename = token + '.webm';
+            var ws = gfs.createWriteStream({filename: filename, mode: "w", content_type: mimetype});
+            file.pipe(ws);
+            ws.on('close', function (file) {
+                video.file = file._id;
+                video.token = token;
+                // video.title = "My video created on " + getDateMMDDYYYY();
+                // video.descr = "My video created on " + getDateMMDDYYYY();
+                // video.code = req.body.code;
+
+                saveVideo(gfs.db, req.user._id, video, function () {
+                    res.send(token);
+                });
+            });
+            ws.on('error', function (err) {
+                console.log('An error occurred in writing');
+                res.end();
+            })
+        });
+
+        busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
+            console.log('collected '+fieldname+' with value '+val);
+            video[fieldname] = val;
+        });
+
+        busboy.on('finish', function () {
+            console.log('busboy finished');
+        });
+
+        req.pipe(busboy);
+    });
+
+
+    app.post('/video-update-descr', isLoggedIn, function (req, res) {
+
+        var token = req.body.token;
+        var title = req.body.title;
+        var descr = req.body.descr;
+        var code = req.body.code;
+
+        mongoose.connection.db.collection('users').update({
+                'vidcodes.token': token
+            },
+            {$set: {'vidcodes.$.title': title, 'vidcodes.$.descr': descr, 'vidcodes.$.code': code}},
+            function (err, result) {
+                if (err) {
+                    console.log('err in updating vidcode token ' + token + ':' + err);
+                } else {
+
+                    console.log('successfully updated vidcode token ' + token);
+                }
+            });
+    });
+
+    app.post('/lesson-update-code', isLoggedIn, function (req, res) {
+
+        var token = req.body.token;
+        var code = req.body.code;
+
+
+        mongoose.connection.db.collection('users').update({
+                'vidcodes.token': token
+            },
+            {$set: {'vidcodes.$.code': code}},
+            function (err, result) {
+                if (err) {
+                    console.log('err in updating vidcode token ' + token + ':' + err);
+                } else {
+
+                    console.log('successfully updated vidcode token ' + token);
+                }
+            });
+    });
+
+    app.get('/video', function (req, res) {
+        var file = req.query.file;
+        var rs = gfs.createReadStream({
+            _id: file
+        });
+
+        rs.on('error', function (err) {
+            console.log('An error occurred in reading file ' + file + ': ' + err);
+            res.status(500).end();
+        });
+
+        // res.setHeader("content-type", "video/webm");
+        rs.pipe(res);
+    });
+
+// =============================================================================
+// ROUTES TO LESSONS ===========================================================
+// =============================================================================
+
+
+    app.get('/csweek', function (req, res) {
+        res.redirect('/intro');
+    });
+
+    app.get('/intro', isLoggedIn, function (req, res) {
+        res.render('intro', {
+            user: req.user
+        });
+    });
+
+    app.get('/workstation', isLoggedIn, function (req, res) {
+
+      var codeText =
+      '\
+      movie.play();\n\
+      ';
+
+        res.render("workstation",
+            {
+                user: req.user,
+                content: content,
+                code: codeText
+            });
+    });
+
+
+    app.get('/workstation/:token?',isLoggedIn, function (req, res) {
+        var token = req.params.token;
+        var file;
+        var codeText =
+        '\
+        movie.play();\n\
+        ';
+
+
+        if (!token) {
+            res.render("workstation",
+                {
+                    user: req.user,
+                    content: content,
+                    code: codeText
+                });
+            return;
+        }
+
+        process.nextTick(function () {
+
+                User.findOne({_id: req.user._id}, function (err, user){
+
+                if (!user) {
+                    res.render('404', {layout: false});
+                } else {
+                    var _sessionToLoad = {};
+
+                    if (token == "lastSession"){
+
+                        for (var item in user.videoLibrary) {
+
+                            if (user.videoLibrary[item]['token'] == user.lastSession.token) {
+                                _sessionToLoad.file = user.videoLibrary[item]['file'];
+                                _sessionToLoad.code = user.videoLibrary[item]['code'];
+                                _sessionToLoad.video = user.videoLibrary[item];
+                            }
+                        }
+
+                        user.sessionToLoad = _sessionToLoad;
+
+                        res.render('workstation', {
+                            user: user,
+                            content: content,
+                            code: codeText
+                        });
+
+                    }else{
+                        for (var item in user.vidcodes) {
+                            if (user.vidcodes[item]['token'] == token) {
+                                _sessionToLoad.file = user.vidcodes[item]['file'];
+                                _sessionToLoad.code = user.vidcodes[item]['code'];
+                                _sessionToLoad.video = user.vidcodes[item];
+                            }
+                        }
+
+                        user.sessionToLoad = _sessionToLoad;
+
+                        //handle case that token is not found in the user's records anywhere. Should response with a 404
+                        res.render('workstation', {
+                            user: user,
+                            content: content,
+                            code: _sessionToLoad.code,
+                            file: _sessionToLoad.file,
+                            token: token,
+                            lastSession: true
+                        });
+                    }
+                }
+            });
+        });
+    });
+
+
+// =============================================================================
+// ROUTE TO PAGE NOT FOUND =====================================================
+// =============================================================================
+
+
+    app.get('*', function (req, res) {
+        res.render('404', {layout: false});
+    });
+
+};
+
+
+// =============================================================================
+// MIDDLEWARE AND UTILITY FUNCTIONS  ===========================================
+// =============================================================================
+
+// route middleware to ensure user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.redirect('/');
+}
+
+function getInstagramVideos(req, res, next) {
+
+    var user = req.user;
+    if (user) {
+        var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
+        var token = user.instagram.token;
+        var media_json,
+            media,
+            next_max_id = "",
+            pages = 0,
+            urls = [];
+
+        function igApiCall(next_page) {
+            request.get(apiCall + token + "&max_id=" + next_page, function (err, resp, body) {
+                if (!err) {
+                    pages++;
+                    media_json = JSON.parse(body);
+                    next_page = media_json.pagination.next_max_id;
+                    media = media_json.data;
+                    var item;
+
+                    for (var i = 0; i < media.length; i++) {
+                        item = media[i];
+                        if (item.hasOwnProperty("videos") && (urls.length < 4)) {
+                            urls.push(item.videos.standard_resolution.url);
+                        }
+                    }
+                } else {
+                    res.send('error with Instagram API');
+                    return;
+                }
+                if (next_page && (pages < 5)) {
+                    igApiCall(next_page);
+                } else {
+
+                    req.user.instagram.IGvideos = urls;
+                    req.user.save();
+                    return next();
+                }
+            });
+        }
+
+        igApiCall(next_max_id);
     }
-  };
-};
-
-exports.getSample = function(req,res){
-  var file = req.params.file;
-  var cdn = 'http://dg786cztanvmc.cloudfront.net';
-  request(cdn+'/videos/'+file).pipe(res);
 }
-
-exports.igVidGet = function(db){
-  return function(req,res) {
-    var user = req.user;
-    var vc = db.collection('vidcode');  
-    vc.findOne({ 'id':user.id, 'social':"instagram" }, function (err, doc) {
-      if(err){
-        console.log('error getting IG videos from Mongo');
-      }
-      var videoURL = doc.IGvideos[req.params.ix];
-      if (videoURL){
-        request(videoURL).pipe(res);      
-      } else {
-        res.status(500).end();
-      }
-    });
-  };
-};
-
-exports.igUrlGet = function(db){
-  return function(req,res) {
-    var user = req.user;
-    var vc = db.collection('vidcode');
-    vc.findOne({ 'id':user.id, 'social':"instagram" }, function (err, doc) {
-      if(err){
-        console.log('error getting IG video urls from Mongo');
-      }
-      res.send(doc.IGvideos);
-    });    
-  }
-}
-
-exports.getAllVids = function(db){
-  return function (req, res){
-    //return vidcodes
-    var user = req.user;
-    var vc = db.collection('vidcode'); 
-    
-    vc.findOne({ 'id':user.id, 'social':user.provider}, function (err, doc) { 
-      if (!doc) {
-        console.log('no doc found');
-        //there's no doc for this user
-      } else {
-        if (doc.vidcodes){
-          console.log(doc.vidcodes);
-          res.send(doc.vidcodes);
-        } else {
-        //handle if there are none
-        console.log('you have not created any vidcodes');        
-        }
-      }
-    });
-
-  };
-};
-
-exports.fbCB = function (db) {
-  return function (req, res) {
-    var successcb = function(doc) {
-      res.redirect ('/intro');
-    };  
-
-    var user = req.user;
-    user.username = user.displayName;
-    findOrCreate(db,user,successcb);
-  }
-}
-
-exports.signup = function (db, crypto) {
-  return function (req, res) {
-    var user = {};
-    var successcb = function(doc) {
-      res.redirect ('/intro');
-    };
-    user.username = req.body.email;
-    user.id = req.body.email;
-    user.provider = 'vidcode';
-    findOrCreate(db,user,successcb);
-  };
-};
 
 function generateToken(crypto) {
-  var tokenLength = 10;
-  var buf = crypto.randomBytes(Math.ceil(tokenLength * 3 / 4));
-  var token = buf.toString('base64').slice(0, tokenLength).replace(/\+/g, '0').replace(/\//g, '0');
-  return token;
+    var tokenLength = 10;
+    var buf = crypto.randomBytes(Math.ceil(tokenLength * 3 / 4));
+    var token = buf.toString('base64').slice(0, tokenLength).replace(/\+/g, '0').replace(/\//g, '0');
+    return token;
 }
 
-function findOrCreate(db, user, cb) {
-
-    var vc = db.collection('vidcode');
-    vc.findOne({ id: user.id , social: user.provider}, function (err, doc) {
-      if (!doc) {
-        //insert all the user info we care about
-        doc = { id: user.id };
-        doc.username = user.username;
-        doc.social = user.provider;        
-        if (user.IGvideos){
-          doc.IGvideos = user.IGvideos;
-        }
-        // ideally w:1
-        vc.insert(doc, {w: 0});  
-      }
-        if (user.IGvideos){
-          vc.update(doc, { $set: { IGvideos: user.IGvideos}}, function(err,updated){
-            if (err){
-              console.log('err in adding IGvideos '+social+'/'+id+':' + err);            
+function saveVideo(db, id, video, cb) {
+    var vc = db.collection('users');
+    if (id) {
+        vc.findOne({_id: id}, function (err, doc) {
+            if (!doc) {
+                console.log("created new doc with video");
+                doc = {_id: id};
+                doc.videos = {
+                    "file": video.file,
+                    "title": video.title,
+                    "descr": video.descr,
+                    "token": video.token,
+                    "code": video.code
+                };
+                vc.insert(doc, function (err, insert) {
+                    if (err) {
+                        console.log('err in inserting doc ' + id + ':' + err);
+                    }
+                });
+            } else {
+                console.log("updated doc with video");
+                vc.update(doc, {
+                    $addToSet: {
+                        vidcodes: {
+                            "file": video.file,
+                            "title": video.title,
+                            "descr": video.descr,
+                            "token": video.token,
+                            "code": video.code
+                        }
+                    }
+                }, function (err, updated) {
+                    if (err) {
+                        console.log('err in updating doc ' + id + ':' + err);
+                    }
+                });
             }
-          });          
-        }      
-      cb(doc);
-    });
-}
-
-function saveVideo(db, id, social, video, cb) {
-  var vc = db.collection('vidcode');
-  if (id && social){
-    vc.findOne({ id: id , social: social}, function (err, doc) {
-      if (!doc) {
-        doc = { id : id };
-        doc.videos = {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token};
-        vc.insert(doc, function(err,insert){
-          if (err){
-            console.log('err in inserting doc '+social+'/'+id+':' + err);            
-          }          
+            cb();
         });
-      } else {
-        vc.update(doc, { $addToSet: { vidcodes: {"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}}}, function(err,updated){
-          if (err){
-            console.log('err in updating doc '+social+'/'+id+':' + err);            
-          }
+    } else {
+        doc = {vidcodes: [{"file": video.file, "title": video.title, "descr": video.descr, "token": video.token}]};
+        vc.insert(doc, function () {
+            console.log('error in inserting anonymous video');
         });
-      }
-      cb();
-    });    
-  } else {
-      doc = { vidcodes: [{"file": video.file, "title": video.title, "desc": video.desc, "token": video.token}] };
-      vc.insert(doc, function(){
-        console.log('error in inserting anonymous video');
-      });
-      cb();
-  }
+        cb();
+    }
 }
 
-
-function oc(a) {
-  var o = {};
-  for (var i = 0; i < a.length; i++) {
-    o[a[i]] = '';
-  }
-  return o;
+function saveVideoToLibrary(db, id, video, cb) {
+    var vc = db.collection('users');
+    if (id) {
+        vc.findOne({_id: id}, function (err, doc) {
+            if (!doc) {
+                console.log("created new doc with video");
+                doc = {_id: id};
+                doc.videos = {
+                    "file": video.file,
+                    "title": video.title,
+                    "descr": video.descr,
+                    "token": video.token
+                };
+                vc.insert(doc, function (err, insert) {
+                    if (err) {
+                        console.log('err in inserting doc ' + id + ':' + err);
+                    }
+                });
+            } else {
+                console.log("updated doc with video");
+                vc.update(doc, {
+                    $addToSet: {
+                        videoLibrary: {
+                            "file": video.file,
+                            "title": video.title,
+                            "descr": video.descr,
+                            "token": video.token
+                        }
+                    }
+                }, function (err, updated) {
+                    if (err) {
+                        console.log('err in updating doc ' + id + ':' + err);
+                    }
+                });
+            }
+            cb();
+        });
+    } else {
+        doc = {vidcodes: [{"file": video.file, "title": video.title, "descr": video.descr, "token": video.token}]};
+        vc.insert(doc, function () {
+            console.log('error in inserting anonymous video');
+        });
+        cb();
+    }
 }
 
-function ensureAuthenticated(user) {
-  console.log('authentication = '+ user);
-  return next();
-};
+function getDateMMDDYYYY() {
+    var date = new Date();
+
+    var m = (date.getMonth() + 1).toString();
+    var d = date.getDate().toString();
+    var y = date.getFullYear().toString();
+
+    return m + "-" + d + "-" + y;
+}

@@ -1,0 +1,21 @@
+<div class="s-container">
+    <div class="s-background">
+    </div>
+    <div class="s-popup">
+        <p>Sign up to start coding this holiday season!</p>
+        {{#if message}}
+        <div class="alert alert-danger">{{message}}</div>
+        {{/if}}
+        <form method="post" id="email-signup" action="/signup" onsubmit="return false">
+            <input type="email" name="email" class="sign-in-input" required placeholder="email address">
+            <input type="password" name="password" class="sign-in-input-pw" required placeholder="password">
+            <input type="password" name="passwordconfirm" class="sign-in-input-pw" required
+                   placeholder="confirm password">
+            <input type="submit" value="Sign up with email" class="signup-btn s-u-login"/>
+        </form>
+    </div>
+</div>
+
+<script>
+    mixpanel.track_forms("#email-signup", "created account");
+</script>

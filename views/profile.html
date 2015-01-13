@@ -1,19 +1,130 @@
-<div class="row gallery">
-	{{#each videos}}
-	<div class="col-md-4">
-		<a><video class="video" controls src="/video/?file={{this.file}}"></a>
-		<div class="vid-row">
-			<img class="js-heart-click hover-change likes" src="img/heart.png">
-			<img class="js-heart-clicked likes is-hidden" src="img/heart-selected.png">
-			<a href='galleryshow'>
+<div class="s-container">
+
+    <h2>WELCOME BACK {{user.username}} </h2>
+
+    <h2>
+        <a href="/workstation/lastSession">CONTINUE LAST SESSION</a>
+    </h2>
+
+    <h2>
+        <a href="/workstation">START NEW PROJECT</a>
+    </h2>
+
+    <div class="tabs">
+        <ul class="tab-links">
+            <li class="active"><a href="#tab1">IN PROGRESS PROJECTS</a></li>
+            <li><a href="#tab2">PUBLISHED PROJECTS</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="tab1" class="tab active">
+
+
+                <div class="row profile">
+
+                    {{#if user.videoLibrary}}
+
+                    {{#each user.videoLibrary}}
+                    <div class="insta-thumbnails">
+                        <div class="row">
+                            <div class="i-vid-container">
+                                <a href="/workstation/{{this.token}}">
+                                    <video class="video js-vid-click" src="/video/?file={{this.file}}"/>
+                                </a>
+
+                                <div class="vid-row">
+                                    <a href="/workstation/{{this.token}}">
+                                <span class="info">
+                                    <p class="title">{{this.title}}</p>
+                                    <p class="descr">{{this.descr}}</p>
+                                    <p class="videocode">see code</p>
+                                </span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <h2 class="profileheader">You have not uploaded videos to your library!</h2>
+                    {{/if}}
+
+                </div>
+
+
+            </div>
+
+            <div id="tab2" class="tab">
+                
+
+                <div class="row profile">
+                    {{#if videos}}
+
+                    {{#each videos}}
+                    <div class="row">
+
+                        <div class="i-vid-container">
+
+                            <a href="/workstation/{{this.token}}">
+                                <video class="video" src="/video/?file={{this.file}}"/>
+                            </a>
+
+                            <div class="vid-row">
+                                <a href="/workstation/{{this.token}}">
+                                <span class="info">
+                                    <p class="title">{{this.title}}</p>
+                                    <p class="descr">{{this.descr}}</p>
+                                    <p class="videocode">see code</p>
+                                </span>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <h2 class="profileheader">You have no videos published! Start vidcoding, already!</h2>
+                    {{/if}}
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="vid-row profile">
+        {{#if units}}
+        {{#each units}}
+
+        <div class="col-md-3">
 				<span class="info">
-					<p class="title">{{this.title}}</p>
-					<p class="username">{{this.desc}}</p>
+				<h2><p class="title">{{this.unitName}}</p></h2>
 				</span>
-			</a>
-		</div>
-	</div>
-	{{else}}
-	<h2 class="galleryheader">You have no videos in your workstation! Start vidcoding, already!</p>
-	{{/each}}
+        </div>
+
+        {{#each this.lessons}}
+
+        <div class="col-md-3">
+				<span class="info">
+					<p class="title">{{this.name}}
+                        {{#if this.viewed}}
+                        &nbsp; &nbsp;<img src="/img/checked.png" id="checked">
+                        {{/if}}
+                    </p>
+				</span>
+        </div>
+        {{/each}}
+
+        {{/each}}
+        {{/if}}
+    </div>
 </div>
+
+<script src="/js/profile.js"></script>
+<script>
+    mixpanel.track_forms("#profile", "profile page");
+</script>

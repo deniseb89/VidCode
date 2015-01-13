@@ -1,6 +1,7 @@
 .DS_Store
 .idea
 .env
+Procfile
 node_modules
 npm-debug.log
 config.json
