@@ -503,7 +503,10 @@ var loadThumbnails = function () {
 
 $(document).ready(function () {
     movie = document.getElementById('myvideo');
-    canvas = document.getElementById('canvas');
+ 	movie.addEventListener('canplay', setup, false);
+    movie.load();
+	
+	canvas = document.getElementById('canvas');
 
     canvasGraphic = document.getElementById('graphics');
     contextGraphic = canvasGraphic.getContext("2d");
@@ -514,8 +517,8 @@ $(document).ready(function () {
 
     inputFile = document.getElementById('inputFile');
     inputFileToLibrary = document.getElementById('inputFileToLibrary');
-    movie.addEventListener('canplay', setup, false);
-    movie.load();
+    
+
 
     //lesson updates for NYTM
     $('#stop-motion-method').click(function () {
@@ -565,9 +568,9 @@ $(document).ready(function () {
     });
 
     //share success on copy click
-    $('.js-copy-sucess').click(function () {
-        $(this).text('✓');
-    });
+//    $('.js-copy-sucess').click(function () {
+//        $(this).text('✓');
+//    });
 
 
     // video events section
@@ -943,7 +946,16 @@ $('.js-graph-click').click(function () {
     $('.js-graph-click').removeClass('js-selected-graphic');
     $(this).addClass('js-selected-graphic');
 	
-    var text = "\n\ positionX="+Math.round(positionX)+";";
+	var positionExists = false;
+            var allTM = myCodeMirror.getAllMarks();
+	for (var m = 0; m < allTM.length; m++) {
+            var tm = allTM[m];
+            if (tm.className == "cm-positionX" || tm.className == "cm-positionY") {
+               positionExists = true;
+            }
+        }
+	if(!positionExists){
+	    var text = "\n\ positionX="+Math.round(positionX)+";";
     myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
 	myCodeMirror.markText({
                     line: myCodeMirror.lastLine(),
@@ -954,7 +966,11 @@ $('.js-graph-click').click(function () {
 	myCodeMirror.markText({
                     line: myCodeMirror.lastLine(),
                     ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-positionY"});	
+                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-positionY"});
+	}
+	
+	
+	
 	releaseImage();
 });
 
