@@ -1232,3 +1232,9 @@ canvas{vertical-align: bottom;}
         page-break-after: avoid;
     }
 }
+
+#canvasDrag{
+	position:absolute;
+	margin-top: -250px; 	
+}
+

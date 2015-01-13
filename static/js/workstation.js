@@ -7,7 +7,11 @@ var movie,
     target,
 	blend,
 	graphic,
-    seriouslyEffects,
+	canvasDrag,
+	contextDrag,
+	canvasGraphic,
+	contextGraphic,
+	seriouslyEffects,
     effects = {},
     rafId,
     frames = [],
@@ -42,9 +46,6 @@ var showVid = function() {
   }
 };
 
-var showImg = function() {
-
-};
 
 var activateEndButtons = function(bType){
   $('.inactive-js-' + bType + '-m').addClass('js-' + bType + '-m');
@@ -169,7 +170,7 @@ var updateMediaLibrary = function (file,data){
         // figure out how to deal with video running in the backgroud
         movie.src = "";
         //generalize this somewhere else so when source changes, target changes
-        if (!stopMotion.on){
+        if (!stopMotion.on){	
           effects[allEffects[0]]["source"] = seriously.source(this);
         }
 
@@ -232,19 +233,60 @@ var setup = function(){
   } else {
     InitSeriously();
   }
+	
   movie.removeEventListener('canplay', setup, false);
 }
 
+var prevX = 0;
+var prevY = 0;
+
+var moveImage = function(evt){
+	var x, y, rect;
+     var img =document.getElementById("mygraphic");	//change input later   
+	
+	if(evt.which == 1){
+		rect = canvas.getBoundingClientRect();
+		x = evt.clientX - rect.left;
+		y = evt.clientY - rect.top;
+		
+		if(x < prevX + img.width && x > prevX && y > prevY && y < prevY + img.height){
+			x = x -img.width/2;
+			y = y -img.height/2;
+			contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
+			contextDrag.drawImage(img,x, y,img.width, img.height);
+			prevX = x;
+			prevY = y;	
+		}
+	}
+}
+
 var InitSeriously = function(){
-  
-  //TODO: generalize to my media
-  video = seriously.source('#myvideo');
-  target = seriously.target('#canvas');
-  graphic = seriously.source('#mygraphic');	
-  graphic = seriously.transform('reformat');
-  graphic.source = '#mygraphic';
-  graphic.width = 300;
-  graphic.height = 200;
+ seriously = new Seriously();
+ 
+//TODO: generalize to my media
+// video = seriously.source('#myvideo');		
+  video = seriously.transform('reformat');
+  video.width = 420;
+  video.height = 250;
+  video.mode = 'distort';	
+  video.source = ('#myvideo');
+	
+  target = seriously.target('#canvas'); 
+	
+ 
+//change input later 
+ var img =document.getElementById("mygraphic");	
+	
+  contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
+  contextGraphic.clearRect(0, 0, canvasDrag.width, canvasDrag.height);	
+  contextGraphic.drawImage(img, prevX, prevY, img.width, img.height);  
+ 
+  graphic = seriously.source(canvasGraphic);	
+//  graphic = seriously.transform('reformat');
+//  graphic.width = 420;
+//  graphic.height = 250;
+//  graphic.source = canvasGraphic;
+//  graphic.mode = 'cover';
 	
   //Set up Seriously.js effects
    seriouslyEffects = Seriously.effects();
@@ -259,8 +301,21 @@ var InitSeriously = function(){
     effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
     thisEffect.amount = 0;
   }	
+  
+  	
   target.source = effects[allEffects[allEffects.length-1]];
+	
+  updateScript();
+ 
+  seriously.go();
 };
+
+
+
+
+
+
+
 
 var updateScript = function() {
   var scriptOld = document.getElementById('codeScript');
@@ -319,7 +374,6 @@ var updateScript = function() {
       adjScript+="\n\ effects." + thisEffect +".amount = " +adjAmt+ ";";
     }
   }
-	console.log("updated");
 
   textScript+=adjScript;
   textScript+="\n\ } catch(e){"+ adjScript +"\n\ }";
@@ -387,16 +441,26 @@ var slideRight = function(oldSlide, newSlide){
   }, 500);
 };
 
+
+
+
 $( document ).ready(function() {
   movie = document.getElementById('myvideo');
   canvas = document.getElementById('canvas');
+ 
+  canvasGraphic = document.getElementById('graphics');
+  contextGraphic = canvasGraphic.getContext("2d");
+  canvasDrag = document.getElementById('canvasDrag');
+  contextDrag = canvasDrag.getContext("2d");	
+  canvasDrag.addEventListener('mousemove', moveImage, false);
+  canvasDrag.addEventListener('mouseup', InitSeriously, false);
+	
   inputFile = document.getElementById('inputFile');
-  seriously = new Seriously();
-  seriously.go();
+ 
   movie.addEventListener('canplay', setup, false);
   movie.load();
 
-  //lesson updates for NYTM
+	//lesson updates for NYTM
   $('#stop-motion-method').click(function(){
     $('.vid-placeholder').removeClass('is-hidden');
     $(".video2").addClass("is-hidden");
@@ -749,7 +813,7 @@ $( document ).ready(function() {
     var view = ($(this).attr('id'));
     var lName = ($(this).attr('name'));
     var lessonNum = ($(this).attr('lessnum'));
-    $('.basic-filter-method').addClass('is-hidden');
+    $('.basic-f-method').addClass('is-hidden');
     $('.movie-control-method').addClass('is-hidden');
     $('.stop-motion-method').addClass('is-hidden');
     $('.'+view).removeClass('is-hidden');

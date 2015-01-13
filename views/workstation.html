@@ -109,13 +109,14 @@
             <h3>Select a thumbnail below</h3>
           </div>
           <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
-          <canvas class="video2 is-hidden tabs-2" id="canvas">
-            </canvas>
+          <canvas class="video2 is-hidden tabs-2" id="canvas" width="420px" height="250px"></canvas>
+		  <canvas class="is-hidden" id="graphics" width="420px" height="250px"></canvas>
+		  <canvas id="canvasDrag" width="420px" height="250px"></canvas>
+		  <img src="/img/robot.png" width="150px" height="120px" id="mygraphic" style="display:none;" /> 
           <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
         </span>
 
         <div class="js-switch-appear">
-			<img src="/img/robot.png" width="150px" id="mygraphic" style="display:none;" /> 
           <div class="video-container clearfix">
             <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button>
             <p class="is-hidden stop-motion-method">Stills</p>
