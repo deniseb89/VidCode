@@ -14,6 +14,7 @@ var userSchema = mongoose.Schema({
     lastSession: {
         lessonId: String,
         token: String,
+        videoFileId: String,
         code: String
     },
     videoLibrary: [{}],
