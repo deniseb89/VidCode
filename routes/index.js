@@ -617,6 +617,9 @@ module.exports = function (app, passport) {
 // ROUTES TO LESSONS ===========================================================
 // =============================================================================
 
+    app.get('/betagirls', function (req, res) {
+        res.redirect('/workstation');
+    });
 
     app.get('/csweek', function (req, res) {
         res.redirect('/intro');
