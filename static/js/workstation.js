@@ -171,12 +171,6 @@ var updateMediaLibraryFromComp = function (file, data) {
                     effects[allEffects[0]]["bottom"] = seriously.source(this);
 			  }	
 
-
-			  target.source = effects[allEffects[allEffects.length-1]];
-			  seriously.go();
-	
-            }
-
             var stills = document.querySelectorAll('.js-selected-still');
             var frameArr = new Array(stills.length);
             for (var i=1; i<=frameArr.length; i++){

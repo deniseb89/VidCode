@@ -7,8 +7,7 @@ var stopMotion = {
   controls : {'interval': 500, 'frames': '[ , ]','reverse': 'false'},
 
   start: function(){
-  	InitSeriously();
-	  clearInterval(stopMotion.animate);
+  	clearInterval(stopMotion.animate);
   	var i = 0;
   	var stills = document.querySelectorAll('.js-selected-still');
     if (stills.length){
