@@ -168,7 +168,13 @@ var updateMediaLibraryFromComp = function (file, data) {
             movie.src = "";
             //generalize this somewhere else so when source changes, target changes
             if (!stopMotion.on){
-              effects[allEffects[0]]["bottom"] = seriously.source(this);
+                    effects[allEffects[0]]["bottom"] = seriously.source(this);
+			  }	
+
+
+			  target.source = effects[allEffects[allEffects.length-1]];
+			  seriously.go();
+	
             }
 
             var stills = document.querySelectorAll('.js-selected-still');
@@ -299,18 +305,19 @@ var releaseImage = function(){
 }
 
 var InitSeriously = function(){
- seriously = new Seriously();
- 
-//TODO: generalize to my media
-// video = seriously.source('#myvideo');		
-  video = seriously.transform('reformat');
-  video.width = 420;
-  video.height = 250;
-  video.mode = 'distort';	
-  video.source = ('#myvideo');
+	console.log("init");
+	seriously = new Seriously();
 	
-  target = seriously.target('#canvas'); 
-  graphic = seriously.source(canvasGraphic);	
+	//TODO: generalize to my media
+	// video = seriously.source('#myvideo');		
+	  video = seriously.transform('reformat');
+	  video.width = 420;
+	  video.height = 250;
+	  video.mode = 'distort';	
+	  video.source = ('#myvideo');
+
+	  target = seriously.target('#canvas'); 
+	  graphic = seriously.source(canvasGraphic);	
 
 	
   //Set up Seriously.js effects
@@ -331,8 +338,6 @@ var InitSeriously = function(){
   target.source = effects[allEffects[allEffects.length-1]];
   seriously.go();
 };
-
-
 
 
 
@@ -368,9 +373,7 @@ var updateScript = function() {
     //   }
     // }
 	
-	if (textScript.indexOf('position')>=1){
-		reDrawImage();
-	}
+	
 
     if (textScript.indexOf('stopMotion.interval')>=0) {
         //*TODO: compare frame state
@@ -401,6 +404,10 @@ var updateScript = function() {
             adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
         }
     }
+	
+	if (textScript.indexOf('position')>=0){
+		reDrawImage();
+	}
     
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
