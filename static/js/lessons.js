@@ -90,6 +90,7 @@ var loadThumbnails = function() {
       success: function(data, textStatus, jqXHR){
         var igVids = data;
         if (igVids.length){
+          $('.insta-thumbnails').removeClass('is-hidden');
           for (var i=0; i < Math.min(igVids.length,3); i++){
             $('#js-fetch-vid'+i).error(function(){
               $(this).addClass('is-hidden');              
@@ -101,14 +102,17 @@ var loadThumbnails = function() {
           }
         } else {
           $('.i-error').text("You don't have any Instagram videos :(");          
+          $('.insta-thumbnails').addClass('is-hidden');
         }
       },
       error: function(data, textStatus, jqXHR){
-        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");          
+        $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to load them properly.");          
+        $('.insta-thumbnails').addClass('is-hidden');
       }
     });
   } else {
     $('.insta-import').removeClass('is-hidden');
+    $('.insta-thumbnails').addClass('is-hidden');
   }
 }
 

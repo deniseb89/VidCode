@@ -160,7 +160,7 @@ exports.partone = function (db) {
       findOrCreate(db,user,successcb);
       
     } else {
-      res.render("partone");
+      res.render("partone", {code: codeText, filters: filters});
     }
   }
 };

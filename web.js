@@ -98,14 +98,6 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/intro/:social?/:id?', routes.intro(db));
   app.get('/lesson/1', routes.partone(db));
   app.get('/share/:token?', routes.share(db));
-  app.get('/profile', routes.profilePage(db))
-  app.get('/gallery', routes.gallery);
-  app.get('/galleryshow', routes.galleryshow);
-
-  app.get('/workstation', routes.workstation(db));
-
-  //for nytm
-  app.get('/nytm', routes.workstation(db));
 
   // sign up + sign in
   app.post('/signup', routes.signup(db));
