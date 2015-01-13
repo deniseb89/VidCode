@@ -12,16 +12,17 @@ var lessonContent =
       'elements' : ['blur','noise','vignette','exposure', 'fader'],
       'class' : 'basic-filter-method'
     },
-    'movieControls' : {
+    'graphics' : {
       'title': ['What are we writing? Javascript!'],
       'lessonText': ['speed step', 'speed step', 'speed step', 'speed step'],
+      'images':['pixel.png'],
       'learnMore' : [
         {'topic':'My Movie', 'target':'#movies222'},
         {'topic':'Play', 'target': '#play222'},
         {'topic':'Values: An Overview', 'target': '#lesson-4-222'}
       ],
-      'elements' : ['play','pause','playbackRate'],
-      'class' : 'movie-control-method'
+      'elements' : [],
+      'class' : 'graphic-method'
     },
     'stopMotion' : {
       'title': ["Stop Motion with Code!"],
@@ -32,7 +33,7 @@ var lessonContent =
         {'topic':'Functions', 'target': '#function222'},
         {'topic':'Frame Rate', 'target': ''}
       ],
-      'elements' : ['interval', 'frames','reverse'],
+      'elements' : ['interval', 'frames'],
       'class' : 'stop-motion-method',
     }
   };

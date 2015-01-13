@@ -5,7 +5,7 @@ var movie,
     video,
     vidLen,
     target,
-	blend,
+    blend,
 	graphic,
 	canvasDrag,
 	contextDrag,
@@ -24,6 +24,8 @@ allEffects = ['blend','blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleido
 mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
 defaultValue = {'number': 5, 'color': '"red"'};
 
+	
+	
 var showVid = function() {
     updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
     numVidSelect++;
@@ -52,7 +54,7 @@ var showImg = function () {
 
 var imgClickSetup = function () {
     showVid();
-    updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
+    updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
 
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
@@ -288,8 +290,8 @@ var setup = function(){
 }
 
 
-var prevX = 0;
-var prevY = 0;
+var positionX = 0;
+var positionY = 0;
 
 var moveImage = function(evt){
 	var x, y, rect;
@@ -302,38 +304,67 @@ var moveImage = function(evt){
 		x = evt.clientX - rect.left;
 		y = evt.clientY - rect.top;
 		
-		if(x < prevX + 200 && x > prevX && y > prevY && y < prevY + 200){
+		if(x < positionX + 200 && x > positionX && y > positionY && y < positionY + 200){
 			x = x -img.width/2;
 			y = y -img.height/2;
 			contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
 			contextDrag.drawImage(img,x, y);
-			prevX = x;
-			prevY = y;	
+			positionX = x;
+			positionY = y;	
 		}
 	}
 }
 
+var updatePosition = function(){
+	var allTM = myCodeMirror.getAllMarks();
+		for (var m = 0; m < allTM.length; m++) {
+			var tm = allTM[m];
+			if (tm.className=="cm-positionX"){
+				var cmLine = tm.find();
+				myCodeMirror.replaceRange(" positionX="+Math.round(positionX)+";",{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+		myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-positionX" });       
+			}
+		   if (tm.className=="cm-positionY"){
+				var cmLine = tm.find();
+				myCodeMirror.replaceRange(" positionY="+Math.round(positionY)+";",{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+		myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-positionY" });       
+			}
+		}
+		myCodeMirror.save();
+
+}
+
+
+var reDrawImage = function(){
+	var img = document.getElementsByClassName('js-selected-graphic')[0];
+
+	contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
+    contextGraphic.clearRect(0, 0, canvasDrag.width, canvasDrag.height);	
+    contextGraphic.drawImage(img, positionX, positionY);  
+
+	InitSeriously();	
+}
+
+var releaseImage = function(){
+	updatePosition();
+	reDrawImage();
+}
+
 var InitSeriously = function(){
- seriously = new Seriously();
- 
-//TODO: generalize to my media
-// video = seriously.source('#myvideo');		
-  video = seriously.transform('reformat');
-  video.width = 420;
-  video.height = 250;
-  video.mode = 'distort';	
-  video.source = ('#myvideo');
+	seriously = new Seriously();
 	
-  target = seriously.target('#canvas'); 
- 
-  //change input later 
-  var img = document.getElementsByClassName('js-selected-graphic')[0];
-	
-  contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
-  contextGraphic.clearRect(0, 0, canvasDrag.width, canvasDrag.height);	
-  contextGraphic.drawImage(img, prevX, prevY);  
-  
-  graphic = seriously.source(canvasGraphic);	
+	//TODO: generalize to my media
+	// video = seriously.source('#myvideo');		
+	  video = seriously.transform('reformat');
+	  video.width = 420;
+	  video.height = 250;
+	  video.mode = 'distort';	
+	  video.source = ('#myvideo');
+
+	  target = seriously.target('#canvas'); 
+	  graphic = seriously.source(canvasGraphic);	
+
+// >>>>>>> 58f9ecd517992c9a6b43ca8840c71e3e892b9f44
 	
   //Set up Seriously.js effects
    seriouslyEffects = Seriously.effects();
@@ -351,9 +382,6 @@ var InitSeriously = function(){
   
   	
   target.source = effects[allEffects[allEffects.length-1]];
-	
-  updateScript();
- 
   seriously.go();
 };
 
@@ -362,9 +390,8 @@ var InitSeriously = function(){
 
 
 
-
-
 var updateScript = function() {
+	//console.log('update script call');
     var scriptOld = document.getElementById('codeScript');
     if (scriptOld) { scriptOld.remove();}
     var scriptNew   = document.createElement('script');
@@ -392,6 +419,8 @@ var updateScript = function() {
     //     InitSeriously();
     //   }
     // }
+	
+	
 
     if (textScript.indexOf('stopMotion.interval')>=0) {
         //*TODO: compare frame state
@@ -422,10 +451,14 @@ var updateScript = function() {
             adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
         }
     }
-
+	
+	if (textScript.indexOf('position')>=0){
+		reDrawImage();
+	}
+    
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
-    scriptNew.text = textScript;
+	scriptNew.text = textScript;
 
     document.body.appendChild(scriptNew);
 };
@@ -477,7 +510,7 @@ $(document).ready(function () {
     canvasDrag = document.getElementById('canvasDrag');
     contextDrag = canvasDrag.getContext("2d");    
     canvasDrag.addEventListener('mousemove', moveImage, false);
-    canvasDrag.addEventListener('mouseup', InitSeriously, false);
+    canvasDrag.addEventListener('mouseup', releaseImage, false);
 
     inputFile = document.getElementById('inputFile');
     inputFileToLibrary = document.getElementById('inputFileToLibrary');
@@ -490,7 +523,10 @@ $(document).ready(function () {
         updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing then that?!</p><p>Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
     });
     $('#basic-filter-method').click(function () {
-        updateLearnMore(1, "<p>JavaScript?</p><p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="img/lessons/lesson-1-right.png">');
+        updateLearnMore(1, "<p>JavaScript?</p><p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="/img/lessons/lesson-1-right.png">');
+    });
+    $('#graphic-method').click(function () {
+        updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
     });
     $('.learnMore').on('click', '.js-lesson-4-sm', function () {
         updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
@@ -906,7 +942,20 @@ $('.js-vid-click').click(function () {
 $('.js-graph-click').click(function () {
     $('.js-graph-click').removeClass('js-selected-graphic');
     $(this).addClass('js-selected-graphic');
-	InitSeriously();
+	
+    var text = "\n\ positionX="+Math.round(positionX)+";";
+    myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
+	myCodeMirror.markText({
+                    line: myCodeMirror.lastLine(),
+                    ch: 0
+                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-positionX"});
+    text = "\n\ positionY="+Math.round(positionY)+";";
+    myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
+	myCodeMirror.markText({
+                    line: myCodeMirror.lastLine(),
+                    ch: 0
+                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-positionY"});	
+	releaseImage();
 });
 
 //Switch between content

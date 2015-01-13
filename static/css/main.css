@@ -1382,7 +1382,7 @@ canvas {
 .lesson-page .video-container .i-vid-container {
     float: left;
     overflow: hidden;
-    width: 100px;
+    width: 30%;
     margin: 5px;
 }
 
@@ -1400,7 +1400,7 @@ canvas {
 }
 
 .lesson-page .video-container .js-selected-video {
-    border: 2px solid #441B4B;
+    border: 5px solid #441B4B;
 }
 
 .lesson-page .video-container p {
