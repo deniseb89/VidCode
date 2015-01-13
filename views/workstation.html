@@ -152,9 +152,8 @@
                                        src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
 
                                  <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
-                                <canvas class="is-hidden" id="graphics" width="420px" height="250px"></canvas>
+                                  <canvas class="is-hidden" id="graphics" width="420px" height="250px"></canvas>
                                   <canvas id="canvasDrag"  width="420px" height="250px"></canvas>
-                                 <img src="/img/robot.png" width="150px" height="120px" id="mygraphic" style="display:none;" /> 
                                 <button type="button" class="runbtn btn btn-danger pullRight is-hidden">Pause</button>
 
                             </div>
@@ -170,7 +169,7 @@
                               <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
                                 <canvas class="is-hidden" id="graphics" width="420px" height="250px"></canvas>
                                   <canvas id="canvasDrag"  width="420px" height="250px"></canvas>
-                                 <img src="/img/robot.png" width="150px" height="120px" id="mygraphic" style="display:none;" /> 
+                                 
                             <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 
                         {{/if}}
@@ -180,7 +179,6 @@
 
 
                     <div class="js-switch-appear">
-                        <img src="/img/robot.png" width="150px" id="mygraphic" style="display:none;" /> 
 
                         <div class="video-container clearfix">
                             <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button>
@@ -277,6 +275,18 @@
                                 <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
                             </div>
                         </div>
+						<div class="video-container">
+							<p>Sample Graphics</p>
+							    <div class="i-vid-container">
+                                    <img src="/img/robot.png" class="js-graph-click" id="mygraphic"/> 
+                                </div>
+							    <div class="i-vid-container">
+                                    <img src="/img/flowers.png" class="js-graph-click" /> 
+                                </div>						
+							    <div class="i-vid-container">
+                                    <img src="/img/stars.png" class="js-graph-click js-selected-graphic" /> 
+                                </div>	
+						</div>
 
                     </div>
 

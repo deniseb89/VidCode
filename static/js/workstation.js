@@ -12,7 +12,7 @@ var movie,
 	canvasGraphic,
 	contextGraphic,
 	seriouslyEffects,
-    webmBlob,
+	webmBlob,
     effects = {},
     rafId,
     frames = [],
@@ -241,18 +241,20 @@ var prevY = 0;
 
 var moveImage = function(evt){
 	var x, y, rect;
-     var img =document.getElementById("mygraphic");	//change input later   
 	
+	//var img = document.getElementById('#mygraphic');
+     var img = document.getElementsByClassName('js-selected-graphic')[0];
+		
 	if(evt.which == 1){
 		rect = canvas.getBoundingClientRect();
 		x = evt.clientX - rect.left;
 		y = evt.clientY - rect.top;
 		
-		if(x < prevX + img.width && x > prevX && y > prevY && y < prevY + img.height){
+		if(x < prevX + 200 && x > prevX && y > prevY && y < prevY + 200){
 			x = x -img.width/2;
 			y = y -img.height/2;
 			contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
-			contextDrag.drawImage(img,x, y,img.width, img.height);
+			contextDrag.drawImage(img,x, y);
 			prevX = x;
 			prevY = y;	
 		}
@@ -273,13 +275,15 @@ var InitSeriously = function(){
   target = seriously.target('#canvas'); 
 	
  
-//change input later 
- var img =document.getElementById("mygraphic");	
+  //change input later 
+  var img = document.getElementsByClassName('js-selected-graphic')[0];
+  console.log(img);
 	
   contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
   contextGraphic.clearRect(0, 0, canvasDrag.width, canvasDrag.height);	
-  contextGraphic.drawImage(img, prevX, prevY, img.width, img.height);  
- 
+  contextGraphic.drawImage(img, prevX, prevY);  
+  
+	
   graphic = seriously.source(canvasGraphic);	
 //  graphic = seriously.transform('reformat');
 //  graphic.width = 420;
@@ -373,8 +377,6 @@ var updateScript = function() {
             adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
         }
     }
-
-    console.log("updated");
 
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
@@ -874,6 +876,12 @@ $('.js-vid-click').click(function () {
     movie.addEventListener("loadeddata", showVid, false);
     var thisSrc = $(this).attr('src');
     movie.src = thisSrc;
+});
+
+$('.js-graph-click').click(function () {
+    $('.js-graph-click').removeClass('js-selected-graphic');
+    $(this).addClass('js-selected-graphic');
+	InitSeriously();
 });
 
 //Switch between content
