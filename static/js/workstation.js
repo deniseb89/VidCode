@@ -31,12 +31,12 @@ var showVid = function () {
     $('.CodeMirror-code').removeClass('is-hidden');
     activateEndButtons('save');
     activateEndButtons('share');
-    labelLines(); 
+    labelLines();
     if (this.tagName=='VIDEO') {
         effects[allEffects[0]]["source"] = seriously.source(video);
         vidLen = Math.round(this.duration);
       } else {
-        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds 
+        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
     }
 };
 
@@ -75,7 +75,7 @@ var uploadFromComp = function (ev) {
                     //   processData:false,
                     //   success: function(data, textStatus, jqXHR){
                     //     var data = JSON.parse(data);
-                    updateMediaLibraryFromComp(file, e.target.result);
+                    updateMediaLibrary(file, e.target.result);
                     $(".popup").addClass("is-hidden");
                     $(".fileError").text("");
                     //   },
@@ -140,6 +140,60 @@ var uploadFromCompToLibrary = function (ev) {
     }
 };
 
+var updateMediaLibrary = function (file, data) {
+      //create div and img/video tags
+
+      console.log("file: " + file);
+      console.log("data: " + data);
+
+      var type;
+      var style;
+      var fn;
+      if (file.type.match(/image.*/)) {
+            type = 'img';
+            style = 'js-img-click';
+            fn = function () {
+                  $(this).toggleClass('js-selected-video');
+                  $(this).toggleClass('js-selected-still');
+                  //update frame array with stills. Maybe add some kind of enumeration to the frames
+                  movie.src = "";
+                  showVid();
+                  var stills = document.querySelectorAll('.js-selected-still');
+                  var frameArr = new Array(stills.length);
+                  for (var i = 1; i <= frameArr.length; i++) {
+                        frameArr[i - 1] = i;
+                    }
+                  frameArr.join(",");
+                    myCodeMirror.replaceRange('\n \stopMotion.frames = [' + frameArr + '];', CodeMirror.Pos(myCodeMirror.lastLine()));
+                    myCodeMirror.markText({
+                          line: myCodeMirror.lastLine(),
+                          ch: 0
+                      }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-frames"});
+
+                  };
+              } else if (file.type.match(/video.*/)) {
+              type = 'video';
+              style = 'js-vid-click';
+              fn = function () {
+                $('.loader').removeClass('is-hidden');
+                $('.js-vid-click').removeClass('js-selected-video');
+                $(this).addClass('js-selected-video');
+                movie.addEventListener("loadeddata", showVid, false);
+                var thisSrc = $(this).attr('src');
+                movie.src = thisSrc;
+              };
+            }
+
+            var div = document.createElement('div');
+            div.className += 'i-vid-container';
+            var media = document.createElement(type);
+            media.className += style;
+            media.src = data;
+            media.addEventListener('click', fn, false);
+            div.appendChild(media);
+            document.getElementById('vid-library').appendChild(div);
+          };
+
 var updateMediaLibraryFromComp = function (file, data) {
     //create div and img/video tags
 
@@ -156,7 +210,7 @@ var updateMediaLibraryFromComp = function (file, data) {
         fn = function () {
             showVid();
             updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
-            
+
             $(this).toggleClass('js-selected-video');
             $(this).toggleClass('js-selected-still');
 
@@ -532,7 +586,7 @@ $(document).ready(function () {
 
         formData.append('title', $('.js-video-title').val());
         formData.append('descr', $('.js-video-descr').val());
-        formData.append('token', $('.js-video-token').val());        
+        formData.append('token', $('.js-video-token').val());
         formData.append('code', myCodeMirror.getValue());
         formData.append('video', blob);
 
@@ -775,7 +829,7 @@ var stillsSelectedLesson = false;
 $('.js-img-click').click(function () {
     showVid();
     updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
-    
+
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
