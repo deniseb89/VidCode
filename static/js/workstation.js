@@ -5,7 +5,7 @@ var movie,
     video,
     vidLen,
     target,
-	blend,
+    blend,
 	graphic,
 	canvasDrag,
 	contextDrag,
@@ -24,6 +24,8 @@ allEffects = ['blend','blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleido
 mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
 defaultValue = {'number': 5, 'color': '"red"'};
 
+	
+	
 var showVid = function() {
     updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
     numVidSelect++;
@@ -236,8 +238,8 @@ var setup = function(){
 }
 
 
-var prevX = 0;
-var prevY = 0;
+var positionX = 0;
+var positionY = 0;
 
 var moveImage = function(evt){
 	var x, y, rect;
@@ -250,15 +252,50 @@ var moveImage = function(evt){
 		x = evt.clientX - rect.left;
 		y = evt.clientY - rect.top;
 		
-		if(x < prevX + 200 && x > prevX && y > prevY && y < prevY + 200){
+		if(x < positionX + 200 && x > positionX && y > positionY && y < positionY + 200){
 			x = x -img.width/2;
 			y = y -img.height/2;
 			contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
 			contextDrag.drawImage(img,x, y);
-			prevX = x;
-			prevY = y;	
+			positionX = x;
+			positionY = y;	
 		}
 	}
+}
+
+var updatePosition = function(){
+	var allTM = myCodeMirror.getAllMarks();
+		for (var m = 0; m < allTM.length; m++) {
+			var tm = allTM[m];
+			if (tm.className=="cm-positionX"){
+				var cmLine = tm.find();
+				myCodeMirror.replaceRange(" positionX="+Math.round(positionX)+";",{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+		myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-positionX" });       
+			}
+		   if (tm.className=="cm-positionY"){
+				var cmLine = tm.find();
+				myCodeMirror.replaceRange(" positionY="+Math.round(positionY)+";",{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
+		myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-positionY" });       
+			}
+		}
+		myCodeMirror.save();
+
+}
+
+
+var reDrawImage = function(){
+	var img = document.getElementsByClassName('js-selected-graphic')[0];
+
+	contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
+    contextGraphic.clearRect(0, 0, canvasDrag.width, canvasDrag.height);	
+    contextGraphic.drawImage(img, positionX, positionY);  
+
+	InitSeriously();	
+}
+
+var releaseImage = function(){
+	updatePosition();
+	reDrawImage();
 }
 
 var InitSeriously = function(){
@@ -273,23 +310,8 @@ var InitSeriously = function(){
   video.source = ('#myvideo');
 	
   target = seriously.target('#canvas'); 
-	
- 
-  //change input later 
-  var img = document.getElementsByClassName('js-selected-graphic')[0];
-  console.log(img);
-	
-  contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
-  contextGraphic.clearRect(0, 0, canvasDrag.width, canvasDrag.height);	
-  contextGraphic.drawImage(img, prevX, prevY);  
-  
-	
   graphic = seriously.source(canvasGraphic);	
-//  graphic = seriously.transform('reformat');
-//  graphic.width = 420;
-//  graphic.height = 250;
-//  graphic.source = canvasGraphic;
-//  graphic.mode = 'cover';
+
 	
   //Set up Seriously.js effects
    seriouslyEffects = Seriously.effects();
@@ -307,9 +329,6 @@ var InitSeriously = function(){
   
   	
   target.source = effects[allEffects[allEffects.length-1]];
-	
-  updateScript();
- 
   seriously.go();
 };
 
@@ -321,6 +340,7 @@ var InitSeriously = function(){
 
 
 var updateScript = function() {
+	//console.log('update script call');
     var scriptOld = document.getElementById('codeScript');
     if (scriptOld) { scriptOld.remove();}
     var scriptNew   = document.createElement('script');
@@ -347,6 +367,10 @@ var updateScript = function() {
     //     InitSeriously();
     //   }
     // }
+	
+	if (textScript.indexOf('position')>=1){
+		reDrawImage();
+	}
 
     if (textScript.indexOf('stopMotion.interval')>=0) {
         //*TODO: compare frame state
@@ -377,10 +401,10 @@ var updateScript = function() {
             adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
         }
     }
-
+    
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
-    scriptNew.text = textScript;
+	scriptNew.text = textScript;
 
     document.body.appendChild(scriptNew);
 };
@@ -432,7 +456,7 @@ $(document).ready(function () {
     canvasDrag = document.getElementById('canvasDrag');
     contextDrag = canvasDrag.getContext("2d");    
     canvasDrag.addEventListener('mousemove', moveImage, false);
-    canvasDrag.addEventListener('mouseup', InitSeriously, false);
+    canvasDrag.addEventListener('mouseup', releaseImage, false);
 
     inputFile = document.getElementById('inputFile');
     inputFileToLibrary = document.getElementById('inputFileToLibrary');
@@ -881,7 +905,20 @@ $('.js-vid-click').click(function () {
 $('.js-graph-click').click(function () {
     $('.js-graph-click').removeClass('js-selected-graphic');
     $(this).addClass('js-selected-graphic');
-	InitSeriously();
+	
+    var text = "\n\ positionX="+Math.round(positionX)+";";
+    myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
+	myCodeMirror.markText({
+                    line: myCodeMirror.lastLine(),
+                    ch: 0
+                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-positionX"});
+    text = "\n\ positionY="+Math.round(positionY)+";";
+    myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
+	myCodeMirror.markText({
+                    line: myCodeMirror.lastLine(),
+                    ch: 0
+                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-positionY"});	
+	releaseImage();
 });
 
 //Switch between content
