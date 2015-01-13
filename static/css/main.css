@@ -1616,6 +1616,11 @@ canvas {
     margin: 20px 0;
 }
 
+.profile .center {
+    text-align:center;
+    margin:auto;
+}
+
 .profile .video {
     width: 25%;
     margin: 0 auto;
@@ -1642,6 +1647,10 @@ canvas {
     font-size: .9em;
     cursor: pointer;
     font-weight: 600;
+}
+
+.profile .profile-vid-small {
+    width: 33%;
 }
 
 /* ==========================================================================
