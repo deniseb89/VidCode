@@ -39,9 +39,9 @@ var showVid = function() {
     activateEndButtons('share');
     labelLines(); 
     if (this.tagName=='VIDEO') {
-        effects[allEffects[0]]["blend"] = seriously.source(video);
+        effects[allEffects[0]]["bottom"] = seriously.source(video);
         vidLen = Math.round(this.duration);
-    } else {
+    } else {		
         vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
     }
 };
@@ -888,6 +888,7 @@ $('.js-switch-view').click(function () {
     $('.' + view).removeClass('is-hidden');
     $('.js-lesson-name').text(lName);
     $('.js-lesson-page-num-total').text(lessonNum);
+
 })
 
 $("html").on("click", ".js-switch-menu-appear", function () {
