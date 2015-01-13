@@ -30,18 +30,18 @@ var showVid = function () {
     $(".video2").removeClass("is-hidden");
     $('.CodeMirror-code').removeClass('is-hidden');
     activateEndButtons('save');
+    activateEndButtons('save-code');
     activateEndButtons('share');
-    labelLines(); 
+    labelLines();
     if (this.tagName=='VIDEO') {
         effects[allEffects[0]]["source"] = seriously.source(video);
         vidLen = Math.round(this.duration);
       } else {
-        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds 
+        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
     }
 };
 
 var showImg = function () {
-
 };
 
 var activateEndButtons = function (bType) {
@@ -75,7 +75,7 @@ var uploadFromComp = function (ev) {
                     //   processData:false,
                     //   success: function(data, textStatus, jqXHR){
                     //     var data = JSON.parse(data);
-                    updateMediaLibraryFromComp(file, e.target.result);
+                    updateMediaLibrary(file, e.target.result);
                     $(".popup").addClass("is-hidden");
                     $(".fileError").text("");
                     //   },
@@ -140,6 +140,60 @@ var uploadFromCompToLibrary = function (ev) {
     }
 };
 
+var updateMediaLibrary = function (file, data) {
+      //create div and img/video tags
+
+      console.log("file: " + file);
+      console.log("data: " + data);
+
+      var type;
+      var style;
+      var fn;
+      if (file.type.match(/image.*/)) {
+        type = 'img';
+        style = 'js-img-click';
+        fn = function () {
+              $(this).toggleClass('js-selected-video');
+              $(this).toggleClass('js-selected-still');
+              //update frame array with stills. Maybe add some kind of enumeration to the frames
+              movie.src = "";
+              showVid();
+              var stills = document.querySelectorAll('.js-selected-still');
+              var frameArr = new Array(stills.length);
+              for (var i = 1; i <= frameArr.length; i++) {
+                    frameArr[i - 1] = i;
+                }
+              frameArr.join(",");
+                myCodeMirror.replaceRange('\n \stopMotion.frames = [' + frameArr + '];', CodeMirror.Pos(myCodeMirror.lastLine()));
+                myCodeMirror.markText({
+                      line: myCodeMirror.lastLine(),
+                      ch: 0
+                  }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-frames"});
+
+              };
+          } else if (file.type.match(/video.*/)) {
+          type = 'video';
+          style = 'js-vid-click';
+          fn = function () {
+            $('.loader').removeClass('is-hidden');
+            $('.js-vid-click').removeClass('js-selected-video');
+            $(this).addClass('js-selected-video');
+            movie.addEventListener("loadeddata", showVid, false);
+            var thisSrc = $(this).attr('src');
+            movie.src = thisSrc;
+          };
+        }
+
+    var div = document.createElement('div');
+    div.className += 'i-vid-container';
+    var media = document.createElement(type);
+    media.className += style;
+    media.src = data;
+    media.addEventListener('click', fn, false);
+    div.appendChild(media);
+    document.getElementById('vid-library').appendChild(div);
+};
+
 var updateMediaLibraryFromComp = function (file, data) {
     //create div and img/video tags
 
@@ -156,7 +210,7 @@ var updateMediaLibraryFromComp = function (file, data) {
         fn = function () {
             showVid();
             updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
-            
+
             $(this).toggleClass('js-selected-video');
             $(this).toggleClass('js-selected-still');
 
@@ -260,6 +314,7 @@ var updateScript = function () {
     var scriptNew = document.createElement('script');
     scriptNew.id = 'codeScript';
     var cmScript = myCodeMirror.getValue();
+
     eval(cmScript);
     var adjScript = "";
     var textScript = "\n\ try {\n\ " + cmScript;
@@ -481,6 +536,17 @@ $(document).ready(function () {
         modalVideoLoad('save');
     });
 
+    $('.save-btns-container').on('click', ".js-save-code-m", function () {
+
+        var _cmScript = myCodeMirror.getValue();
+
+        var _videoFileId = (document.getElementById('myvideo').src).split('=')[1];
+
+        //may need to add a global variable to store the current video token in session.
+        
+        $.post("/workstation-update-session", {'lessonId': '1-1', 'token': 'dummy-token', 'videoFileId': _videoFileId ,'code': _cmScript});
+
+    });
 
     var modalVideoLoad = function (mname) {
         addThisStyles();
@@ -490,7 +556,7 @@ $(document).ready(function () {
         $('.progressDiv').removeClass('is-hidden');
         frames = [];
         rafId = requestAnimationFrame(drawVideoFrame);
-    }
+    };
 
 
     //account for different browsers with requestAnimationFrame
@@ -531,7 +597,7 @@ $(document).ready(function () {
 
         formData.append('title', $('.js-video-title').val());
         formData.append('descr', $('.js-video-descr').val());
-        formData.append('token', $('.js-video-token').val());        
+        formData.append('token', $('.js-video-token').val());
         formData.append('code', myCodeMirror.getValue());
         formData.append('video', blob);
 
@@ -764,7 +830,6 @@ $(document).ready(function () {
     var removeInfo = function (term) {
         $('pre:contains(' + term + ')').css("background", "none");
     };
-
 });
 
 loadThumbnails();
@@ -774,7 +839,7 @@ var stillsSelectedLesson = false;
 $('.js-img-click').click(function () {
     showVid();
     updateLearnMore(2, '<p>Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
-    
+
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
@@ -831,7 +896,6 @@ $("html").on("click", ".js-switch-menu-appear", function () {
     $('body').toggleClass('js-switch-menu-appear');
 });
 
-
 //boolean game
 var fclicks = 0;
 $('.js-f-b-click').click(function () {
@@ -852,7 +916,6 @@ $('.js-f-b-click').click(function () {
             $('.js-f-b-click').fadeIn();
         }
     }
-
 });
 
 //MixPanel Tracking for Learn More
@@ -900,7 +963,6 @@ var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
 trackLesson = function (lessonName) {
     $.post('/lesson/' + lessonName);
 };
-
 
 getDateMMDDYYYY = function () {
     var date = new Date();
