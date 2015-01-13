@@ -224,7 +224,6 @@ module.exports = function (app, passport) {
         res.redirect('/');
     });
 
-
 // =============================================================================
 // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
 // =============================================================================
@@ -488,8 +487,6 @@ module.exports = function (app, passport) {
         });
 
         req.pipe(busboy);
-
-
     });
 
     app.post('/uploadFinished', isLoggedIn, function (req, res) {
@@ -532,7 +529,6 @@ module.exports = function (app, passport) {
         req.pipe(busboy);
     });
 
-
     app.post('/video-update-descr', isLoggedIn, function (req, res) {
 
         var token = req.body.token;
@@ -558,7 +554,7 @@ module.exports = function (app, passport) {
 
         var token = req.body.token;
         var code = req.body.code;
-
+        var lessonId = req.body.lessonId;
 
         mongoose.connection.db.collection('users').update({
                 'vidcodes.token': token
@@ -570,6 +566,34 @@ module.exports = function (app, passport) {
                 } else {
 
                     console.log('successfully updated vidcode token ' + token);
+                }
+            });
+    });
+
+    app.post('/workstation-update-session', isLoggedIn, function (req, res) {
+
+        var token = req.body.token;
+        var code = req.body.code;
+        var lessonId = req.body.lessonId;
+        var videoFileId = req.body.videoFileId;
+
+        var session = {};
+
+        session.code = code;
+        session.token = token;
+        session.videoFileId = videoFileId;
+        session.lessonId = lessonId;
+
+        mongoose.connection.db.collection('users').update({
+                '_id': req.user._id
+            },
+            {$set: {'lastSession': session}},
+            function (err, result) {
+                if (err) {
+                    console.log('err in updating lastSession ' + session + ':' + err);
+                } else {
+
+                    console.log('successfully updated vidcode session ' + token);
                 }
             });
     });
@@ -693,7 +717,6 @@ module.exports = function (app, passport) {
         });
     });
 
-
 // =============================================================================
 // ROUTE TO PAGE NOT FOUND =====================================================
 // =============================================================================
@@ -704,7 +727,6 @@ module.exports = function (app, passport) {
     });
 
 };
-
 
 // =============================================================================
 // MIDDLEWARE AND UTILITY FUNCTIONS  ===========================================

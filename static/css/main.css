@@ -504,7 +504,6 @@ body.is-in-signup {
     z-index: 5;
     margin-top: 1px;
     width: 103%;
-    height: 250px;
 }
 
 .steps {
@@ -1383,10 +1382,16 @@ canvas {
 .lesson-page .video-container .i-vid-container {
     float: left;
     overflow: hidden;
-    width: 30%;
-    height: 75px;
+    width: 100px;
     margin: 5px;
 }
+
+
+
+.lesson-page .stills-container {
+    /*overflow: visible;    */
+}
+
 
 .lesson-page .video-container img {
     width: 96%;
@@ -1618,6 +1623,12 @@ canvas {
     margin: 20px 0;
 }
 
+.profile .center {
+    text-align:center;
+    width: 50%;
+    margin: 0px auto 0px auto
+}
+
 .profile .video {
     width: 25%;
     margin: 0 auto;
@@ -1644,6 +1655,10 @@ canvas {
     font-size: .9em;
     cursor: pointer;
     font-weight: 600;
+}
+
+.profile .profile-vid-small {
+    width: 33%;
 }
 
 /* ==========================================================================

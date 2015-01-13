@@ -127,7 +127,7 @@
                         <li class="js-switch-view" id="basic-filter-method" name="Filters" lessnum="4">Filters</li>
                         <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
                         </li>
-                        <li class="js-switch-view" id="movie-control-method" name="Computer Vision">Computer Vision</li>
+                        <li class="js-switch-view" id="graphic-method" name="Graphics">Graphics</li>
                     </ul>
                 </div>
             </div>
@@ -183,13 +183,17 @@
                         <div class="video-container clearfix">
                             <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button>
 
-                            <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media to Library</button>
+<!-- hide row profile for this user test as there is no need to upload their media to the server -->
 
-                            <div id="vid-library">
+<!--                             <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media to Library</button> -->
+
+
+                            <div id="vid-library" class="basic-filter-method">
                                 <p>Uploaded Videos</p>
                             </div>
 
-                            <div class="row profile">
+<!-- hide row profile for this user test as there is no need to upload their media to the server -->
+                            <div class="row profile is-hidden">
                                 {{#if user.videoLibrary}}
 
                                 {{#each user.videoLibrary}}
@@ -208,34 +212,34 @@
                                 {{/if}}
                             </div>
 
-                            <p class="is-hidden stop-motion-method">Sample Stills</p>
-
-                            <div class="is-hidden stop-motion-method">
-                                <div class="i-vid-container">
-                                    <img class="js-selected-video js-selected-still js-img-click"
-                                         src="/img/still0.JPG"/>
-                                </div>
-                                <div class="i-vid-container">
-                                    <img class="js-selected-video js-selected-still js-img-click"
-                                         src="/img/still1.JPG"/>
-                                </div>
-                                <div class="i-vid-container">
-                                    <img class="js-selected-video js-selected-still js-img-click"
-                                         src="/img/still2.JPG"/>
-                                </div>
-                                <div class="i-vid-container">
-                                    <img class="js-img-click" src="/img/still3.JPG"/>
-                                </div>
-                                <div class="i-vid-container">
-                                    <img class="js-img-click" src="/img/still4.JPG"/>
-                                </div>
-                                <div class="i-vid-container">
-                                    <img class="js-img-click" src="/img/still5.JPG"/>
-                                </div>
+                            <div id="img-library" class="is-hidden stop-motion-method">
+                                <p>Uploaded Stills</p>
                             </div>
 
-                            <div id="img-library">
-                                <p>Uploaded Images</p>
+                            <div class="is-hidden stop-motion-method">
+
+                                <p class="is-hidden stop-motion-method">Sample Stills</p>
+                        
+                                <div class="stills-container">
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still0.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still1.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still2.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still3.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still4.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" src="/img/still5.png"/>
+                                  </div>     
+                                </div>
                             </div>
 
                             <p class="basic-filter-method">Instagram Videos</p>
@@ -257,7 +261,7 @@
                                 </div>
                             </div>
 
-                            <div class="insta-import is-hidden basic-filter-method">
+                            <div class="insta-import is-hidden">
                                 <a href="/auth/instagram">Import from Instagram</a>
                             </div>
                         </div>
@@ -275,7 +279,7 @@
                                 <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
                             </div>
                         </div>
-						<div class="video-container">
+						<div class="is-hidden video-container graphic-method">
 							<p>Sample Graphics</p>
 							    <div class="i-vid-container">
                                     <img src="/img/robot.png" class="js-graph-click" id="mygraphic"/> 
@@ -290,7 +294,7 @@
 
                     </div>
 
-                    <div class="methodsBox js-appear is-hidden clearfix">
+                    <div class="methodsBox js-appear clearfix">
                         <div class="clearfix">
                             <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code
                             </button>
@@ -307,15 +311,15 @@
                         </form>
                     </div>
                     <div class="save-btns-container">
-              <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
-                Save Code
-              </span>                    
-              <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
-                Save
-              </span>
-              <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
-                Share
-              </span>
+                      <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-code-m">
+                        Save Code
+                      </span>
+                      <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
+                        Save
+                      </span>
+                      <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
+                        Share
+                      </span>
                     </div>
                 </div>
 
