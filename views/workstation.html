@@ -151,10 +151,11 @@
                                 <video class="video1 is-hidden js-load-last-session" id="myvideo"
                                        src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
 
-                                 <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
-                                  <canvas class="is-hidden" id="graphics" width="420px" height="250px"></canvas>
-                                  <canvas id="canvasDrag"  width="420px" height="250px"></canvas>
-                                <button type="button" class="runbtn btn btn-danger pullRight is-hidden">Pause</button>
+                                 <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
+                                  <canvas class="is-hidden" id="graphicsCanvas"  width="420" height="250px"></canvas>
+                                  <canvas id="draggingCanvas" class="is-hidden"  width="420" height="250px"></canvas>
+                                   <canvas id="drawingCanvas"  width="420" height="250px"></canvas>
+                               <button type="button" class="runbtn btn btn-danger pullRight is-hidden">Pause</button>
 
                             </div>
 
@@ -166,9 +167,10 @@
                             </div>
 
                             <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
-                            <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
-                            <canvas class="is-hidden" id="graphics" width="420px" height="250px"></canvas>
-                            <canvas id="canvasDrag"  width="420px" height="250px"></canvas>
+                            <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
+                            <canvas class="is-hidden" id="graphicsCanvas"   width="420" height="250px"></canvas>
+                            <canvas id="draggingCanvas" class="is-hidden"  width="420" height="250px"></canvas>
+                             <canvas id="drawingCanvas"  width="420" height="250px"></canvas>
                                  
                             <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
 
@@ -282,13 +284,13 @@
 						<div class="is-hidden video-container graphic-method">
 							<p>Sample Graphics</p>
 							    <div class="i-vid-container">
-                                    <img src="/img/robot.png" class="js-graph-click" id="mygraphic"/> 
+                                    <img src="/img/graphics/robot.png" class="js-graph-click" id="mygraphic"/> 
                                 </div>
 							    <div class="i-vid-container">
-                                    <img src="/img/flowers.png" class="js-graph-click" /> 
+                                    <img src="/img/graphics/flowers.png" class="js-graph-click" /> 
                                 </div>						
 							    <div class="i-vid-container">
-                                    <img src="/img/stars.png" class="js-graph-click js-selected-graphic" /> 
+                                    <img src="/img/graphics/stars.png" class="js-graph-click" /> 
                                 </div>	
 						</div>
 

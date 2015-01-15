@@ -7,10 +7,13 @@ var movie,
     target,
     blend,
 	graphic,
-	canvasDrag,
-	contextDrag,
-	canvasGraphic,
-	contextGraphic,
+	draggingCanvas,
+	draggingContext,
+    drawingCanvas,
+    drawingContext,
+    drawingMode,
+	graphicsCanvas,
+	graphicsContext,
 	seriouslyEffects,
 	webmBlob,
     effects = {},
@@ -49,8 +52,7 @@ var showVid = function() {
     }
 };
 
-var showImg = function () {
-};
+
 
 var imgClickSetup = function () {
     showVid();
@@ -290,8 +292,113 @@ var setup = function(){
 }
 
 
+var createCodeInEditor = function(text, cmclass){ 
+   myCodeMirror.replaceRange(text, CodeMirror.Pos( myCodeMirror.lastLine()));
+    myCodeMirror.markText({
+                    line:  myCodeMirror.lastLine(),
+                    ch: 0
+                }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: cmclass });
+}
+
+var updateCodeInEditor = function(text, cmline, cmclass){
+     myCodeMirror.replaceRange(text, { line: cmline, ch: 0 }, CodeMirror.Pos( cmline ) );
+     myCodeMirror.markText({
+                    line: cmline,
+                    ch: 0
+                }, CodeMirror.Pos(cmline), {className: cmclass});       
+}
+
+
+
+
+
 var positionX = 0;
 var positionY = 0;
+var size = 200;
+
+
+//drawing variables
+drawingMode = false;
+var prevX = 0;
+var prevY = 0;
+
+var drawX = [];
+var drawY = [];
+
+var isDrawing = false;
+var offsetX = 0;
+var offsetY = 0;
+
+var color = 'green';
+
+var drawLine = function(evt){
+    var x, y, rect;
+    if(evt.which == 1){
+        rect = canvas.getBoundingClientRect();
+        x = evt.clientX - rect.left-45;
+        y = evt.clientY - rect.top-18;
+    
+        drawingContext.beginPath();
+        drawingContext.moveTo(prevX, prevY);
+        drawingContext.lineTo(x, y);
+        drawingContext.strokeStyle=color;
+        drawingContext.stroke();
+        isDrawing = true;
+    }
+
+    prevX = x;
+    prevY = y;
+
+    if(typeof x !== 'undefined'){
+        drawX.push(x);
+        drawY.push(y);
+    }
+
+    if(!isDrawing){
+        updateGraphicsEditor();
+    }
+    else{
+        console.log("drawing");
+        isDrawing = true;
+    }
+    
+
+    //this goes to whenever we start drawing mode
+    var offsetExists = false;
+    var allTM = myCodeMirror.getAllMarks();
+    for (var m = 0; m < allTM.length; m++) {
+            var tm = allTM[m];
+            if (tm.className == "cm-offsetX") {
+               offsetExists = true;
+            }           
+        }
+    if(!offsetExists){
+        createCodeInEditor("\n\ offsetX="+Math.round(offsetX)+";", 'cm-offsetX');
+        createCodeInEditor("\n\ offsetY="+Math.round(offsetY)+";", 'cm-offsetY');
+    }
+}
+
+var offsetDrawing = function(){
+    if(isDrawing){
+        isDrawing = false;
+    }
+    else{
+        drawingContext.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+        console.log("redraw");       
+        console.log(drawX);
+        graphicsContext.beginPath();
+        graphicsContext.moveTo(drawX[0]+offsetX, drawY[0]+offsetY);
+
+        drawX.forEach(function(element, index){
+        graphicsContext.lineTo(element+offsetX, drawY[index]+offsetY);
+        });
+        graphicsContext.strokeStyle=color;
+        graphicsContext.stroke();
+        // drawX = [];
+        // drawY = [];
+        graphic.update();
+    }
+}
 
 var moveImage = function(evt){
 	var x, y, rect;
@@ -304,49 +411,57 @@ var moveImage = function(evt){
 		x = evt.clientX - rect.left;
 		y = evt.clientY - rect.top;
 		
-		if(x < positionX + 200 && x > positionX && y > positionY && y < positionY + 200){
+		if(x < positionX + size && x > positionX && y > positionY && y < positionY + size){
 			x = x -img.width/2;
 			y = y -img.height/2;
-			contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
-			contextDrag.drawImage(img,x, y);
+			draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
+			draggingContext.drawImage(img,x, y, size,size-size/5);
 			positionX = x;
 			positionY = y;	
 		}
 	}
 }
 
-var updatePosition = function(){
-	var allTM = myCodeMirror.getAllMarks();
+var updateGraphicsEditor = function(){
+	 var allTM = myCodeMirror.getAllMarks();
 		for (var m = 0; m < allTM.length; m++) {
 			var tm = allTM[m];
 			if (tm.className=="cm-positionX"){
 				var cmLine = tm.find();
-				myCodeMirror.replaceRange(" positionX="+Math.round(positionX)+";",{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
-		myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-positionX" });       
+                updateCodeInEditor("   positionX="+Math.round(positionX)+";", cmLine.to.line, "cm-positionX" );       
 			}
-		   if (tm.className=="cm-positionY"){
-				var cmLine = tm.find();
-				myCodeMirror.replaceRange(" positionY="+Math.round(positionY)+";",{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
-		myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-positionY" });       
+		    if (tm.className=="cm-positionY"){
+	        	var cmLine = tm.find();
+                updateCodeInEditor("   positionY="+Math.round(positionY)+";", cmLine.to.line, "cm-positionY" );       
 			}
-		}
-		myCodeMirror.save();
-
+            if (tm.className=="cm-size"){
+                var cmLine = tm.find();
+                updateCodeInEditor("   size="+Math.round(size)+";", cmLine.to.line, "cm-size" );       
+            }
+            if (tm.className=="cm-offsetX"){
+                var cmLine = tm.find();
+                 updateCodeInEditor("   offsetX="+Math.round(size)+";", cmLine.to.line, "cm-offsetX" );       
+             }       		
+            if (tm.className=="cm-offsetY"){
+               var cmLine = tm.find();
+                 updateCodeInEditor("   offsetY="+Math.round(size)+";", cmLine.to.line, "cm-offsetY" );       
+            }   
+        }
+	myCodeMirror.save();
 }
+
 
 
 var reDrawImage = function(){
 	var img = document.getElementsByClassName('js-selected-graphic')[0];
-
-	contextDrag.clearRect(0, 0, canvasDrag.width, canvasDrag.height);
-    contextGraphic.clearRect(0, 0, canvasDrag.width, canvasDrag.height);	
-    contextGraphic.drawImage(img, positionX, positionY);  
-
-	InitSeriously();	
+	draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
+    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);	
+    graphicsContext.drawImage(img, positionX, positionY, size, size-size/5);      
+    graphic.update();
 }
 
 var releaseImage = function(){
-	updatePosition();
+	updateGraphicsEditor();
 	reDrawImage();
 }
 
@@ -362,9 +477,8 @@ var InitSeriously = function(){
 	  video.source = ('#myvideo');
 
 	  target = seriously.target('#canvas'); 
-	  graphic = seriously.source(canvasGraphic);	
+	  graphic = seriously.source(graphicsCanvas);	
 
-// >>>>>>> 58f9ecd517992c9a6b43ca8840c71e3e892b9f44
 	
   //Set up Seriously.js effects
    seriouslyEffects = Seriously.effects();
@@ -455,7 +569,12 @@ var updateScript = function() {
 	if (textScript.indexOf('position')>=0){
 		reDrawImage();
 	}
+
+    if (textScript.indexOf('offset')>=0){
+        offsetDrawing();
+    }
     
+   
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
 	scriptNew.text = textScript;
@@ -508,12 +627,21 @@ $(document).ready(function () {
 	
 	canvas = document.getElementById('canvas');
 
-    canvasGraphic = document.getElementById('graphics');
-    contextGraphic = canvasGraphic.getContext("2d");
-    canvasDrag = document.getElementById('canvasDrag');
-    contextDrag = canvasDrag.getContext("2d");    
-    canvasDrag.addEventListener('mousemove', moveImage, false);
-    canvasDrag.addEventListener('mouseup', releaseImage, false);
+    graphicsCanvas = document.getElementById('graphicsCanvas');
+    graphicsContext = graphicsCanvas.getContext("2d");
+    draggingCanvas = document.getElementById('draggingCanvas');
+    draggingContext = draggingCanvas.getContext("2d"); 
+    drawingCanvas = document.getElementById('drawingCanvas');
+    drawingContext = drawingCanvas.getContext("2d");    
+
+    //graphics
+    draggingCanvas.addEventListener('mousemove', moveImage, false);
+    draggingCanvas.addEventListener('mouseup', releaseImage, false);
+
+    //drawings
+    drawingCanvas.addEventListener('mousemove', drawLine, false);
+    //drawingCanvas.addEventListener('click', offsetDrawing, false);  
+    
 
     inputFile = document.getElementById('inputFile');
     inputFileToLibrary = document.getElementById('inputFileToLibrary');
@@ -943,35 +1071,81 @@ $('.js-vid-click').click(function () {
 });
 
 $('.js-graph-click').click(function () {
-    $('.js-graph-click').removeClass('js-selected-graphic');
-    $(this).addClass('js-selected-graphic');
+    //if graphic is not selected already, remove previous one
+    if($(this).hasClass('js-selected-graphic') === false){
+        $('.js-graph-click').removeClass('js-selected-graphic'); 
+    }
+    
+    $('#draggingCanvas').removeClass('is-hidden');
+    $('#drawingCanvas').addClass('is-hidden');
+    drawingMode = false;
+
+    $(this).toggleClass('js-selected-graphic');
 	
 	var positionExists = false;
-            var allTM = myCodeMirror.getAllMarks();
+    var sizeExists = false;
+
+
+
+    var allTM = myCodeMirror.getAllMarks();
+
 	for (var m = 0; m < allTM.length; m++) {
             var tm = allTM[m];
             if (tm.className == "cm-positionX" || tm.className == "cm-positionY") {
                positionExists = true;
             }
+            if (tm.className == "cm-size") {
+               sizeExists = true;
+            }           
         }
+
 	if(!positionExists){
-	    var text = "\n\ positionX="+Math.round(positionX)+";";
-    myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
-	myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-positionX"});
-    text = "\n\ positionY="+Math.round(positionY)+";";
-    myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
-	myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-positionY"});
+        var text = "\n\ positionX="+Math.round(positionX)+";";
+        createCodeInEditor(text, "cm-positionX");    
+        text = "\n\ positionY="+Math.round(positionY)+";";
+        createCodeInEditor(text, "cm-positionY");
 	}
+
+    if(!sizeExists){
+      var text = "\n\ size="+Math.round(size)+";";
+      myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
+      myCodeMirror.markText({
+                    line: myCodeMirror.lastLine(),
+                    ch: 0
+                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-size"});
+   }
+
+    //check if graphic is selected. if it is, release it, otherwise, clean the canvas;
+	if($(this).hasClass('js-selected-graphic') === true){
+        releaseImage();
+    }
+    else{
+       //making dragging canvas invisible
+       draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
+       $('#draggingCanvas').addClass('is-hidden');
+       $('#drawingCanvas').removeClass('is-hidden');
+       
+       drawingMode = true;
+
+       graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   
+       graphic.update();
+
+
+        for (var m = 0; m < allTM.length; m++) {
+            var tm = allTM[m];
+            if (tm.className == "cm-positionX" || tm.className == "cm-positionY") {
+               myCodeMirror.removeLine(tm.find().to.line);
+               positionExists = false;
+            }
+            if (tm.className == "cm-size") {
+                myCodeMirror.removeLine(tm.find().to.line);
+                sizeExists = false;
+            }           
+        }
+
+    }
+
 	
-	
-	
-	releaseImage();
 });
 
 //Switch between content
