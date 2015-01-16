@@ -17,8 +17,9 @@ var userSchema = mongoose.Schema({
         videoFileId: String,
         code: String
     },
-    videoLibrary: [{}],
-    vidcodes: [{}],
+    inProgressProjects:{type: Array, default: []},
+    videoLibrary: {type: Array, default: []},
+    vidcodes: {type: Array, default: []},
     vidcode: {
         email: {type: String, trim: true},
         password: String

@@ -32,7 +32,7 @@
                     <label for="video-descr">Optional Video Description</label>
                     <textarea id="video-descr" name="descr" rows="4" class="js-video-descr"></textarea>
                     <input type="text" id="video-token" name="token" class="js-video-token" hidden="true" value="">
-<!--                     <input type="submit" value="Update Description" onsubmit="return false;"
+                <!-- <input type="submit" value="Update Description" onsubmit="return false;"
                            class="save-video-desc-btn n-a-video-save-desc"/> -->
                 <!-- </form> -->
 
@@ -146,10 +146,10 @@
 
                         {{#if user.sessionToLoad}}
 
-                            <div id="vid-load-from-profile">
+                            <div id="vid-load-from-profile" data-code='{{user.sessionToLoad.code}}' >
 
                                 <video class="video1 is-hidden js-load-last-session" id="myvideo"
-                                       src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
+                                       src="/video/?file={{user.sessionToLoad.videoFileId}}" autoplay loop></video>
 
                                 <canvas class="video2 tabs-2 ui-droppable" id="canvas">
                                 </canvas>
