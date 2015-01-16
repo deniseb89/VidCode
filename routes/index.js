@@ -10,6 +10,7 @@ var gfs = Grid(mongoose.connection.db, mongoose.mongo);
 var User = require('../models/user');
 var Vidcode = require('../models/vidcode');
 var content = require('../models/content');
+var units = require('../models/lesson');
 
 module.exports = function (app, passport) {
 
@@ -41,6 +42,7 @@ module.exports = function (app, passport) {
                 _units = result;
 
                 console.log('successfully got units ');
+                console.log(_units);
 
                 if (req.user.vidcodes) {
                     res.render('profile', {
@@ -61,6 +63,7 @@ module.exports = function (app, passport) {
 
     app.post('/lesson/:lessonId', isLoggedIn, function (req, res) {
         User.findOne({_id: req.user._id}, function (err, user) {
+            //take the id and add to units
                 if (!err) {
                     user.lessons.addToSet(req.params.lessonId);
                     user.save();
@@ -697,6 +700,12 @@ module.exports = function (app, passport) {
                     }else{
                         for (var item in user.vidcodes) {
                             if (user.vidcodes[item]['token'] == token) {
+//1.15.15 update after our call:
+//So this is where the I thought the "in progress projects" would be loaded
+//though I realize now that instead of loading from the "vidcodes" object as I'm doing here
+//we would want to load the In Progress Projects object that you are creating
+//The only real difference is the file. The file here is the exported .webm file
+//The file we want instead is the raw media file, before any effects have been applied
                                 _sessionToLoad.file = user.vidcodes[item]['file'];
                                 _sessionToLoad.code = user.vidcodes[item]['code'];
                                 _sessionToLoad.video = user.vidcodes[item];
