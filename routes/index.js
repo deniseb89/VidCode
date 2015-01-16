@@ -40,7 +40,18 @@ module.exports = function (app, passport) {
             } else {
                 _units = result;
 
-                console.log('successfully got units ');
+                _units.forEach(function (_unit){
+
+                  _unit.lessons.forEach(function(_lesson){
+
+                    if(req.user.lessons.indexOf(_lesson.lessonId) > -1){
+                      _lesson.viewed = true;
+                      console.log(_lesson);
+                    }
+
+                  });
+
+                });
 
                 if (req.user.vidcodes) {
                     res.render('profile', {
@@ -49,7 +60,6 @@ module.exports = function (app, passport) {
                         units: _units
                     });
                 } else {
-                    console.log(_units);
                     res.render('profile', {
                         user: req.user,
                         units: _units
@@ -596,6 +606,19 @@ module.exports = function (app, passport) {
                     console.log('successfully updated vidcode session ' + token);
                 }
             });
+
+
+          User.findOne({_id: req.user._id}, function (err, user) {
+            if (!err) {
+              user.lessons.addToSet(lessonId);
+              user.save();
+
+              console.log('successfully added lessonId for user.lessons .' );
+
+            }
+          }
+        );
+
     });
 
     app.get('/video', function (req, res) {
