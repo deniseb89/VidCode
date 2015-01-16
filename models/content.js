@@ -21,7 +21,7 @@ var lessonContent =
         {'topic':'Play', 'target': '#play222'},
         {'topic':'Values: An Overview', 'target': '#lesson-4-222'}
       ],
-      'elements' : [],
+      'elements' : ['drawing'],
       'class' : 'graphic-method'
     },
     'stopMotion' : {

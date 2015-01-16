@@ -7,13 +7,6 @@ var movie,
     target,
     blend,
 	graphic,
-	draggingCanvas,
-	draggingContext,
-    drawingCanvas,
-    drawingContext,
-    drawingMode,
-	graphicsCanvas,
-	graphicsContext,
 	seriouslyEffects,
 	webmBlob,
     effects = {},
@@ -21,11 +14,11 @@ var movie,
     frames = [],
     capture,
     windowObjectReference = null;
-numVidSelect = 0;
-numFilterSelect = 0;
-allEffects = ['blend','blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'];
-mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
-defaultValue = {'number': 5, 'color': '"red"'};
+    numVidSelect = 0,
+    numFilterSelect = 0,
+    allEffects = ['blend','blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'],
+    mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1},
+    defaultValue = {'number': 5, 'color': '"red"'};
 
 	
 	
@@ -308,161 +301,163 @@ var updateCodeInEditor = function(text, cmline, cmclass){
                 }, CodeMirror.Pos(cmline), {className: cmclass});       
 }
 
+//canvas variables
+var draggingCanvas,
+    draggingContext,
+    drawingCanvas,
+    drawingContext,
+    graphicsCanvas,
+    graphicsContext;
 
-
-
-
+//graphic variables
 var positionX = 0;
 var positionY = 0;
 var size = 200;
+var hasGraphic = false;
+var graphicTimeline = [];
 
 
 //drawing variables
-drawingMode = false;
+var drawingMode = false;
+var hasDrawing = false;
 var prevX = 0;
 var prevY = 0;
 
 var drawX = [];
 var drawY = [];
 
-var isDrawing = false;
-var offsetX = 0;
-var offsetY = 0;
-
-var color = 'green';
+var drawingOffsetX = 0;
+var drawingOffsetY = 0;
+var drawingColor = 'green';
 
 var drawLine = function(evt){
-    var x, y, rect;
-    if(evt.which == 1){
-        rect = canvas.getBoundingClientRect();
-        x = evt.clientX - rect.left-45;
-        y = evt.clientY - rect.top-18;
+    if(drawingMode){
+        var x, y, rect;
+        if(evt.which == 1){
+            rect = canvas.getBoundingClientRect();
+            x = evt.clientX - rect.left-45;
+            y = evt.clientY - rect.top-18;
+            drawingContext.beginPath();
+            drawingContext.moveTo(prevX, prevY);
+            drawingContext.lineTo(x, y);
+            drawingContext.strokeStyle=drawingColor;
+            drawingContext.stroke();            
+        }
+
+        prevX = x;
+        prevY = y;
+
+        if(typeof x !== 'undefined'){
+            hasDrawing = true;
+            drawX.push(x);
+            drawY.push(y);
+        }
+    }
+}
+
+var reDrawing = function(){
+    drawingContext.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    graphicsContext.beginPath();
+    graphicsContext.moveTo(drawX[0]+drawingOffsetX, drawY[0]+drawingOffsetY);
+
+    drawX.forEach(function(element, index){
+        graphicsContext.lineTo(element+drawingOffsetX, drawY[index]+drawingOffsetY);      
+    });
+    graphicsContext.strokeStyle=drawingColor;
+    graphicsContext.stroke();
     
-        drawingContext.beginPath();
-        drawingContext.moveTo(prevX, prevY);
-        drawingContext.lineTo(x, y);
-        drawingContext.strokeStyle=color;
-        drawingContext.stroke();
-        isDrawing = true;
-    }
+}
 
-    prevX = x;
-    prevY = y;
+var turnOffDrawing = function(){
+    drawingMode = false;
+    $('#drawingCanvas').addClass('is-hidden');
+    hasDrawing = false;
+    drawX = [];
+    drawY = [];
 
-    if(typeof x !== 'undefined'){
-        drawX.push(x);
-        drawY.push(y);
-    }
-
-    if(!isDrawing){
-        updateGraphicsEditor();
-    }
-    else{
-        console.log("drawing");
-        isDrawing = true;
-    }
-    
-
-    //this goes to whenever we start drawing mode
-    var offsetExists = false;
     var allTM = myCodeMirror.getAllMarks();
     for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if (tm.className == "cm-offsetX") {
-               offsetExists = true;
-            }           
+        var tm = allTM[m];
+        if(tm.className == "cm-drawing"){
+            myCodeMirror.removeLine(tm.find().to.line);
         }
-    if(!offsetExists){
-        createCodeInEditor("\n\ offsetX="+Math.round(offsetX)+";", 'cm-offsetX');
-        createCodeInEditor("\n\ offsetY="+Math.round(offsetY)+";", 'cm-offsetY');
+        if(tm.className == "cm-drawingColor"){
+            myCodeMirror.removeLine(tm.find().to.line);
+        }        
+        if(tm.className == "cm-offsetX"){
+            myCodeMirror.removeLine(tm.find().to.line);
+        } 
+        if(tm.className == "cm-offsetY"){
+            myCodeMirror.removeLine(tm.find().to.line);
+        }          
     }
-}
 
-var offsetDrawing = function(){
-    if(isDrawing){
-        isDrawing = false;
-    }
-    else{
-        drawingContext.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-        console.log("redraw");       
-        console.log(drawX);
-        graphicsContext.beginPath();
-        graphicsContext.moveTo(drawX[0]+offsetX, drawY[0]+offsetY);
-
-        drawX.forEach(function(element, index){
-        graphicsContext.lineTo(element+offsetX, drawY[index]+offsetY);
-        });
-        graphicsContext.strokeStyle=color;
-        graphicsContext.stroke();
-        // drawX = [];
-        // drawY = [];
-        graphic.update();
-    }
-}
-
-var moveImage = function(evt){
-	var x, y, rect;
-	
-	//var img = document.getElementById('#mygraphic');
-     var img = document.getElementsByClassName('js-selected-graphic')[0];
-		
-	if(evt.which == 1){
-		rect = canvas.getBoundingClientRect();
-		x = evt.clientX - rect.left;
-		y = evt.clientY - rect.top;
-		
-		if(x < positionX + size && x > positionX && y > positionY && y < positionY + size){
-			x = x -img.width/2;
-			y = y -img.height/2;
-			draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
-			draggingContext.drawImage(img,x, y, size,size-size/5);
-			positionX = x;
-			positionY = y;	
-		}
-	}
+    if(hasGraphic) $('#draggingCanvas').removeClass('is-hidden');    
+    updateGraphicsCanvas();
 }
 
 var updateGraphicsEditor = function(){
-	 var allTM = myCodeMirror.getAllMarks();
+    var allTM = myCodeMirror.getAllMarks();
 		for (var m = 0; m < allTM.length; m++) {
 			var tm = allTM[m];
 			if (tm.className=="cm-positionX"){
-				var cmLine = tm.find();
-                updateCodeInEditor("   positionX="+Math.round(positionX)+";", cmLine.to.line, "cm-positionX" );       
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor("   positionX="+Math.round(positionX)+";", cmLine.to.line, "cm-positionX" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
 			}
 		    if (tm.className=="cm-positionY"){
-	        	var cmLine = tm.find();
-                updateCodeInEditor("   positionY="+Math.round(positionY)+";", cmLine.to.line, "cm-positionY" );       
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor("   positionY="+Math.round(positionY)+";", cmLine.to.line, "cm-positionY" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
 			}
             if (tm.className=="cm-size"){
                 var cmLine = tm.find();
-                updateCodeInEditor("   size="+Math.round(size)+";", cmLine.to.line, "cm-size" );       
+                if(hasGraphic) updateCodeInEditor("   size="+Math.round(size)+";", cmLine.to.line, "cm-size" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
             }
-            if (tm.className=="cm-offsetX"){
-                var cmLine = tm.find();
-                 updateCodeInEditor("   offsetX="+Math.round(size)+";", cmLine.to.line, "cm-offsetX" );       
-             }       		
-            if (tm.className=="cm-offsetY"){
-               var cmLine = tm.find();
-                 updateCodeInEditor("   offsetY="+Math.round(size)+";", cmLine.to.line, "cm-offsetY" );       
-            }   
         }
 	myCodeMirror.save();
 }
 
+var moveImage = function(evt){
+    var x, y, rect;
+    var img = document.getElementsByClassName('js-selected-graphic')[0];        
+    if(evt.which == 1){
+        rect = canvas.getBoundingClientRect();
+        x = evt.clientX - rect.left;
+        y = evt.clientY - rect.top;
+        
+        if(x < positionX + size && x > positionX && y > positionY && y < positionY + size){
+            x = x -img.width/2;
+            y = y -img.height/2;
+            
+            draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
+            draggingContext.drawImage(img,x, y, size,size-size/5);
+            positionX = x;
+            positionY = y;  
+        }
+    }
+    updateGraphicsEditor();
+
+}
 
 
 var reDrawImage = function(){
 	var img = document.getElementsByClassName('js-selected-graphic')[0];
+
 	draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
     graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);	
-    graphicsContext.drawImage(img, positionX, positionY, size, size-size/5);      
-    graphic.update();
+    graphicsContext.drawImage(img, positionX, positionY, size, size-size/5);  
 }
 
-var releaseImage = function(){
-	updateGraphicsEditor();
-	reDrawImage();
+
+var updateGraphicsCanvas = function(){
+    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   	
+
+    if(hasGraphic) reDrawImage();
+    if (hasDrawing) reDrawing();         
+    graphic.update();
+
 }
 
 var InitSeriously = function(){
@@ -505,7 +500,7 @@ var InitSeriously = function(){
 
 
 var updateScript = function() {
-	//console.log('update script call');
+    //console.log('update script call');
     var scriptOld = document.getElementById('codeScript');
     if (scriptOld) { scriptOld.remove();}
     var scriptNew   = document.createElement('script');
@@ -549,12 +544,16 @@ var updateScript = function() {
     var matchEff = document.querySelectorAll(".active-effect");
 
     var matchNames = [];
-    $('.btn-method').removeClass('is-active');
+    
+    //$('.btn-method').removeClass('is-active');
+
     for (var t = 0; t < matchEff.length; t++) {
         var matchE = matchEff[t];
         matchNames.push($(matchE).attr("name"));
         checkBtnStatus(matchE);
     }
+
+  
 
     for (var c = 0; c < allEffects.length; c++) {
         var thisEffect = allEffects[c];
@@ -565,27 +564,37 @@ var updateScript = function() {
             adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
         }
     }
-	
-	if (textScript.indexOf('position')>=0){
-		reDrawImage();
-	}
 
-    if (textScript.indexOf('offset')>=0){
-        offsetDrawing();
+    if(textScript.indexOf('drawing')>=0){
+       if(drawingMode){
+            $('#drawingCanvas').removeClass('is-hidden');
+            $('#draggingCanvas').addClass('is-hidden');        
+      }
+       else{
+           $('#drawingCanvas').addClass('is-hidden');
+           $('#draggingCanvas').removeClass('is-hidden');    
+       }
+    }else{
+        turnOffDrawing();
     }
-    
-   
+    updateGraphicsCanvas();
+
+
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
 	scriptNew.text = textScript;
 
     document.body.appendChild(scriptNew);
+
+
 };
 
 var checkBtnStatus = function (effect) {
     //compare the names of effect buttons to the names in activeEffects
     var effectName = $(effect).attr("name");
     $('li[name=' + effectName + ']').addClass("is-active")
+
+
 };
 
 /*old lessons.js*/
@@ -636,11 +645,11 @@ $(document).ready(function () {
 
     //graphics
     draggingCanvas.addEventListener('mousemove', moveImage, false);
-    draggingCanvas.addEventListener('mouseup', releaseImage, false);
+    draggingCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
 
     //drawings
     drawingCanvas.addEventListener('mousemove', drawLine, false);
-    //drawingCanvas.addEventListener('click', offsetDrawing, false);  
+    drawingCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);  
     
 
     inputFile = document.getElementById('inputFile');
@@ -929,6 +938,14 @@ $(document).ready(function () {
                 if (eff == "interval") {
                     updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
                 }
+            } else if (eff == "drawing" ){
+                drawingMode = true;
+               $('#drawingCanvas').removeClass('is-hidden');
+                createCodeInEditor("\n\ drawingMode=true;", 'cm-drawing');
+                createCodeInEditor("\n\ drawingColor='"+drawingColor+"';", 'cm-drawingColor');
+                createCodeInEditor("\n\ drawingOffsetX="+Math.round(drawingOffsetX)+";", 'cm-offsetX');
+                createCodeInEditor("\n\ drawingOffsetY="+Math.round(drawingOffsetY)+";", 'cm-offsetY');                            
+
             }
 
             myCodeMirror.save();
@@ -946,15 +963,20 @@ $(document).ready(function () {
     $(".draggable").click(function () {
         var eff = ($(this).attr('name'));
         $(this).removeClass("is-active");
-        var allTM = myCodeMirror.getAllMarks();
 
+        var allTM = myCodeMirror.getAllMarks();
         for (var m = 0; m < allTM.length; m++) {
             var tm = allTM[m];
             if (tm.className == "cm-" + eff) {
                 myCodeMirror.removeLine(tm.find().to.line);
             }
         }
+
+        if (eff == "drawing" ){
+            turnOffDrawing();           
+        } 
         myCodeMirror.save();
+   
     });
 
     var lessonIsActive = function (newLesson) {
@@ -1075,21 +1097,32 @@ $('.js-graph-click').click(function () {
     if($(this).hasClass('js-selected-graphic') === false){
         $('.js-graph-click').removeClass('js-selected-graphic'); 
     }
+     $(this).toggleClass('js-selected-graphic');
     
-    $('#draggingCanvas').removeClass('is-hidden');
-    $('#drawingCanvas').addClass('is-hidden');
-    drawingMode = false;
+    //check if has any Graphic selected
+	if($(this).hasClass('js-selected-graphic') === true){
+        hasGraphic = true;
+        createGraphicsEditor();  
+        $('#draggingCanvas').removeClass('is-hidden');
+        $('#drawingCanvas').addClass('is-hidden');
+   }
+    else{
+       hasGraphic = false;
 
-    $(this).toggleClass('js-selected-graphic');
-	
-	var positionExists = false;
+       //making dragging canvas invisible
+       draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
+       $('#draggingCanvas').addClass('is-hidden');
+    }
+
+    updateGraphicsCanvas();  	
+});
+
+var createGraphicsEditor = function(){
+    var positionExists = false;
     var sizeExists = false;
-
-
-
     var allTM = myCodeMirror.getAllMarks();
 
-	for (var m = 0; m < allTM.length; m++) {
+    for (var m = 0; m < allTM.length; m++) {
             var tm = allTM[m];
             if (tm.className == "cm-positionX" || tm.className == "cm-positionY") {
                positionExists = true;
@@ -1099,54 +1132,18 @@ $('.js-graph-click').click(function () {
             }           
         }
 
-	if(!positionExists){
+    if(!positionExists){
         var text = "\n\ positionX="+Math.round(positionX)+";";
         createCodeInEditor(text, "cm-positionX");    
         text = "\n\ positionY="+Math.round(positionY)+";";
         createCodeInEditor(text, "cm-positionY");
-	}
+    }
 
     if(!sizeExists){
       var text = "\n\ size="+Math.round(size)+";";
-      myCodeMirror.replaceRange(text, CodeMirror.Pos(myCodeMirror.lastLine()));
-      myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-size"});
+      createCodeInEditor(text, "cm-size");
    }
-
-    //check if graphic is selected. if it is, release it, otherwise, clean the canvas;
-	if($(this).hasClass('js-selected-graphic') === true){
-        releaseImage();
-    }
-    else{
-       //making dragging canvas invisible
-       draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
-       $('#draggingCanvas').addClass('is-hidden');
-       $('#drawingCanvas').removeClass('is-hidden');
-       
-       drawingMode = true;
-
-       graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   
-       graphic.update();
-
-
-        for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if (tm.className == "cm-positionX" || tm.className == "cm-positionY") {
-               myCodeMirror.removeLine(tm.find().to.line);
-               positionExists = false;
-            }
-            if (tm.className == "cm-size") {
-                myCodeMirror.removeLine(tm.find().to.line);
-                sizeExists = false;
-            }           
-        }
-
-    }
-
-	
-});
+}
 
 //Switch between content
 $('.js-switch-view').click(function () {
