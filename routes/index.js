@@ -238,7 +238,6 @@ module.exports = function (app, passport) {
 // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
 // =============================================================================
 
-
     // facebook -------------------------------
 
     // send to facebook to do the authentication
@@ -594,31 +593,22 @@ module.exports = function (app, passport) {
         session.videoFileId = videoFileId;
         session.lessonId = lessonId;
 
-        mongoose.connection.db.collection('users').update({
-                '_id': req.user._id
-            },
-            {$set: {'lastSession': session}},
-            function (err, result) {
+        User.findOne({_id: req.user._id}, function (err, user) {
+          if (!err) {
+            user.lessons.addToSet(lessonId);
+            user.lastSession = session;
+            user.inProgressProjects.addToSet(session);
+            user.save(
+              function (err, result) {
                 if (err) {
-                    console.log('err in updating lastSession ' + session + ':' + err);
+                  console.log('err in updating Session ' + session + ':' + err);
                 } else {
 
-                    console.log('successfully updated vidcode session ' + token);
+                  console.log('successfully updated vidcode session ' + token);
                 }
-            });
-
-
-          User.findOne({_id: req.user._id}, function (err, user) {
-            if (!err) {
-              user.lessons.addToSet(lessonId);
-              user.save();
-
-              console.log('successfully added lessonId for user.lessons .' );
-
-            }
+              });
           }
-        );
-
+        });
     });
 
     app.get('/video', function (req, res) {
@@ -639,7 +629,6 @@ module.exports = function (app, passport) {
 // =============================================================================
 // ROUTES TO LESSONS ===========================================================
 // =============================================================================
-
 
     app.get('/csweek', function (req, res) {
         res.redirect('/intro');
@@ -665,7 +654,6 @@ module.exports = function (app, passport) {
                 code: codeText
             });
     });
-
 
     app.get('/workstation/:token?',isLoggedIn, function (req, res) {
         var token = req.params.token;
@@ -743,7 +731,6 @@ module.exports = function (app, passport) {
 // =============================================================================
 // ROUTE TO PAGE NOT FOUND =====================================================
 // =============================================================================
-
 
     app.get('*', function (req, res) {
         res.render('404', {layout: false});
