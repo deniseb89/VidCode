@@ -376,6 +376,79 @@ var updateScript = function () {
     document.body.appendChild(scriptNew);
 };
 
+
+var updateScriptForSavedSession = function (code) {
+    var scriptOld = document.getElementById('codeScript');
+    if (scriptOld) {
+        scriptOld.remove();
+    }
+    var scriptNew = document.createElement('script');
+    scriptNew.id = 'codeScript';
+   // var cmScript = myCodeMirror.getValue();
+
+    var cmScript = code;
+
+    //eval(cmScript);
+    var adjScript = "";
+    var textScript = "\n\ try {\n\ " + cmScript;
+
+    /*TODO: Check to see if the active effects have changed from before to now
+     if so, reinit seriously. if not, do nothing
+     Also, don't add and remove the script each time. Just update the script string via innerhtml
+     */
+
+    // if (textScript.indexOf('effects.sepia')>=0) {
+    //   if (allEffects.indexOf('sepia')<0) {
+    //     allEffects.push('sepia');
+    //     InitSeriously();
+    //   }
+    // } else {
+    //   var si = allEffects.indexOf('sepia');
+    //   if (si>=0) {
+    //     allEffects.splice(si,1);
+    //     InitSeriously();
+    //   }
+    // }
+
+    if (textScript.indexOf('stopMotion.interval') >= 0) {
+        // if (!stopMotion.on) {
+        // console.log($(".cm-frames").html());
+        stopMotion.start();
+        // }
+    } else {
+        if (stopMotion.on) {
+            stopMotion.stop();
+        }
+    }
+
+    labelLines();
+    var matchEff = document.querySelectorAll(".active-effect");
+
+    var matchNames = [];
+    $('.btn-method').removeClass('is-active');
+    for (var t = 0; t < matchEff.length; t++) {
+        var matchE = matchEff[t];
+        matchNames.push($(matchE).attr("name"));
+        checkBtnStatus(matchE);
+    }
+
+    for (var c = 0; c < allEffects.length; c++) {
+        var thisEffect = allEffects[c];
+        if (matchNames.indexOf(thisEffect) < 0) {
+            adjScript += "\n\ effects." + thisEffect + ".amount = 0;";
+        } else {
+            var adjAmt = effects[thisEffect]['amount'] * mult[thisEffect];
+            adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
+        }
+    }
+
+    textScript += adjScript;
+    textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
+    scriptNew.text = textScript;
+
+   // document.body.appendChild(scriptNew);
+};
+
 var checkBtnStatus = function (effect) {
     //compare the names of effect buttons to the names in activeEffects
     var effectName = $(effect).attr("name");
@@ -786,26 +859,31 @@ $(document).ready(function () {
     }, function () {
         removeInfo("seriously");
     });
+
     $('.js-filmgrain').hover(function () {
         showInfo("filmgrain", "rgba(49, 150, 101, .4)");
     }, function () {
         removeInfo("filmgrain");
     });
+
     $('.js-function').hover(function () {
         showInfo("function", "rgba(221, 57, 169, .4)");
     }, function () {
         removeInfo("function");
     });
+
     $('.js-showeffect').hover(function () {
         showInfo("showEffect", "rgba(221, 57, 169, .4)");
     }, function () {
         removeInfo("showEffect");
     });
+
     $('.js-play').hover(function () {
         showInfo("play", "rgba(118, 70, 130, 0.4)");
     }, function () {
         removeInfo("play");
     });
+
     $('.js-interval').hover(function () {
         showInfo("interval", "rgba(50, 98, 234, 0.4)");
     }, function () {
@@ -831,6 +909,19 @@ $(document).ready(function () {
     var removeInfo = function (term) {
         $('pre:contains(' + term + ')').css("background", "none");
     };
+
+  
+
+    var codeToLoad = $('#vid-load-from-profile').attr('data-code');
+
+    console.log(codeToLoad);
+
+    if(codeToLoad.length > 0)
+    {
+        console.log("LOAD ");
+        updateScriptForSavedSession(codeToLoad);
+    }
+
 });
 
 loadThumbnails();

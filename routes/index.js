@@ -10,6 +10,7 @@ var gfs = Grid(mongoose.connection.db, mongoose.mongo);
 var User = require('../models/user');
 var Vidcode = require('../models/vidcode');
 var content = require('../models/content');
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function (app, passport) {
 
@@ -655,8 +656,8 @@ module.exports = function (app, passport) {
             });
     });
 
-    app.get('/workstation/:token?',isLoggedIn, function (req, res) {
-        var token = req.params.token;
+    app.get('/workstation/:videoFileId?',isLoggedIn, function (req, res) {
+        var videoFileId = req.params.videoFileId;
         var file;
         var codeText =
         '\
@@ -664,7 +665,7 @@ module.exports = function (app, passport) {
         ';
 
 
-        if (!token) {
+        if (!videoFileId) {
             res.render("workstation",
                 {
                     user: req.user,
@@ -683,17 +684,23 @@ module.exports = function (app, passport) {
                 } else {
                     var _sessionToLoad = {};
 
-                    if (token == "lastSession"){
+                    if (videoFileId == "lastSession"){
 
-                        for (var item in user.videoLibrary) {
+                        // for (var item in user.videoLibrary) {
 
-                            if (user.videoLibrary[item]['token'] == user.lastSession.token) {
-                                _sessionToLoad.file = user.videoLibrary[item]['file'];
-                                _sessionToLoad.code = user.videoLibrary[item]['code'];
-                                _sessionToLoad.video = user.videoLibrary[item];
-                            }
-                        }
+                        //     if (user.videoLibrary[item]['file'].toString() == user.lastSession.videoFileId) {
+                        //         _sessionToLoad.file = user.videoLibrary[item]['file'];
+                        //         _sessionToLoad.code = user.videoLibrary[item]['code'];
+                        //         _sessionToLoad.video = user.videoLibrary[item];
+                        //         _sessionToLoad.videoFileId = user.videoLibrary[item]['videoFileId'];
+                        //     }
+                        // }
 
+                                _sessionToLoad.file = user.lastSession.videoFileId;
+                                _sessionToLoad.code = user.lastSession.code;
+                              //  _sessionToLoad.video = user.videoLibrary[item];
+                                _sessionToLoad.videoFileId = user.lastSession.videoFileId;
+                                
                         user.sessionToLoad = _sessionToLoad;
 
                         res.render('workstation', {
@@ -704,10 +711,11 @@ module.exports = function (app, passport) {
 
                     }else{
                         for (var item in user.vidcodes) {
-                            if (user.vidcodes[item]['token'] == token) {
+                            if (user.videoLibrary[item]['file'].toString() == videoFileId) {
                                 _sessionToLoad.file = user.vidcodes[item]['file'];
                                 _sessionToLoad.code = user.vidcodes[item]['code'];
                                 _sessionToLoad.video = user.vidcodes[item];
+                                _sessionToLoad.videoFileId = user.videoLibrary[item]['videoFileId'];
                             }
                         }
 
@@ -719,6 +727,7 @@ module.exports = function (app, passport) {
                             content: content,
                             code: _sessionToLoad.code,
                             file: _sessionToLoad.file,
+                            videoFileId: _sessionToLoad.videoFileId,
                             token: token,
                             lastSession: true
                         });
