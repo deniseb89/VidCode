@@ -2536,7 +2536,7 @@ Inlined to avoid required HTTP connection: h5bp.com/r
     }
 }
 
-#draggingCanvas, #drawingCanvas{
+#supportCanvas{
 	position:absolute;
 	margin-top: -250px; 	
 }

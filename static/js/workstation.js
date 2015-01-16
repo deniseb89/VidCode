@@ -302,66 +302,84 @@ var updateCodeInEditor = function(text, cmline, cmclass){
 }
 
 //canvas variables
-var draggingCanvas,
-    draggingContext,
-    drawingCanvas,
-    drawingContext,
+var supportCanvas,
     graphicsCanvas,
     graphicsContext;
 
 //graphic variables
 var position = {'x':'0', 'y':'0'};
-    lastPos = {'x':'0', 'y':'0'};
-    size = 200,
-    hasGraphic = false,
-    graphicTimeline = [],
+    initialPosition = {'x':'0', 'y':'0'};
+    lastPosition = {'x':'0', 'y':'0'};
+    speed = {'x':1, 'y':1}
     animationMode = false;
+    reverseAnimation = false;
+    size = 200,
+    hasGraphic = false;
 
 //drawing variables
 var drawingMode = false;
 var hasDrawing = false;
-var prevX = 0;
-var prevY = 0;
+var prevX ;
+var prevY ;
 
 var drawX = [];
 var drawY = [];
 
-var drawingOffsetX = 0;
-var drawingOffsetY = 0;
+var drawingOffset = {'x':0, 'y':0}
 var drawingColor = 'green';
 
-var drawLine = function(evt){
-    if(drawingMode){
-        var x, y, rect;
-        if(evt.which == 1){
-            rect = canvas.getBoundingClientRect();
-            x = evt.clientX - rect.left-45;
-            y = evt.clientY - rect.top-18;
-            drawingContext.beginPath();
-            drawingContext.moveTo(prevX, prevY);
-            drawingContext.lineTo(x, y);
-            drawingContext.strokeStyle=drawingColor;
-            drawingContext.stroke();            
+var drawGraphics = function(evt){
+    var x, y, rect;
+    var img = document.getElementsByClassName('js-selected-graphic')[0];        
+    if(evt.which == 1){
+        rect = canvas.getBoundingClientRect();
+            x = evt.clientX - rect.left;
+            y = evt.clientY - rect.top;  
+
+        if(drawingMode){
+            graphicsContext.beginPath();
+            graphicsContext.moveTo(prevX, prevY);
+            graphicsContext.lineTo(x, y);
+            graphicsContext.strokeStyle=drawingColor;
+            graphicsContext.stroke();                  
+            graphic.update();
+            
+            prevX = x;
+            prevY = y;
+
+            if(typeof x !== 'undefined'){
+                hasDrawing = true;
+                drawX.push(x);
+                drawY.push(y);
+            }
         }
 
-        prevX = x;
-        prevY = y;
+        else if(hasGraphic){       
+            if(x < position.x + size && x > position.x && y > position.y && y < position.y + size){
+                x = x -img.width/2;
+                y = y -img.height/2;
+                
+                graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
 
-        if(typeof x !== 'undefined'){
-            hasDrawing = true;
-            drawX.push(x);
-            drawY.push(y);
+                if(hasDrawing) reDrawing();
+
+                graphicsContext.drawImage(img,position.x , position.y, size,size-size/5);
+                position.x = x;
+                position.y = y;  
+                graphic.update();
+                updateGraphicsEditor();
+
+            }
         }
     }
 }
 
 var reDrawing = function(){
-    drawingContext.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
     graphicsContext.beginPath();
-    graphicsContext.moveTo(drawX[0]+drawingOffsetX, drawY[0]+drawingOffsetY);
+    graphicsContext.moveTo(drawX[0]+drawingOffset.x, drawY[0]+drawingOffset.y);
 
     drawX.forEach(function(element, index){
-        graphicsContext.lineTo(element+drawingOffsetX, drawY[index]+drawingOffsetY);      
+        graphicsContext.lineTo(element+drawingOffset.x, drawY[index]+drawingOffset.y);      
     });
     graphicsContext.strokeStyle=drawingColor;
     graphicsContext.stroke();
@@ -369,7 +387,6 @@ var reDrawing = function(){
 }
 
 var turnOffGraphics = function(){
-    $('#draggingCanvas').addClass('is-hidden');
     $('.js-graph-click').removeClass('js-selected-graphic'); 
     hasGraphic = false;
 
@@ -392,7 +409,6 @@ var turnOffGraphics = function(){
 
 var turnOffDrawing = function(){
     drawingMode = false;
-    $('#drawingCanvas').addClass('is-hidden');
     hasDrawing = false;
     drawX = [];
     drawY = [];
@@ -413,8 +429,6 @@ var turnOffDrawing = function(){
             myCodeMirror.removeLine(tm.find().to.line);
         }          
     }
-
-    if(hasGraphic) $('#draggingCanvas').removeClass('is-hidden');    
 }
 
 var updateGraphicsEditor = function(){
@@ -440,41 +454,17 @@ var updateGraphicsEditor = function(){
 	myCodeMirror.save();
 }
 
-var animateImage = function(evt){
-    var img = document.getElementsByClassName('js-selected-graphic')[0];        
-    if(evt.which == 1){
-        position.x += 5;
-        position.y += 5;
-        graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
-        graphicsContext.drawImage(img,position.x , position.y, size,size-size/5);
-        graphic.update();
+var animateImage = function(){
+    console.log("animateeee!");
+    var img = document.getElementsByClassName('js-selected-graphic')[0];    
 
-    }
-        updateGraphicsEditor();
+    position.x += speed.x;
+    position.y += speed.y;
 
-}
-
-var moveImage = function(evt){
-    var x, y, rect;
-    var img = document.getElementsByClassName('js-selected-graphic')[0];        
-    if(evt.which == 1){
-        rect = canvas.getBoundingClientRect();
-        x = evt.clientX - rect.left;
-        y = evt.clientY - rect.top;
-        
-        if(x < position.x + size && x > position.x && y > position.y && y < position.y + size){
-            x = x -img.width/2;
-            y = y -img.height/2;
-            
-            graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
-            graphicsContext.drawImage(img,position.x , position.y, size,size-size/5);
-            position.x = x;
-            position.y = y;  
-
-            graphic.update();
-
-        }
-    }
+    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
+    graphicsContext.drawImage(img,position.x , position.y, size,size-size/5);
+    graphic.update();
+    
     updateGraphicsEditor();
 
 }
@@ -482,8 +472,6 @@ var moveImage = function(evt){
 
 var reDrawImage = function(){
 	var img = document.getElementsByClassName('js-selected-graphic')[0];
-
-	draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
     graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);	
     graphicsContext.drawImage(img, position.x, position.y, size, size-size/5);  
 }
@@ -493,7 +481,9 @@ var updateGraphicsCanvas = function(){
     graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   	
 
     if(hasGraphic) reDrawImage();
-    if (hasDrawing) reDrawing();         
+
+    if (hasDrawing) reDrawing(); 
+
     graphic.update();
 
 }
@@ -612,17 +602,10 @@ var updateScript = function() {
 
     if(textScript.indexOf('drawing')>=0){
        $('li[name=drawing]').addClass('is-active');
- 
-       if(drawingMode){
-            $('#drawingCanvas').removeClass('is-hidden');
-            $('#draggingCanvas').addClass('is-hidden');        
-      }
-       else{
-           $('#drawingCanvas').addClass('is-hidden');
-           $('#draggingCanvas').removeClass('is-hidden');    
-       }
-    }else{
-        turnOffDrawing();
+    }
+    else{
+        console.log("turn off drawing");
+        turnOffDrawing();        
     }
 
 
@@ -684,23 +667,14 @@ $(document).ready(function () {
     movie.load();
 	
 	canvas = document.getElementById('canvas');
-
+    supportCanvas = document.getElementById('supportCanvas');
     graphicsCanvas = document.getElementById('graphicsCanvas');
-    graphicsContext = graphicsCanvas.getContext("2d");
-    draggingCanvas = document.getElementById('draggingCanvas');
-    draggingContext = draggingCanvas.getContext("2d"); 
-    drawingCanvas = document.getElementById('drawingCanvas');
-    drawingContext = drawingCanvas.getContext("2d");    
-
+    graphicsContext = graphicsCanvas.getContext("2d");  
     //graphics
-    draggingCanvas.addEventListener('mousemove', moveImage, false);
-    draggingCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
-
-    //drawings
-    drawingCanvas.addEventListener('mousemove', drawLine, false);
-    drawingCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);  
+    supportCanvas.addEventListener('mousemove', drawGraphics, false);
+    supportCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
+ 
     
-
     inputFile = document.getElementById('inputFile');
     inputFileToLibrary = document.getElementById('inputFileToLibrary');
     
@@ -754,9 +728,9 @@ $(document).ready(function () {
     });
 
     //share success on copy click
-//    $('.js-copy-sucess').click(function () {
-//        $(this).text('✓');
-//    });
+    //    $('.js-copy-sucess').click(function () {
+    //        $(this).text('✓');
+    //    });
 
 
     // video events section
@@ -989,11 +963,12 @@ $(document).ready(function () {
                 }
             } else if (eff == "drawing" ){
                 drawingMode = true;
-               $('#drawingCanvas').removeClass('is-hidden');
+
+               $('#supportCanvas').removeClass('is-hidden');
                 createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
-                createCodeInEditor("\n\ drawingColor='"+drawingColor+"';", 'cm-drawingColor');
-                createCodeInEditor("\n\ drawingOffsetX="+Math.round(drawingOffsetX)+";", 'cm-offsetX');
-                createCodeInEditor("\n\ drawingOffsetY="+Math.round(drawingOffsetY)+";", 'cm-offsetY');                            
+                createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
+                createCodeInEditor("\n\ drawingOffset.x=0", 'cm-offsetX');
+                createCodeInEditor("\n\ drawingOffset.y=0", 'cm-offsetY');                            
             } else if (eff == "animation"){
                 animationMode = true;
                 createCodeInEditor("\n\ animationMode=true;", 'cm-animationMode');
@@ -1157,16 +1132,24 @@ $('.js-graph-click').click(function () {
 	if($(this).hasClass('js-selected-graphic') === true){
         hasGraphic = true;
         createGraphicsEditor(); 
-        $('#draggingCanvas').removeClass('is-hidden');
-        $('#drawingCanvas').addClass('is-hidden');
-   }
+        $('#supportCanvas').removeClass('is-hidden');
+
+        if(drawingMode){
+            var allTM = myCodeMirror.getAllMarks();
+            for (var m = 0; m < allTM.length; m++) {
+                var tm = allTM[m];
+                if (tm.className=="cm-drawingMode"){
+                    var cmLine = tm.find();
+                    updateCodeInEditor(" drawingMode=false;", cmLine.to.line, "cm-drawingMode" );       
+                }
+            }
+        }
+    }
     else{
        hasGraphic = false;
-
-       //making dragging canvas invisible
-       draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
-       $('#draggingCanvas').addClass('is-hidden');
     }
+
+
 
     updateGraphicsCanvas();  	
 });
