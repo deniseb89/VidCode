@@ -310,12 +310,12 @@ var draggingCanvas,
     graphicsContext;
 
 //graphic variables
-var positionX = 0;
-var positionY = 0;
-var size = 200;
-var hasGraphic = false;
-var graphicTimeline = [];
-
+var position = {'x':'0', 'y':'0'};
+    lastPos = {'x':'0', 'y':'0'};
+    size = 200,
+    hasGraphic = false,
+    graphicTimeline = [],
+    animationMode = false;
 
 //drawing variables
 var drawingMode = false;
@@ -368,6 +368,28 @@ var reDrawing = function(){
     
 }
 
+var turnOffGraphics = function(){
+    $('#draggingCanvas').addClass('is-hidden');
+    $('.js-graph-click').removeClass('js-selected-graphic'); 
+    hasGraphic = false;
+
+    var allTM = myCodeMirror.getAllMarks();
+    for (var m = 0; m < allTM.length; m++) {
+        var tm = allTM[m];
+        if(tm.className == "cm-positionX"){
+            myCodeMirror.removeLine(tm.find().to.line);
+        }
+        if(tm.className == "cm-positionY"){
+            myCodeMirror.removeLine(tm.find().to.line);
+        }        
+        if(tm.className == "cm-size"){
+            myCodeMirror.removeLine(tm.find().to.line);
+        }       
+    }
+
+}
+
+
 var turnOffDrawing = function(){
     drawingMode = false;
     $('#drawingCanvas').addClass('is-hidden');
@@ -378,7 +400,7 @@ var turnOffDrawing = function(){
     var allTM = myCodeMirror.getAllMarks();
     for (var m = 0; m < allTM.length; m++) {
         var tm = allTM[m];
-        if(tm.className == "cm-drawing"){
+        if(tm.className == "cm-drawingMode"){
             myCodeMirror.removeLine(tm.find().to.line);
         }
         if(tm.className == "cm-drawingColor"){
@@ -393,7 +415,6 @@ var turnOffDrawing = function(){
     }
 
     if(hasGraphic) $('#draggingCanvas').removeClass('is-hidden');    
-    updateGraphicsCanvas();
 }
 
 var updateGraphicsEditor = function(){
@@ -402,21 +423,35 @@ var updateGraphicsEditor = function(){
 			var tm = allTM[m];
 			if (tm.className=="cm-positionX"){
                 var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor("   positionX="+Math.round(positionX)+";", cmLine.to.line, "cm-positionX" );       
+                if(hasGraphic) updateCodeInEditor(" position.x="+Math.round(position.x)+";", cmLine.to.line, "cm-positionX" );       
                 else myCodeMirror.removeLine(cmLine.to.line);
 			}
 		    if (tm.className=="cm-positionY"){
                 var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor("   positionY="+Math.round(positionY)+";", cmLine.to.line, "cm-positionY" );       
+                if(hasGraphic) updateCodeInEditor(" position.y="+Math.round(position.y)+";", cmLine.to.line, "cm-positionY" );       
                 else myCodeMirror.removeLine(cmLine.to.line);
 			}
             if (tm.className=="cm-size"){
                 var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor("   size="+Math.round(size)+";", cmLine.to.line, "cm-size" );       
+                if(hasGraphic) updateCodeInEditor(" size="+Math.round(size)+";", cmLine.to.line, "cm-size" );       
                 else myCodeMirror.removeLine(cmLine.to.line);
             }
         }
 	myCodeMirror.save();
+}
+
+var animateImage = function(evt){
+    var img = document.getElementsByClassName('js-selected-graphic')[0];        
+    if(evt.which == 1){
+        position.x += 5;
+        position.y += 5;
+        graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
+        graphicsContext.drawImage(img,position.x , position.y, size,size-size/5);
+        graphic.update();
+
+    }
+        updateGraphicsEditor();
+
 }
 
 var moveImage = function(evt){
@@ -427,14 +462,17 @@ var moveImage = function(evt){
         x = evt.clientX - rect.left;
         y = evt.clientY - rect.top;
         
-        if(x < positionX + size && x > positionX && y > positionY && y < positionY + size){
+        if(x < position.x + size && x > position.x && y > position.y && y < position.y + size){
             x = x -img.width/2;
             y = y -img.height/2;
             
-            draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
-            draggingContext.drawImage(img,x, y, size,size-size/5);
-            positionX = x;
-            positionY = y;  
+            graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
+            graphicsContext.drawImage(img,position.x , position.y, size,size-size/5);
+            position.x = x;
+            position.y = y;  
+
+            graphic.update();
+
         }
     }
     updateGraphicsEditor();
@@ -447,7 +485,7 @@ var reDrawImage = function(){
 
 	draggingContext.clearRect(0, 0, draggingCanvas.width, draggingCanvas.height);
     graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);	
-    graphicsContext.drawImage(img, positionX, positionY, size, size-size/5);  
+    graphicsContext.drawImage(img, position.x, position.y, size, size-size/5);  
 }
 
 
@@ -545,7 +583,10 @@ var updateScript = function() {
 
     var matchNames = [];
     
-    //$('.btn-method').removeClass('is-active');
+   
+    $('.btn-method').removeClass('is-active');          
+    
+
 
     for (var t = 0; t < matchEff.length; t++) {
         var matchE = matchEff[t];
@@ -565,7 +606,13 @@ var updateScript = function() {
         }
     }
 
+    if(textScript.indexOf('position')<0){
+        turnOffGraphics();
+    }
+
     if(textScript.indexOf('drawing')>=0){
+       $('li[name=drawing]').addClass('is-active');
+ 
        if(drawingMode){
             $('#drawingCanvas').removeClass('is-hidden');
             $('#draggingCanvas').addClass('is-hidden');        
@@ -577,6 +624,8 @@ var updateScript = function() {
     }else{
         turnOffDrawing();
     }
+
+
     updateGraphicsCanvas();
 
 
@@ -941,10 +990,14 @@ $(document).ready(function () {
             } else if (eff == "drawing" ){
                 drawingMode = true;
                $('#drawingCanvas').removeClass('is-hidden');
-                createCodeInEditor("\n\ drawingMode=true;", 'cm-drawing');
+                createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
                 createCodeInEditor("\n\ drawingColor='"+drawingColor+"';", 'cm-drawingColor');
                 createCodeInEditor("\n\ drawingOffsetX="+Math.round(drawingOffsetX)+";", 'cm-offsetX');
                 createCodeInEditor("\n\ drawingOffsetY="+Math.round(drawingOffsetY)+";", 'cm-offsetY');                            
+            } else if (eff == "animation"){
+                animationMode = true;
+                createCodeInEditor("\n\ animationMode=true;", 'cm-animationMode');
+
 
             }
 
@@ -973,7 +1026,8 @@ $(document).ready(function () {
         }
 
         if (eff == "drawing" ){
-            turnOffDrawing();           
+            turnOffDrawing();      
+            updateGraphicsCanvas();     
         } 
         myCodeMirror.save();
    
@@ -1102,7 +1156,7 @@ $('.js-graph-click').click(function () {
     //check if has any Graphic selected
 	if($(this).hasClass('js-selected-graphic') === true){
         hasGraphic = true;
-        createGraphicsEditor();  
+        createGraphicsEditor(); 
         $('#draggingCanvas').removeClass('is-hidden');
         $('#drawingCanvas').addClass('is-hidden');
    }
@@ -1133,9 +1187,9 @@ var createGraphicsEditor = function(){
         }
 
     if(!positionExists){
-        var text = "\n\ positionX="+Math.round(positionX)+";";
+        var text = "\n\ position.x="+Math.round(position.x)+";";
         createCodeInEditor(text, "cm-positionX");    
-        text = "\n\ positionY="+Math.round(positionY)+";";
+        text = "\n\ position.y="+Math.round(position.y)+";";
         createCodeInEditor(text, "cm-positionY");
     }
 
