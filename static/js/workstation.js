@@ -316,6 +316,9 @@ var position = {'x':'0', 'y':'0'};
     size = 200,
     hasGraphic = false;
 
+var animationInterval = setInterval(animateImage, 60);
+clearInterval(animationInterval);
+
 //drawing variables
 var drawingMode = false;
 var hasDrawing = false;
@@ -431,6 +434,28 @@ var turnOffDrawing = function(){
     }
 }
 
+var turnOffAnimation = function(status){
+    animationMode = false;  
+    console.log("cleared");
+    clearInterval(animationInterval);
+
+    if(status == "delete"){
+        var allTM = myCodeMirror.getAllMarks();
+        for (var m = 0; m < allTM.length; m++) {
+            var tm = allTM[m];
+            if(tm.className == "cm-animationMode"){
+                  myCodeMirror.removeLine(tm.find().to.line);             
+            }
+             if(tm.className == "cm-animationInitialX"){
+                  myCodeMirror.removeLine(tm.find().to.line);             
+            }           
+             if(tm.className == "cm-animationInitialY"){
+                  myCodeMirror.removeLine(tm.find().to.line);             
+            }           
+        }  
+    }
+}
+
 var updateGraphicsEditor = function(){
     var allTM = myCodeMirror.getAllMarks();
 		for (var m = 0; m < allTM.length; m++) {
@@ -455,7 +480,9 @@ var updateGraphicsEditor = function(){
 }
 
 var animateImage = function(){
-    console.log("animateeee!");
+    console.log("animating");
+
+    if(animationMode){
     var img = document.getElementsByClassName('js-selected-graphic')[0];    
 
     position.x += speed.x;
@@ -464,11 +491,9 @@ var animateImage = function(){
     graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
     graphicsContext.drawImage(img,position.x , position.y, size,size-size/5);
     graphic.update();
-    
-    updateGraphicsEditor();
-
+    }
+    //updateGraphicsEditor();
 }
-
 
 var reDrawImage = function(){
 	var img = document.getElementsByClassName('js-selected-graphic')[0];
@@ -477,10 +502,17 @@ var reDrawImage = function(){
 }
 
 
-var updateGraphicsCanvas = function(){
-    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   	
 
+var updateGraphicsCanvas = function(){
+
+    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   	
+    
     if(hasGraphic) reDrawImage();
+
+    if(animationMode && hasGraphic){
+      animationInterval = setInterval(animateImage, 60);  
+    } 
+
 
     if (hasDrawing) reDrawing(); 
 
@@ -543,7 +575,6 @@ var updateScript = function() {
     if so, reinit seriously. if not, do nothing
     Also, don't add and remove the script each time. Just update the script string via innerhtml
     */
-
     // if (textScript.indexOf('effects.sepia')>=0) {
     //   if (allEffects.indexOf('sepia')<0) {
     //     allEffects.push('sepia');
@@ -556,8 +587,6 @@ var updateScript = function() {
     //     InitSeriously();
     //   }
     // }
-	
-	
 
     if (textScript.indexOf('stopMotion.interval')>=0) {
         //*TODO: compare frame state
@@ -573,19 +602,17 @@ var updateScript = function() {
 
     var matchNames = [];
     
-   
+    //turn everything off
     $('.btn-method').removeClass('is-active');          
     
 
-
+    //turn on back the effects in
     for (var t = 0; t < matchEff.length; t++) {
         var matchE = matchEff[t];
         matchNames.push($(matchE).attr("name"));
         checkBtnStatus(matchE);
     }
-
-  
-
+    //update effects in editor
     for (var c = 0; c < allEffects.length; c++) {
         var thisEffect = allEffects[c];
         if (matchNames.indexOf(thisEffect) < 0) {
@@ -596,22 +623,36 @@ var updateScript = function() {
         }
     }
 
-    if(textScript.indexOf('position')<0){
-        turnOffGraphics();
-    }
 
+    //turn drawing/animation on
     if(textScript.indexOf('drawing')>=0){
        $('li[name=drawing]').addClass('is-active');
     }
     else{
-        console.log("turn off drawing");
         turnOffDrawing();        
     }
 
+    if(textScript.indexOf('animation')>=0){
+       $('li[name=animation]').addClass('is-active');
+       console.log("textScript animation");
+       if(textScript.indexOf('animationMode=false')>=0 || textScript.indexOf('animationMode= false')>=0 ||
+        textScript.indexOf('animationMode = false')>=0 || textScript.indexOf('animationMode =false')>=0){        
+            turnOffAnimation("pause");
+        }
+    }
+    else{
+        turnOffAnimation("delete");                  
+    }
 
+    
+
+    //if there is not position in the editor, turn off graphics
+    if(textScript.indexOf('position')<0 && textScript.indexOf('size')<0){
+        turnOffGraphics();
+    }
+
+    console.log(animationMode);
     updateGraphicsCanvas();
-
-
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
 	scriptNew.text = textScript;
@@ -971,9 +1012,24 @@ $(document).ready(function () {
                 createCodeInEditor("\n\ drawingOffset.y=0", 'cm-offsetY');                            
             } else if (eff == "animation"){
                 animationMode = true;
+                initialPosition = position;
+                lastPosition = {'x': initialPosition.x+50, 'y': initialPosition.y+50 };
+
+
                 createCodeInEditor("\n\ animationMode=true;", 'cm-animationMode');
+                createCodeInEditor("\n\ initialPosition.x="+initialPosition.x+";", 'cm-animationInitialX');
+                createCodeInEditor("\n\ initialPosition.y="+initialPosition.y+";", 'cm-animationInitialY');
 
-
+                   // var allTM = myCodeMirror.getAllMarks();
+                   //  for (var m = 0; m < allTM.length; m++) {
+                   //      var tm = allTM[m];
+                   //      if (tm.className == "cm-positionX") {
+                   //          myCodeMirror.removeLine(tm.find().to.line);
+                   //      }
+                   //      if (tm.className == "cm-positionY") {
+                   //          myCodeMirror.removeLine(tm.find().to.line);
+                   //      }                    
+                   //  }
             }
 
             myCodeMirror.save();
@@ -1003,6 +1059,9 @@ $(document).ready(function () {
         if (eff == "drawing" ){
             turnOffDrawing();      
             updateGraphicsCanvas();     
+        }
+        if(eff == "animation"){
+            turnOffAnimation("delete");
         } 
         myCodeMirror.save();
    
@@ -1146,10 +1205,9 @@ $('.js-graph-click').click(function () {
         }
     }
     else{
-       hasGraphic = false;
+       turnOffGraphics();
+
     }
-
-
 
     updateGraphicsCanvas();  	
 });
