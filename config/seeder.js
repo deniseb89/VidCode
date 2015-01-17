@@ -41,37 +41,31 @@ module.exports = {
 
           {
             "unitId": 1,
-            "name": "Filters",
+            "unitName": "Filters",
             "lessons": [
-            {
-              "lessonId": "1-1",
-              "name": "Values",
-              "title": "What are we writing? JavaScript!",
-              "content": "Javascript is a programming language"
-            },
-            {
-              "lessonId": "1-2",
-              "name": "Objects",
-              "title": "How is it changing my video?",
-              "content": "Javascript is a programming language"
-            },
-            {
-              "lessonId": "1-3",
-              "name": "Functions",
-              "title": "How is it changing my video?",
-              "content": "Javascript is a programming language"
-            },
-            {
-              "lessonId": "1-4",
-              "name": "Arrays",
-              "title": "How is it changing my video?",
-              "content": "Javascript is a programming language"
-            },
-            {
-              "lessonId": "1-5",
-              "name": "Pixel Puzzle",
-              "title": "How is it changing my video?",
-              "content": "Javascript is a programming language"
+              {
+                "lessonId": "1-1",
+                "name": "JavaScript!",
+                "title": "What are we writing? JavaScript!",
+                "content": "Javascript is a programming language"
+              },
+              {
+                "lessonId": "1-2",
+                "name": "Play / Pause",
+                "title": "How is it changing my video?",
+                "content": "Javascript is a programming language"
+              },
+              {
+                "lessonId": "1-3",
+                "name": "Empty",
+                "title": "How is it changing my video?",
+                "content": "Javascript is a programming language"
+              },
+              {
+                "lessonId": "1-4",
+                "name": "Objects",
+                "title": "How is it changing my video?",
+                "content": "Javascript is a programming language"
             }]});
 
           newUnit.save(function(err, unit) {
@@ -83,37 +77,37 @@ module.exports = {
 
           {
             "unitId": 2,
-            "name": "Stop Motion",
+            "unitName": "Stop Motion",
             "lessons": [
-          {
-            "lessonId": "2-1",
-            "name": "Values",
-            "title": "What are we writing? JavaScript!",
-            "content": "Javascript is a programming language"
-          },
-          {
-            "lessonId": "2-2",
-            "name": "Objects",
-            "title": "How is it changing my video?",
-            "content": "Javascript is a programming language"
-          },
-          {
-            "lessonId": "2-3",
-            "name": "Functions",
-            "title": "How is it changing my video?",
-            "content": "Javascript is a programming language"
-          },
-          {
-            "lessonId": "2-4",
-            "name": "Arrays",
-            "title": "How is it changing my video?",
-            "content": "Javascript is a programming language"
-          },
-          {
-            "lessonId": "2-5",
-            "name": "Pixel Puzzle",
-            "title": "How is it changing my video?",
-            "content": "Javascript is a programming language"
+              {
+                "lessonId": "2-1",
+                "name": "The Power of Code",
+                "title": "What are we writing? JavaScript!",
+                "content": "Javascript is a programming language"
+              },
+              {
+                "lessonId": "2-2",
+                "name": "Empty",
+                "title": "How is it changing my video?",
+                "content": "Javascript is a programming language"
+              },
+              {
+                "lessonId": "2-3",
+                "name": "Interval I",
+                "title": "How is it changing my video?",
+                "content": "Javascript is a programming language"
+              },
+              {
+                "lessonId": "2-4",
+                "name": "Interval II",
+                "title": "How is it changing my video?",
+                "content": "Javascript is a programming language"
+              },
+              {
+                "lessonId": "2-5",
+                "name": "Reverse",
+                "title": "How is it changing my video?",
+                "content": "Javascript is a programming language"
           }]});
 
           newUnit.save(function(err, unit) {
