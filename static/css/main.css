@@ -503,7 +503,6 @@ body.is-in-signup {
 .video2 {
     z-index: 5;
     margin-top: 1px;
-    width: 103%;
 }
 
 .steps {
@@ -597,7 +596,7 @@ body.is-in-signup {
     box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
 
     -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
+    -moz-border-rdius: 8px;
     border-radius: 8px;
 }
 
@@ -1394,12 +1393,19 @@ canvas {
 
 
 .lesson-page .video-container img {
+    height: 90px;
     width: 96%;
     margin: 2%;
     cursor: pointer;
 }
 
 .lesson-page .video-container .js-selected-video {
+    border: 5px solid #441B4B;
+}
+
+
+
+.js-selected-graphic{
     border: 5px solid #441B4B;
 }
 
@@ -1497,7 +1503,7 @@ canvas {
 
 .lesson-page .vid-placeholder {
     background-color: blue;
-    width: 100%;
+    width: 420px;
     height: 250px;
     margin: -20px 0 0 0;
 }
@@ -2530,9 +2536,9 @@ Inlined to avoid required HTTP connection: h5bp.com/r
     }
 }
 
-#canvasDrag{
-	position:absolute;
-	margin-top: -250px; 	
+#supportCanvas{
+	margin-top: -250px; 
+    position:absolute;	
 }
 
 /* ==========================================================================
