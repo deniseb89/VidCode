@@ -145,35 +145,18 @@
                     <span class="js-active-vid active-vid">
 
                         {{#if user.sessionToLoad}}
-
-                            <div id="vid-load-from-profile">
-
-                                <video class="video1 is-hidden js-load-last-session" id="myvideo"
+                            <video class="video1 is-hidden js-load-last-session" id="myvideo"
                                        src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
-
-                                 <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
-                                  <canvas class="is-hidden" id="graphicsCanvas"  width="420" height="250px"></canvas>
-                                  <canvas id="supportCanvas"  width="420" height="250px"></canvas>
-                               <button type="button" class="runbtn btn btn-danger pullRight is-hidden">Pause</button>
-
-                            </div>
-
-
                         {{else}}
-
                             <div class="vid-placeholder overlay">
                                 <h3>Select a video below</h3>
                             </div>
-
                             <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
+                        {{/if}}
                             <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
                             <canvas class="is-hidden" id="graphicsCanvas"   width="420" height="250px"></canvas>
                             <canvas id="supportCanvas"  width="420" height="250px"></canvas>
                             <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
-
-                        {{/if}}
-
-
                     </span>
 
 
