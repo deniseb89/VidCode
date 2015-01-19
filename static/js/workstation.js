@@ -560,6 +560,7 @@ var animateImage = function(){
         if(currentPosition.x < targetPosition.x && currentPosition.y < targetPosition.y) reverseAnimation();
     }    
     graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
+    if (hasDrawing) reDrawing(); 
     graphicsContext.drawImage(img,currentPosition.x , currentPosition.y, size,size-size/5);
     graphic.update();
 }
@@ -572,14 +573,16 @@ var reDrawImage = function(){
 
 
 
-var updateGraphicsCanvas = function(){
 
+
+var updateGraphicsCanvas = function(){
+    if(!animationMode){
     graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   	    
     if(hasGraphic) reDrawImage();
     if (hasDrawing) reDrawing(); 
 
     graphic.update();
-
+    }
 }
 
 var InitSeriously = function(){
@@ -707,12 +710,15 @@ var updateScript = function() {
         textScript.indexOf('animationMode = false')>=0 || textScript.indexOf('animationMode =false')>=0){        
             turnOffAnimation("pause");
         }
+        else{
+            clearInterval(animationInterval);
+            animationInterval = setInterval(animateImage, 60);
+        }
     }
     else{
         turnOffAnimation("delete");  
-        updateGraphicsCanvas();       
     }   
-    //updateGraphicsCanvas();
+    updateGraphicsCanvas();
 
 
     textScript += adjScript;
