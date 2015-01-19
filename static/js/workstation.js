@@ -1074,6 +1074,7 @@ $(document).ready(function () {
                 drawingMode = true;
 
                $('#supportCanvas').removeClass('is-hidden');
+                createCodeInEditor("\n\ ");
                 createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
                 createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
                 createCodeInEditor("\n\ drawingOffset.x=0", 'cm-offsetX');
