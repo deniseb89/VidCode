@@ -596,7 +596,7 @@ body.is-in-signup {
     box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
 
     -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
+    -moz-border-rdius: 8px;
     border-radius: 8px;
 }
 
@@ -2537,8 +2537,8 @@ Inlined to avoid required HTTP connection: h5bp.com/r
 }
 
 #supportCanvas{
-	position:absolute;
-	margin-top: -250px; 	
+	margin-top: -250px; 
+    position:absolute;	
 }
 
 /* ==========================================================================
