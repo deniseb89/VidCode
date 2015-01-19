@@ -16,6 +16,7 @@ numFilterSelect = 0;
 allEffects = ['blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'];
 mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
 defaultValue = {'number': 5, 'color': '"red"'};
+newSession = true;
 
 
 var checkWebGL = function () {
@@ -49,26 +50,26 @@ var InitSeriously = function () {
 };
 
 var setup = function() {
-    var newSession = true;
+    newSession = true;
 
     if(newSession){
-        $('.CodeMirror-code').addClass('is-hidden');
-        $('.basic-filter-method').removeClass('is-hidden');
+        // $('.CodeMirror-code').addClass('is-hidden');
     } else {
     // saved session
+        activateSession();
         updateScript($('#codemirror').val());
     }
+    $('.basic-filter-method').removeClass('is-hidden');
+    movie.addEventListener("loadeddata", changeSrc, false);
 };
 
 var imgClickSetup = function () {
-    showVid();
+    changeSrc();
     updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
 
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
-    // figure out how to deal with video running in the backgroud
-    movie.src = "";
     var this_still;
     //generalize this somewhere else so when source changes, target changes
     if (!stopMotion.on){
@@ -99,22 +100,15 @@ var imgClickSetup = function () {
 };
 
 var vidClickSetup = function() {
-    movie.addEventListener("loadeddata", showVid, false);
     $('.loader').removeClass('is-hidden');
     $('.js-vid-click').removeClass('js-selected-video');
     $(this).addClass('js-selected-video');
     var thisSrc = $(this).attr('src');
     movie.src = thisSrc;
-
 };
 
-var showVid = function () {
-    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
-    numVidSelect++;
-    $('.loader').addClass('is-hidden');
-    $(".popup").addClass("is-hidden");
 
-    //this should only happen if it's a new session
+var activateSession = function () {
     $('.vid-placeholder').addClass('is-hidden');
     $(".clearHover").addClass("is-hidden");
     $(".buttons").addClass("is-aware");
@@ -124,7 +118,16 @@ var showVid = function () {
     activateEndButtons('save');
     activateEndButtons('save-code');
     activateEndButtons('share');
-    //end new session block
+};
+
+var changeSrc = function () {
+    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
+    numVidSelect++;
+    $('.loader').addClass('is-hidden');
+    $(".popup").addClass("is-hidden");
+
+    //this should only happen if it's a new session
+    if (newSession) { activateSession(); }
 
     labelLines();
     if (this.tagName=='VIDEO') {
@@ -132,6 +135,7 @@ var showVid = function () {
         vidLen = Math.round(this.duration);
       } else {
         vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
+        movie.src = "";
     }
 };
 
@@ -440,7 +444,6 @@ var showInfo = function (term, color) {
 var removeInfo = function (term) {
     $('pre:contains(' + term + ')').css("background", "none");
 };  
-
 
 var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
     $('.js-lesson-p-update').text(stepNum);
