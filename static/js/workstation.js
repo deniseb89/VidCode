@@ -49,7 +49,7 @@ var requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
-window.requestAnimationFrame = requestAnimationFrame;
+    window.requestAnimationFrame = requestAnimationFrame;
 
 var drawVideoFrame = function (time) {
     rafId = requestAnimationFrame(drawVideoFrame);
