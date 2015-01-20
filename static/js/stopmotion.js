@@ -1,5 +1,48 @@
+var addFramesToTimeline = function(){
+  var timeline = $('#timeline-sortable');
+  timeline.empty();
+
+  for (var i=0; i<stopMotion.frames.length; i++){
+    var element = stopMotion.frames[i];
+    element = element.replace("'", "");
+    element = element.replace("'", "");
+
+    var imgSrc = document.getElementById(element).src;
+    var frameImg = '<li class="ui-state-default"><img src="'+imgSrc+'" class="js-timeline" id="_'+element+'"></li>';
+    $('#timeline-sortable').append(frameImg);
+  }
+}
+
+var reorderFrames = function(){
+  var framesTimeline = document.querySelectorAll('.js-timeline');
+  stopMotion.frames = [];
+  var allFrames = [];
+
+  for(var i = 0; i < framesTimeline.length; i++){
+    var _id =  framesTimeline[i].id;
+    _id = _id.replace("_","");
+
+    stopMotion.frames[i]= _id;
+    allFrames[i] = "'"+_id+"'";
+  }
+
+
+  var allTM = myCodeMirror.getAllMarks();
+  for (var m=0; m<allTM.length; m++){
+    var tm = allTM[m];
+    if (tm.className=="cm-frames"){
+      var cmLine = tm.find();
+      updateCodeInEditor(' stopMotion.frames = ['+allFrames+'];', cmLine.to.line, "cm-frames");
+
+      if(!stopMotion.frames.length) myCodeMirror.removeLine(cmLine.to.line);
+    }
+  } 
+
+  stopMotion.start();
+
+}
+
 var createStopMotionInEditor = function(eff){
-    
     var effectExists = false;
     var allTM = myCodeMirror.getAllMarks();
 
@@ -16,8 +59,7 @@ var createStopMotionInEditor = function(eff){
         if (eff == "interval") {
             updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
         }
-    }
- 
+    } 
 }
 
 //create stop Motion object
@@ -29,15 +71,15 @@ var stopMotion = {
   still: null,
   iterator: 0,
   stills: [],
-  framesArr: [],
+  frames: [],
 
   start: function(){
     	clearInterval(stopMotion.animate);
-      for (var i=0; i<stopMotion.framesArr.length; i++){
-        this.stills.push(document.getElementById(stopMotion.framesArr[i]));
-      }
-	   console.log(stopMotion.framesArr);
+      this.stills = [];
 
+      for (var i=0; i<stopMotion.frames.length; i++){
+        this.stills.push(document.getElementById(stopMotion.frames[i]));
+      }
      this.iterator = 0;
 
     if (this.stills.length){

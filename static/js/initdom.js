@@ -242,7 +242,14 @@ $(document).ready(function () {
 
     $('.js-graph-click').click(graphClickSetup);
 
-
+    $( "#timeline-sortable" ).sortable({
+        distance:30,
+        placeholder: "placeholder-highlight",
+        stop: function( event, ui ) {
+            reorderFrames();
+        }
+    });
+   
     //Switch between content
     $('.js-switch-view').click(function () {
         //Todo: Template these
