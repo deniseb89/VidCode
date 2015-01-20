@@ -10,7 +10,7 @@ var gfs = Grid(mongoose.connection.db, mongoose.mongo);
 var User = require('../models/user');
 var Vidcode = require('../models/vidcode');
 var content = require('../models/content');
-var units = require('../models/lesson');
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function (app, passport) {
 
@@ -41,8 +41,18 @@ module.exports = function (app, passport) {
             } else {
                 _units = result;
 
-                console.log('successfully got units ');
-                console.log(_units);
+                _units.forEach(function (_unit){
+
+                  _unit.lessons.forEach(function(_lesson){
+
+                    if(req.user.lessons.indexOf(_lesson.lessonId) > -1){
+                      _lesson.viewed = true;
+                      console.log(_lesson);
+                    }
+
+                  });
+
+                });
 
                 if (req.user.vidcodes) {
                     res.render('profile', {
@@ -51,7 +61,6 @@ module.exports = function (app, passport) {
                         units: _units
                     });
                 } else {
-                    console.log(_units);
                     res.render('profile', {
                         user: req.user,
                         units: _units
@@ -230,7 +239,6 @@ module.exports = function (app, passport) {
 // =============================================================================
 // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
 // =============================================================================
-
 
     // facebook -------------------------------
 
@@ -493,7 +501,6 @@ module.exports = function (app, passport) {
     });
 
     app.post('/uploadFinished', isLoggedIn, function (req, res) {
-        console.log('hi there');
         var video = {};
         var busboy = new Busboy({headers: req.headers});
 
@@ -587,18 +594,22 @@ module.exports = function (app, passport) {
         session.videoFileId = videoFileId;
         session.lessonId = lessonId;
 
-        mongoose.connection.db.collection('users').update({
-                '_id': req.user._id
-            },
-            {$set: {'lastSession': session}},
-            function (err, result) {
+        User.findOne({_id: req.user._id}, function (err, user) {
+          if (!err) {
+            user.lessons.addToSet(lessonId);
+            user.lastSession = session;
+            user.inProgressProjects.addToSet(session);
+            user.save(
+              function (err, result) {
                 if (err) {
-                    console.log('err in updating lastSession ' + session + ':' + err);
+                  console.log('err in updating Session ' + session + ':' + err);
                 } else {
 
-                    console.log('successfully updated vidcode session ' + token);
+                  console.log('successfully updated vidcode session ' + token);
                 }
-            });
+              });
+          }
+        });
     });
 
     app.get('/video', function (req, res) {
@@ -619,10 +630,6 @@ module.exports = function (app, passport) {
 // =============================================================================
 // ROUTES TO LESSONS ===========================================================
 // =============================================================================
-
-    app.get('/betagirls', function (req, res) {
-        res.redirect('/workstation');
-    });
 
     app.get('/csweek', function (req, res) {
         res.redirect('/intro');
@@ -649,17 +656,15 @@ module.exports = function (app, passport) {
             });
     });
 
-
-    app.get('/workstation/:token?',isLoggedIn, function (req, res) {
-        var token = req.params.token;
+    app.get('/workstation/:videoFileId?',isLoggedIn, function (req, res) {
+        var videoFileId = req.params.videoFileId;
         var file;
         var codeText =
         '\
         movie.play();\n\
         ';
 
-
-        if (!token) {
+        if (!videoFileId) {
             res.render("workstation",
                 {
                     user: req.user,
@@ -678,17 +683,23 @@ module.exports = function (app, passport) {
                 } else {
                     var _sessionToLoad = {};
 
-                    if (token == "lastSession"){
+                    if (videoFileId == "lastSession"){
 
-                        for (var item in user.videoLibrary) {
+                        // for (var item in user.videoLibrary) {
 
-                            if (user.videoLibrary[item]['token'] == user.lastSession.token) {
-                                _sessionToLoad.file = user.videoLibrary[item]['file'];
-                                _sessionToLoad.code = user.videoLibrary[item]['code'];
-                                _sessionToLoad.video = user.videoLibrary[item];
-                            }
-                        }
+                        //     if (user.videoLibrary[item]['file'].toString() == user.lastSession.videoFileId) {
+                        //         _sessionToLoad.file = user.videoLibrary[item]['file'];
+                        //         _sessionToLoad.code = user.videoLibrary[item]['code'];
+                        //         _sessionToLoad.video = user.videoLibrary[item];
+                        //         _sessionToLoad.videoFileId = user.videoLibrary[item]['videoFileId'];
+                        //     }
+                        // }
 
+                                _sessionToLoad.file = user.lastSession.videoFileId;
+                                _sessionToLoad.code = user.lastSession.code;
+                              //  _sessionToLoad.video = user.videoLibrary[item];
+                                _sessionToLoad.videoFileId = user.lastSession.videoFileId;
+                                
                         user.sessionToLoad = _sessionToLoad;
 
                         res.render('workstation', {
@@ -699,16 +710,18 @@ module.exports = function (app, passport) {
 
                     }else{
                         for (var item in user.vidcodes) {
-                            if (user.vidcodes[item]['token'] == token) {
 //1.15.15 update after our call:
 //So this is where the I thought the "in progress projects" would be loaded
 //though I realize now that instead of loading from the "vidcodes" object as I'm doing here
 //we would want to load the In Progress Projects object that you are creating
 //The only real difference is the file. The file here is the exported .webm file
 //The file we want instead is the raw media file, before any effects have been applied
+
+                            if (user.videoLibrary[item]['file'].toString() == videoFileId) {
                                 _sessionToLoad.file = user.vidcodes[item]['file'];
                                 _sessionToLoad.code = user.vidcodes[item]['code'];
                                 _sessionToLoad.video = user.vidcodes[item];
+                                _sessionToLoad.videoFileId = user.videoLibrary[item]['videoFileId'];
                             }
                         }
 
@@ -720,6 +733,7 @@ module.exports = function (app, passport) {
                             content: content,
                             code: _sessionToLoad.code,
                             file: _sessionToLoad.file,
+                            videoFileId: _sessionToLoad.videoFileId,
                             token: token,
                             lastSession: true
                         });
@@ -732,7 +746,6 @@ module.exports = function (app, passport) {
 // =============================================================================
 // ROUTE TO PAGE NOT FOUND =====================================================
 // =============================================================================
-
 
     app.get('*', function (req, res) {
         res.render('404', {layout: false});

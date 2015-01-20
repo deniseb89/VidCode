@@ -32,7 +32,7 @@
                     <label for="video-descr">Optional Video Description</label>
                     <textarea id="video-descr" name="descr" rows="4" class="js-video-descr"></textarea>
                     <input type="text" id="video-token" name="token" class="js-video-token" hidden="true" value="">
-<!--                     <input type="submit" value="Update Description" onsubmit="return false;"
+                <!-- <input type="submit" value="Update Description" onsubmit="return false;"
                            class="save-video-desc-btn n-a-video-save-desc"/> -->
                 <!-- </form> -->
 
@@ -289,7 +289,7 @@
                 <div class="col-md-5">
                     <div class="tabs-2">
                         <form>
-                            <textarea id="codemirror" name="codemirror">{{code}}</textarea>
+                            <textarea id="codemirror" name="codemirror"></textarea>
                         </form>
                     </div>
                     <div class="save-btns-container">
@@ -365,8 +365,10 @@
 <h4 id="username" class="is-hidden">{{user.username}}</h4>
 <h4 id="social" class="is-hidden">{{user.social}}</h4>
 
+<script src="/js/initdom.js"></script>
 <script src="/js/workstation.js"></script>
 <script src="/js/stopmotion.js"></script>
+<script src="/js/graphics.js"></script>
 
 <script>
     mixpanel.track_links("#mix-share", "Share clicked");
