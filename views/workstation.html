@@ -126,12 +126,12 @@
 
                         {{#if user.sessionToLoad}}
                             <video class="video1 is-hidden js-load-last-session" id="myvideo"
-                                       src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
+                                       src="{{user.sessionToLoad.video.file}}" autoplay loop></video>
                         {{else}}
                             <div class="vid-placeholder overlay">
                                 <h3>Select a video below</h3>
                             </div>
-                            <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
+                            <video class="video1 is-hidden" id="myvideo" autoplay loop></video>
                         {{/if}}
                             <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
                             <canvas class="is-hidden" id="graphicsCanvas"   width="420" height="250px"></canvas>
@@ -276,12 +276,12 @@
                         </form>
                     </div>
                     <div class="save-btns-container">
-<!--                       <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-code-m">
+                       <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-code-m">
                         Save Code
-                      </span> -->
-                      <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
-                        Save
                       </span>
+<!--                      <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
+                        Save
+                      </span> -->
                       <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
                         Share
                       </span>

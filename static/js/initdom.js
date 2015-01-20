@@ -2,10 +2,8 @@
 $(document).ready(function () {
     movie = document.getElementById('myvideo');
     canvas = document.getElementById('canvas');
-    seriously = new Seriously();
-    seriously.go();
-    movie.addEventListener('canplay', checkWebGL, false);
-    movie.load();
+    checkWebGL();
+    movie.addEventListener("canplay", activateSession, false);
 
     supportCanvas = document.getElementById('supportCanvas');
     graphicsCanvas = document.getElementById('graphicsCanvas');
@@ -133,10 +131,10 @@ $(document).ready(function () {
 
         var _cmScript = myCodeMirror.getValue();
 
-        var _videoFileId = (document.getElementById('myvideo').src).split('=')[1];
+        var _videoFileId = (document.getElementById('myvideo').src)
 
         //may need to add a global variable to store the current video token in session.
-        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'videoFileId': _videoFileId ,'code': _cmScript});
+        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'file': _videoFileId ,'code': _cmScript});
     });
 
     $('.finish-btn-container').on('click', ".js-finish-m", function () {

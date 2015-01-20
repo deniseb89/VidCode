@@ -83,7 +83,7 @@ var stopMotion = {
      this.iterator = 0;
 
     if (this.stills.length){
-        stopMotion.animate = setInterval(stopMotion.loop, stopMotion.interval); 
+        stopMotion.animate = setInterval(stopMotion.loop, stopMotion.interval);
         stopMotion.on = true;       
       }
   },
