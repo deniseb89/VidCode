@@ -28,15 +28,15 @@
             <div id="tab1" class="tab active">
 
                 <div class="row profile">
-                    {{#if user.videoLibrary}}
+                    {{#if user.inProgressProjects}}
 
-                    {{#each user.videoLibrary}}
+                    {{#each user.inProgressProjects}}
 
 
                    <div class="profile-vid-small">
 
                         <a href="/workstation/{{this.token}}">
-                            <video class="video" src="/video/?file={{this.file}}"/>
+                            <video class="video" src="{{this.file}}"/>
                         </a>
 
                         <div class="vid-row">

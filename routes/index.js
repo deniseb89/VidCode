@@ -709,7 +709,7 @@ module.exports = function (app, passport) {
                         });
 
                     }else{
-                        for (var item in user.vidcodes) {
+                        for (var item in user.inProgressProjects) {
 //1.15.15 update after our call:
 //So this is where the I thought the "in progress projects" would be loaded
 //though I realize now that instead of loading from the "vidcodes" object as I'm doing here
@@ -717,11 +717,12 @@ module.exports = function (app, passport) {
 //The only real difference is the file. The file here is the exported .webm file
 //The file we want instead is the raw media file, before any effects have been applied
 
-                            if (user.videoLibrary[item]['file'].toString() == videoFileId) {
-                                _sessionToLoad.file = user.vidcodes[item]['file'];
-                                _sessionToLoad.code = user.vidcodes[item]['code'];
-                                _sessionToLoad.video = user.vidcodes[item];
-                                _sessionToLoad.videoFileId = user.videoLibrary[item]['videoFileId'];
+                            if (user.inProgressProjects[item]['token'] == "dummy-token") {
+                            	console.log('found dummy-token');
+                                _sessionToLoad.file = user.inProgressProjects[item]['file'];
+                                _sessionToLoad.code = user.inProgressProjects[item]['code'];
+                                _sessionToLoad.video = user.inProgressProjects[item];
+                                _sessionToLoad.videoFileId = user.inProgressProjects[item]['videoFileId'];
                             }
                         }
 
@@ -734,7 +735,6 @@ module.exports = function (app, passport) {
                             code: _sessionToLoad.code,
                             file: _sessionToLoad.file,
                             videoFileId: _sessionToLoad.videoFileId,
-                            token: token,
                             lastSession: true
                         });
                     }

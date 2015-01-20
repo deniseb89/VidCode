@@ -19,31 +19,44 @@ var movie,
     allEffects = ['blend','blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'];
     mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
     defaultValue = {'number': 5, 'color': '"red"'};
-    lastLessonId = '1-1';
+    last_lessonId = '1-1';
     newSession = false;
-
-var setup = function() {
-    if(!newSession){
-    // saved session
-        activateSession();
-        updateScript($('#codemirror').val());
-    }
-    $('.basic-filter-method').removeClass('is-hidden');
-    movie.addEventListener("loadeddata", changeSrc, false);
-};
 
 var checkWebGL = function () {
     //check Seriously compatibility
     if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
         $('.compatibility-error').removeClass('is-hidden');
     } else {
-        InitSeriously();
-        setup();
+    	if (!newSession){
+    		//movie.src='/img/wha_color.mp4';
+    	}
+    	$('.basic-filter-method').removeClass('is-hidden');
     }
-    movie.removeEventListener('canplay', checkWebGL, false);
+};
+
+//activateSession will fire one time only upon having a video playing
+//in a new session, this will happen manually upon selecting a video
+//in a saved session, this will happen automatically
+var activateSession = function () {
+	newSession = false;
+	InitSeriously();
+    $('.vid-placeholder').addClass('is-hidden');
+    $('.loader').addClass('is-hidden');
+    $(".clearHover").addClass("is-hidden");
+    $(".buttons").addClass("is-aware");
+    $(".runbtn").removeClass("is-hidden");
+    $(".video2").removeClass("is-hidden");
+    $('.CodeMirror-code').removeClass('is-hidden');
+    activateEndButtons('save');
+    activateEndButtons('save-code');
+    activateEndButtons('share');
+    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
+    movie.addEventListener("loadeddata", changeSrc, false);
+    movie.removeEventListener("canplay", activateSession, false);
 };
 
 var InitSeriously = function () {
+	console.log('init Seriously');
     seriously = new Seriously();
 
     //TODO: generalize to my media
@@ -72,6 +85,21 @@ var InitSeriously = function () {
   
     target.source = effects[allEffects[allEffects.length-1]];
     seriously.go();    
+};
+
+var changeSrc = function () {
+	console.log('CHANGE SRC');
+    numVidSelect++;
+    $('.loader').addClass('is-hidden');
+    $(".popup").addClass("is-hidden");
+    labelLines();
+    if (this.tagName=='VIDEO') {
+        effects[allEffects[0]]["bottom"] = seriously.source(video);
+        vidLen = Math.round(this.duration);
+      } else {
+        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
+        movie.src = "";
+    }
 };
 
 
@@ -150,46 +178,11 @@ var vidClickSetup = function() {
     movie.src = thisSrc;
 };
 
-var activateSession = function () {
-	newSession = false;
-    $('.vid-placeholder').addClass('is-hidden');
-    $(".clearHover").addClass("is-hidden");
-    $(".buttons").addClass("is-aware");
-    $(".runbtn").removeClass("is-hidden");
-    $(".video2").removeClass("is-hidden");
-    $('.CodeMirror-code').removeClass('is-hidden');
-    activateEndButtons('save');
-    activateEndButtons('save-code');
-    activateEndButtons('share');
-};
-
-var changeSrc = function () {
-    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
-    numVidSelect++;
-    $('.loader').addClass('is-hidden');
-    $(".popup").addClass("is-hidden");
-
-    //this should only happen if it's a new session
-    if (newSession) { activateSession(); }
-
-    labelLines();
-    if (this.tagName=='VIDEO') {
-        effects[allEffects[0]]["bottom"] = seriously.source(video);
-        vidLen = Math.round(this.duration);
-      } else {
-        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
-        movie.src = "";
-    }
-};
-
-
-
 var activateEndButtons = function (bType) {
     $('.inactive-js-' + bType + '-m').addClass('js-' + bType + '-m');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-b-a-btn');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-js-' + bType + '-m');
 };
-
 
 var uploadFromComp = function (ev) {
     var files = ev.target.files;
