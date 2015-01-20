@@ -123,7 +123,7 @@ $(document).ready(function () {
         var _videoFileId = (document.getElementById('myvideo').src).split('=')[1];
 
         //may need to add a global variable to store the current video token in session.
-        
+
         $.post("/workstation-update-session", {'lessonId': '1-1', 'token': 'dummy-token', 'videoFileId': _videoFileId ,'code': _cmScript});
 
     });
@@ -133,8 +133,7 @@ $(document).ready(function () {
     });
 
     $('.js-hide-a-m').click(function () {
-        $('.share-modal').addClass('is-hidden');
-        $('.save-modal').addClass('is-hidden');
+        $('.ss-modal').addClass('is-hidden');
         $(this).addClass('is-hidden');
         $('.js-s-onload').addClass('is-hidden');
         $('.js-h-onload').removeClass('is-hidden');
@@ -142,6 +141,7 @@ $(document).ready(function () {
         $('.js-finish-m').addClass('inactive-b-a-btn');
         $('.js-finish-m').addClass('inactive-js-finish-m');
         $('.js-finish-m').removeClass('js-finish-m');
+        $('.js-ss-both-content').addClass('is-hidden');
     });
 
     $(".tabs-2").droppable({
@@ -248,4 +248,5 @@ $(document).ready(function () {
         $('.js-switch-view-container').toggleClass('is-hidden');
         $('body').toggleClass('js-switch-menu-appear');
     });
+
 });

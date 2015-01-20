@@ -77,7 +77,7 @@ var imgClickSetup = function () {
       this_still.width = 420;
       this_still.height = 250;
       this_still.mode = 'contain';
-      this_still.source = this;           
+      this_still.source = this;
       effects[allEffects[0]]["source"] = seriously.source(this_still);
     }
 
@@ -143,7 +143,7 @@ var activateEndButtons = function (bType) {
     $('.inactive-js-' + bType + '-m').addClass('js-' + bType + '-m');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-b-a-btn');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-js-' + bType + '-m');
-};    
+};
 
 var uploadFromComp = function (ev) {
     var files = ev.target.files;
@@ -415,7 +415,9 @@ var saveSession = function (blob) {
 var modalVideoLoad = function (mname) {
     addThisStyles();
 
-    $('.' + mname + '-modal').removeClass('is-hidden');
+    $('.ss-modal').removeClass('is-hidden');
+    $('.js-' + mname + '-content').removeClass('is-hidden');
+    $('.js-ss-title').text(mname);
     $('.cover50').removeClass('is-hidden');
     $('.progressDiv').removeClass('is-hidden');
     frames = [];
@@ -443,7 +445,7 @@ var showInfo = function (term, color) {
 
 var removeInfo = function (term) {
     $('pre:contains(' + term + ')').css("background", "none");
-};  
+};
 
 var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
     $('.js-lesson-p-update').text(stepNum);
