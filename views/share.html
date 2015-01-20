@@ -66,8 +66,6 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
   </div>
   <div class="general-display">
 	<div class="set-container lesson-page clearfix share-landing">
-		<h2 class="is-hidden">title</h2>
-	    <h2 class="is-hidden">desc</h2>
 	    <div class="share-p-text-container">
 	    {{#if user}}
 	        {{#if user.username}}
@@ -76,12 +74,12 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
 	    {{/if}}
 	    </div>
 	    <h3 id="file" class="is-hidden">{{file}}</h3>
-		<video id="vid-display" controls src=""></video>
+		<video id="vid-display" controls src="/video?file={{file}}"></video>
     <div class="share-p-text-container">
       <h3 class="kaytitle">{{title}}</h3>
-      <p class="kaydesc">{{desc}}</p>
+      <p class="kaydesc">{{descr}}</p>
     </div>
-		<h2>Share your video using:</h2>
+		<h2>Share your video on:</h2>
 		<div class="addthis-container">
 			<div class="addthis_sharing_toolbox"></div>
 		</div>
@@ -97,9 +95,6 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
 <script>
   $( document ).ready(function() {
   	mixpanel.track_links("#mix-return-to-editor", "Return to Editor clicked" );
-  	var filename = '/video/?file='+$('#file').text();
-  	var videoDisplay = document.getElementById('vid-display');
-  	videoDisplay.src = filename;
   });
 </script>
 

@@ -1,4 +1,6 @@
-<div class="s-container">
+<div class="profile" >
+
+<div class="profile center">
 
     <h2>WELCOME BACK {{user.username}} </h2>
 
@@ -10,6 +12,10 @@
         <a href="/workstation">START NEW PROJECT</a>
     </h2>
 
+</div>
+
+
+<!-- Tabs start -->
     <div class="tabs">
         <ul class="tab-links">
             <li class="active"><a href="#tab1">IN PROGRESS PROJECTS</a></li>
@@ -19,37 +25,35 @@
         <div class="tab-content">
             <div id="tab1" class="tab active">
 
-
                 <div class="row profile">
-
                     {{#if user.videoLibrary}}
 
                     {{#each user.videoLibrary}}
-                    <div class="insta-thumbnails">
-                        <div class="row">
-                            <div class="i-vid-container">
-                                <a>
-                                    <video class="video js-vid-click" src="/video/?file={{this.file}}"/>
-                                </a>
+                    <div class="row">
 
-                                <div class="vid-row">
-                                    <a href='/workstation/' + {{this.file}}>
+                       <div class="profile-vid-small">
+
+                            <a href="/workstation/{{this.token}}">
+                                <video class="video" src="/video/?file={{this.file}}"/>
+                            </a>
+
+                            <div class="vid-row">
+                                <a href="/workstation/{{this.token}}">
                                 <span class="info">
                                     <p class="title">{{this.title}}</p>
                                     <p class="descr">{{this.descr}}</p>
                                     <p class="videocode">see code</p>
                                 </span>
-                                    </a>
-                                </div>
-
+                                </a>
                             </div>
+
                         </div>
+
                     </div>
                     {{/each}}
                     {{else}}
-                    <h2 class="profileheader">You have not uploaded videos to your library!</h2>
+                    <h2 class="profileheader">You have no videos published! Start vidcoding, already!</h2>
                     {{/if}}
-
                 </div>
 
 
@@ -64,14 +68,14 @@
                     {{#each videos}}
                     <div class="row">
 
-                        <div class="i-vid-container">
+                       <div class="profile-vid-small">
 
-                            <a>
+                            <a href="/workstation/{{this.token}}">
                                 <video class="video" src="/video/?file={{this.file}}"/>
                             </a>
 
                             <div class="vid-row">
-                                <a href='/workstation/' + {{this.file}}>
+                                <a href="/workstation/{{this.token}}">
                                 <span class="info">
                                     <p class="title">{{this.title}}</p>
                                     <p class="descr">{{this.descr}}</p>
@@ -94,7 +98,9 @@
 
         </div>
     </div>
+<!-- Tabs end -->
 
+<!-- Units start -->
 
     <div class="vid-row profile">
         {{#if units}}
@@ -122,6 +128,8 @@
         {{/each}}
         {{/if}}
     </div>
+<!-- Units end -->
+
 </div>
 
 <script src="/js/profile.js"></script>
