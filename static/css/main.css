@@ -505,7 +505,10 @@ body.is-in-signup {
 
 .video2 {
     z-index: 5;
-    margin-top: 1px;
+    border: 1px solid #333;
+    background-color: #000;
+  -webkit-box-sizing: border-box;
+    box-sizing: content-box;
 }
 
 .steps {
@@ -654,7 +657,7 @@ body.is-in-signup {
 
 .runbtn {
     position: absolute;
-    margin: -50px 30% 0 30% !important;
+    margin: -70px 30% 0 30% !important;
     opacity: 0;
 }
 
@@ -852,9 +855,6 @@ body.is-in-signup {
     width: 400px;
 }
 
-canvas {
-    vertical-align: bottom;
-}
 
 @-webkit-keyframes colorful {
     from {
@@ -1035,20 +1035,69 @@ canvas {
     margin-bottom: -74px;
 }
 
-/* ---------------- Graphics, animation and Timeline ------------------ */
+/* ---------------- Graphics, Animation and Timeline ------------------ */
 
 #supportCanvas{
-    margin-top: -250px; 
-    position:absolute;  
+    margin-top: -270px; 
 }
 
 #stop-motion-timeline{
-    background-color: #000;
-    margin-top: 5px;
-    height: 80px;
-    width: 420px;
+    margin-top: -15px;
+    background-color: #d8d8d8;
+    height: 64px;
+    width: 420px;   
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
+
+
+
+
+#stop-motion-timeline::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#stop-motion-timeline::-webkit-scrollbar
+{   height: 6px;
+    background-color: #F5F5F5;
+}
+
+#stop-motion-timeline::-webkit-scrollbar-thumb
+{
+    background-color: #441B4B;
+}
+
+#stop-motion-timeline ul{
+    white-space: nowrap;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+#stop-motion-timeline li{
+    margin: 2px;
+    display: inline;
+    height: 60px;
+    width:80px;
+}
+
+#stop-motion-timeline img {
+    height: 60px;
+    width: 80px;
+    cursor: pointer;
+}
+.placeholder-highlight {
+         margin-left:40px !important;
+         margin-right:40px !important;
+}
+
+li.ui-state-default{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}   
 
 /* ---------------- Learn More Games ------------------ */
 
@@ -1521,8 +1570,8 @@ canvas {
 
 .lesson-page .vid-placeholder {
     background-color: blue;
-    width: 100%;
-    height: 245px;
+    width: 420px;
+    height: 250px;
     margin: -20px 0 0 0;
 }
 

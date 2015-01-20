@@ -117,28 +117,25 @@ var imgClickSetup = function () {
     var this_still;
     //generalize this somewhere else so when source changes, target changes
     if (!stopMotion.on){
-      var this_still;
-      this_still = seriously.transform('reformat');
-      this_still.width = 420;
-      this_still.height = 250;
-      this_still.mode = 'contain';
-      this_still.source = this;           
-      effects[allEffects[0]]["bottom"] = seriously.source(this_still);
+        var this_still;
+        this_still = seriously.transform('reformat');
+        this_still.width = 420;
+        this_still.height = 250;
+        this_still.mode = 'contain';
+        this_still.source = this;           
+        effects[allEffects[0]]["bottom"] = seriously.source(this_still);
     }
+
 
     var stills = document.querySelectorAll('.js-selected-still');
-    console.log(stills);
-    stopMotion.framesArr = new Array(stills.length);
-    var allFrames = new Array(stills.length);
+    var allFrames = stopMotion.frames = new Array(stills.length);
 
-    for (var i=0; i<stopMotion.framesArr.length; i++){
-      stopMotion.framesArr[i]= stills[i].id;
+    for (var i=0; i<stopMotion.frames.length; i++){
+      stopMotion.frames[i]= stills[i].id;
       allFrames[i] = "'"+stills[i].id+"'";
     }
-    console.log(stopMotion.framesArr);
-    //allFrames = stopMotion.framesArr.join(",");
-    if(stopMotion.framesArr.length){
-        console.log("created");
+
+    if(stopMotion.frames.length){
       createStopMotionInEditor("frames");   
     }           
 
@@ -151,7 +148,9 @@ var imgClickSetup = function () {
 
         if(!stills.length) myCodeMirror.removeLine(cmLine.to.line);
       }
-    }
+    } 
+
+    addFramesToTimeline();   
 };
 
 
@@ -338,6 +337,24 @@ var updateScript = function (code) {
     
     //-------------------Stop motion in Script-----------------------//
 
+    if(textScript.indexOf('stopMotion.frames')>=0){
+        var currentStills = document.querySelectorAll('.js-img-click');
+        var allFrames = stopMotion.frames.join(",");
+
+        for (var i=0; i<currentStills.length; i++){
+           if(allFrames.indexOf(currentStills[i].id)<0){
+                 $("#"+currentStills[i].id).removeClass('js-selected-still');
+                  $("#"+currentStills[i].id).removeClass('js-selected-video');
+          }
+          else{
+                $("#"+currentStills[i].id).addClass('js-selected-still');
+                $("#"+currentStills[i].id).addClass('js-selected-video');
+          }
+        } 
+        addFramesToTimeline();
+    }
+
+
     if (textScript.indexOf('stopMotion.interval')>=0) {
        $('li[name=interval]').addClass('is-active');
        stopMotion.start();
@@ -404,7 +421,6 @@ var checkBtnStatus = function (effect) {
 
 
 /*old lessons.js*/
-
 var loadThumbnails = function () {
     var social = $('#social').text();
 
