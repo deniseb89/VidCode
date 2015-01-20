@@ -36,7 +36,7 @@ var showVid = function() {
     activateEndButtons('save');
     activateEndButtons('save-code');
     activateEndButtons('share');
-    labelLines();
+    labelEffects();
     if (this.tagName=='VIDEO') {
         effects[allEffects[0]]["bottom"] = seriously.source(video);
         vidLen = Math.round(this.duration);
@@ -45,7 +45,14 @@ var showVid = function() {
     }
 };
 
-
+var vidClickSetup = function () {
+    $('.loader').removeClass('is-hidden');
+    $('.js-vid-click').removeClass('js-selected-video');
+    $(this).addClass('js-selected-video');
+    movie.addEventListener("loadeddata", showVid, false);
+    var thisSrc = $(this).attr('src');
+    movie.src = thisSrc;
+}
 
 var imgClickSetup = function () {
     showVid();
@@ -56,9 +63,10 @@ var imgClickSetup = function () {
 
     // figure out how to deal with video running in the backgroud
     movie.src = "";
-    var this_still;
+
     //generalize this somewhere else so when source changes, target changes
     if (!stopMotion.on){
+      var this_still;
       this_still = seriously.transform('reformat');
       this_still.width = 420;
       this_still.height = 250;
@@ -66,27 +74,69 @@ var imgClickSetup = function () {
       this_still.source = this;           
       effects[allEffects[0]]["bottom"] = seriously.source(this_still);
     }
-    // if (!stopMotion.on){
-    //   effects[allEffects[0]]["bottom"] = seriously.source(this);
-    // }
+
+
+
+
 
     var stills = document.querySelectorAll('.js-selected-still');
-    var frameArr = new Array(stills.length);
-    for (var i=1; i<=frameArr.length; i++){
-      frameArr[i-1]=i;
+    stopMotion.framesArr = new Array(stills.length);
+    var allFrames = new Array(stills.length);
+
+    for (var i=0; i<stopMotion.framesArr.length; i++){
+      stopMotion.framesArr[i]= stills[i].id;
+      allFrames[i] = "'"+stills[i].id+"'";
     }
-    frameArr.join(",");
+
+
+    //allFrames = stopMotion.framesArr.join(",");
+
+    if(stills.length) createStopMotion("frames");
+
+
+
+
+                
+
+
     var allTM = myCodeMirror.getAllMarks();
     for (var m=0; m<allTM.length; m++){
       var tm = allTM[m];
       if (tm.className=="cm-frames"){
         var cmLine = tm.find();
-        myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
-        myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
-        $(".cm-frames").effect("highlight",2000);
+        updateCodeInEditor(' stopMotion.frames = ['+allFrames+'];', cmLine.to.line, "cm-frames");
+
+        if(!stills.length) myCodeMirror.removeLine(cmLine.to.line);
       }
     }
+
+
+
+
+
+
 };
+
+
+var graphClickSetup = function () {
+        //if graphic is not selected already, remove previous one
+        if($(this).hasClass('js-selected-graphic') === false){
+            $('.js-graph-click').removeClass('js-selected-graphic'); 
+        }
+         $(this).toggleClass('js-selected-graphic');
+        
+        //check if has any Graphic selected
+        if($(this).hasClass('js-selected-graphic') === true){
+            createGraphics();
+        }
+        else{
+           turnOffGraphics();
+           turnOffAnimation("delete");  
+        }
+        updateGraphicsCanvas();     
+};
+
+
 
 
 var activateEndButtons = function (bType) {
@@ -94,6 +144,7 @@ var activateEndButtons = function (bType) {
     $('.inactive-js-' + bType + '-m').removeClass('inactive-b-a-btn');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-js-' + bType + '-m');
 };
+
 
 var uploadFromComp = function (ev) {
     var files = ev.target.files;
@@ -263,7 +314,7 @@ var updateMediaLibraryFromComp = function (file, data) {
     document.getElementById(parent).appendChild(div);
 };
 
-var labelLines = function () {
+var labelEffects = function () {
     //this function should take an input for the relevant effect, not brute force for all
     for (var e = 0; e < allEffects.length; e++) {
         $("pre:contains('effects." + allEffects[e] + "')").addClass('active-effect');
@@ -274,6 +325,9 @@ var labelLines = function () {
     }
 };
 
+
+//----------------------------------Init Seriously--------------------------------//
+
 var setup = function(){
    //check Seriously compatibility
   if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
@@ -283,6 +337,169 @@ var setup = function(){
   }
   movie.removeEventListener('canplay', setup, false);
 }
+
+
+var InitSeriously = function(){
+    seriously = new Seriously();
+    
+    //TODO: generalize to my media
+    // video = seriously.source('#myvideo');        
+      video = seriously.transform('reformat');
+      video.width = 420;
+      video.height = 250;
+      video.mode = 'distort';   
+      video.source = ('#myvideo');
+
+      target = seriously.target('#canvas'); 
+      graphic = seriously.source(graphicsCanvas);   
+
+    
+  //Set up Seriously.js effects
+   seriouslyEffects = Seriously.effects();
+    
+   var thisEffect;
+   effects[allEffects[0]] = thisEffect = seriously.effect(allEffects[0]);
+   thisEffect.top = graphic;
+   thisEffect.bottom = video;
+  
+  for (var i=1;i<allEffects.length;i++){
+    effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
+    effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
+    thisEffect.amount = 0;
+  } 
+  
+    
+  target.source = effects[allEffects[allEffects.length-1]];
+  seriously.go();
+};
+
+
+
+
+
+//----------------------------------Code Editor--------------------------------//
+
+var updateScript = function() {
+    //console.log('update script call');
+    var scriptOld = document.getElementById('codeScript');
+    if (scriptOld) { scriptOld.remove();}
+    var scriptNew   = document.createElement('script');
+    scriptNew.id = 'codeScript';
+    var cmScript = myCodeMirror.getValue();
+
+    eval(cmScript);
+    var adjScript = "";
+    var textScript = "\n\ try {\n\ "+cmScript;
+
+    /*TODO: Check to see if the active effects have changed from before to now
+    if so, reinit seriously. if not, do nothing
+    Also, don't add and remove the script each time. Just update the script string via innerhtml
+    */
+    // if (textScript.indexOf('effects.sepia')>=0) {
+    //   if (allEffects.indexOf('sepia')<0) {
+    //     allEffects.push('sepia');
+    //     InitSeriously();
+    //   }
+    // } else {
+    //   var si = allEffects.indexOf('sepia');
+    //   if (si>=0) {
+    //     allEffects.splice(si,1);
+    //     InitSeriously();
+    //   }
+    // }
+
+
+    labelEffects();
+
+    var matchEff = document.querySelectorAll(".active-effect");
+    var matchNames = [];    
+
+    //turn everything off
+    $('.btn-method').removeClass('is-active');          
+    
+
+    //turn on back the effects in
+    for (var t = 0; t < matchEff.length; t++) {
+        var matchE = matchEff[t];
+        matchNames.push($(matchE).attr("name"));
+        checkBtnStatus(matchE);
+    }
+    //update effects in editor
+    for (var c = 0; c < allEffects.length; c++) {
+        var thisEffect = allEffects[c];
+        if (matchNames.indexOf(thisEffect) < 0) {
+            adjScript += "\n\ effects." + thisEffect + ".amount = 0;";
+        } else {
+            var adjAmt = effects[thisEffect]['amount'] * mult[thisEffect];
+            adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
+        }
+    }
+    
+    //-------------------Stop motion in Script-----------------------//
+
+    if (textScript.indexOf('stopMotion.interval')>=0) {
+       $('li[name=interval]').addClass('is-active');
+       stopMotion.start();
+       //reorganize array here
+
+    } else {
+      if (stopMotion.on) {
+        stopMotion.stop();
+      }
+    }
+
+
+    //-------------------Graphics in Script-----------------------//
+
+    //if there is not position in the editor, turn off graphics
+    if(textScript.indexOf('position')<0 && textScript.indexOf('size')<0){
+        turnOffGraphics();
+    }
+
+    //turn drawing/animation on
+    if(textScript.indexOf('drawing')>=0){
+       $('li[name=drawing]').addClass('is-active');
+    }
+    else{
+        turnOffDrawing();        
+    }
+
+    if(textScript.indexOf('animation')>=0){
+        $('li[name=animation]').addClass('is-active');
+        console.log("textScript animation");
+
+        if(textScript.indexOf('animationMode=false')>=0 || textScript.indexOf('animationMode= false')>=0 ||
+        textScript.indexOf('animationMode = false')>=0 || textScript.indexOf('animationMode =false')>=0){        
+            turnOffAnimation("pause");
+        }
+        else{
+            clearInterval(animationInterval);
+            animationInterval = setInterval(animateImage, 60);
+        }
+    }
+    else{
+        turnOffAnimation("delete");  
+    }   
+
+    updateGraphicsCanvas();
+
+    //-------------------Script-----------------------//
+
+    textScript += adjScript;
+    textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
+    scriptNew.text = textScript;
+
+    document.body.appendChild(scriptNew);
+};
+
+
+
+var checkBtnStatus = function (effect) {
+    //compare the names of effect buttons to the names in activeEffects
+    var effectName = $(effect).attr("name");
+    $('li[name=' + effectName + ']').addClass("is-active")
+};
+
 
 
 var createCodeInEditor = function(text, cmclass){ 
@@ -300,6 +517,37 @@ var updateCodeInEditor = function(text, cmline, cmclass){
                     ch: 0
                 }, CodeMirror.Pos(cmline), {className: cmclass});       
 }
+
+
+
+//----------------------------------StopMotion Functions --------------------------------//
+
+var createStopMotion = function(eff){
+    
+    var effectExists = false;
+    var allTM = myCodeMirror.getAllMarks();
+
+    for (var m = 0; m < allTM.length; m++) {
+        var tm = allTM[m];
+        if (tm.className == "cm-"+eff) {
+           effectExists = true;
+        }               
+    }
+    if(!effectExists){
+        var text = '\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';';
+        createCodeInEditor(text, "cm-"+eff); 
+
+        if (eff == "interval") {
+            updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
+        }
+    }
+ 
+}
+
+
+
+
+//----------------------------------Graphics Functions --------------------------------//
 
 //canvas variables
 var supportCanvas,
@@ -324,12 +572,11 @@ var drawingMode = false;
 var hasDrawing = false;
 var prevX ;
 var prevY ;
-
-var drawX = [];
-var drawY = [];
-
 var drawingOffset = {'x':0, 'y':0}
 var drawingColor = 'green';
+//array to store drawing positions
+var drawXY = [];
+
 
 var drawGraphics = function(evt){
     var x, y, rect;
@@ -344,7 +591,8 @@ var drawGraphics = function(evt){
             graphicsContext.moveTo(prevX, prevY);
             graphicsContext.lineTo(x, y);
             graphicsContext.strokeStyle=drawingColor;
-            graphicsContext.stroke();                  
+            graphicsContext.stroke();                      
+   
             graphic.update();
             
             prevX = x;
@@ -352,8 +600,7 @@ var drawGraphics = function(evt){
 
             if(typeof x !== 'undefined'){
                 hasDrawing = true;
-                drawX.push(x);
-                drawY.push(y);
+                drawXY.push({'x': x, 'y':y});
             }
         }
 
@@ -371,22 +618,216 @@ var drawGraphics = function(evt){
                 position.y = y;  
                 graphic.update();
                 updateGraphicsEditor();
-
             }
         }
     }
 }
 
+
+var reDrawGraphic = function(){
+    var img = document.getElementsByClassName('js-selected-graphic')[0];
+    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   
+    graphicsContext.drawImage(img, position.x, position.y, size, size-size/5);  
+}
+
+
 var reDrawing = function(){
     graphicsContext.beginPath();
-    graphicsContext.moveTo(drawX[0]+drawingOffset.x, drawY[0]+drawingOffset.y);
+    graphicsContext.moveTo(drawXY[0].x+drawingOffset.x, drawXY[0].y+drawingOffset.y);
 
-    drawX.forEach(function(element, index){
-        graphicsContext.lineTo(element+drawingOffset.x, drawY[index]+drawingOffset.y);      
+    drawXY.forEach(function(element){
+        graphicsContext.lineTo(element.x+drawingOffset.x, element.y +drawingOffset.y);      
     });
     graphicsContext.strokeStyle=drawingColor;
     graphicsContext.stroke();
     
+}
+
+
+var animateImage = function(){
+    //console.log(currentPosition);
+
+    var img = document.getElementsByClassName('js-selected-graphic')[0];    
+    var directionX, directionY;
+
+    if(position.x < targetPosition.x) directionX = true;
+    else directionX = false;
+
+    if(position.y < targetPosition.y) directionY = true;
+    else directionY = false;
+
+
+    if(directionX && directionY){
+        if(currentPosition.x <= targetPosition.x) currentPosition.x += speed.x;
+        if(currentPosition.y <= targetPosition.y) currentPosition.y += speed.y;
+
+        if(currentPosition.x > targetPosition.x && currentPosition.y > targetPosition.y) reverseAnimation();
+    }
+    else if(directionX && !directionY){
+        if(currentPosition.x <= targetPosition.x) currentPosition.x += speed.x;
+        if(currentPosition.y >= targetPosition.y) currentPosition.y -= speed.y;
+
+
+        if(currentPosition.x > targetPosition.x && currentPosition.y < targetPosition.y) reverseAnimation();
+    }
+    else if(!directionX && directionY){
+        if(currentPosition.x >= targetPosition.x) currentPosition.x -= speed.x;
+        if(currentPosition.y <= targetPosition.y) currentPosition.y += speed.y;
+
+
+        if(currentPosition.x < targetPosition.x && currentPosition.y > targetPosition.y) reverseAnimation();
+    }
+    else if(!directionX && !directionY){
+        if(currentPosition.x >= targetPosition.x) currentPosition.x -= speed.x;
+        if(currentPosition.y >= targetPosition.y) currentPosition.y -= speed.y;
+
+
+        if(currentPosition.x < targetPosition.x && currentPosition.y < targetPosition.y) reverseAnimation();
+    }    
+
+ 
+    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
+    if (hasDrawing) reDrawing(); 
+
+    graphicsContext.drawImage(img,currentPosition.x , currentPosition.y, size,size-size/5);
+    graphic.update();
+
+   
+}
+
+
+var reverseAnimation = function(){
+    if(bouncingAnimation){
+        var temp = {};
+        temp.x = targetPosition.x;
+        temp.y = targetPosition.y;
+
+        targetPosition.x = position.x;
+        targetPosition.y = position.y;
+
+        position.x = temp.x;
+        position.y = temp.y;  
+        updateGraphicsEditor();  
+    }
+    else{
+        currentPosition.x = position.x;
+        currentPosition.y = position.y;
+    }    
+}
+
+
+var updateGraphicsCanvas = function(){
+    if(!animationMode){
+        graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);           
+        if(hasGraphic) reDrawGraphic();
+        if (hasDrawing) reDrawing(); 
+
+        graphic.update();
+    }
+}
+
+
+var updateGraphicsEditor = function(){
+    var allTM = myCodeMirror.getAllMarks();
+		for (var m = 0; m < allTM.length; m++) {
+			var tm = allTM[m];
+			if (tm.className=="cm-positionX"){
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor(" position.x="+Math.round(position.x)+";", cmLine.to.line, "cm-positionX" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
+			}
+		    if (tm.className=="cm-positionY"){
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor(" position.y="+Math.round(position.y)+";", cmLine.to.line, "cm-positionY" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
+			}
+            if (tm.className=="cm-size"){
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor(" size="+Math.round(size)+";", cmLine.to.line, "cm-size" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
+            }
+            if (tm.className=="cm-animationX"){
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor(" targetPosition.x="+Math.round(targetPosition.x)+";", cmLine.to.line, "cm-animationX" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
+            }
+            if (tm.className=="cm-animationY"){
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor(" targetPosition.y="+Math.round(targetPosition.y)+";", cmLine.to.line, "cm-animationY" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
+            }
+        }
+	myCodeMirror.save();
+}
+
+
+var createDrawing = function(){
+     drawingMode = true;
+       $('#supportCanvas').removeClass('is-hidden');
+        createCodeInEditor("\n\ ");
+        createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
+        createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
+        createCodeInEditor("\n\ drawingOffset.x=0", 'cm-offsetX');
+        createCodeInEditor("\n\ drawingOffset.y=0", 'cm-offsetY'); 
+}
+
+var createGraphics = function(){
+    hasGraphic = true;
+    $('#supportCanvas').removeClass('is-hidden');
+
+    var positionExists = false;
+    var sizeExists = false;
+    var allTM = myCodeMirror.getAllMarks();
+
+    for (var m = 0; m < allTM.length; m++) {
+            var tm = allTM[m];
+            if (tm.className == "cm-positionX" || tm.className == "cm-positionY") {
+               positionExists = true;
+            }
+            if (tm.className == "cm-size") {
+               sizeExists = true;
+            }           
+        }
+
+    if(!positionExists){
+        var text = "\n\ position.x="+Math.round(position.x)+";";
+        createCodeInEditor(text, "cm-positionX");    
+        text = "\n\ position.y="+Math.round(position.y)+";";
+        createCodeInEditor(text, "cm-positionY");
+    }
+
+    if(!sizeExists){
+      var text = "\n\ size="+Math.round(size)+";";
+      createCodeInEditor(text, "cm-size");
+   }    
+
+    if(drawingMode){
+        var allTM = myCodeMirror.getAllMarks();
+        for (var m = 0; m < allTM.length; m++) {
+            var tm = allTM[m];
+            if (tm.className=="cm-drawingMode"){
+                var cmLine = tm.find();
+                updateCodeInEditor(" drawingMode=false;", cmLine.to.line, "cm-drawingMode" );       
+            }
+        }
+    }
+
+}
+
+
+var createAnimation = function(){
+    animationMode = true;
+    targetPosition = {'x': 210, 'y': 125 };
+
+    clearInterval(animationInterval);
+    animationInterval = setInterval(animateImage, 60);                       
+    createCodeInEditor("\n\ ");
+    createCodeInEditor("\n\ animationMode=true;", 'cm-animationMode');
+    createCodeInEditor("\n\ bouncingAnimation=true;", 'cm-animationBounce');
+    createCodeInEditor("\n\ targetPosition.x="+targetPosition.x+";", 'cm-animationX');
+    createCodeInEditor("\n\ targetPosition.y="+targetPosition.y+";", 'cm-animationY');
+    createCodeInEditor("\n\ speed.x="+speed.x+";", 'cm-animationSpeedX');
+    createCodeInEditor("\n\ speed.y="+speed.y+";", 'cm-animationSpeedY');
 }
 
 var turnOffGraphics = function(){
@@ -413,8 +854,7 @@ var turnOffGraphics = function(){
 var turnOffDrawing = function(){
     drawingMode = false;
     hasDrawing = false;
-    drawX = [];
-    drawY = [];
+    drawXY = [];
 
     var allTM = myCodeMirror.getAllMarks();
     for (var m = 0; m < allTM.length; m++) {
@@ -464,279 +904,16 @@ var turnOffAnimation = function(status){
     }
 }
 
-var updateGraphicsEditor = function(){
-    var allTM = myCodeMirror.getAllMarks();
-		for (var m = 0; m < allTM.length; m++) {
-			var tm = allTM[m];
-			if (tm.className=="cm-positionX"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" position.x="+Math.round(position.x)+";", cmLine.to.line, "cm-positionX" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-			}
-		    if (tm.className=="cm-positionY"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" position.y="+Math.round(position.y)+";", cmLine.to.line, "cm-positionY" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-			}
-            if (tm.className=="cm-size"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" size="+Math.round(size)+";", cmLine.to.line, "cm-size" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-            }
-            if (tm.className=="cm-animationX"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" targetPosition.x="+Math.round(targetPosition.x)+";", cmLine.to.line, "cm-animationX" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-            }
-            if (tm.className=="cm-animationY"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" targetPosition.y="+Math.round(targetPosition.y)+";", cmLine.to.line, "cm-animationY" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-            }
-        }
-	myCodeMirror.save();
-}
-
-var reverseAnimation = function(){
-
-    if(bouncingAnimation){
-        var temp = {};
-        temp.x = targetPosition.x;
-        temp.y = targetPosition.y;
-
-        targetPosition.x = position.x;
-        targetPosition.y = position.y;
-
-        position.x = temp.x;
-        position.y = temp.y;  
-        updateGraphicsEditor();  
-    }
-    else{
-        console.log("doubled");
-        currentPosition.x = position.x;
-        currentPosition.y = position.y;
-    }    
-
-}
-
-var animateImage = function(){
-    console.log(currentPosition);
-
-    var img = document.getElementsByClassName('js-selected-graphic')[0];    
-    var directionX, directionY;
-
-    if(position.x < targetPosition.x) directionX = true;
-    else directionX = false;
-
-    if(position.y < targetPosition.y) directionY = true;
-    else directionY = false;
-
-
-    if(directionX && directionY){
-        if(currentPosition.x <= targetPosition.x) currentPosition.x += speed.x;
-        if(currentPosition.y <= targetPosition.y) currentPosition.y += speed.y;
-
-        if(currentPosition.x > targetPosition.x && currentPosition.y > targetPosition.y) reverseAnimation();
-    }
-    else if(directionX && !directionY){
-        if(currentPosition.x <= targetPosition.x) currentPosition.x += speed.x;
-        if(currentPosition.y >= targetPosition.y) currentPosition.y -= speed.y;
-
-
-        if(currentPosition.x > targetPosition.x && currentPosition.y < targetPosition.y) reverseAnimation();
-    }
-    else if(!directionX && directionY){
-        if(currentPosition.x >= targetPosition.x) currentPosition.x -= speed.x;
-        if(currentPosition.y <= targetPosition.y) currentPosition.y += speed.y;
-
-
-        if(currentPosition.x < targetPosition.x && currentPosition.y > targetPosition.y) reverseAnimation();
-    }
-    else if(!directionX && !directionY){
-        if(currentPosition.x >= targetPosition.x) currentPosition.x -= speed.x;
-        if(currentPosition.y >= targetPosition.y) currentPosition.y -= speed.y;
-
-
-        if(currentPosition.x < targetPosition.x && currentPosition.y < targetPosition.y) reverseAnimation();
-    }    
-    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
-    if (hasDrawing) reDrawing(); 
-    graphicsContext.drawImage(img,currentPosition.x , currentPosition.y, size,size-size/5);
-    graphic.update();
-}
-
-var reDrawImage = function(){
-	var img = document.getElementsByClassName('js-selected-graphic')[0];
-    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);	
-    graphicsContext.drawImage(img, position.x, position.y, size, size-size/5);  
-}
-
-
-
-
-
-var updateGraphicsCanvas = function(){
-    if(!animationMode){
-    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   	    
-    if(hasGraphic) reDrawImage();
-    if (hasDrawing) reDrawing(); 
-
-    graphic.update();
-    }
-}
-
-var InitSeriously = function(){
-	seriously = new Seriously();
-	
-	//TODO: generalize to my media
-	// video = seriously.source('#myvideo');		
-	  video = seriously.transform('reformat');
-	  video.width = 420;
-	  video.height = 250;
-	  video.mode = 'distort';	
-	  video.source = ('#myvideo');
-
-	  target = seriously.target('#canvas'); 
-	  graphic = seriously.source(graphicsCanvas);	
-
-	
-  //Set up Seriously.js effects
-   seriouslyEffects = Seriously.effects();
-	
-   var thisEffect;
-   effects[allEffects[0]] = thisEffect = seriously.effect(allEffects[0]);
-   thisEffect.top = graphic;
-   thisEffect.bottom = video;
-  
-  for (var i=1;i<allEffects.length;i++){
-    effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
-    effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
-    thisEffect.amount = 0;
-  }	
-  
-  	
-  target.source = effects[allEffects[allEffects.length-1]];
-  seriously.go();
-};
 
 
 
 
 
 
-var updateScript = function() {
-    //console.log('update script call');
-    var scriptOld = document.getElementById('codeScript');
-    if (scriptOld) { scriptOld.remove();}
-    var scriptNew   = document.createElement('script');
-    scriptNew.id = 'codeScript';
-    var cmScript = myCodeMirror.getValue();
-
-    eval(cmScript);
-    var adjScript = "";
-    var textScript = "\n\ try {\n\ "+cmScript;
-
-    /*TODO: Check to see if the active effects have changed from before to now
-    if so, reinit seriously. if not, do nothing
-    Also, don't add and remove the script each time. Just update the script string via innerhtml
-    */
-    // if (textScript.indexOf('effects.sepia')>=0) {
-    //   if (allEffects.indexOf('sepia')<0) {
-    //     allEffects.push('sepia');
-    //     InitSeriously();
-    //   }
-    // } else {
-    //   var si = allEffects.indexOf('sepia');
-    //   if (si>=0) {
-    //     allEffects.splice(si,1);
-    //     InitSeriously();
-    //   }
-    // }
-
-    if (textScript.indexOf('stopMotion.interval')>=0) {
-        //*TODO: compare frame state
-        stopMotion.start();
-    } else {
-      if (stopMotion.on) {
-        stopMotion.stop();
-      }
-    }
-
-    labelLines();
-    var matchEff = document.querySelectorAll(".active-effect");
-
-    var matchNames = [];
-    
-    //turn everything off
-    $('.btn-method').removeClass('is-active');          
-    
-
-    //turn on back the effects in
-    for (var t = 0; t < matchEff.length; t++) {
-        var matchE = matchEff[t];
-        matchNames.push($(matchE).attr("name"));
-        checkBtnStatus(matchE);
-    }
-    //update effects in editor
-    for (var c = 0; c < allEffects.length; c++) {
-        var thisEffect = allEffects[c];
-        if (matchNames.indexOf(thisEffect) < 0) {
-            adjScript += "\n\ effects." + thisEffect + ".amount = 0;";
-        } else {
-            var adjAmt = effects[thisEffect]['amount'] * mult[thisEffect];
-            adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
-        }
-    }
-    
-
-    //if there is not position in the editor, turn off graphics
-    if(textScript.indexOf('position')<0 && textScript.indexOf('size')<0){
-        turnOffGraphics();
-    }
-
-    //turn drawing/animation on
-    if(textScript.indexOf('drawing')>=0){
-       $('li[name=drawing]').addClass('is-active');
-    }
-    else{
-        turnOffDrawing();        
-    }
-
-    if(textScript.indexOf('animation')>=0){
-        $('li[name=animation]').addClass('is-active');
-        console.log("textScript animation");
-
-        if(textScript.indexOf('animationMode=false')>=0 || textScript.indexOf('animationMode= false')>=0 ||
-        textScript.indexOf('animationMode = false')>=0 || textScript.indexOf('animationMode =false')>=0){        
-            turnOffAnimation("pause");
-        }
-        else{
-            clearInterval(animationInterval);
-            animationInterval = setInterval(animateImage, 60);
-        }
-    }
-    else{
-        turnOffAnimation("delete");  
-    }   
-    updateGraphicsCanvas();
 
 
-    textScript += adjScript;
-    textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
-	scriptNew.text = textScript;
-
-    document.body.appendChild(scriptNew);
 
 
-};
-
-var checkBtnStatus = function (effect) {
-    //compare the names of effect buttons to the names in activeEffects
-    var effectName = $(effect).attr("name");
-    $('li[name=' + effectName + ']').addClass("is-active")
-
-
-};
 
 /*old lessons.js*/
 
@@ -770,6 +947,19 @@ var loadThumbnails = function () {
     }
 };
 
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------Document Ready-----------------------------------//
+
+
 $(document).ready(function () {
     movie = document.getElementById('myvideo');
  	movie.addEventListener('canplay', setup, false);
@@ -791,7 +981,6 @@ $(document).ready(function () {
 
     //lesson updates for NYTM
     $('#stop-motion-method').click(function () {
-        stillsSelectedLesson = false;
         updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing then that?!</p><p>Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
     });
     $('#basic-filter-method').click(function () {
@@ -1021,8 +1210,9 @@ $(document).ready(function () {
 
             lessonIsActive(".js-effects");
 
-            var eff = ui.draggable.attr("name");
+            var eff = ui.draggable.attr("name");   
             $('[name=' + eff + ']').addClass("is-active");
+
             var filter = seriouslyEffects[eff];
             if (filter) {
                 numFilterSelect++;
@@ -1036,68 +1226,29 @@ $(document).ready(function () {
                     input = filter.inputs[i];
                     if ((i != 'source') && (i != 'timer') && (i != 'overlay')) {
                         lineText = '\n\ effects.' + eff + '.' + i + ' = ' + defaultValue[input.type] + ';';
-                        myCodeMirror.replaceRange(lineText, CodeMirror.Pos(myCodeMirror.lastLine()));
-                        myCodeMirror.markText({
-                            line: myCodeMirror.lastLine(),
-                            ch: 0
-                        }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
+                        createCodeInEditor(lineText, "cm-" + eff);
                     }
                 }
-            } else if (eff == "play") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + '();', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (eff == "pause") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + '();', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (eff == "playbackRate") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + ' = 1.0;', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (stopMotion.controls.hasOwnProperty(eff)) {
-                myCodeMirror.replaceRange('\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-                if (eff == "interval") {
-                    updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
-                }
-            } else if (eff == "drawing" ){
-                drawingMode = true;
-
-               $('#supportCanvas').removeClass('is-hidden');
-                createCodeInEditor("\n\ ");
-                createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
-                createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
-                createCodeInEditor("\n\ drawingOffset.x=0", 'cm-offsetX');
-                createCodeInEditor("\n\ drawingOffset.y=0", 'cm-offsetY');                            
-            } else if (eff == "animation"){
-                if(hasGraphic){
-                    animationMode = true;
-                    targetPosition = {'x': 210, 'y': 125 };
-
-                    clearInterval(animationInterval);
-                    animationInterval = setInterval(animateImage, 60);  
-                     
-                    createCodeInEditor("\n\ ");
-                    createCodeInEditor("\n\ animationMode=true;", 'cm-animationMode');
-                    createCodeInEditor("\n\ bouncingAnimation=true;", 'cm-animationBounce');
-                    createCodeInEditor("\n\ targetPosition.x="+targetPosition.x+";", 'cm-animationX');
-                    createCodeInEditor("\n\ targetPosition.y="+targetPosition.y+";", 'cm-animationY');
-                    createCodeInEditor("\n\ speed.x="+speed.x+";", 'cm-animationSpeedX');
-                    createCodeInEditor("\n\ speed.y="+speed.y+";", 'cm-animationSpeedY');
-                }
+            } 
+            else if (eff == "pause" || eff == "play") {
+                createCodeInEditor('\n\ movie.' + eff + '();', "cm-" + eff);
+            } 
+            else if (eff == "playbackRate") {
+                createCodeInEditor('\n\ movie.' + eff + ' = 1.0;', "cm-" + eff);
+            } 
+            else if (stopMotion.controls.hasOwnProperty(eff)) {
+                createStopMotion(eff);
+            } 
+            else if (eff == "drawing" ){
+                createDrawing();
+            } 
+            else if (eff == "animation"){
+                if(hasGraphic) createAnimation();                   
+                else  $('[name=' + eff + ']').removeClass("is-active"); 
             }
 
             myCodeMirror.save();
+
             $(".cm-" + eff).effect("highlight", 2000);
         }
     });
@@ -1228,102 +1379,39 @@ $(document).ready(function () {
     var removeInfo = function (term) {
         $('pre:contains(' + term + ')').css("background", "none");
     };
+
+    // choose media
+    $('.js-img-click').click(imgClickSetup);
+    $('.js-vid-click').click(vidClickSetup);
+    $('.js-graph-click').click(graphClickSetup);
+
+
+    //Switch between content
+    $('.js-switch-view').click(function () {
+        //Todo: Template these
+        var view = ($(this).attr('id'));
+        var lName = ($(this).attr('name'));
+        var lessonNum = ($(this).attr('lessnum'));
+        $('.basic-filter-method').addClass('is-hidden');
+        $('.graphic-method').addClass('is-hidden');
+        $('.stop-motion-method').addClass('is-hidden');
+        $('.' + view).removeClass('is-hidden');
+        $('.js-lesson-name').text(lName);
+        $('.js-lesson-page-num-total').text(lessonNum);
+
+    })
+
+    $("html").on("click", ".js-switch-menu-appear", function () {
+        $('.js-switch-view-container').toggleClass('is-hidden');
+        $('body').toggleClass('js-switch-menu-appear');
+    });
 });
+
+//------------------------------------------------Finish Document Ready -------------------------------//
 
 loadThumbnails();
 
-//ugh, sorry. we can get rid of this after nytm
-var stillsSelectedLesson = false;
-$('.js-img-click').click(imgClickSetup);
 
-$('.js-vid-click').click(function () {
-    $('.loader').removeClass('is-hidden');
-    $('.js-vid-click').removeClass('js-selected-video');
-    $(this).addClass('js-selected-video');
-    movie.addEventListener("loadeddata", showVid, false);
-    var thisSrc = $(this).attr('src');
-    movie.src = thisSrc;
-});
-
-$('.js-graph-click').click(function () {
-    //if graphic is not selected already, remove previous one
-    if($(this).hasClass('js-selected-graphic') === false){
-        $('.js-graph-click').removeClass('js-selected-graphic'); 
-    }
-     $(this).toggleClass('js-selected-graphic');
-    
-    //check if has any Graphic selected
-	if($(this).hasClass('js-selected-graphic') === true){
-        hasGraphic = true;
-        createGraphicsEditor(); 
-        $('#supportCanvas').removeClass('is-hidden');
-
-        if(drawingMode){
-            var allTM = myCodeMirror.getAllMarks();
-            for (var m = 0; m < allTM.length; m++) {
-                var tm = allTM[m];
-                if (tm.className=="cm-drawingMode"){
-                    var cmLine = tm.find();
-                    updateCodeInEditor(" drawingMode=false;", cmLine.to.line, "cm-drawingMode" );       
-                }
-            }
-        }
-    }
-    else{
-       turnOffGraphics();
-
-    }
-
-    updateGraphicsCanvas();  	
-});
-
-var createGraphicsEditor = function(){
-    var positionExists = false;
-    var sizeExists = false;
-    var allTM = myCodeMirror.getAllMarks();
-
-    for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if (tm.className == "cm-positionX" || tm.className == "cm-positionY") {
-               positionExists = true;
-            }
-            if (tm.className == "cm-size") {
-               sizeExists = true;
-            }           
-        }
-
-    if(!positionExists){
-        var text = "\n\ position.x="+Math.round(position.x)+";";
-        createCodeInEditor(text, "cm-positionX");    
-        text = "\n\ position.y="+Math.round(position.y)+";";
-        createCodeInEditor(text, "cm-positionY");
-    }
-
-    if(!sizeExists){
-      var text = "\n\ size="+Math.round(size)+";";
-      createCodeInEditor(text, "cm-size");
-   }
-}
-
-//Switch between content
-$('.js-switch-view').click(function () {
-    //Todo: Template these
-    var view = ($(this).attr('id'));
-    var lName = ($(this).attr('name'));
-    var lessonNum = ($(this).attr('lessnum'));
-    $('.basic-filter-method').addClass('is-hidden');
-    $('.graphic-method').addClass('is-hidden');
-    $('.stop-motion-method').addClass('is-hidden');
-    $('.' + view).removeClass('is-hidden');
-    $('.js-lesson-name').text(lName);
-    $('.js-lesson-page-num-total').text(lessonNum);
-
-})
-
-$("html").on("click", ".js-switch-menu-appear", function () {
-    $('.js-switch-view-container').toggleClass('is-hidden');
-    $('body').toggleClass('js-switch-menu-appear');
-});
 
 //boolean game
 var fclicks = 0;
@@ -1346,6 +1434,11 @@ $('.js-f-b-click').click(function () {
         }
     }
 });
+
+
+
+
+
 
 //MixPanel Tracking for Learn More
 
