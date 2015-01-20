@@ -1035,6 +1035,21 @@ canvas {
     margin-bottom: -74px;
 }
 
+/* ---------------- Graphics, animation and Timeline ------------------ */
+
+#supportCanvas{
+    margin-top: -250px; 
+    position:absolute;  
+}
+
+#stop-motion-timeline{
+    background-color: #000;
+    margin-top: 5px;
+    height: 80px;
+    width: 420px;
+}
+
+
 /* ---------------- Learn More Games ------------------ */
 
 .boolean-game {
@@ -2190,6 +2205,7 @@ li.active a, li.active a:hover {
     line-height: 1.6em;
 }
 
+
 /* ======================       Modal Lessons          ============================= */
 
 .modal-content {
@@ -2360,6 +2376,8 @@ li.active a, li.active a:hover {
     margin-left: 355px;
 }
 
+
+
 /* ======================       AddThis          ============================= */
 #fb-btn-styling {
     background: #323762 !important;
@@ -2386,6 +2404,8 @@ li.active a, li.active a:hover {
 #tw-btn-styling img {
     padding-right: 5px !important
 }
+
+
 
 /* ==========================================================================
 Helper classes
@@ -2613,10 +2633,6 @@ Inlined to avoid required HTTP connection: h5bp.com/r
     }
 }
 
-#supportCanvas{
-	margin-top: -250px; 
-    position:absolute;	
-}
 
 /* ==========================================================================
 Profile page tabs.

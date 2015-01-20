@@ -164,15 +164,15 @@ $(document).ready(function () {
 
             lessonIsActive(".js-effects");
 
-            var eff = ui.draggable.attr("name");
+            var eff = ui.draggable.attr("name");   
             $('[name=' + eff + ']').addClass("is-active");
+
             var filter = seriouslyEffects[eff];
             if (filter) {
                 numFilterSelect++;
                 if (numFilterSelect == 1) {
                     updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
                 } else if (numFilterSelect == 2) {
-                    trackLesson('1-4');
                     updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects"</p><p><strong>Effects is an Object</strong>. This is a word you will be hearing a lot. Objects hold data. In this case the effects Object holds ALL the effects inside of itself. When we write the word "effects" the program knows we are asking to retrieve a piece of data from the effects object.</p>', 'Notice anything about your code?', '');
                 }
                 var input;
@@ -180,68 +180,29 @@ $(document).ready(function () {
                     input = filter.inputs[i];
                     if ((i != 'source') && (i != 'timer') && (i != 'overlay')) {
                         lineText = '\n\ effects.' + eff + '.' + i + ' = ' + defaultValue[input.type] + ';';
-                        myCodeMirror.replaceRange(lineText, CodeMirror.Pos(myCodeMirror.lastLine()));
-                        myCodeMirror.markText({
-                            line: myCodeMirror.lastLine(),
-                            ch: 0
-                        }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
+                        createCodeInEditor(lineText, "cm-" + eff);
                     }
                 }
-            } else if (eff == "play") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + '();', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (eff == "pause") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + '();', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (eff == "playbackRate") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + ' = 1.0;', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (stopMotion.controls.hasOwnProperty(eff)) {
-                myCodeMirror.replaceRange('\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-                if (eff == "interval") {
-                    updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
-                }
-            } else if (eff == "drawing" ){
-                drawingMode = true;
-
-               $('#supportCanvas').removeClass('is-hidden');
-                createCodeInEditor("\n\ ");
-                createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
-                createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
-                createCodeInEditor("\n\ drawingOffset.x=0", 'cm-offsetX');
-                createCodeInEditor("\n\ drawingOffset.y=0", 'cm-offsetY');                            
-            } else if (eff == "animation"){
-                if(hasGraphic){
-                    animationMode = true;
-                    targetPosition = {'x': 210, 'y': 125 };
-
-                    clearInterval(animationInterval);
-                    animationInterval = setInterval(animateImage, 60);  
-                     
-                    createCodeInEditor("\n\ ");
-                    createCodeInEditor("\n\ animationMode=true;", 'cm-animationMode');
-                    createCodeInEditor("\n\ bouncingAnimation=true;", 'cm-animationBounce');
-                    createCodeInEditor("\n\ targetPosition.x="+targetPosition.x+";", 'cm-animationX');
-                    createCodeInEditor("\n\ targetPosition.y="+targetPosition.y+";", 'cm-animationY');
-                    createCodeInEditor("\n\ speed.x="+speed.x+";", 'cm-animationSpeedX');
-                    createCodeInEditor("\n\ speed.y="+speed.y+";", 'cm-animationSpeedY');
-                }
+            } 
+            else if (eff == "pause" || eff == "play") {
+                createCodeInEditor('\n\ movie.' + eff + '();', "cm-" + eff);
+            } 
+            else if (eff == "playbackRate") {
+                createCodeInEditor('\n\ movie.' + eff + ' = 1.0;', "cm-" + eff);
+            } 
+            else if (stopMotion.controls.hasOwnProperty(eff)) {
+                createStopMotionInEditor(eff);
+            } 
+            else if (eff == "drawing" ){
+                createDrawing();
+            } 
+            else if (eff == "animation"){
+                if(hasGraphic) createAnimation();                   
+                else  $('[name=' + eff + ']').removeClass("is-active"); 
             }
 
             myCodeMirror.save();
+
             $(".cm-" + eff).effect("highlight", 2000);
         }
     });
@@ -279,36 +240,8 @@ $(document).ready(function () {
 
     $('.js-vid-click').click(vidClickSetup);
 
-    $('.js-graph-click').click(function () {
-        //if graphic is not selected already, remove previous one
-        if($(this).hasClass('js-selected-graphic') === false){
-            $('.js-graph-click').removeClass('js-selected-graphic'); 
-        }
-         $(this).toggleClass('js-selected-graphic');
-        
-        //check if has any Graphic selected
-        if($(this).hasClass('js-selected-graphic') === true){
-            hasGraphic = true;
-            createGraphicsEditor(); 
-            $('#supportCanvas').removeClass('is-hidden');
+    $('.js-graph-click').click(graphClickSetup);
 
-            if(drawingMode){
-                var allTM = myCodeMirror.getAllMarks();
-                for (var m = 0; m < allTM.length; m++) {
-                    var tm = allTM[m];
-                    if (tm.className=="cm-drawingMode"){
-                        var cmLine = tm.find();
-                        updateCodeInEditor(" drawingMode=false;", cmLine.to.line, "cm-drawingMode" );       
-                    }
-                }
-            }
-        }
-        else{
-           turnOffGraphics();
-        }
-
-        updateGraphicsCanvas();     
-    });
 
     //Switch between content
     $('.js-switch-view').click(function () {
