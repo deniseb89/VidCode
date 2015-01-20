@@ -32,7 +32,7 @@
                     <label for="video-descr">Optional Video Description</label>
                     <textarea id="video-descr" name="descr" rows="4" class="js-video-descr"></textarea>
                     <input type="text" id="video-token" name="token" class="js-video-token" hidden="true" value="">
-<!--                     <input type="submit" value="Update Description" onsubmit="return false;"
+                <!-- <input type="submit" value="Update Description" onsubmit="return false;"
                            class="save-video-desc-btn n-a-video-save-desc"/> -->
                 <!-- </form> -->
 
@@ -145,35 +145,18 @@
                     <span class="js-active-vid active-vid">
 
                         {{#if user.sessionToLoad}}
-
-                            <div id="vid-load-from-profile">
-
-                                <video class="video1 is-hidden js-load-last-session" id="myvideo"
+                            <video class="video1 is-hidden js-load-last-session" id="myvideo"
                                        src="/video/?file={{user.sessionToLoad.video.file}}" autoplay loop></video>
-
-                                 <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
-                                  <canvas class="is-hidden" id="graphicsCanvas"  width="420" height="250px"></canvas>
-                                  <canvas id="supportCanvas"  width="420" height="250px"></canvas>
-                               <button type="button" class="runbtn btn btn-danger pullRight is-hidden">Pause</button>
-
-                            </div>
-
-
                         {{else}}
-
                             <div class="vid-placeholder overlay">
                                 <h3>Select a video below</h3>
                             </div>
-
                             <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
+                        {{/if}}
                             <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
                             <canvas class="is-hidden" id="graphicsCanvas"   width="420" height="250px"></canvas>
                             <canvas id="supportCanvas"  width="420" height="250px"></canvas>
                             <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
-
-                        {{/if}}
-
-
                     </span>
 
 
@@ -309,13 +292,13 @@
                 <div class="col-md-5">
                     <div class="tabs-2">
                         <form>
-                            <textarea id="codemirror" name="codemirror">{{code}}</textarea>
+                            <textarea id="codemirror" name="codemirror"></textarea>
                         </form>
                     </div>
                     <div class="save-btns-container">
-                      <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-code-m">
+<!--                       <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-code-m">
                         Save Code
-                      </span>
+                      </span> -->
                       <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
                         Save
                       </span>
@@ -385,8 +368,10 @@
 <h4 id="username" class="is-hidden">{{user.username}}</h4>
 <h4 id="social" class="is-hidden">{{user.social}}</h4>
 
+<script src="/js/initdom.js"></script>
 <script src="/js/workstation.js"></script>
 <script src="/js/stopmotion.js"></script>
+<script src="/js/graphics.js"></script>
 
 <script>
     mixpanel.track_links("#mix-share", "Share clicked");

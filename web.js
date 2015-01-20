@@ -13,6 +13,14 @@ var morgan = require('morgan');
 var configDB = require('./config/database.js');
 mongoose.connect(configDB.url);
 
+var seeder = require('./config/seeder');
+mongoose.connection.on('open', function() {
+  console.log("Connected to Mongoose...");
+
+  // check if the db is empty, if so seed it:
+  seeder.check();
+});
+
 // pass passport for configuration =============================================
 require('./config/passport')(passport);
 

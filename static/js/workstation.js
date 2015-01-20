@@ -14,56 +14,80 @@ var movie,
     frames = [],
     capture,
     windowObjectReference = null;
-    numVidSelect = 0,
-    numFilterSelect = 0,
-    allEffects = ['blend','blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'],
-    mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1},
+    numVidSelect = 0;
+    numFilterSelect = 0;
+    allEffects = ['blend','blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'];
+    mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
     defaultValue = {'number': 5, 'color': '"red"'};
+    lastLessonId = null;
+    newSession = true;
 
-	
-	
-var showVid = function() {
-    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
-    numVidSelect++;
-    $('.vid-placeholder').addClass('is-hidden');
-    $('.loader').addClass('is-hidden');
-    $(".popup").addClass("is-hidden");
-    $(".clearHover").addClass("is-hidden");
-    $(".buttons").addClass("is-aware");
-    $(".runbtn").removeClass("is-hidden");
-    $(".video2").removeClass("is-hidden");
-    $('.CodeMirror-code').removeClass('is-hidden');
-    activateEndButtons('save');
-    activateEndButtons('save-code');
-    activateEndButtons('share');
-    labelEffects();
-    if (this.tagName=='VIDEO') {
-        effects[allEffects[0]]["bottom"] = seriously.source(video);
-        vidLen = Math.round(this.duration);
-      } else {
-        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
+var setup = function() {
+    newSession = true;
+
+    if(newSession){
+        // $('.CodeMirror-code').addClass('is-hidden');
+    } else {
+    // saved session
+        activateSession();
+        updateScript($('#codemirror').val());
     }
+    $('.basic-filter-method').removeClass('is-hidden');
+    movie.addEventListener("loadeddata", changeSrc, false);
 };
 
-var vidClickSetup = function () {
-    $('.loader').removeClass('is-hidden');
-    $('.js-vid-click').removeClass('js-selected-video');
-    $(this).addClass('js-selected-video');
-    movie.addEventListener("loadeddata", showVid, false);
-    var thisSrc = $(this).attr('src');
-    movie.src = thisSrc;
-}
+var checkWebGL = function () {
+    //check Seriously compatibility
+    if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
+        $('.compatibility-error').removeClass('is-hidden');
+    } else {
+        InitSeriously();
+        setup();
+    }
+    movie.removeEventListener('canplay', checkWebGL, false);
+};
+
+var InitSeriously = function () {
+    seriously = new Seriously();
+
+    //TODO: generalize to my media
+    video = seriously.transform('reformat');
+    video.width = 420;
+    video.height = 250;
+    video.mode = 'distort';   
+    video.source = ('#myvideo');
+
+    target = seriously.target('#canvas'); 
+    graphic = seriously.source(graphicsCanvas);   
+
+    //Set up Seriously.js effects
+    seriouslyEffects = Seriously.effects();
+    
+    var thisEffect;
+    effects[allEffects[0]] = thisEffect = seriously.effect(allEffects[0]);
+    thisEffect.top = graphic;
+    thisEffect.bottom = video;
+  
+    for (var i=1;i<allEffects.length;i++){
+        effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
+        effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
+        thisEffect.amount = 0;
+    } 
+  
+    target.source = effects[allEffects[allEffects.length-1]];
+    seriously.go();    
+};
+
 
 var imgClickSetup = function () {
-    showVid();
+    changeSrc();
     updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
 
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
-    // figure out how to deal with video running in the backgroud
-    movie.src = "";
 
+    var this_still;
     //generalize this somewhere else so when source changes, target changes
     if (!stopMotion.on){
       var this_still;
@@ -75,11 +99,8 @@ var imgClickSetup = function () {
       effects[allEffects[0]]["bottom"] = seriously.source(this_still);
     }
 
-
-
-
-
     var stills = document.querySelectorAll('.js-selected-still');
+    console.log(stills);
     stopMotion.framesArr = new Array(stills.length);
     var allFrames = new Array(stills.length);
 
@@ -87,17 +108,12 @@ var imgClickSetup = function () {
       stopMotion.framesArr[i]= stills[i].id;
       allFrames[i] = "'"+stills[i].id+"'";
     }
-
-
+    console.log(stopMotion.framesArr);
     //allFrames = stopMotion.framesArr.join(",");
-
-    if(stills.length) createStopMotion("frames");
-
-
-
-
-                
-
+    if(stopMotion.framesArr.length){
+        console.log("created");
+      createStopMotionInEditor("frames");   
+    }           
 
     var allTM = myCodeMirror.getAllMarks();
     for (var m=0; m<allTM.length; m++){
@@ -109,12 +125,6 @@ var imgClickSetup = function () {
         if(!stills.length) myCodeMirror.removeLine(cmLine.to.line);
       }
     }
-
-
-
-
-
-
 };
 
 
@@ -136,6 +146,44 @@ var graphClickSetup = function () {
         updateGraphicsCanvas();     
 };
 
+var vidClickSetup = function() {
+    $('.loader').removeClass('is-hidden');
+    $('.js-vid-click').removeClass('js-selected-video');
+    $(this).addClass('js-selected-video');
+    var thisSrc = $(this).attr('src');
+    movie.src = thisSrc;
+};
+
+var activateSession = function () {
+    $('.vid-placeholder').addClass('is-hidden');
+    $(".clearHover").addClass("is-hidden");
+    $(".buttons").addClass("is-aware");
+    $(".runbtn").removeClass("is-hidden");
+    $(".video2").removeClass("is-hidden");
+    $('.CodeMirror-code').removeClass('is-hidden');
+    activateEndButtons('save');
+    activateEndButtons('save-code');
+    activateEndButtons('share');
+};
+
+var changeSrc = function () {
+    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
+    numVidSelect++;
+    $('.loader').addClass('is-hidden');
+    $(".popup").addClass("is-hidden");
+
+    //this should only happen if it's a new session
+    if (newSession) { activateSession(); }
+
+    labelLines();
+    if (this.tagName=='VIDEO') {
+        effects[allEffects[0]]["bottom"] = seriously.source(video);
+        vidLen = Math.round(this.duration);
+      } else {
+        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
+        movie.src = "";
+    }
+};
 
 
 
@@ -143,14 +191,12 @@ var activateEndButtons = function (bType) {
     $('.inactive-js-' + bType + '-m').addClass('js-' + bType + '-m');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-b-a-btn');
     $('.inactive-js-' + bType + '-m').removeClass('inactive-js-' + bType + '-m');
-};
+};    
 
 
 var uploadFromComp = function (ev) {
     var files = ev.target.files;
     var maxSize = 10000000;
-
-    //TODO: implement multiple file upload on the server
 
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
@@ -159,26 +205,9 @@ var uploadFromComp = function (ev) {
         reader.onload = (function (theFile) {
             return function (e) {
                 if (file.size < maxSize) {
-                    // var formData = new FormData();
-                    // formData.append('file',file);
-                    // $.ajax({
-                    //   url: '/uploadMedia',
-                    //   type: 'POST',
-                    //   data:  formData,
-                    //   mimeType:"multipart/form-data",
-                    //   contentType: false,
-                    //   cache: false,
-                    //   processData:false,
-                    //   success: function(data, textStatus, jqXHR){
-                    //     var data = JSON.parse(data);
                     updateMediaLibrary(file, e.target.result);
                     $(".popup").addClass("is-hidden");
                     $(".fileError").text("");
-                    //   },
-                    //   error: function(file, textStatus, jqXHR){
-                    //     console.log('file error');
-                    //   }
-                    // });
                 } else {
                     $('.loader').addClass('is-hidden');
                     $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
@@ -193,7 +222,7 @@ var uploadFromComp = function (ev) {
 var uploadFromCompToLibrary = function (ev) {
     var files = ev.target.files;
     var maxSize = 10000000;
-
+    //TODO: implement multiple file upload on the server
 
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
@@ -213,13 +242,8 @@ var uploadFromCompToLibrary = function (ev) {
                         cache: false,
                         processData: false,
                         success: function (data, textStatus, jqXHR) {
-                            // var data = JSON.parse(data);
-
-                            updateMediaLibraryFromComp(file, e.target.result);
-
+                            updateMediaLibrary(file, e.target.result);
                             $(".popup-upload-to-library").addClass("is-hidden");
-                            //$(".fileError").text("");
-
                         },
                         error: function (file, textStatus, jqXHR) {
                             console.log('file error');
@@ -237,42 +261,6 @@ var uploadFromCompToLibrary = function (ev) {
 };
 
 var updateMediaLibrary = function (file, data) {
-      //create div and img/video tags
-      var type;
-      var style;
-      var fn;
-      var parent;
-      if (file.type.match(/image.*/)) {
-        type = 'img';
-        style = 'js-img-click';
-        parent= 'img-library';
-        fn = imgClickSetup;
-
-      } else if (file.type.match(/video.*/)) {
-        type = 'video';
-        style = 'js-vid-click';
-        parent = 'vid-library';
-        fn = function () {
-            $('.loader').removeClass('is-hidden');
-            $('.js-vid-click').removeClass('js-selected-video');
-            $(this).addClass('js-selected-video');
-            movie.addEventListener("loadeddata", showVid, false);
-            var thisSrc = $(this).attr('src');
-            movie.src = thisSrc;
-        };
-    }
-
-    var div = document.createElement('div');
-    div.className += 'i-vid-container';
-    var media = document.createElement(type);
-    media.className += style;
-    media.src = data;
-    media.addEventListener('click', fn, false);
-    div.appendChild(media);
-    document.getElementById(parent).appendChild(div);
-};
-
-var updateMediaLibraryFromComp = function (file, data) {
     //create div and img/video tags
 
     var type;
@@ -281,28 +269,17 @@ var updateMediaLibraryFromComp = function (file, data) {
     var fn;
     var this_still;
     if (file.type.match(/image.*/)) {
-      console.log("the IF")
         type = 'img';
         style = 'js-img-click';
         parent = 'img-library';
         fn = imgClickSetup;
     }
     else if (file.type.match(/video.*/)) {
-      console.log("the ELSE");
         type = 'video';
         style = 'js-vid-click';
         parent = 'vid-library';
-        fn = function () {
-            $('.loader').removeClass('is-hidden');
-            $('.js-vid-click').removeClass('js-selected-video');
-            $(this).addClass('js-selected-video');
-            movie.addEventListener("loadeddata", showVid, false);
-            var thisSrc = $(this).attr('src');
-            movie.src = thisSrc;
-        };
+        fn = vidClickSetup;
     }
-
-    console.log("the AFTER");
 
     var div = document.createElement('div');
     div.className += 'i-vid-container';
@@ -314,7 +291,7 @@ var updateMediaLibraryFromComp = function (file, data) {
     document.getElementById(parent).appendChild(div);
 };
 
-var labelEffects = function () {
+var labelLines = function () {
     //this function should take an input for the relevant effect, not brute force for all
     for (var e = 0; e < allEffects.length; e++) {
         $("pre:contains('effects." + allEffects[e] + "')").addClass('active-effect');
@@ -326,61 +303,7 @@ var labelEffects = function () {
 };
 
 
-//----------------------------------Init Seriously--------------------------------//
-
-var setup = function(){
-   //check Seriously compatibility
-  if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
-    $('.compatibility-error').removeClass('is-hidden');
-  } else {
-    InitSeriously();
-  }
-  movie.removeEventListener('canplay', setup, false);
-}
-
-
-var InitSeriously = function(){
-    seriously = new Seriously();
-    
-    //TODO: generalize to my media
-    // video = seriously.source('#myvideo');        
-      video = seriously.transform('reformat');
-      video.width = 420;
-      video.height = 250;
-      video.mode = 'distort';   
-      video.source = ('#myvideo');
-
-      target = seriously.target('#canvas'); 
-      graphic = seriously.source(graphicsCanvas);   
-
-    
-  //Set up Seriously.js effects
-   seriouslyEffects = Seriously.effects();
-    
-   var thisEffect;
-   effects[allEffects[0]] = thisEffect = seriously.effect(allEffects[0]);
-   thisEffect.top = graphic;
-   thisEffect.bottom = video;
-  
-  for (var i=1;i<allEffects.length;i++){
-    effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
-    effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
-    thisEffect.amount = 0;
-  } 
-  
-    
-  target.source = effects[allEffects[allEffects.length-1]];
-  seriously.go();
-};
-
-
-
-
-
-//----------------------------------Code Editor--------------------------------//
-
-var updateScript = function() {
-    //console.log('update script call');
+var updateScript = function (code) {
     var scriptOld = document.getElementById('codeScript');
     if (scriptOld) { scriptOld.remove();}
     var scriptNew   = document.createElement('script');
@@ -395,22 +318,9 @@ var updateScript = function() {
     if so, reinit seriously. if not, do nothing
     Also, don't add and remove the script each time. Just update the script string via innerhtml
     */
-    // if (textScript.indexOf('effects.sepia')>=0) {
-    //   if (allEffects.indexOf('sepia')<0) {
-    //     allEffects.push('sepia');
-    //     InitSeriously();
-    //   }
-    // } else {
-    //   var si = allEffects.indexOf('sepia');
-    //   if (si>=0) {
-    //     allEffects.splice(si,1);
-    //     InitSeriously();
-    //   }
-    // }
 
 
-    labelEffects();
-
+    labelLines();
     var matchEff = document.querySelectorAll(".active-effect");
     var matchNames = [];    
 
@@ -502,419 +412,6 @@ var checkBtnStatus = function (effect) {
 
 
 
-var createCodeInEditor = function(text, cmclass){ 
-   myCodeMirror.replaceRange(text, CodeMirror.Pos( myCodeMirror.lastLine()));
-    myCodeMirror.markText({
-                    line:  myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: cmclass });
-}
-
-var updateCodeInEditor = function(text, cmline, cmclass){
-     myCodeMirror.replaceRange(text, { line: cmline, ch: 0 }, CodeMirror.Pos( cmline ) );
-     myCodeMirror.markText({
-                    line: cmline,
-                    ch: 0
-                }, CodeMirror.Pos(cmline), {className: cmclass});       
-}
-
-
-
-//----------------------------------StopMotion Functions --------------------------------//
-
-var createStopMotion = function(eff){
-    
-    var effectExists = false;
-    var allTM = myCodeMirror.getAllMarks();
-
-    for (var m = 0; m < allTM.length; m++) {
-        var tm = allTM[m];
-        if (tm.className == "cm-"+eff) {
-           effectExists = true;
-        }               
-    }
-    if(!effectExists){
-        var text = '\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';';
-        createCodeInEditor(text, "cm-"+eff); 
-
-        if (eff == "interval") {
-            updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
-        }
-    }
- 
-}
-
-
-
-
-//----------------------------------Graphics Functions --------------------------------//
-
-//canvas variables
-var supportCanvas,
-    graphicsCanvas,
-    graphicsContext;
-
-//graphic variables
-var position = {'x':0, 'y':0};
-    targetPosition = {'x':0, 'y':0};
-    currentPosition = {'x':0, 'y':0};
-    speed = {'x':1, 'y':1}
-    animationMode = false;
-    bouncingAnimation = true;
-    size = 200,
-    hasGraphic = false;
-
-var animationInterval = setInterval(animateImage, 60);
-clearInterval(animationInterval);
-
-//drawing variables
-var drawingMode = false;
-var hasDrawing = false;
-var prevX ;
-var prevY ;
-var drawingOffset = {'x':0, 'y':0}
-var drawingColor = 'green';
-//array to store drawing positions
-var drawXY = [];
-
-
-var drawGraphics = function(evt){
-    var x, y, rect;
-    var img = document.getElementsByClassName('js-selected-graphic')[0];        
-    if(evt.which == 1){
-        rect = canvas.getBoundingClientRect();
-            x = evt.clientX - rect.left;
-            y = evt.clientY - rect.top;  
-
-        if(drawingMode){
-            graphicsContext.beginPath();
-            graphicsContext.moveTo(prevX, prevY);
-            graphicsContext.lineTo(x, y);
-            graphicsContext.strokeStyle=drawingColor;
-            graphicsContext.stroke();                      
-   
-            graphic.update();
-            
-            prevX = x;
-            prevY = y;
-
-            if(typeof x !== 'undefined'){
-                hasDrawing = true;
-                drawXY.push({'x': x, 'y':y});
-            }
-        }
-
-        else if(hasGraphic){       
-            if(x < position.x + size && x > position.x && y > position.y && y < position.y + size){
-                x = x -img.width/2;
-                y = y -img.height/2;
-                
-                graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
-
-                if(hasDrawing) reDrawing();
-
-                graphicsContext.drawImage(img,position.x , position.y, size,size-size/5);
-                position.x = x;
-                position.y = y;  
-                graphic.update();
-                updateGraphicsEditor();
-            }
-        }
-    }
-}
-
-
-var reDrawGraphic = function(){
-    var img = document.getElementsByClassName('js-selected-graphic')[0];
-    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);   
-    graphicsContext.drawImage(img, position.x, position.y, size, size-size/5);  
-}
-
-
-var reDrawing = function(){
-    graphicsContext.beginPath();
-    graphicsContext.moveTo(drawXY[0].x+drawingOffset.x, drawXY[0].y+drawingOffset.y);
-
-    drawXY.forEach(function(element){
-        graphicsContext.lineTo(element.x+drawingOffset.x, element.y +drawingOffset.y);      
-    });
-    graphicsContext.strokeStyle=drawingColor;
-    graphicsContext.stroke();
-    
-}
-
-
-var animateImage = function(){
-    //console.log(currentPosition);
-
-    var img = document.getElementsByClassName('js-selected-graphic')[0];    
-    var directionX, directionY;
-
-    if(position.x < targetPosition.x) directionX = true;
-    else directionX = false;
-
-    if(position.y < targetPosition.y) directionY = true;
-    else directionY = false;
-
-
-    if(directionX && directionY){
-        if(currentPosition.x <= targetPosition.x) currentPosition.x += speed.x;
-        if(currentPosition.y <= targetPosition.y) currentPosition.y += speed.y;
-
-        if(currentPosition.x > targetPosition.x && currentPosition.y > targetPosition.y) reverseAnimation();
-    }
-    else if(directionX && !directionY){
-        if(currentPosition.x <= targetPosition.x) currentPosition.x += speed.x;
-        if(currentPosition.y >= targetPosition.y) currentPosition.y -= speed.y;
-
-
-        if(currentPosition.x > targetPosition.x && currentPosition.y < targetPosition.y) reverseAnimation();
-    }
-    else if(!directionX && directionY){
-        if(currentPosition.x >= targetPosition.x) currentPosition.x -= speed.x;
-        if(currentPosition.y <= targetPosition.y) currentPosition.y += speed.y;
-
-
-        if(currentPosition.x < targetPosition.x && currentPosition.y > targetPosition.y) reverseAnimation();
-    }
-    else if(!directionX && !directionY){
-        if(currentPosition.x >= targetPosition.x) currentPosition.x -= speed.x;
-        if(currentPosition.y >= targetPosition.y) currentPosition.y -= speed.y;
-
-
-        if(currentPosition.x < targetPosition.x && currentPosition.y < targetPosition.y) reverseAnimation();
-    }    
-
- 
-    graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);
-    if (hasDrawing) reDrawing(); 
-
-    graphicsContext.drawImage(img,currentPosition.x , currentPosition.y, size,size-size/5);
-    graphic.update();
-
-   
-}
-
-
-var reverseAnimation = function(){
-    if(bouncingAnimation){
-        var temp = {};
-        temp.x = targetPosition.x;
-        temp.y = targetPosition.y;
-
-        targetPosition.x = position.x;
-        targetPosition.y = position.y;
-
-        position.x = temp.x;
-        position.y = temp.y;  
-        updateGraphicsEditor();  
-    }
-    else{
-        currentPosition.x = position.x;
-        currentPosition.y = position.y;
-    }    
-}
-
-
-var updateGraphicsCanvas = function(){
-    if(!animationMode){
-        graphicsContext.clearRect(0, 0, graphicsCanvas.width, graphicsCanvas.height);           
-        if(hasGraphic) reDrawGraphic();
-        if (hasDrawing) reDrawing(); 
-
-        graphic.update();
-    }
-}
-
-
-var updateGraphicsEditor = function(){
-    var allTM = myCodeMirror.getAllMarks();
-		for (var m = 0; m < allTM.length; m++) {
-			var tm = allTM[m];
-			if (tm.className=="cm-positionX"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" position.x="+Math.round(position.x)+";", cmLine.to.line, "cm-positionX" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-			}
-		    if (tm.className=="cm-positionY"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" position.y="+Math.round(position.y)+";", cmLine.to.line, "cm-positionY" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-			}
-            if (tm.className=="cm-size"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" size="+Math.round(size)+";", cmLine.to.line, "cm-size" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-            }
-            if (tm.className=="cm-animationX"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" targetPosition.x="+Math.round(targetPosition.x)+";", cmLine.to.line, "cm-animationX" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-            }
-            if (tm.className=="cm-animationY"){
-                var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" targetPosition.y="+Math.round(targetPosition.y)+";", cmLine.to.line, "cm-animationY" );       
-                else myCodeMirror.removeLine(cmLine.to.line);
-            }
-        }
-	myCodeMirror.save();
-}
-
-
-var createDrawing = function(){
-     drawingMode = true;
-       $('#supportCanvas').removeClass('is-hidden');
-        createCodeInEditor("\n\ ");
-        createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
-        createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
-        createCodeInEditor("\n\ drawingOffset.x=0", 'cm-offsetX');
-        createCodeInEditor("\n\ drawingOffset.y=0", 'cm-offsetY'); 
-}
-
-var createGraphics = function(){
-    hasGraphic = true;
-    $('#supportCanvas').removeClass('is-hidden');
-
-    var positionExists = false;
-    var sizeExists = false;
-    var allTM = myCodeMirror.getAllMarks();
-
-    for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if (tm.className == "cm-positionX" || tm.className == "cm-positionY") {
-               positionExists = true;
-            }
-            if (tm.className == "cm-size") {
-               sizeExists = true;
-            }           
-        }
-
-    if(!positionExists){
-        var text = "\n\ position.x="+Math.round(position.x)+";";
-        createCodeInEditor(text, "cm-positionX");    
-        text = "\n\ position.y="+Math.round(position.y)+";";
-        createCodeInEditor(text, "cm-positionY");
-    }
-
-    if(!sizeExists){
-      var text = "\n\ size="+Math.round(size)+";";
-      createCodeInEditor(text, "cm-size");
-   }    
-
-    if(drawingMode){
-        var allTM = myCodeMirror.getAllMarks();
-        for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if (tm.className=="cm-drawingMode"){
-                var cmLine = tm.find();
-                updateCodeInEditor(" drawingMode=false;", cmLine.to.line, "cm-drawingMode" );       
-            }
-        }
-    }
-
-}
-
-
-var createAnimation = function(){
-    animationMode = true;
-    targetPosition = {'x': 210, 'y': 125 };
-
-    clearInterval(animationInterval);
-    animationInterval = setInterval(animateImage, 60);                       
-    createCodeInEditor("\n\ ");
-    createCodeInEditor("\n\ animationMode=true;", 'cm-animationMode');
-    createCodeInEditor("\n\ bouncingAnimation=true;", 'cm-animationBounce');
-    createCodeInEditor("\n\ targetPosition.x="+targetPosition.x+";", 'cm-animationX');
-    createCodeInEditor("\n\ targetPosition.y="+targetPosition.y+";", 'cm-animationY');
-    createCodeInEditor("\n\ speed.x="+speed.x+";", 'cm-animationSpeedX');
-    createCodeInEditor("\n\ speed.y="+speed.y+";", 'cm-animationSpeedY');
-}
-
-var turnOffGraphics = function(){
-    $('.js-graph-click').removeClass('js-selected-graphic'); 
-    hasGraphic = false;
-
-    var allTM = myCodeMirror.getAllMarks();
-    for (var m = 0; m < allTM.length; m++) {
-        var tm = allTM[m];
-        if(tm.className == "cm-positionX"){
-            myCodeMirror.removeLine(tm.find().to.line);
-        }
-        if(tm.className == "cm-positionY"){
-            myCodeMirror.removeLine(tm.find().to.line);
-        }        
-        if(tm.className == "cm-size"){
-            myCodeMirror.removeLine(tm.find().to.line);
-        }       
-    }
-
-}
-
-
-var turnOffDrawing = function(){
-    drawingMode = false;
-    hasDrawing = false;
-    drawXY = [];
-
-    var allTM = myCodeMirror.getAllMarks();
-    for (var m = 0; m < allTM.length; m++) {
-        var tm = allTM[m];
-        if(tm.className == "cm-drawingMode"){
-            myCodeMirror.removeLine(tm.find().to.line);
-        }
-        if(tm.className == "cm-drawingColor"){
-            myCodeMirror.removeLine(tm.find().to.line);
-        }        
-        if(tm.className == "cm-offsetX"){
-            myCodeMirror.removeLine(tm.find().to.line);
-        } 
-        if(tm.className == "cm-offsetY"){
-            myCodeMirror.removeLine(tm.find().to.line);
-        }          
-    }
-}
-
-var turnOffAnimation = function(status){
-    animationMode = false;  
-    clearInterval(animationInterval);
-
-    if(status == "delete"){
-        var allTM = myCodeMirror.getAllMarks();
-        for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if(tm.className == "cm-animationMode"){
-                  myCodeMirror.removeLine(tm.find().to.line);             
-            }
-             if(tm.className == "cm-animationX"){
-                  myCodeMirror.removeLine(tm.find().to.line);             
-            }           
-             if(tm.className == "cm-animationY"){
-                  myCodeMirror.removeLine(tm.find().to.line);             
-            }           
-              if(tm.className == "cm-animationSpeedX"){
-                  myCodeMirror.removeLine(tm.find().to.line);             
-            }           
-             if(tm.className == "cm-animationSpeedY"){
-                  myCodeMirror.removeLine(tm.find().to.line);             
-            }
-             if(tm.className == "cm-animationBounce"){
-                  myCodeMirror.removeLine(tm.find().to.line);             
-            }         
-        }  
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
 /*old lessons.js*/
 
 var loadThumbnails = function () {
@@ -949,540 +446,110 @@ var loadThumbnails = function () {
 
 
 
-
-
-
-
-
-
-
-
-//-------------------------------------------Document Ready-----------------------------------//
-
-
-$(document).ready(function () {
-    movie = document.getElementById('myvideo');
- 	movie.addEventListener('canplay', setup, false);
-    movie.load();
-	
-	canvas = document.getElementById('canvas');
-    supportCanvas = document.getElementById('supportCanvas');
-    graphicsCanvas = document.getElementById('graphicsCanvas');
-    graphicsContext = graphicsCanvas.getContext("2d");  
-    //graphics
-    supportCanvas.addEventListener('mousemove', drawGraphics, false);
-    supportCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
- 
-    
-    inputFile = document.getElementById('inputFile');
-    inputFileToLibrary = document.getElementById('inputFileToLibrary');
-    
-
-
-    //lesson updates for NYTM
-    $('#stop-motion-method').click(function () {
-        updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing then that?!</p><p>Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
-    });
-    $('#basic-filter-method').click(function () {
-        updateLearnMore(1, "<p>JavaScript?</p><p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="/img/lessons/lesson-1-right.png">');
-    });
-    $('#graphic-method').click(function () {
-        updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
-    });
-    $('.learnMore').on('click', '.js-lesson-4-sm', function () {
-        updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
-    });
-    $('.learnMore').on('click', '.js-lesson-5-sm', function () {
-        updateLearnMore(5, "<p><strong>Drag over the 'Reverse' button.</strong></p><p>Reverse is a property that takes values that are either true or false (it's called a boolean, we'll go over more on that weird word later)</p><p>How can you make the video reverse? Give it a go! There are no wrong answers! Just discoveries on the way to the right answer! Coding is ALL about trying and failing then eventually… finding the answer! (cue triumphant music!)</p>", "Reverse it up!", '');
-    });
-
-    //turn tooltips on
-    $(".save-modal").tooltip({selector: '[data-toggle=tooltip]'});
-
-
-    //filters is already showing when the page loads
-    $('.basic-filter-method').removeClass('is-hidden');
-
-    inputFile.addEventListener('change', uploadFromComp, false);
-    inputFileToLibrary.addEventListener('change', uploadFromCompToLibrary, false);
-
-
-    myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'), {
-        mode: "javascript",
-        theme: "solarized light",
-        lineWrapping: true,
-        lineNumbers: true,
-        styleActiveLine: true,
-        matchBrackets: true
-    });
-
-    /*unhide the CodeMirror text while we test the sessions */
-    // $('.CodeMirror-code').addClass('is-hidden');
-
-    var codeDelay;
-    myCodeMirror.on("change", function () {
-        clearTimeout(codeDelay);
-        codeDelay = setTimeout(updateScript, 300);
-    });
-
-    //share success on copy click
-    //    $('.js-copy-sucess').click(function () {
-    //        $(this).text('✓');
-    //    });
-
-
-    // video events section
-
-    movie.addEventListener('playing', function () {
-        //also update movie.___() line in code editor
-        $("pre:contains('movie.pause()')").html('<span class="cm-variable">movie</span>.<span class="cm-property">play</span>();');
-        $(".runbtn").text('Pause');
-    });
-
-    movie.addEventListener('pause', function () {
-        //also update movie.___() line in code editor
-        $("pre:contains('movie.play()')").html('<span class="cm-variable">movie</span>.<span class="cm-property">pause</span>();');
-        $(".runbtn").text('Play');
-    });
-
-    // End video events section
-
-    $(".js-upload-video").click(function () {
-        $(".popup").removeClass("is-hidden");
-    });
-
-    $(".js-hide-upload").click(function () {
-        $('.loader').addClass('is-hidden');
-        $(".popup").addClass("is-hidden");
-    });
-
-    // Add video to library start
-
-    $(".js-upload-to-library").click(function () {
-        $(".popup-upload-to-library").removeClass("is-hidden");
-    });
-
-    $(".js-hide-upload-to-library").click(function () {
-        $('.loader-upload-to-library').addClass('is-hidden');
-        $(".popup-upload-to-library").addClass("is-hidden");
-    });
-
-    // Add video to library end
-
-    $(".runbtn").click(function () {
-        $(".video2").removeClass("is-hidden");
-        movie.paused ? movie.play() : movie.pause();
-    });
-
-    $('.js-reset-code').click(function () {
-        var editor_text = $('textarea').text();
-        myCodeMirror.setValue(editor_text);
-        for (var i = 0; i < allEffects.length; i++) {
-            var eff = allEffects[i];
-            $('[name=' + eff + ']').removeClass("is-active");
-        }
-        $('.methodList').removeClass('is-hidden');
-        movie.playbackRate = 1;
-    });
-
-    $('.save-btns-container').on('click', ".js-share-m", function () {
-        modalVideoLoad('share');
-    });
-
-    $('.save-btns-container').on('click', ".js-save-m", function () {
-        modalVideoLoad('save');
-    });
-
-    $('.save-btns-container').on('click', ".js-save-code-m", function () {
-
-        var _cmScript = myCodeMirror.getValue();
-
-        var _videoFileId = (document.getElementById('myvideo').src).split('=')[1];
-
-        //may need to add a global variable to store the current video token in session.
-        
-        $.post("/workstation-update-session", {'lessonId': '1-1', 'token': 'dummy-token', 'videoFileId': _videoFileId ,'code': _cmScript});
-
-    });
-
-    var modalVideoLoad = function (mname) {
-        addThisStyles();
-
-        $('.' + mname + '-modal').removeClass('is-hidden');
-        $('.cover50').removeClass('is-hidden');
-        $('.progressDiv').removeClass('is-hidden');
-        frames = [];
-        rafId = requestAnimationFrame(drawVideoFrame);
-    };
-
-
-    //account for different browsers with requestAnimationFrame
-    var requestAnimationFrame = window.requestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.msRequestAnimationFrame;
-    window.requestAnimationFrame = requestAnimationFrame;
-
-    //begin Whammy video save
-    var drawVideoFrame = function (time) {
-        rafId = requestAnimationFrame(drawVideoFrame);
-        capture = frames.length * 60 / 1000;
-        captureTxt = Math.floor(100 * capture / vidLen) + '%';
-        $('.dl-progress').css('width', captureTxt);
-        $('.dl-progress').text('saving...');
-        frames.push(canvas.toDataURL('image/webp', 1));
-        if (capture >= vidLen) {
-            stopDL();
-        }
-    };
-
-    var stopDL = function () {
-        cancelAnimationFrame(rafId);
-        webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-        activateEndButtons('finish');
-    };
-    //end Whammy video save
-
-    $('.finish-btn-container').on('click', ".js-finish-m", function () {
-        saveSession(webmBlob);
-    });
-
-    var saveSession = function (blob) {
-        var formData = new FormData();
-        //Question: Can't we upload everything (video, title, desc, token, code) here by appending to form here?
-        //and remove the $.post("/video-update-descr") below? I am testing this method below.
-
-        formData.append('title', $('.js-video-title').val());
-        formData.append('descr', $('.js-video-descr').val());
-        formData.append('token', $('.js-video-token').val());
-        formData.append('code', myCodeMirror.getValue());
-        formData.append('video', blob);
-
-        $.ajax({
-            url: '/uploadFinished',
-            type: 'POST',
-            data: formData,
-            mimeType: "multipart/form-data",
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (token, textStatus, jqXHR) {
-                $('.progressDiv').addClass('is-hidden');
-                $('.share-p-text-container').removeClass('is-hidden');
-                $('.js-h-onload').addClass('is-hidden');
-                $('.js-s-onload').removeClass('is-hidden');
-                $('.js-share').removeClass('is-inactive-btn');
-                $('.js-share').attr('href', '/share/' + token);
-                $('.js-share-link-to-copy').val(window.location.host + '/share/' + token);
-
-                // $.post("/video-update-descr", {'token': token, title: title, descr: descr, 'code': myCodeMirror.getValue()});
-
-                window.history.pushState("Share", "Share Your Video", '/share/' + token);
-                addthis.layers.refresh();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-            }
-        });
-    };
-
-    $('.js-hide-a-m').click(function () {
-        $('.share-modal').addClass('is-hidden');
-        $('.save-modal').addClass('is-hidden');
-        $(this).addClass('is-hidden');
-        $('.js-s-onload').addClass('is-hidden');
-        $('.js-h-onload').removeClass('is-hidden');
-        $('.dl-progress').css('width', '1px');
-        $('.js-finish-m').addClass('inactive-b-a-btn');
-        $('.js-finish-m').addClass('inactive-js-finish-m');
-        $('.js-finish-m').removeClass('js-finish-m');
-    });
-
-    //addthis functionality and appearance
-    var addThisStyles = function () {
-        $('.at15t_facebook').attr('id', 'fb-btn-styling');
-        $('.at15t_facebook').html('<img src="/img/icons/fb-icon.png"> share with facebook');
-        $('.at15t_twitter').attr('id', 'tw-btn-styling');
-        $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
-    };
-
-    $(".tabs-2").droppable({
-        drop: function (event, ui) {
-
-            lessonIsActive(".js-effects");
-
-            var eff = ui.draggable.attr("name");   
-            $('[name=' + eff + ']').addClass("is-active");
-
-            var filter = seriouslyEffects[eff];
-            if (filter) {
-                numFilterSelect++;
-                if (numFilterSelect == 1) {
-                    updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
-                } else if (numFilterSelect == 2) {
-                    updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects"</p><p><strong>Effects is an Object</strong>. This is a word you will be hearing a lot. Objects hold data. In this case the effects Object holds ALL the effects inside of itself. When we write the word "effects" the program knows we are asking to retrieve a piece of data from the effects object.</p>', 'Notice anything about your code?', '');
-                }
-                var input;
-                for (var i in filter.inputs) {
-                    input = filter.inputs[i];
-                    if ((i != 'source') && (i != 'timer') && (i != 'overlay')) {
-                        lineText = '\n\ effects.' + eff + '.' + i + ' = ' + defaultValue[input.type] + ';';
-                        createCodeInEditor(lineText, "cm-" + eff);
-                    }
-                }
-            } 
-            else if (eff == "pause" || eff == "play") {
-                createCodeInEditor('\n\ movie.' + eff + '();', "cm-" + eff);
-            } 
-            else if (eff == "playbackRate") {
-                createCodeInEditor('\n\ movie.' + eff + ' = 1.0;', "cm-" + eff);
-            } 
-            else if (stopMotion.controls.hasOwnProperty(eff)) {
-                createStopMotion(eff);
-            } 
-            else if (eff == "drawing" ){
-                createDrawing();
-            } 
-            else if (eff == "animation"){
-                if(hasGraphic) createAnimation();                   
-                else  $('[name=' + eff + ']').removeClass("is-active"); 
-            }
-
-            myCodeMirror.save();
-
-            $(".cm-" + eff).effect("highlight", 2000);
-        }
-    });
-
-    $('.methodList li').each(function () {
-        $(this).draggable({
-            helper: "clone",
-            revert: "invalid"
-        });
-    });
-
-    $(".draggable").click(function () {
-        var eff = ($(this).attr('name'));
-        $(this).removeClass("is-active");
-
-        var allTM = myCodeMirror.getAllMarks();
-        for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if (tm.className == "cm-" + eff) {
-                myCodeMirror.removeLine(tm.find().to.line);
-            }
-        }
-
-        if (eff == "drawing" ){
-            turnOffDrawing();
-            updateGraphicsCanvas();     
-        }
-        if(eff == "animation"){
-            turnOffAnimation("delete");
-        } 
-        myCodeMirror.save();
-   
-    });
-
-    var lessonIsActive = function (newLesson) {
-        $(newLesson).show();
-        $(newLesson).animate({
-            margin: "0px"
-        }, 350);
-    };
-
-    //hover state of learn more section
-
-    $('.js-values').hover(function () {
-        showInfo("amount", "rgba(103, 121, 198, .4)");
-        showInfo('"', "rgba(103, 121, 198, .4)");
-    }, function () {
-        removeInfo("amount");
-        removeInfo('"');
-    });
-
-    $('.js-boolean').hover(function () {
-        showInfo("true", "rgba(103, 121, 198, .4)");
-        showInfo("false", "rgba(103, 121, 198, .4)");
-    }, function () {
-        removeInfo("true");
-        removeInfo("false");
-    });
-
-
-    $('.js-object').hover(function () {
-        showInfo("movie", "rgba(49, 150, 101, .4)");
-        showInfo("effects", "rgba(49, 150, 101, .4)");
-    }, function () {
-        removeInfo("movie");
-        removeInfo("effects");
-    });
-    $('.js-movie').hover(function () {
-        showInfo("movie", "rgba(49, 150, 101, .4)");
-    }, function () {
-        removeInfo("movie");
-    });
-
-
-    $('.js-effects').hover(function () {
-        showInfo("effects", "rgba(49, 150, 101, .4)");
-    }, function () {
-        removeInfo("effects");
-    });
-
-    $('.js-seriously').hover(function () {
-        showInfo("seriously", "rgba(49, 150, 101, .4)");
-    }, function () {
-        removeInfo("seriously");
-    });
-    $('.js-filmgrain').hover(function () {
-        showInfo("filmgrain", "rgba(49, 150, 101, .4)");
-    }, function () {
-        removeInfo("filmgrain");
-    });
-    $('.js-function').hover(function () {
-        showInfo("function", "rgba(221, 57, 169, .4)");
-    }, function () {
-        removeInfo("function");
-    });
-    $('.js-showeffect').hover(function () {
-        showInfo("showEffect", "rgba(221, 57, 169, .4)");
-    }, function () {
-        removeInfo("showEffect");
-    });
-    $('.js-play').hover(function () {
-        showInfo("play", "rgba(118, 70, 130, 0.4)");
-    }, function () {
-        removeInfo("play");
-    });
-    $('.js-interval').hover(function () {
-        showInfo("interval", "rgba(50, 98, 234, 0.4)");
-    }, function () {
-        removeInfo("interval");
-    });
-
-    $('.runbtn').hover(function () {
-        showInfo("play", "rgba(212, 63, 58, 0.4)");
-    }, function () {
-        removeInfo("play");
-    });
-
-    $('.runbtn').hover(function () {
-        showInfo("pause", "rgba(212, 63, 58, 0.4)");
-    }, function () {
-        removeInfo("pause");
-    });
-
-    var showInfo = function (term, color) {
-        $('pre:contains(' + term + ')').css("background-color", color);
-    };
-
-    var removeInfo = function (term) {
-        $('pre:contains(' + term + ')').css("background", "none");
-    };
-
-    // choose media
-    $('.js-img-click').click(imgClickSetup);
-    $('.js-vid-click').click(vidClickSetup);
-    $('.js-graph-click').click(graphClickSetup);
-
-
-    //Switch between content
-    $('.js-switch-view').click(function () {
-        //Todo: Template these
-        var view = ($(this).attr('id'));
-        var lName = ($(this).attr('name'));
-        var lessonNum = ($(this).attr('lessnum'));
-        $('.basic-filter-method').addClass('is-hidden');
-        $('.graphic-method').addClass('is-hidden');
-        $('.stop-motion-method').addClass('is-hidden');
-        $('.' + view).removeClass('is-hidden');
-        $('.js-lesson-name').text(lName);
-        $('.js-lesson-page-num-total').text(lessonNum);
-
-    })
-
-    $("html").on("click", ".js-switch-menu-appear", function () {
-        $('.js-switch-view-container').toggleClass('is-hidden');
-        $('body').toggleClass('js-switch-menu-appear');
-    });
-});
-
-//------------------------------------------------Finish Document Ready -------------------------------//
-
 loadThumbnails();
 
+//account for different browsers with requestAnimationFrame
+var requestAnimationFrame = window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame;
+window.requestAnimationFrame = requestAnimationFrame;
 
-
-//boolean game
-var fclicks = 0;
-$('.js-f-b-click').click(function () {
-    $(this).fadeOut('fast');
-    if ($('.js-bool-switch').hasClass('is-showing-true')) {
-        $('.js-bool-switch').removeClass('is-showing-true');
-        $('.js-bool-switch').addClass('is-showing-false');
-        $('.js-bool-switch').text('False');
-        fclicks++
+//begin Whammy video save
+var drawVideoFrame = function (time) {
+    rafId = requestAnimationFrame(drawVideoFrame);
+    capture = frames.length * 60 / 1000;
+    captureTxt = Math.floor(100 * capture / vidLen) + '%';
+    $('.dl-progress').css('width', captureTxt);
+    $('.dl-progress').text('saving...');
+    frames.push(canvas.toDataURL('image/webp', 1));
+    if (capture >= vidLen) {
+        stopDL();
     }
-    else {
-        $('.js-bool-switch').removeClass('is-showing-false');
-        $('.js-bool-switch').addClass('is-showing-true');
-        $('.js-bool-switch').text('True');
-        fclicks++
-        if (fclicks === 8) {
-            fclicks = 0;
-            $('.js-f-b-click').fadeIn();
+};
+
+var stopDL = function () {
+    cancelAnimationFrame(rafId);
+    webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+    $('.progressDiv').addClass('is-hidden');
+    activateEndButtons('finish');
+};
+//end Whammy video save
+
+var saveSession = function (blob) {
+    var formData = new FormData();
+
+    formData.append('title', $('.js-video-title').val());
+    formData.append('descr', $('.js-video-descr').val());
+    formData.append('token', $('.js-video-token').val());
+    formData.append('code', myCodeMirror.getValue());
+    formData.append('video', blob);
+
+    $.ajax({
+        url: '/uploadFinished',
+        type: 'POST',
+        data: formData,
+        mimeType: "multipart/form-data",
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (token, textStatus, jqXHR) {
+            $('.share-p-text-container').removeClass('is-hidden');
+            $('.js-h-onload').addClass('is-hidden');
+            $('.js-s-onload').removeClass('is-hidden');
+            $('.js-share').removeClass('is-inactive-btn');
+            $('.js-share').attr('href', '/share/' + token);
+            $('.js-share-link-to-copy').val(window.location.host + '/share/' + token);
+
+            window.history.pushState("Share", "Share Your Video", '/share/' + token);
+            addthis.layers.refresh();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
         }
-    }
-});
+    });
+};
 
+var modalVideoLoad = function (mname) {
+    addThisStyles();
+    $('.' + mname + '-modal').removeClass('is-hidden');
+    $('.cover50').removeClass('is-hidden');
+    $('.progressDiv').removeClass('is-hidden');
+    frames = [];
+    rafId = requestAnimationFrame(drawVideoFrame);
+};
 
+//addthis functionality and appearance
+var addThisStyles = function () {
+    $('.at15t_facebook').attr('id', 'fb-btn-styling');
+    $('.at15t_facebook').html('<img src="/img/icons/fb-icon.png"> share with facebook');
+    $('.at15t_twitter').attr('id', 'tw-btn-styling');
+    $('.at15t_twitter').html('<img src="/img/icons/tw-icon.png"> share with twitter');
+};
 
+var lessonIsActive = function (newLesson) {
+    $(newLesson).show();
+    $(newLesson).animate({
+        margin: "0px"
+    }, 350);
+};
 
+var showInfo = function (term, color) {
+    $('pre:contains(' + term + ')').css("background-color", color);
+};
 
-
-//MixPanel Tracking for Learn More
-
-$('.learning-pop-container').click(function () {
-    var LM_targets = {
-        '#lesson-1-222': '1. What are we writing?',
-        '#lesson-2-222': '2. How is it changing my video?',
-        '#lesson-3-222': '3. Pieces of our code',
-        '#lesson-4-222': '4. Values: An Overview',
-        '#lesson-4-2-222': '4a. Types of Values',
-        '#lesson-4-3-222': '4b. Booleans',
-        '#lesson-objects-222': '5. Objects!',
-        "#effects222": '5b. Effects'
-    };
-
-    var clicked = $(this).attr('data-target');
-    if (clicked) {
-        $.post('/lesson/' + clicked.toString().replace('#', ''));
-        mixpanel.track('LM ' + LM_targets[clicked] + ' clicked');
-    }
-});
-
-$('.learning-pop-link').click(function () {
-    var LM_targets = {
-        '#movies222': '5a. Movie',
-        '#function222': '6. Functions!',
-        '#play222': '6a. Play'
-    };
-
-    var clicked = $(this).attr('data-target');
-    if (clicked) {
-        $.post('/lesson/' + clicked.toString().replace('#', ''));
-        mixpanel.track('LM ' + LM_targets[clicked] + ' clicked');
-    }
-});
+var removeInfo = function (term) {
+    $('pre:contains(' + term + ')').css("background", "none");
+};  
 
 var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
     $('.js-lesson-p-update').text(stepNum);
     $('.js-lesson-text-update').html(lessonText);
     $('.lm-title').text(lessonTitle);
     $('.js-lesson-img').html(lessonImg);
-}
+};
 
 trackLesson = function (lessonName) {
+    lastLessonId = lessonName;
     $.post('/lesson/' + lessonName);
 };
 
@@ -1494,4 +561,4 @@ getDateMMDDYYYY = function () {
     var y = date.getFullYear().toString();
 
     return m + "-" + d + "-" + y;
-}
+};
