@@ -322,6 +322,9 @@ body.is-in-signup {
     background: #58355F;
 }
 
+.big-action-btn a{color: #58355F;}
+.big-action-btn a:hover{color: #fff;}
+
 .inactive-b-a-btn {
     cursor: default;
     opacity: .4;
@@ -1491,7 +1494,7 @@ canvas {
 .lesson-page .vid-placeholder {
     background-color: blue;
     width: 100%;
-    height: 450px;
+    height: 245px;
     margin: -20px 0 0 0;
 }
 
@@ -1612,35 +1615,87 @@ canvas {
     margin: 20px 0 15px 15px;
 }
 
+.profile-container{
+    padding: 15px;
+    border-radius: 1px;
+    background: #fff;
+    min-width: 950px;
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+}
+
 .profile {
     margin: 20px 0;
 }
 
 .profile .center {
     text-align:center;
-    width: 50%;
+    width: 100%;
     margin: 0px auto 0px auto
 }
 
+.profile .center h2{
+    font-size: 1.8em;
+    margin: 35px 0 0 0;
+}
+
 .profile .video {
-    width: 25%;
+    width: 95%;
     margin: 0 auto;
     display: block;
     cursor: pointer;
 }
 
 .profile .vid-row {
-    width: 25%;
+    width: 96%;
     margin: 8px auto;
 }
 
+.profile .info{margin:5px 0;}
+
+.profile .title img{
+    position: absolute;
+    right: 11%;
+    margin-top: -12px;
+}
+
 .profile .title {
-    margin: 10px 0 0 3px;
     font-weight: 600;
     color: #441B4B;
     cursor: pointer;
     font-size: 1.2em;
 }
+
+.profile .lesson-list-item{
+    margin: 25px 0;
+    font-size: 1.1em;
+}
+
+.profile .lesson-list-num{
+    list-style:none;
+    margin: 0;
+    padding: 0;
+}
+
+.profile .lesson-list-num li{
+    counter-increment: item;
+}
+
+.profile .lesson-list-num li:before{
+    margin-right:10px;
+    content: counter(item);
+    border: 1px solid #441B4B;
+    border-radius:100%;
+    color:#363B59;
+    width:23px;
+    height: 23px;
+    text-align:center;
+    display:inline-block;
+    font-family: 'Copse';
+}
+
+.profile .lesson-list-title{font-size: 1.7em;}
 
 .profile .username {
     color: #333;
@@ -1651,18 +1706,38 @@ canvas {
 }
 
 .profile .profile-vid-small {
-    width: 33%;
+    width: 30%;
+    display: inline-block;
+    margin: 1.5%;
+}
+
+.profile-btn-container{
+    margin: 37px 0 56px;
+}
+
+.profile-btn-container .big-action-btn{
+    margin: 0 7px;
+}
+
+.units{margin-top: 55px;}
+
+.profile .lesson-num{
+    border: 1px solid #441B4B;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin: 2px 7px;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Copse';
+    cursor: pointer;
+    font-size: .9em;
 }
 
 /* ==========================================================================
    Profile page tabs.
    ========================================================================== */
 
-/*----- Tabs -----*/
-.tabs {
-    width: 100%;
-    display: inline-block;
-}
 
 /*----- Tab Links -----*/
 /* Clearfix */
@@ -1670,6 +1745,10 @@ canvas {
     display: block;
     clear: both;
     content: '';
+}
+
+.tab-links{
+    margin: 0 4%;
 }
 
 .tab-links li {
@@ -1701,10 +1780,8 @@ li.active a, li.active a:hover {
 
 /*----- Content of Tabs -----*/
 .tab-content {
-    padding: 15px;
-    border-radius: 3px;
-    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
-    background: #fff;
+    max-height: 550px;
+    overflow-x: hidden;
 }
 
 .tab {
@@ -2527,11 +2604,6 @@ Inlined to avoid required HTTP connection: h5bp.com/r
 Profile page tabs.
 ========================================================================== */
 
-/*----- Tabs -----*/
-.tabs {
-    width: 100%;
-    display: inline-block;
-}
 
 /*----- Tab Links -----*/
 /* Clearfix */
@@ -2542,6 +2614,7 @@ Profile page tabs.
 }
 
 .tab-links li {
+    text-transform: uppercase;
     margin: 0px 5px;
     float: left;
     list-style: none;
@@ -2556,6 +2629,7 @@ Profile page tabs.
     font-weight: 600;
     color: #4c4c4c;
     transition: all linear 0.15s;
+    font-weight: 400;
 }
 
 .tab-links a:hover {
@@ -2566,20 +2640,7 @@ Profile page tabs.
 li.active a, li.active a:hover {
     background: #fff;
     color: #4c4c4c;
+    font-weight: 600;
 }
 
-/*----- Content of Tabs -----*/
-.tab-content {
-    padding: 15px;
-    border-radius: 3px;
-    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
-    background: #fff;
-}
 
-.tab {
-    display: none;
-}
-
-.tab.active {
-    display: block;
-}

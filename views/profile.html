@@ -2,15 +2,17 @@
 
 <div class="profile center">
 
-    <h2>WELCOME BACK {{user.username}} </h2>
+    <h2>Welcome back {{user.username}}</h2>
 
-    <h2>
-        <a href="/workstation/lastSession">CONTINUE LAST SESSION</a>
-    </h2>
+    <div class="profile-btn-container">
+        <span class="big-action-btn">
+            <a href="/workstation/lastSession">Continue last session</a>
+        </span>
 
-    <h2>
-        <a href="/workstation">START NEW PROJECT</a>
-    </h2>
+        <span class="big-action-btn">
+            <a href="/workstation">Start new project</a>
+        </span>
+    </div>
 
 </div>
 
@@ -18,38 +20,38 @@
 <!-- Tabs start -->
     <div class="tabs">
         <ul class="tab-links">
-            <li class="active"><a href="#tab1">IN PROGRESS PROJECTS</a></li>
-            <li><a href="#tab2">PUBLISHED PROJECTS</a></li>
+            <li class="active"><a href="#tab1">In Progress Projects</a></li>
+            <li><a href="#tab2">Published Projects</a></li>
         </ul>
 
-        <div class="tab-content">
+        <div class="tab-content profile-container cleafix">
             <div id="tab1" class="tab active">
 
                 <div class="row profile">
                     {{#if user.videoLibrary}}
 
                     {{#each user.videoLibrary}}
-                    <div class="row">
 
-                       <div class="profile-vid-small">
 
+                   <div class="profile-vid-small">
+
+                        <a href="/workstation/{{this.token}}">
+                            <video class="video" src="/video/?file={{this.file}}"/>
+                        </a>
+
+                        <div class="vid-row">
                             <a href="/workstation/{{this.token}}">
-                                <video class="video" src="/video/?file={{this.file}}"/>
+                            <span class="info">
+                                <p class="title">{{this.title}}</p>
+                                <p class="descr">{{this.descr}}</p>
+                                <p class="videocode">see code</p>
+                            </span>
                             </a>
-
-                            <div class="vid-row">
-                                <a href="/workstation/{{this.token}}">
-                                <span class="info">
-                                    <p class="title">{{this.title}}</p>
-                                    <p class="descr">{{this.descr}}</p>
-                                    <p class="videocode">see code</p>
-                                </span>
-                                </a>
-                            </div>
-
                         </div>
 
                     </div>
+
+
                     {{/each}}
                     {{else}}
                     <h2 class="profileheader">You have no videos published! Start vidcoding, already!</h2>
@@ -60,33 +62,33 @@
             </div>
 
             <div id="tab2" class="tab">
-                
+
 
                 <div class="row profile">
                     {{#if videos}}
 
                     {{#each videos}}
-                    <div class="row">
 
-                       <div class="profile-vid-small">
 
-                            <a href="/workstation/{{this.token}}">
-                                <video class="video" src="/video/?file={{this.file}}"/>
+                   <div class="profile-vid-small">
+
+                        <a href="/share/{{this.token}}">
+                            <video class="video" src="/video/?file={{this.file}}"/>
+                        </a>
+
+                        <div class="vid-row">
+                            <a href="/share/{{this.token}}">
+                            <span class="info">
+                                <p class="title">{{this.title}}</p>
+                                <p class="descr">{{this.descr}}</p>
+                                <p class="videocode">see code</p>
+                            </span>
                             </a>
-
-                            <div class="vid-row">
-                                <a href="/workstation/{{this.token}}">
-                                <span class="info">
-                                    <p class="title">{{this.title}}</p>
-                                    <p class="descr">{{this.descr}}</p>
-                                    <p class="videocode">see code</p>
-                                </span>
-                                </a>
-                            </div>
-
                         </div>
 
                     </div>
+
+
                     {{/each}}
                     {{else}}
                     <h2 class="profileheader">You have no videos published! Start vidcoding, already!</h2>
@@ -101,32 +103,36 @@
 <!-- Tabs end -->
 
 <!-- Units start -->
+    <div class="units profile-container clearfix">
 
-    <div class="vid-row profile">
-        {{#if units}}
-        {{#each units}}
+        <div class="vid-row profile">
+            {{#if units}}
+            {{#each units}}
 
-        <div class="col-md-3">
-				<span class="info">
-				<h2><p class="title">{{this.unitName}}</p></h2>
-				</span>
-        </div>
+            <div class="col-md-3">
 
-        {{#each this.lessons}}
+    			<h2 class="lesson-list-title title">{{this.unitName}}</h2>
 
-        <div class="col-md-3">
-				<span class="info">
-					<p class="title">{{this.name}}
+                <ol class="lesson-list-num">
+                {{#each this.lessons}}
+
+
+                    <li class="title lesson-list-item">
+                        {{this.name}}
                         {{#if this.viewed}}
-                        &nbsp; &nbsp;<img src="/img/checked.png" id="checked">
+                        <img src="/img/checked.png" id="checked">
                         {{/if}}
-                    </p>
-				</span>
-        </div>
-        {{/each}}
 
-        {{/each}}
-        {{/if}}
+                    </li>
+
+
+                {{/each}}
+                </ol>
+            </div>
+
+            {{/each}}
+            {{/if}}
+        </div>
     </div>
 <!-- Units end -->
 

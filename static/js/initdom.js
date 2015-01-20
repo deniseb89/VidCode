@@ -248,4 +248,5 @@ $(document).ready(function () {
         $('.js-switch-view-container').toggleClass('is-hidden');
         $('body').toggleClass('js-switch-menu-appear');
     });
+
 });
