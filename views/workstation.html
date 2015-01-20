@@ -125,9 +125,11 @@
                     <span class="js-active-vid active-vid">
 
                         {{#if user.sessionToLoad}}
+                        	<p class="is-new-session is-hidden">false</p>
                             <video class="video1 is-hidden js-load-last-session" id="myvideo"
                                        src="{{user.sessionToLoad.video.file}}" autoplay loop></video>
                         {{else}}
+                        	<p class="is-new-session is-hidden">true</p>
                             <div class="vid-placeholder overlay">
                                 <h3>Select a video below</h3>
                             </div>
@@ -272,14 +274,14 @@
                 <div class="col-md-5">
                     <div class="tabs-2">
                         <form>
-                            <textarea id="codemirror" name="codemirror"></textarea>
+                            <textarea id="codemirror" name="codemirror">{{code}}</textarea>
                         </form>
                     </div>
                     <div class="save-btns-container">
                        <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-code-m">
-                        Save Code
+                        Save
                       </span>
-<!--                      <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
+                   <!--  <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
                         Save
                       </span> -->
                       <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
@@ -349,6 +351,7 @@
 <h4 id="username" class="is-hidden">{{user.username}}</h4>
 <h4 id="social" class="is-hidden">{{user.social}}</h4>
 
+<script id="customScript"></script>
 <script src="/js/initdom.js"></script>
 <script src="/js/workstation.js"></script>
 <script src="/js/stopmotion.js"></script>

@@ -586,6 +586,7 @@ module.exports = function (app, passport) {
         var code = req.body.code;
         var lessonId = req.body.lessonId;
         var videoFileId = req.body.videoFileId;
+        var file = req.body.file;
 
         var session = {};
 
@@ -593,6 +594,7 @@ module.exports = function (app, passport) {
         session.token = token;
         session.videoFileId = videoFileId;
         session.lessonId = lessonId;
+        session.file = file;
 
         User.findOne({_id: req.user._id}, function (err, user) {
           if (!err) {
@@ -643,34 +645,19 @@ module.exports = function (app, passport) {
 
     app.get('/workstation', isLoggedIn, function (req, res) {
 
-      var codeText =
-      '\
-      movie.play();\n\
-      ';
-
         res.render("workstation",
             {
                 user: req.user,
-                content: content,
-                code: codeText
+                content: content
             });
     });
 
     app.get('/workstation/:videoFileId?',isLoggedIn, function (req, res) {
         var videoFileId = req.params.videoFileId;
         var file;
-        var codeText =
-        '\
-        movie.play();\n\
-        ';
 
         if (!videoFileId) {
-            res.render("workstation",
-                {
-                    user: req.user,
-                    content: content,
-                    code: codeText
-                });
+            res.redirect('/workstation');
             return;
         }
 
@@ -705,7 +692,7 @@ module.exports = function (app, passport) {
                         res.render('workstation', {
                             user: user,
                             content: content,
-                            code: codeText
+                            code: _sessionToLoad.code
                         });
 
                     }else{

@@ -182,12 +182,6 @@ $(document).ready(function () {
                     }
                 }
             } 
-            else if (eff == "pause" || eff == "play") {
-                createCodeInEditor('\n\ movie.' + eff + '();', "cm-" + eff);
-            } 
-            else if (eff == "playbackRate") {
-                createCodeInEditor('\n\ movie.' + eff + ' = 1.0;', "cm-" + eff);
-            } 
             else if (stopMotion.controls.hasOwnProperty(eff)) {
                 createStopMotionInEditor(eff);
             } 
