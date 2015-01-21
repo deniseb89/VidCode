@@ -1,274 +1,333 @@
 <div class="workstation-container">
 
-  <div class="compatibility-error is-hidden">
-    <div class="error-message">
-      <div class="panelhead">
-        <h2>Sorry!</h2>
-      </div>
-      <div class="panelbody">
-        <p>Your browser doesn't appear to support WebGL or it isn't enabled. Visit <a href="http://get.webgl.org/">get.webgl.org</a> to learn more or try the latest version of Chrome.</p>
+    <div class="compatibility-error is-hidden">
+        <div class="error-message">
+            <div class="panelhead">
+                <h2>Sorry!</h2>
+            </div>
+            <div class="panelbody">
+                <p>Your browser doesn't appear to support WebGL or it isn't enabled. Visit <a
+                        href="http://get.webgl.org/">get.webgl.org</a> to learn more or try the latest version of
+                    Chrome.</p>
 
-        <p>Don't worry, you can still learn all about vidcode at <a href="http://www.vidcode.io/">vidcode.io</a>.</p>
-      </div>
-    </div>
-    <div class="cover90 cover">
-    </div>
-  </div>
-
-  <div class="action-modal">
-    <div class="share-modal action-m is-hidden">
-      <div class="a-header">
-        <p>Share</p>
-      </div>
-      <div class="a-body">
-        <p class="c-desc js-h-onload">Your video is loading</p>
-
-        <label for="loading-title">Title</label>
-        <input type="text" id="loading-title" class="generalInput">
-
-        <label for="loading-descr">Optional Video Description</label>
-        <textarea id="loading-descr" rows="4"></textarea>
-
-        <div class="progressDiv progress progress-striped">
-          <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-          </div>
+                <p>Don't worry, you can still learn all about vidcode at <a href="http://www.vidcode.io/">vidcode.io</a>.
+                </p>
+            </div>
         </div>
-        <div class="addthis-container js-s-onload is-hidden">
-          <div class="addthis_sharing_toolbox"></div>
+        <div class="cover90 cover">
         </div>
-        <div class="text-center js-s-onload is-hidden">
-          <a href="#" class="js-share" target="_blank">go to video's page</a>
-        </div>
-      </div>
     </div>
 
-    <div class="save-modal action-m is-hidden">
-      <div class="a-header">
-        <p>Save</p>
-      </div>
-      <div class="a-body">
-        <p class="c-desc js-h-onload">Your video is loading</p>
+    <div class="action-modal">
 
-        <label for="loading-title">Title</label>
-        <input type="text" id="loading-title" class="generalInput">
+        <div class="ss-modal action-m is-hidden">
+            <div class="a-header">
+                <p class="js-ss-title"></p>
 
-        <label for="loading-descr">Optional Video Description</label>
-        <textarea id="loading-descr" rows="4"></textarea>
+            </div>
+            <div class="a-body">
+                <p class="c-desc js-h-onload">Your video is loading</p>
 
-        <div class="progressDiv progress progress-striped">
-          <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-          </div>
+                <!-- <form method="post" id="video-update-descr" action="/video-update-descr"> -->
+                    <label for="video-title">Title</label>
+                    <input type="text" name="title" id="video-title" class="generalInput js-video-title">
+                    <label for="video-descr">Optional Video Description</label>
+                    <textarea id="video-descr" name="descr" rows="4" class="js-video-descr"></textarea>
+                    <input type="text" id="video-token" name="token" class="js-video-token" hidden="true" value="">
+                <!-- <input type="submit" value="Update Description" onsubmit="return false;"
+                           class="save-video-desc-btn n-a-video-save-desc"/> -->
+                <!-- </form> -->
+
+                <div class="finish-btn-container">
+                    <span href="#" class="save-session-btn big-action-btn inactive-b-a-btn inactive-js-finish-m">
+                       Finish
+                    </span>
+                </div>
+
+                <div class="progressDiv progress progress-striped">
+                    <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+
+                <div class="js-share-content js-ss-both-content is-hidden">
+                    <div class="addthis-container js-s-onload is-hidden">
+                        <div class="addthis_sharing_toolbox"></div>
+                    </div>
+                    <div class="text-center js-s-onload is-hidden">
+                        <a href="#" class="js-share" target="_blank">go to video's page</a>
+                    </div>
+                </div>
+
+                <div class="js-save-content js-ss-both-content is-hidden">
+
+                    <div class="js-s-onload btn-center tcenter push-40 is-hidden">
+                        <p class="share-link">
+
+                        <p>This is the link to your video. Bookmark and come back any time.</p>
+                        <input class="generalInput js-share-link-to-copy" type="text" onClick="this.select();" data-toggle="tooltip" data-placement="top" title="Select and Press ⌘C to Copy" readonly>
+                        </p>
+                        <a class="js-share text-share-link" target="_blank">go to video ➜</a>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="js-s-onload btn-center tcenter push-40 is-hidden">
-          <p class="share-link">
-            <p>This is the link to your video. Bookmark and come back any time.</p>
-            <input class="generalInput js-share-link-to-copy" type="text" onClick="this.select();" data-toggle="tooltip" data-placement="top" title="Select and Press ⌘C to Copy" readonly>
-          </p>
-          <a class="js-share text-share-link" target="_blank">go to video ➜</a>
 
+
+        <div class="cover50 cover is-hidden js-hide-a-m">
         </div>
-      </div>
+
     </div>
 
-    <div class="cover50 cover is-hidden js-hide-a-m">
+
+    <div class="container-fixed">
+        <div class="popup is-hidden">
+            10 mb max file size
+            <input type="file" id="inputFile" name="file" multiple value="Select a File"/>
+            <button class="btn js-hide-upload uploadfile">Cancel</button>
+            <p class="fileError"></p>
+        </div>
+
+        <div class="popup-upload-to-library is-hidden">
+            10 mb max file size
+            <input type="file" id="inputFileToLibrary" name="file" multiple value="Select a File"/>
+            <button class="btn js-hide-upload-to-library uploadfile">Cancel</button>
+            <p class="fileError"></p>
+        </div>
+
+        <div class="set-container lesson-page clearfix">
+            <div class="current-lesson-display">
+                <h3 class="js-switch-menu-appear"><span class="js-lesson-name">Filters</span> <img
+                        src="/img/header-down-arrow.png"></h3>
+
+                <div class="large-selection-dropdown js-switch-view-container is-hidden">
+                    <ul>
+                        <li class="js-switch-view" id="basic-filter-method" name="Filters" lessnum="4">Filters</li>
+                        <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
+                        </li>
+                        <li class="js-switch-view" id="graphic-method" name="Graphics" lessnum="1">Graphics</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="progress-set">
+
+            </div>
+
+            <div class="view-controller">
+            </div>
+
+            <div class="lesson-container">
+                <div class="col-md-4">
+                    <div class="loader is-hidden"><img src="/img/loader.gif"></div>
+
+                    <span class="js-active-vid active-vid">
+                        <p class="is-new-session is-hidden">{{newSession}}</p>
+                            <div class="vid-placeholder overlay">
+                                <h3>Select a video below</h3>
+                            </div>
+                            <video class="video1 is-hidden" id="myvideo" muted autoplay loop></video>
+                            <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
+                            <canvas class="is-hidden" id="graphicsCanvas"   width="420" height="250px"></canvas>
+                            <canvas id="supportCanvas"  width="420" height="250px"></canvas>
+                            <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
+                    </span>
+
+
+                    <div class="js-switch-appear">
+                        <div id="stop-motion-timeline" class="is-hidden stop-motion-method">
+                                <ul id="timeline-sortable"></ul>
+                        </div>
+                        <div class="video-container clearfix">
+                            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Videos</button>
+
+                            <div id="vid-library" class="basic-filter-method">
+                                <p>Uploaded Videos</p>
+                            </div>
+
+                            <div id="img-library" class="is-hidden stop-motion-method">
+                                <p>Uploaded Stills</p>
+                            </div>
+
+                            <div class="is-hidden stop-motion-method">
+
+                                <p class="is-hidden stop-motion-method">Sample Stills</p>
+                        
+                                <div class="stills-container">
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" id="sample-1" src="/img/still0.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" id="sample-2" src="/img/still1.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" id="sample-3" src="/img/still2.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" id="sample-4" src="/img/still3.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" id="sample-5" src="/img/still4.png"/>
+                                  </div>
+                                  <div class="i-vid-container">
+                                    <img class="js-img-click" id="sample-6" src="/img/still5.png"/>
+                                  </div>     
+                                </div>
+                            </div>
+
+                            <p class="basic-filter-method">Instagram Videos</p>
+
+                            <div class="insta-thumbnails basic-filter-method">
+                                <span class="i-error"></span>
+
+                                <div class="i-vid-container">
+                                    <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid0"
+                                           src=""></video>
+                                </div>
+                                <div class="i-vid-container">
+                                    <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid1"
+                                           src=""></video>
+                                </div>
+                                <div class="i-vid-container">
+                                    <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid2"
+                                           src=""></video>
+                                </div>
+                            </div>
+
+                            <div class="insta-import is-hidden">
+                                <a href="/auth/instagram">Import from Instagram</a>
+                            </div>
+                        </div>
+
+                        <div class="video-container clearfix basic-filter-method">
+                            <p>Sample Videos</p>
+
+                            <div class="i-vid-container">
+                                <video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
+                            </div>
+                            <div class="i-vid-container">
+                                <video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
+                            </div>
+                            <div class="i-vid-container">
+                                <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
+                            </div>
+                        </div>
+            <div class="is-hidden video-container graphic-method">
+              <p>Sample Graphics</p>
+                  <div class="i-vid-container">
+                                    <img src="/img/graphics/robot.png" class="js-graph-click" id="mygraphic"/> 
+                                </div>
+                  <div class="i-vid-container">
+                                    <img src="/img/graphics/flowers.png" class="js-graph-click" /> 
+                                </div>            
+                  <div class="i-vid-container">
+                                    <img src="/img/graphics/stars.png" class="js-graph-click" /> 
+                                </div>  
+            </div>
+
+                    </div>
+
+                    <div class="methodsBox js-appear clearfix">
+                        <div class="clearfix">
+                            <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-5">
+                    <div class="tabs-2">
+                        <form>
+                            <textarea id="codemirror" name="codemirror">{{code}}</textarea>
+                        </form>
+                    </div>
+                    <div class="save-btns-container">
+                    <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
+                        Save
+                      </span>
+                      <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
+                        Share
+                      </span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="learnMore">
+                        <div class="clearfix">
+                            <div class="sm-header-bg clearfix">
+                                <p class="js-lesson-name left">Filters</p>
+
+                                <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
+                                        class="js-lesson-page-num-total">4</span> ▾</p>
+                            </div>
+                        </div>
+
+
+                        {{#each content}}
+                        <div class="is-hidden {{this.class}} clearfix lesson-text-container">
+                            {{#each this.title}}
+                            <h3 class="lm-title">
+                                {{.}}
+                            </h3>
+                            {{/each}}
+                            <div class="js-lesson-text-update">
+                                {{#each this.lessonText}}
+                                <p>
+                                    {{.}}
+                                </p>
+                                {{/each}}
+                            </div>
+                            {{#each this.images}}
+                            <div class="js-lesson-img">
+                                <img class="lessonImg" src="/img/lessons/{{.}}">
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/each}}
+
+
+                        <div class="clearfix buttons-container">
+                            {{#each content}}
+                            <div class="is-hidden {{this.class}}">
+                                <ul class="methodList">
+                                    {{#each this.elements}}
+                                    <li name={{.}} class='btn btn-method draggable'>{{.}}</li>
+                                    <img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+
+                </div>
+                <!--end of lesson container-->
+
+
+            </div>
+            <!--end of set-container lesson-page-->
+        </div>
     </div>
 
-  </div>
+<h4 id="username" class="is-hidden">{{user.username}}</h4>
+<h4 id="social" class="is-hidden">{{user.social}}</h4>
 
+<script src="/js/initdom.js"></script>
+<script src="/js/workstation.js"></script>
+<script src="/js/stopmotion.js"></script>
+<script src="/js/graphics.js"></script>
 
-  <div class="container-fixed">
-    <div class="popup is-hidden">
-        10 mb max file size
-        <input type="file" id="inputFile" name="file" multiple value="Select a File" />
-        <button class="btn js-hide-upload uploadfile">Cancel</button>
-        <p class="fileError"></p>
-    </div>
-
-    <div class="set-container lesson-page clearfix">
-      <div class="current-lesson-display">
-        <h3 class="js-switch-menu-appear"><span class="js-lesson-name">Filters</span> <img src="/img/header-down-arrow.png"></h3>
-        <div class="large-selection-dropdown js-switch-view-container is-hidden">
-          <ul>
-            <li class="js-switch-view" id="basic-filter-method" name="Filters" lessnum="4">Filters</li>
-            <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion</li>
-            <li class="js-switch-view" id="movie-control-method" name="Computer Vision">Computer Vision</li>
-        </div>
-      </div>
-      <div class="progress-set">
-
-      </div>
-
-      <div class="view-controller">
-      </div>
-
-    <div class="lesson-container">
-      <div class="col-md-4">
-        <div class="loader is-hidden"><img src="/img/loader.gif"></div>
-        <span class="js-active-vid active-vid">
-          <div class="vid-placeholder overlay">
-            <h3>Select a thumbnail below</h3>
-          </div>
-          <video class="video1 is-hidden" id="myvideo" src="/img/wha_color.mp4" autoplay loop></video>
-          <canvas class="video2 is-hidden tabs-2" id="canvas">
-            </canvas>
-          <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
-        </span>
-
-        <div class="js-switch-appear">
-
-          <div class="video-container clearfix">
-            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button>
-            <p class="is-hidden stop-motion-method">Stills</p>
-            <div id="media-library" class="is-hidden stop-motion-method">
-              <div class="i-vid-container">
-                <!-- <img class="js-selected-video js-selected-still js-img-click" src="/img/still0.JPG"/> -->
-                <img class="js-img-click" src="/img/still0.JPG"/>
-              </div>
-              <div class="i-vid-container">
-                <img class="js-img-click" src="/img/still1.JPG"/>
-              </div>
-              <div class="i-vid-container">
-                <img class="js-img-click" src="/img/still2.JPG"/>
-              </div>
-              <div class="i-vid-container">
-                <img class="js-img-click" src="/img/still3.JPG"/>
-              </div>
-              <div class="i-vid-container">
-                <img class="js-img-click" src="/img/still4.JPG"/>
-              </div>
-              <div class="i-vid-container">
-                <img class="js-img-click" src="/img/still5.JPG"/>
-              </div>              
-            </div>
-            <p class="basic-filter-method">Instagram Videos</p>
-            <div class="insta-thumbnails basic-filter-method">
-              <span class="i-error"></span>
-              <div class="i-vid-container">
-                <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid0" src=""></video>
-              </div>
-              <div class="i-vid-container">
-                <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid1" src=""></video>
-              </div>
-              <div class="i-vid-container">
-                <video class="js-vid-click js-fetch-vid is-hidden" id="js-fetch-vid2" src=""></video>
-              </div>
-            </div>
-
-            <div class="insta-import is-hidden">
-              <a href="/auth/instagram">Import Videos from Instagram</a>
-            </div>
-          </div>
-
-          <div class="video-container clearfix basic-filter-method">
-            <p>Sample Videos</p>
-              <div class="i-vid-container">
-                <video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
-              </div>
-              <div class="i-vid-container">
-                <video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
-              </div>
-              <div class="i-vid-container">
-                <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
-              </div>
-            </div>
-
-        </div>
-
-        <div class="methodsBox js-appear is-hidden clearfix">
-          <div class="clearfix">
-            <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code</button>
-          </div>
-        </div>
-
-      </div>
-
-
-      <div class="col-md-5">
-        <div class="tabs-2">
-          <form>
-            <textarea id="codemirror" name="codemirror">{{code}}</textarea>
-          </form>
-        </div>
-        <div class="save-btns-container">
-          <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
-            Save
-          </span>
-          <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
-            Share
-          </span>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="learnMore">
-          <div class="clearfix">
-            <div class="sm-header-bg clearfix">
-              <p class="js-lesson-name left">Filters</p>
-              <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span class="js-lesson-page-num-total">4</span> ▾</p>
-            </div>
-          </div>
-
-          {{#each content}}
-          <div class="is-hidden {{this.class}} clearfix lesson-text-container">
-            {{#each this.title}}
-            <h3 class="lm-title">
-              {{.}}
-            </h3>
-            {{/each}}
-            <div class="js-lesson-text-update">
-            {{#each this.lessonText}}
-              <p>
-                {{.}}
-              </p>
-            {{/each}}
-            </div>
-            {{#each this.images}}
-            <div class="js-lesson-img">
-              <img class="lessonImg" src="/img/lessons/{{.}}">
-            </div>
-            {{/each}}
-          </div>
-          {{/each}}
-
-
-
-
-          <div class="clearfix buttons-container">
-              {{#each content}}
-              <div class="is-hidden {{this.class}}">
-                <ul class="methodList">
-                 {{#each this.elements}}
-                   <li name={{.}} class='btn btn-method draggable'>{{.}}</li><img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
-                {{/each}}
-                </ul>
-              </div>
-              {{/each}}
-          </div>
-        </div>
-      </div>
-    </div>  <!--end of lesson container-->
-  </div> <!--end of set-container lesson-page-->
-</div>
-
-  <!--begin learn more modals-->
-  <!--end learn more modals-->
-
-  <h4 id="username" class="is-hidden">{{user.username}}</h4>
-  <h4 id="social" class="is-hidden">{{user.social}}</h4>
-
-  <script src="/js/workstation.js"></script>
-  <script src="/js/stopmotion.js"></script>
-
-  <script>
-      mixpanel.track_links("#mix-share", "Share clicked" );
-      mixpanel.track_links("#mix-return2code", "Returned to code" );
-      mixpanel.track_links("#mix-again", "Try It Again clicked" );
-      mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram" );
-      mixpanel.track_links("#tooltip-stop-4", "Save clicked" );
-        mixpanel.track('Main UI page viewed', {
-      'page name' : document.title,
-      'url' : window.location.pathname
-  });
-
-  </script>
-
+<script>
+    mixpanel.track_links("#mix-share", "Share clicked");
+    mixpanel.track_links("#mix-return2code", "Returned to code");
+    mixpanel.track_links("#mix-again", "Try It Again clicked");
+    mixpanel.track_links("#tooltip-stop-1", "Imported from Instagram");
+    mixpanel.track_links("#tooltip-stop-4", "Save clicked");
+    mixpanel.track('Main UI page viewed', {
+        'page name': document.title,
+        'url': window.location.pathname
+    });
+</script>

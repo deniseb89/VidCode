@@ -135,7 +135,7 @@ exports.workstation = function (db) {
       findOrCreate(db,user,successcb);
       
     } else {
-      res.render("workstation", {content: content});
+      res.render("workstation", {code: codeText, content: content});
     }
   };
 };
