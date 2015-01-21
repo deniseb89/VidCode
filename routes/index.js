@@ -585,16 +585,14 @@ module.exports = function (app, passport) {
         var token = req.body.token;
         var code = req.body.code;
         var lessonId = req.body.lessonId;
-        var videoFileId = req.body.videoFileId;
-        var file = req.body.file;
+        var videoSrc = req.body.videoSrc;
 
         var session = {};
 
         session.code = code;
         session.token = token;
-        session.videoFileId = videoFileId;
         session.lessonId = lessonId;
-        session.file = file;
+        session.videoSrc = videoSrc;
 
         User.findOne({_id: req.user._id}, function (err, user) {
           if (!err) {
@@ -706,7 +704,7 @@ module.exports = function (app, passport) {
 
                             if (user.inProgressProjects[item]['token'] == "dummy-token") {
                             	console.log('found dummy-token');
-                                _sessionToLoad.file = user.inProgressProjects[item]['file'];
+                                _sessionToLoad.file = user.inProgressProjects[item]['videoSrc'];
                                 _sessionToLoad.code = user.inProgressProjects[item]['code'];
                                 _sessionToLoad.video = user.inProgressProjects[item];
                                 _sessionToLoad.videoFileId = user.inProgressProjects[item]['videoFileId'];

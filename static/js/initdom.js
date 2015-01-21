@@ -131,10 +131,10 @@ $(document).ready(function () {
 
         var _cmScript = myCodeMirror.getValue();
 
-        var _videoFileId = (document.getElementById('myvideo').src)
+        var _videoSrc = (document.getElementById('myvideo').src)
 
         //may need to add a global variable to store the current video token in session.
-        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'file': _videoFileId ,'code': _cmScript});
+        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'videoSrc': _videoSrc ,'code': _cmScript});
     });
 
     $('.finish-btn-container').on('click', ".js-finish-m", function () {
