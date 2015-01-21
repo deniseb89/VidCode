@@ -134,6 +134,10 @@ $(document).ready(function () {
         var _videoSrc = (document.getElementById('myvideo').src)
 
         //may need to add a global variable to store the current video token in session.
+        //TODO: handle uploaded videos that are not in the library (don't have a file ID and sends the entire binary data.)
+        /*
+        http://localhost:5000/workstation-update-session Failed to load resource: the server responded with a status of 413 (Request Entity Too Large)
+        */
         $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'videoSrc': _videoSrc ,'code': _cmScript});
     });
 
