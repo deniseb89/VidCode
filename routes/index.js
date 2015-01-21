@@ -646,7 +646,8 @@ module.exports = function (app, passport) {
         res.render("workstation",
             {
                 user: req.user,
-                content: content
+                content: content,
+                newSession: true
             });
     });
 
@@ -674,12 +675,13 @@ module.exports = function (app, passport) {
                                 // _sessionToLoad.lessonId = user.lastSession.lessonId;
                                 // _sessionToLoad.videoSrc = user.lastSession.videoSrc;
                                 _sessionToLoad = user.lastSession;
-                        user.sessionToLoad = user.lastSession;
+                        user.sessionToLoad = _sessionToLoad;
 
                         res.render('workstation', {
                             user: user,
                             content: content,
-                            code: _sessionToLoad.code
+                            code: _sessionToLoad.code,
+                            newSession: false
                         });
 
                     }else{
@@ -701,7 +703,7 @@ module.exports = function (app, passport) {
                             user: user,
                             content: content,
                             code: _sessionToLoad.code,
-                            lastSession: true
+                            newSession: false
                         });
                     }
                 }

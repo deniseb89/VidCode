@@ -123,13 +123,11 @@
                     <div class="loader is-hidden"><img src="/img/loader.gif"></div>
 
                     <span class="js-active-vid active-vid">
-
+                        <p class="is-new-session is-hidden">{{newSession}}</p>
                         {{#if user.sessionToLoad}}
-                        	<p class="is-new-session is-hidden">false</p>
                             <video class="video1 is-hidden js-load-last-session" id="myvideo"
                                        src="{{user.sessionToLoad.videoSrc}}" autoplay loop></video>
                         {{else}}
-                        	<p class="is-new-session is-hidden">true</p>
                             <div class="vid-placeholder overlay">
                                 <h3>Select a video below</h3>
                             </div>

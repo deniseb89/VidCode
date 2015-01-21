@@ -36,11 +36,11 @@ var checkWebGL = function () {
 var activateSession = function () {
 	var newSession = $('.is-new-session').text();
 	InitSeriously();
-    if (newSession==="true"){
-    	var code = " movie.play();";
-    	createCodeInEditor(code, "cm-play");
+    if (newSession==="false"){
+        var code =  myCodeMirror.getValue();
     } else {
-    	var code =  myCodeMirror.getValue();
+        var code = " movie.play();";
+        createCodeInEditor(code, "cm-play");
     }
     updateScript(code);
 
