@@ -669,23 +669,12 @@ module.exports = function (app, passport) {
                     var _sessionToLoad = {};
 
                     if (videoFileId == "lastSession"){
-
-                        // for (var item in user.videoLibrary) {
-
-                        //     if (user.videoLibrary[item]['file'].toString() == user.lastSession.videoFileId) {
-                        //         _sessionToLoad.file = user.videoLibrary[item]['file'];
-                        //         _sessionToLoad.code = user.videoLibrary[item]['code'];
-                        //         _sessionToLoad.video = user.videoLibrary[item];
-                        //         _sessionToLoad.videoFileId = user.videoLibrary[item]['videoFileId'];
-                        //     }
-                        // }
-
-                                _sessionToLoad.file = user.lastSession.videoFileId;
-                                _sessionToLoad.code = user.lastSession.code;
-                              //  _sessionToLoad.video = user.videoLibrary[item];
-                                _sessionToLoad.videoFileId = user.lastSession.videoFileId;
-                                
-                        user.sessionToLoad = _sessionToLoad;
+                                // _sessionToLoad.code = user.lastSession.code;
+                                // _sessionToLoad.token = user.lastSession.token;
+                                // _sessionToLoad.lessonId = user.lastSession.lessonId;
+                                // _sessionToLoad.videoSrc = user.lastSession.videoSrc;
+                                _sessionToLoad = user.lastSession;
+                        user.sessionToLoad = user.lastSession;
 
                         res.render('workstation', {
                             user: user,
@@ -695,19 +684,13 @@ module.exports = function (app, passport) {
 
                     }else{
                         for (var item in user.inProgressProjects) {
-//1.15.15 update after our call:
-//So this is where the I thought the "in progress projects" would be loaded
-//though I realize now that instead of loading from the "vidcodes" object as I'm doing here
-//we would want to load the In Progress Projects object that you are creating
-//The only real difference is the file. The file here is the exported .webm file
-//The file we want instead is the raw media file, before any effects have been applied
-
                             if (user.inProgressProjects[item]['token'] == "dummy-token") {
-                            	console.log('found dummy-token');
-                                _sessionToLoad.file = user.inProgressProjects[item]['videoSrc'];
-                                _sessionToLoad.code = user.inProgressProjects[item]['code'];
-                                _sessionToLoad.video = user.inProgressProjects[item];
-                                _sessionToLoad.videoFileId = user.inProgressProjects[item]['videoFileId'];
+                                // _sessionToLoad.code = user.inProgressProjects[item]['code'];
+                                // _sessionToLoad.token = user.inProgressProjects[item]['token'];
+                                // _sessionToLoad.lessonId = user.inProgressProjects[item]['lessonId'];
+                                // _sessionToLoad.videoSrc = user.inProgressProjects[item]['videoSrc']; 
+                                // _sessionToLoad.video = user.inProgressProjects[item];
+                                _sessionToLoad = user.inProgressProjects[item];
                             }
                         }
 
@@ -718,8 +701,6 @@ module.exports = function (app, passport) {
                             user: user,
                             content: content,
                             code: _sessionToLoad.code,
-                            file: _sessionToLoad.file,
-                            videoFileId: _sessionToLoad.videoFileId,
                             lastSession: true
                         });
                     }
