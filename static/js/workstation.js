@@ -59,7 +59,6 @@ var activateSession = function () {
     movie.addEventListener("loadeddata", changeSrc, false);
     movie.removeEventListener("canplay", activateSession, false);
     vidLen = Math.round(movie.duration);
-    newSession = false;
 };
 
 var InitSeriously = function () {
