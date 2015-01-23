@@ -4,135 +4,180 @@ var movie,
     myCodeMirror,
     video,
     vidLen,
-    webmBlob,
-    seriouslyEffects,
+    target,
+    blend,
+	graphic,
+	seriouslyEffects,
+	webmBlob,
     effects = {},
     rafId,
     frames = [],
     capture,
     windowObjectReference = null;
-numVidSelect = 0;
-numFilterSelect = 0;
-allEffects = ['blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'];
-mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
-defaultValue = {'number': 5, 'color': '"red"'};
-
+    numVidSelect = 0;
+    numFilterSelect = 0;
+    allEffects = ['blend','blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'];
+    mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
+    defaultValue = {'number': 5, 'color': '"red"'};
+    last_lessonId = '1-1';
 
 var checkWebGL = function () {
     //check Seriously compatibility
     if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
         $('.compatibility-error').removeClass('is-hidden');
     } else {
-        InitSeriously();
-        setup();
+    	$('.basic-filter-method').removeClass('is-hidden');
     }
-    movie.removeEventListener('canplay', setup, false);
+};
+
+//activateSession will fire one time only upon having a video playing
+//in a new session, this will happen manually upon selecting a video
+//in a saved session, this will happen automatically
+var activateSession = function () {
+	var newSession = $('.is-new-session').text();
+	InitSeriously();
+    if (newSession==="false"){
+        var code =  myCodeMirror.getValue();
+    } else {
+        var code = " movie.play();";
+        createCodeInEditor(code, "cm-play");
+    }
+    updateScript(code);
+
+    $('.vid-placeholder').addClass('is-hidden');
+    $('.loader').addClass('is-hidden');
+    $(".clearHover").addClass("is-hidden");
+    $(".buttons").addClass("is-aware");
+    $(".runbtn").removeClass("is-hidden");
+    $(".video2").removeClass("is-hidden");
+    
+    activateEndButtons('save');
+    activateEndButtons('save-code');
+    activateEndButtons('share');
+    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
+    movie.addEventListener("loadeddata", changeSrc, false);
+    movie.removeEventListener("canplay", activateSession, false);
+    vidLen = Math.round(movie.duration);
 };
 
 var InitSeriously = function () {
+    seriously = new Seriously();
+
     //TODO: generalize to my media
-    video = seriously.source('#myvideo');
-    var target = seriously.target('#canvas');
+    video = seriously.transform('reformat');
+    video.width = 420;
+    video.height = 250;
+    video.mode = 'contain';   
+    video.source = ('#myvideo');
+
+    target = seriously.target('#canvas'); 
+    graphic = seriously.source(graphicsCanvas);   
 
     //Set up Seriously.js effects
-    var thisEffect;
     seriouslyEffects = Seriously.effects();
+    
+    var thisEffect;
     effects[allEffects[0]] = thisEffect = seriously.effect(allEffects[0]);
-    effects[allEffects[0]]["source"] = video;
-    thisEffect.amount = 0;
-    for (var i = 1; i < allEffects.length; i++) {
-        effects[allEffects[i]] = thisEffect = seriously.effect(allEffects[i]);
-        effects[allEffects[i]]["source"] = effects[allEffects[i - 1]];
+    thisEffect.top = graphic;
+    thisEffect.bottom = video;
+  
+    for (var i=1;i<allEffects.length;i++){
+        effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
+        effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
         thisEffect.amount = 0;
-    }
-    target.source = effects[allEffects[allEffects.length - 1]];
+    } 
+  
+    target.source = effects[allEffects[allEffects.length-1]];
+    seriously.go();    
 };
 
-var setup = function() {
-    var newSession = true;
-
-    if(newSession){
-        $('.CodeMirror-code').addClass('is-hidden');
-        $('.basic-filter-method').removeClass('is-hidden');
-    } else {
-    // saved session
-        updateScript($('#codemirror').val());
+var changeSrc = function () {
+    numVidSelect++;
+    $('.loader').addClass('is-hidden');
+    $(".popup").addClass("is-hidden");
+    labelLines();
+    if (this.tagName=='VIDEO') {
+        effects[allEffects[0]]["bottom"] = seriously.source(video);
+        vidLen = Math.round(this.duration);
+      } else {
+        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
+        movie.src = "";
     }
 };
+
 
 var imgClickSetup = function () {
-    showVid();
+    changeSrc();
     updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
 
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
-    // figure out how to deal with video running in the backgroud
-    movie.src = "";
+
     var this_still;
     //generalize this somewhere else so when source changes, target changes
     if (!stopMotion.on){
-      this_still = seriously.transform('reformat');
-      this_still.width = 420;
-      this_still.height = 250;
-      this_still.mode = 'contain';
-      this_still.source = this;
-      effects[allEffects[0]]["source"] = seriously.source(this_still);
+        var this_still;
+        this_still = seriously.transform('reformat');
+        this_still.width = 420;
+        this_still.height = 250;
+        this_still.mode = 'contain';
+        this_still.source = this;           
+        effects[allEffects[0]]["bottom"] = seriously.source(this_still);
     }
 
+
     var stills = document.querySelectorAll('.js-selected-still');
-    var frameArr = new Array(stills.length);
-    for (var i=1; i<=frameArr.length; i++){
-      frameArr[i-1]=i;
+    var allFrames = stopMotion.frames = new Array(stills.length);
+
+    for (var i=0; i<stopMotion.frames.length; i++){
+      stopMotion.frames[i]= stills[i].id;
+      allFrames[i] = "'"+stills[i].id+"'";
     }
-    frameArr.join(",");
+
+    if(stopMotion.frames.length){
+      createStopMotionInEditor("frames");   
+    }           
+
     var allTM = myCodeMirror.getAllMarks();
     for (var m=0; m<allTM.length; m++){
       var tm = allTM[m];
       if (tm.className=="cm-frames"){
         var cmLine = tm.find();
-        myCodeMirror.replaceRange(' stopMotion.frames = ['+frameArr+'];',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );
-        myCodeMirror.markText({ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ),{ className: "cm-frames" });
-        $(".cm-frames").effect("highlight",2000);
+        updateCodeInEditor(' stopMotion.frames = ['+allFrames+'];', cmLine.to.line, "cm-frames");
+
+        if(!stills.length) myCodeMirror.removeLine(cmLine.to.line);
       }
-    }
+    } 
+
+    addFramesToTimeline();   
+};
+
+
+var graphClickSetup = function () {
+        //if graphic is not selected already, remove previous one
+        if($(this).hasClass('js-selected-graphic') === false){
+            $('.js-graph-click').removeClass('js-selected-graphic'); 
+        }
+         $(this).toggleClass('js-selected-graphic');
+        
+        //check if has any Graphic selected
+        if($(this).hasClass('js-selected-graphic') === true){
+            createGraphics();
+        }
+        else{
+           turnOffGraphics();
+           turnOffAnimation("delete");  
+        }
+        updateGraphicsCanvas();     
 };
 
 var vidClickSetup = function() {
-    movie.addEventListener("loadeddata", showVid, false);
     $('.loader').removeClass('is-hidden');
     $('.js-vid-click').removeClass('js-selected-video');
     $(this).addClass('js-selected-video');
     var thisSrc = $(this).attr('src');
     movie.src = thisSrc;
-
-};
-
-var showVid = function () {
-    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
-    numVidSelect++;
-    $('.loader').addClass('is-hidden');
-    $(".popup").addClass("is-hidden");
-
-    //this should only happen if it's a new session
-    $('.vid-placeholder').addClass('is-hidden');
-    $(".clearHover").addClass("is-hidden");
-    $(".buttons").addClass("is-aware");
-    $(".runbtn").removeClass("is-hidden");
-    $(".video2").removeClass("is-hidden");
-    $('.CodeMirror-code').removeClass('is-hidden');
-    activateEndButtons('save');
-    activateEndButtons('save-code');
-    activateEndButtons('share');
-    //end new session block
-
-    labelLines();
-    if (this.tagName=='VIDEO') {
-        effects[allEffects[0]]["source"] = seriously.source(video);
-        vidLen = Math.round(this.duration);
-      } else {
-        vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
-    }
 };
 
 var activateEndButtons = function (bType) {
@@ -214,7 +259,7 @@ var updateMediaLibrary = function (file, data) {
     var style;
     var parent;
     var fn;
-
+    var this_still;
     if (file.type.match(/image.*/)) {
         type = 'img';
         style = 'js-img-click';
@@ -249,46 +294,37 @@ var labelLines = function () {
     }
 };
 
+
 var updateScript = function (code) {
     var scriptOld = document.getElementById('codeScript');
-    if (scriptOld) {
-        scriptOld.remove();
-    }
-    var scriptNew = document.createElement('script');
+    if (scriptOld) { scriptOld.remove();}
+    var scriptNew   = document.createElement('script');
     scriptNew.id = 'codeScript';
-    var cmScript = myCodeMirror.getValue();
 
-    eval(cmScript);
+    eval(code);
     var adjScript = "";
-    var textScript = "\n\ try {\n\ " + cmScript;
+    var textScript = "\n\ try {\n\ "+code;
 
     /*TODO: Check to see if the active effects have changed from before to now
-     if so, reinit seriously. if not, do nothing
-     Also, don't add and remove the script each time. Just update the script string via innerhtml
-     */
-
-    if (textScript.indexOf('stopMotion.interval') >= 0) {
-        // if (!stopMotion.on) {
-        // console.log($(".cm-frames").html());
-        stopMotion.start();
-        // }
-    } else {
-        if (stopMotion.on) {
-            stopMotion.stop();
-        }
-    }
+    if so, reinit seriously. if not, do nothing
+    Also, get rid of that eval
+    */
 
     labelLines();
     var matchEff = document.querySelectorAll(".active-effect");
+    var matchNames = [];    
 
-    var matchNames = [];
-    $('.btn-method').removeClass('is-active');
+    //turn everything off
+    $('.btn-method').removeClass('is-active');          
+    
+
+    //turn on back the effects in
     for (var t = 0; t < matchEff.length; t++) {
         var matchE = matchEff[t];
         matchNames.push($(matchE).attr("name"));
         checkBtnStatus(matchE);
     }
-
+    //update effects in editor
     for (var c = 0; c < allEffects.length; c++) {
         var thisEffect = allEffects[c];
         if (matchNames.indexOf(thisEffect) < 0) {
@@ -298,13 +334,83 @@ var updateScript = function (code) {
             adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
         }
     }
+    
+    //-------------------Stop motion in Script-----------------------//
+
+    if(textScript.indexOf('stopMotion.frames')>=0){
+        var currentStills = document.querySelectorAll('.js-img-click');
+        var allFrames = stopMotion.frames.join(",");
+
+        for (var i=0; i<currentStills.length; i++){
+           if(allFrames.indexOf(currentStills[i].id)<0){
+                 $("#"+currentStills[i].id).removeClass('js-selected-still');
+                  $("#"+currentStills[i].id).removeClass('js-selected-video');
+          }
+          else{
+                $("#"+currentStills[i].id).addClass('js-selected-still');
+                $("#"+currentStills[i].id).addClass('js-selected-video');
+          }
+        } 
+        addFramesToTimeline();
+    }
+
+
+    if (textScript.indexOf('stopMotion.interval')>=0) {
+       $('li[name=interval]').addClass('is-active');
+       stopMotion.start();
+       //reorganize array here
+
+    } else {
+      if (stopMotion.on) {
+        stopMotion.stop();
+      }
+    }
+
+
+    //-------------------Graphics in Script-----------------------//
+
+    //if there is not position in the editor, turn off graphics
+    if(textScript.indexOf('position')<0 && textScript.indexOf('size')<0){
+        turnOffGraphics();
+    }
+
+    //turn drawing/animation on
+    if(textScript.indexOf('drawing')>=0){
+       $('li[name=drawing]').addClass('is-active');
+    }
+    else{
+        turnOffDrawing();        
+    }
+
+    if(textScript.indexOf('animation')>=0){
+        $('li[name=animation]').addClass('is-active');
+        console.log("textScript animation");
+
+        if(textScript.indexOf('animationMode=false')>=0 || textScript.indexOf('animationMode= false')>=0 ||
+        textScript.indexOf('animationMode = false')>=0 || textScript.indexOf('animationMode =false')>=0){        
+            turnOffAnimation("pause");
+        }
+        else{
+            clearInterval(animationInterval);
+            animationInterval = setInterval(animateImage, 60);
+        }
+    }
+    else{
+        turnOffAnimation("delete");  
+    }   
+
+    updateGraphicsCanvas();
+
+    //-------------------Script-----------------------//
 
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
-    scriptNew.text = textScript;
+    scriptNew.textContent = textScript;
 
     document.body.appendChild(scriptNew);
 };
+
+
 
 var checkBtnStatus = function (effect) {
     //compare the names of effect buttons to the names in activeEffects
@@ -312,8 +418,9 @@ var checkBtnStatus = function (effect) {
     $('li[name=' + effectName + ']').addClass("is-active")
 };
 
-/*old lessons.js*/
 
+
+/*old lessons.js*/
 var loadThumbnails = function () {
     var social = $('#social').text();
 
@@ -344,6 +451,8 @@ var loadThumbnails = function () {
     }
 };
 
+
+
 loadThumbnails();
 
 //account for different browsers with requestAnimationFrame
@@ -369,6 +478,7 @@ var drawVideoFrame = function (time) {
 var stopDL = function () {
     cancelAnimationFrame(rafId);
     webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+    $('.progressDiv').addClass('is-hidden');
     activateEndButtons('finish');
 };
 //end Whammy video save
@@ -391,7 +501,6 @@ var saveSession = function (blob) {
         cache: false,
         processData: false,
         success: function (token, textStatus, jqXHR) {
-            $('.progressDiv').addClass('is-hidden');
             $('.share-p-text-container').removeClass('is-hidden');
             $('.js-h-onload').addClass('is-hidden');
             $('.js-s-onload').removeClass('is-hidden');
@@ -407,10 +516,8 @@ var saveSession = function (blob) {
     });
 };
 
-
 var modalVideoLoad = function (mname) {
     addThisStyles();
-
     $('.ss-modal').removeClass('is-hidden');
     $('.js-' + mname + '-content').removeClass('is-hidden');
     $('.js-ss-title').text(mname);
@@ -443,7 +550,6 @@ var removeInfo = function (term) {
     $('pre:contains(' + term + ')').css("background", "none");
 };
 
-
 var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
     $('.js-lesson-p-update').text(stepNum);
     $('.js-lesson-text-update').html(lessonText);
@@ -451,11 +557,12 @@ var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
     $('.js-lesson-img').html(lessonImg);
 };
 
-trackLesson = function (lessonName) {
+var trackLesson = function (lessonName) {
+    last_lessonId = lessonName;
     $.post('/lesson/' + lessonName);
 };
 
-getDateMMDDYYYY = function () {
+var getDateMMDDYYYY = function () {
     var date = new Date();
 
     var m = (date.getMonth() + 1).toString();
@@ -463,4 +570,20 @@ getDateMMDDYYYY = function () {
     var y = date.getFullYear().toString();
 
     return m + "-" + d + "-" + y;
-}
+};
+
+var createCodeInEditor = function(text, cmclass){ 
+    myCodeMirror.replaceRange(text, CodeMirror.Pos( myCodeMirror.lastLine()));
+    myCodeMirror.markText({
+                    line:  myCodeMirror.lastLine(),
+                    ch: 0
+                }, CodeMirror.Pos(myCodeMirror.lastLine()), { className: cmclass });
+};
+
+var updateCodeInEditor = function(text, cmline, cmclass){
+    myCodeMirror.replaceRange(text, { line: cmline, ch: 0 }, CodeMirror.Pos( cmline ) );
+    myCodeMirror.markText({
+                    line: cmline,
+                    ch: 0
+                }, CodeMirror.Pos(cmline), {className: cmclass});       
+};

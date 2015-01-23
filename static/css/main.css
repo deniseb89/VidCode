@@ -505,8 +505,10 @@ body.is-in-signup {
 
 .video2 {
     z-index: 5;
-    margin-top: 1px;
-    width: 103%;
+    border: 1px solid #333;
+    background-color: #000;
+  -webkit-box-sizing: border-box;
+    box-sizing: content-box;
 }
 
 .steps {
@@ -600,7 +602,7 @@ body.is-in-signup {
     box-shadow: 9px 0px 23px 0px rgba(50, 50, 50, 0.3);
 
     -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
+    -moz-border-rdius: 8px;
     border-radius: 8px;
 }
 
@@ -655,7 +657,7 @@ body.is-in-signup {
 
 .runbtn {
     position: absolute;
-    margin: -50px 30% 0 30% !important;
+    margin: -70px 30% 0 30% !important;
     opacity: 0;
 }
 
@@ -853,9 +855,6 @@ body.is-in-signup {
     width: 400px;
 }
 
-canvas {
-    vertical-align: bottom;
-}
 
 @-webkit-keyframes colorful {
     from {
@@ -1035,6 +1034,70 @@ canvas {
     width: 385px;
     margin-bottom: -74px;
 }
+
+/* ---------------- Graphics, Animation and Timeline ------------------ */
+
+#supportCanvas{
+    margin-top: -270px; 
+}
+
+#stop-motion-timeline{
+    margin-top: -15px;
+    background-color: #d8d8d8;
+    height: 64px;
+    width: 420px;   
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+
+
+
+
+#stop-motion-timeline::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#stop-motion-timeline::-webkit-scrollbar
+{   height: 6px;
+    background-color: #F5F5F5;
+}
+
+#stop-motion-timeline::-webkit-scrollbar-thumb
+{
+    background-color: #441B4B;
+}
+
+#stop-motion-timeline ul{
+    white-space: nowrap;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+#stop-motion-timeline li{
+    margin: 2px;
+    display: inline;
+    height: 60px;
+    width:80px;
+}
+
+#stop-motion-timeline img {
+    height: 60px;
+    width: 80px;
+    cursor: pointer;
+}
+.placeholder-highlight {
+         margin-left:40px !important;
+         margin-right:40px !important;
+}
+
+li.ui-state-default{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}   
 
 /* ---------------- Learn More Games ------------------ */
 
@@ -1389,14 +1452,28 @@ canvas {
     margin: 5px;
 }
 
+
+
+.lesson-page .stills-container {
+    /*overflow: visible;    */
+}
+
+
 .lesson-page .video-container img {
+    height: 90px;
     width: 96%;
     margin: 2%;
     cursor: pointer;
 }
 
 .lesson-page .video-container .js-selected-video {
-    border: 2px solid #441B4B;
+    border: 5px solid #441B4B;
+}
+
+
+
+.js-selected-graphic{
+    border: 5px solid #441B4B;
 }
 
 .lesson-page .video-container p {
@@ -1493,8 +1570,8 @@ canvas {
 
 .lesson-page .vid-placeholder {
     background-color: blue;
-    width: 100%;
-    height: 245px;
+    width: 420px;
+    height: 250px;
     margin: -20px 0 0 0;
 }
 
@@ -2177,6 +2254,7 @@ li.active a, li.active a:hover {
     line-height: 1.6em;
 }
 
+
 /* ======================       Modal Lessons          ============================= */
 
 .modal-content {
@@ -2347,6 +2425,8 @@ li.active a, li.active a:hover {
     margin-left: 355px;
 }
 
+
+
 /* ======================       AddThis          ============================= */
 #fb-btn-styling {
     background: #323762 !important;
@@ -2373,6 +2453,8 @@ li.active a, li.active a:hover {
 #tw-btn-styling img {
     padding-right: 5px !important
 }
+
+
 
 /* ==========================================================================
 Helper classes
@@ -2599,6 +2681,7 @@ Inlined to avoid required HTTP connection: h5bp.com/r
         page-break-after: avoid;
     }
 }
+
 
 /* ==========================================================================
 Profile page tabs.

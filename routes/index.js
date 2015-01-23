@@ -72,6 +72,7 @@ module.exports = function (app, passport) {
 
     app.post('/lesson/:lessonId', isLoggedIn, function (req, res) {
         User.findOne({_id: req.user._id}, function (err, user) {
+            //take the id and add to units
                 if (!err) {
                     user.lessons.addToSet(req.params.lessonId);
                     user.save();
@@ -500,7 +501,6 @@ module.exports = function (app, passport) {
     });
 
     app.post('/uploadFinished', isLoggedIn, function (req, res) {
-        console.log('hi there');
         var video = {};
         var busboy = new Busboy({headers: req.headers});
 
@@ -585,14 +585,14 @@ module.exports = function (app, passport) {
         var token = req.body.token;
         var code = req.body.code;
         var lessonId = req.body.lessonId;
-        var videoFileId = req.body.videoFileId;
+        var videoSrc = req.body.videoSrc;
 
         var session = {};
 
         session.code = code;
         session.token = token;
-        session.videoFileId = videoFileId;
         session.lessonId = lessonId;
+        session.videoSrc = videoSrc;
 
         User.findOne({_id: req.user._id}, function (err, user) {
           if (!err) {
@@ -643,35 +643,20 @@ module.exports = function (app, passport) {
 
     app.get('/workstation', isLoggedIn, function (req, res) {
 
-      var codeText =
-      '\
-      movie.play();\n\
-      ';
-
         res.render("workstation",
             {
                 user: req.user,
                 content: content,
-                code: codeText
+                newSession: true
             });
     });
 
     app.get('/workstation/:videoFileId?',isLoggedIn, function (req, res) {
         var videoFileId = req.params.videoFileId;
         var file;
-        var codeText =
-        '\
-        movie.play();\n\
-        ';
-
 
         if (!videoFileId) {
-            res.render("workstation",
-                {
-                    user: req.user,
-                    content: content,
-                    code: codeText
-                });
+            res.redirect('/workstation');
             return;
         }
 
@@ -685,37 +670,29 @@ module.exports = function (app, passport) {
                     var _sessionToLoad = {};
 
                     if (videoFileId == "lastSession"){
-
-                        // for (var item in user.videoLibrary) {
-
-                        //     if (user.videoLibrary[item]['file'].toString() == user.lastSession.videoFileId) {
-                        //         _sessionToLoad.file = user.videoLibrary[item]['file'];
-                        //         _sessionToLoad.code = user.videoLibrary[item]['code'];
-                        //         _sessionToLoad.video = user.videoLibrary[item];
-                        //         _sessionToLoad.videoFileId = user.videoLibrary[item]['videoFileId'];
-                        //     }
-                        // }
-
-                                _sessionToLoad.file = user.lastSession.videoFileId;
-                                _sessionToLoad.code = user.lastSession.code;
-                              //  _sessionToLoad.video = user.videoLibrary[item];
-                                _sessionToLoad.videoFileId = user.lastSession.videoFileId;
-                                
+                                // _sessionToLoad.code = user.lastSession.code;
+                                // _sessionToLoad.token = user.lastSession.token;
+                                // _sessionToLoad.lessonId = user.lastSession.lessonId;
+                                // _sessionToLoad.videoSrc = user.lastSession.videoSrc;
+                                _sessionToLoad = user.lastSession;
                         user.sessionToLoad = _sessionToLoad;
 
                         res.render('workstation', {
                             user: user,
                             content: content,
-                            code: codeText
+                            code: _sessionToLoad.code,
+                            newSession: false
                         });
 
                     }else{
-                        for (var item in user.vidcodes) {
-                            if (user.videoLibrary[item]['file'].toString() == videoFileId) {
-                                _sessionToLoad.file = user.vidcodes[item]['file'];
-                                _sessionToLoad.code = user.vidcodes[item]['code'];
-                                _sessionToLoad.video = user.vidcodes[item];
-                                _sessionToLoad.videoFileId = user.videoLibrary[item]['videoFileId'];
+                        for (var item in user.inProgressProjects) {
+                            if (user.inProgressProjects[item]['token'] == "dummy-token") {
+                                // _sessionToLoad.code = user.inProgressProjects[item]['code'];
+                                // _sessionToLoad.token = user.inProgressProjects[item]['token'];
+                                // _sessionToLoad.lessonId = user.inProgressProjects[item]['lessonId'];
+                                // _sessionToLoad.videoSrc = user.inProgressProjects[item]['videoSrc']; 
+                                // _sessionToLoad.video = user.inProgressProjects[item];
+                                _sessionToLoad = user.inProgressProjects[item];
                             }
                         }
 
@@ -726,10 +703,7 @@ module.exports = function (app, passport) {
                             user: user,
                             content: content,
                             code: _sessionToLoad.code,
-                            file: _sessionToLoad.file,
-                            videoFileId: _sessionToLoad.videoFileId,
-                            token: token,
-                            lastSession: true
+                            newSession: false
                         });
                     }
                 }

@@ -2,10 +2,16 @@
 $(document).ready(function () {
     movie = document.getElementById('myvideo');
     canvas = document.getElementById('canvas');
-    seriously = new Seriously();
-    seriously.go();
-    movie.addEventListener('canplay', checkWebGL, false);
-    movie.load();
+    checkWebGL();
+    movie.addEventListener("canplay", activateSession, false);
+
+    supportCanvas = document.getElementById('supportCanvas');
+    graphicsCanvas = document.getElementById('graphicsCanvas');
+    graphicsContext = graphicsCanvas.getContext("2d");  
+    //graphics
+    supportCanvas.addEventListener('mousemove', drawGraphics, false);
+    supportCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
+ 
     var inputFile = document.getElementById('inputFile');
     var inputFileToLibrary = document.getElementById('inputFileToLibrary');
     inputFile.addEventListener('change', uploadFromComp, false);
@@ -37,6 +43,11 @@ $(document).ready(function () {
     $('#basic-filter-method').click(function () {
         updateLearnMore(1, "<p>JavaScript?</p><p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="img/lessons/lesson-1-right.png">');
     });
+
+    $('#graphic-method').click(function () {
+        updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
+    });
+
     $('.learnMore').on('click', '.js-lesson-4-sm', function () {
         updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
         trackLesson('2-4');
@@ -120,15 +131,20 @@ $(document).ready(function () {
 
         var _cmScript = myCodeMirror.getValue();
 
-        var _videoFileId = (document.getElementById('myvideo').src).split('=')[1];
+        var _videoSrc = (document.getElementById('myvideo').src)
 
         //may need to add a global variable to store the current video token in session.
-
-        $.post("/workstation-update-session", {'lessonId': '1-1', 'token': 'dummy-token', 'videoFileId': _videoFileId ,'code': _cmScript});
-
+        //TODO: handle uploaded videos that are not in the library (don't have a file ID and sends the entire binary data.)
+        /*
+        http://localhost:5000/workstation-update-session Failed to load resource: the server responded with a status of 413 (Request Entity Too Large)
+        */
+        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'videoSrc': _videoSrc ,'code': _cmScript});
     });
 
     $('.finish-btn-container').on('click', ".js-finish-m", function () {
+        $('.js-finish-m').addClass('inactive-b-a-btn');
+        $('.js-finish-m').addClass('inactive-js-finish-m');
+        $('.js-finish-m').removeClass('js-finish-m');
         saveSession(webmBlob);
     });
 
@@ -144,13 +160,15 @@ $(document).ready(function () {
         $('.js-ss-both-content').addClass('is-hidden');
     });
 
+
     $(".tabs-2").droppable({
         drop: function (event, ui) {
 
             lessonIsActive(".js-effects");
 
-            var eff = ui.draggable.attr("name");
+            var eff = ui.draggable.attr("name");   
             $('[name=' + eff + ']').addClass("is-active");
+
             var filter = seriouslyEffects[eff];
             if (filter) {
                 numFilterSelect++;
@@ -158,53 +176,55 @@ $(document).ready(function () {
                     updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
                 } else if (numFilterSelect == 2) {
                     updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects"</p><p><strong>Effects is an Object</strong>. This is a word you will be hearing a lot. Objects hold data. In this case the effects Object holds ALL the effects inside of itself. When we write the word "effects" the program knows we are asking to retrieve a piece of data from the effects object.</p>', 'Notice anything about your code?', '');
-                    trackLesson('1-4');
                 }
                 var input;
                 for (var i in filter.inputs) {
                     input = filter.inputs[i];
                     if ((i != 'source') && (i != 'timer') && (i != 'overlay')) {
                         lineText = '\n\ effects.' + eff + '.' + i + ' = ' + defaultValue[input.type] + ';';
-                        myCodeMirror.replaceRange(lineText, CodeMirror.Pos(myCodeMirror.lastLine()));
-                        myCodeMirror.markText({
-                            line: myCodeMirror.lastLine(),
-                            ch: 0
-                        }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
+                        createCodeInEditor(lineText, "cm-" + eff);
                     }
                 }
-            } else if (eff == "play") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + '();', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (eff == "pause") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + '();', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (eff == "playbackRate") {
-                myCodeMirror.replaceRange('\n\ movie.' + eff + ' = 1.0;', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-            } else if (stopMotion.controls.hasOwnProperty(eff)) {
-                myCodeMirror.replaceRange('\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';', CodeMirror.Pos(myCodeMirror.lastLine()));
-                myCodeMirror.markText({
-                    line: myCodeMirror.lastLine(),
-                    ch: 0
-                }, CodeMirror.Pos(myCodeMirror.lastLine()), {className: "cm-" + eff});
-                if (eff == "interval") {
-                    updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
-                }
+            } 
+            else if (stopMotion.controls.hasOwnProperty(eff)) {
+                createStopMotionInEditor(eff);
+            } 
+            else if (eff == "drawing" ){
+                createDrawing();
+            } 
+            else if (eff == "animation"){
+                if(hasGraphic) createAnimation();                   
+                else  $('[name=' + eff + ']').removeClass("is-active"); 
             }
+
             myCodeMirror.save();
-            $(".line-" + eff).effect("highlight", 2000);
+
+            $(".cm-" + eff).effect("highlight", 2000);
         }
     });
 
+    $(".draggable").click(function () {
+        var eff = ($(this).attr('name'));
+        $(this).removeClass("is-active");
+
+        var allTM = myCodeMirror.getAllMarks();
+        for (var m = 0; m < allTM.length; m++) {
+            var tm = allTM[m];
+            if (tm.className == "cm-" + eff) {
+                myCodeMirror.removeLine(tm.find().to.line);
+            }
+        }
+
+        if (eff == "drawing" ){
+            turnOffDrawing();
+            updateGraphicsCanvas();     
+        }
+        if(eff == "animation"){
+            turnOffAnimation("delete");
+        } 
+        myCodeMirror.save();
+    });
+   
     $('.methodList li').each(function () {
         $(this).draggable({
             helper: "clone",
@@ -212,24 +232,20 @@ $(document).ready(function () {
         });
     });
 
-    $(".draggable").click(function () {
-        var eff = ($(this).attr('name'));
-        $(this).removeClass("is-active");
-        var allTM = myCodeMirror.getAllMarks();
-
-        for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if (tm.className == "cm-" + eff) {
-                myCodeMirror.removeLine(tm.find().to.line);
-            }
-        }
-        myCodeMirror.save();
-    });
-
     $('.js-img-click').click(imgClickSetup);
 
     $('.js-vid-click').click(vidClickSetup);
 
+    $('.js-graph-click').click(graphClickSetup);
+
+    $( "#timeline-sortable" ).sortable({
+        distance:30,
+        placeholder: "placeholder-highlight",
+        stop: function( event, ui ) {
+            reorderFrames();
+        }
+    });
+   
     //Switch between content
     $('.js-switch-view').click(function () {
         //Todo: Template these
@@ -237,7 +253,7 @@ $(document).ready(function () {
         var lName = ($(this).attr('name'));
         var lessonNum = ($(this).attr('lessnum'));
         $('.basic-filter-method').addClass('is-hidden');
-        $('.movie-control-method').addClass('is-hidden');
+        $('.graphic-method').addClass('is-hidden');
         $('.stop-motion-method').addClass('is-hidden');
         $('.' + view).removeClass('is-hidden');
         $('.js-lesson-name').text(lName);
