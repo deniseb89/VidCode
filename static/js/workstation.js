@@ -20,16 +20,12 @@ var movie,
     mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
     defaultValue = {'number': 5, 'color': '"red"'};
     last_lessonId = '1-1';
-    newSession = false;
 
 var checkWebGL = function () {
     //check Seriously compatibility
     if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
         $('.compatibility-error').removeClass('is-hidden');
     } else {
-    	if (!newSession){
-    		//movie.src='/img/wha_color.mp4';
-    	}
     	$('.basic-filter-method').removeClass('is-hidden');
     }
 };
@@ -38,25 +34,35 @@ var checkWebGL = function () {
 //in a new session, this will happen manually upon selecting a video
 //in a saved session, this will happen automatically
 var activateSession = function () {
-	newSession = false;
+	var newSession = $('.is-new-session').text();
 	InitSeriously();
+    if (newSession==="false"){
+        var code =  myCodeMirror.getValue();
+    } else {
+        var code = " movie.play();";
+        createCodeInEditor(code, "cm-play");
+    }
+    updateScript(code);
+
     $('.vid-placeholder').addClass('is-hidden');
     $('.loader').addClass('is-hidden');
     $(".clearHover").addClass("is-hidden");
     $(".buttons").addClass("is-aware");
     $(".runbtn").removeClass("is-hidden");
     $(".video2").removeClass("is-hidden");
-    $('.CodeMirror-code').removeClass('is-hidden');
+    $("#supportCanvas").removeClass("is-hidden");
+    adjustCanvasHeight();
+
     activateEndButtons('save');
     activateEndButtons('save-code');
     activateEndButtons('share');
     updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
     movie.addEventListener("loadeddata", changeSrc, false);
     movie.removeEventListener("canplay", activateSession, false);
+    vidLen = Math.round(movie.duration);
 };
 
 var InitSeriously = function () {
-	console.log('init Seriously');
     seriously = new Seriously();
 
     //TODO: generalize to my media
@@ -88,10 +94,10 @@ var InitSeriously = function () {
 };
 
 var changeSrc = function () {
-	console.log('CHANGE SRC');
     numVidSelect++;
     $('.loader').addClass('is-hidden');
     $(".popup").addClass("is-hidden");
+
     labelLines();
     if (this.tagName=='VIDEO') {
         //effects[allEffects[0]]["bottom"] = seriously.source(video);
@@ -296,17 +302,15 @@ var updateScript = function (code) {
     if (scriptOld) { scriptOld.remove();}
     var scriptNew   = document.createElement('script');
     scriptNew.id = 'codeScript';
-    var cmScript = myCodeMirror.getValue();
 
-    eval(cmScript);
+    eval(code);
     var adjScript = "";
-    var textScript = "\n\ try {\n\ "+cmScript;
+    var textScript = "\n\ try {\n\ "+code;
 
     /*TODO: Check to see if the active effects have changed from before to now
     if so, reinit seriously. if not, do nothing
-    Also, don't add and remove the script each time. Just update the script string via innerhtml
+    Also, get rid of that eval
     */
-
 
     labelLines();
     var matchEff = document.querySelectorAll(".active-effect");
@@ -404,7 +408,7 @@ var updateScript = function (code) {
 
     textScript += adjScript;
     textScript += "\n\ } catch(e){" + adjScript + "\n\ }";
-    scriptNew.text = textScript;
+    scriptNew.textContent = textScript;
 
     document.body.appendChild(scriptNew);
 };
@@ -586,3 +590,6 @@ var updateCodeInEditor = function(text, cmline, cmclass){
                     ch: 0
                 }, CodeMirror.Pos(cmline), {className: cmclass});       
 };
+
+
+

@@ -354,3 +354,22 @@ var turnOffAnimation = function(status){
         }  
     }
 }
+
+var adjustCanvasHeight = function(){
+        var newHeight = $('.video2').height();
+        var newWidth = $('.video2').width();
+
+        var marginTop = newHeight*-1;
+        marginTop = marginTop-20;
+
+        document.getElementById('video-wrapper').style.height = newHeight+"px";
+        document.getElementById('supportCanvas').style.height = newHeight+"px";
+        document.getElementById('supportCanvas').style.width = newWidth+"px";
+        document.getElementById('graphicsCanvas').style.width = newWidth+"px";
+        document.getElementById('graphicsCanvas').style.height = newHeight+"px";
+        document.getElementById('supportCanvas').style.marginTop = marginTop+"px";
+
+        graphicsCanvas.width = newWidth;
+        graphicsCanvas.height = newHeight;
+
+}

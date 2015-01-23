@@ -40,6 +40,7 @@ var stopMotion = {
   iterator: 0,
   stills: [],
   frames: [],
+  dragID: "",
 
   start: function(){
     	clearInterval(stopMotion.animate);

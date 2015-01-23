@@ -131,10 +131,14 @@ $(document).ready(function () {
 
         var _cmScript = myCodeMirror.getValue();
 
-        var _videoFileId = (document.getElementById('myvideo').src)
+        var _videoSrc = (document.getElementById('myvideo').src)
 
         //may need to add a global variable to store the current video token in session.
-        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'file': _videoFileId ,'code': _cmScript});
+        //TODO: handle uploaded videos that are not in the library (don't have a file ID and sends the entire binary data.)
+        /*
+        http://localhost:5000/workstation-update-session Failed to load resource: the server responded with a status of 413 (Request Entity Too Large)
+        */
+        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'videoSrc': _videoSrc ,'code': _cmScript});
     });
 
     $('.finish-btn-container').on('click', ".js-finish-m", function () {
@@ -181,12 +185,6 @@ $(document).ready(function () {
                         createCodeInEditor(lineText, "cm-" + eff);
                     }
                 }
-            } 
-            else if (eff == "pause" || eff == "play") {
-                createCodeInEditor('\n\ movie.' + eff + '();', "cm-" + eff);
-            } 
-            else if (eff == "playbackRate") {
-                createCodeInEditor('\n\ movie.' + eff + ' = 1.0;', "cm-" + eff);
             } 
             else if (stopMotion.controls.hasOwnProperty(eff)) {
                 createStopMotionInEditor(eff);
@@ -238,25 +236,70 @@ $(document).ready(function () {
         $(this).draggable({
             helper: "clone",
             revert: "invalid",
-            start: function(event, ui) {
-               $('.ui-draggable-dragging').attr("width", "80");
-               $('.ui-draggable-dragging').attr("height", "60");
-               $('.js-vid-click').removeClass('js-selected-video');
+            start: function (e, ui) {
+                $('.js-vid-click').removeClass('js-selected-video');               
+                ui.helper.width(ui.helper.prevObject[0].clientWidth);
+                ui.helper.height(ui.helper.prevObject[0].clientHeight);
             },
+            cursorAt: {left:45, top:30},
             stop: function(event, ui){
                 $(this).addClass('js-selected-video');            
             }
         });
     });   
 
+     $('.js-graph-click').each(function () {
+        $(this).draggable({
+            helper: "clone",
+            revert: "invalid",
+            start: function (e, ui) {
+                ui.helper.width(ui.helper.prevObject[0].clientWidth);
+                ui.helper.height(ui.helper.prevObject[0].clientHeight);
+            },
+            cursorAt: {left:45, top:30}
+        });
+    });   
+
 
     $('#canvas').droppable({
-        drop: function (event, ui) {            
-            $('.loader').removeClass('is-hidden');
-            $('.js-vid-click').removeClass('js-selected-video');
-            ui.draggable.addClass('js-selected-video');
-            var thisSrc = ui.draggable.attr("src"); 
-            movie.src = thisSrc;
+        drop: function (event, ui) {  
+            if(ui.draggable[0].tagName == "VIDEO"){
+                $('.loader').removeClass('is-hidden');
+                $('.js-vid-click').removeClass('js-selected-video');
+                ui.draggable.addClass('js-selected-video');
+                var thisSrc = ui.draggable.attr("src"); 
+                movie.src = thisSrc;
+            }
+            else if(ui.draggable[0].tagName == "IMG"){ 
+                if(ui.draggable[0].className.indexOf("js-graph") >= 0){
+                  $('.js-graph-click').removeClass('js-selected-graphic'); 
+                  var thisSrc = ui.draggable.attr("src"); 
+                    var allGraphs = document.querySelectorAll('.js-graph-click');
+                    $('#mygraphic').attr("id", "");              
+
+                    for(var i = 0; i < allGraphs.length; i++){
+                        if(allGraphs[i].src.indexOf(thisSrc) >= 0 ){
+                            if(allGraphs[i].style.position != "absolute"){
+                               allGraphs[i].setAttribute('class', 'js-graph-click ui-draggable js-selected-graphic');
+                               createGraphics();
+                               updateGraphicsCanvas(); 
+                           }
+                        }
+                    }
+
+                   
+                    
+                    // //check if has any Graphic selected
+                    // if($(this).hasClass('js-selected-graphic') === true){
+                    //     createGraphics();
+                    // }
+                    // else{
+                    //    turnOffGraphics();
+                    //    turnOffAnimation("delete");  
+                    // }
+                    // 
+                }
+            }
         }
     });
 
@@ -266,11 +309,13 @@ $(document).ready(function () {
             revert: "invalid",
             connectToSortable: "#timeline-sortable",
             start: function(event, ui) {
+               ui.helper.width(ui.helper.prevObject[0].clientWidth);
+               ui.helper.height(ui.helper.prevObject[0].clientHeight);
 
-               $('.ui-draggable-dragging').attr("width", "80");
-               $('.ui-draggable-dragging').attr("height", "60");
-               $('.ui-draggable-dragging').attr("id", ui.helper.context.id);
+               stopMotion.dragID = ui.helper.prevObject[0].id;
+               //console.log(ui.helper.prevObject[0].id);
           },
+          cursorAt: {left:45, top:30}
 
         });
     });  
@@ -278,71 +323,51 @@ $(document).ready(function () {
      $('#timeline-sortable').sortable({
         distance:30,
         placeholder: "placeholder-highlight",
-        receive: function( event, ui ) {
-            dropFrames(ui.item);
-            stopMotion.addFramesToTimeline();  
-            stopMotion.reorderFrames();
-        },
-        stop: function( event, ui ) {
-            stopMotion.reorderFrames();
+
+        stop: function( event, ui ) {            
+            if(ui.item[0].tagName == "IMG"){
+                dropFrames(ui.item);
+            }
+           stopMotion.reorderFrames();
+       },
+       out: function(event, ui){
+            console.log("out");
        }
 
       }); 
 
 
     $('#timeline-sortable').droppable({
-        accept: '.ui-state-default',
-        out: function(event, ui){
-            console.log(ui);
-
-        }
+        accept: '.ui-state-default'
+        // out: function(event, ui){
+        //     console.log(ui);
+        // }
     });   
    
 
    var dropFrames = function(item){
-            console.log("dropped");
-            console.log(item[0].id);
-           updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
-
-            //generalize this somewhere else so when source changes, target changes
+            updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
             if (!stopMotion.on) changeUniqueSrc(item[0]);
             item.addClass('js-selected-still');
             item.addClass('js-selected-video');
 
+
+            //recalculate and keep only frames which are still selected 
             var selectedStills = document.querySelectorAll('.js-selected-still');
             var newFrames = [];   
             for (var i=0; i<stopMotion.frames.length; i++){
               var frameIsSelected = false;
-
               for(var j = 0; j < selectedStills.length; j++){
                 if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;    
               }  
-
               if (frameIsSelected) newFrames.push(stopMotion.frames[i]);
             }
-         
-            newFrames.push(item[0].id);           
+          
+            //add new item to the new frames
+            newFrames.splice(item.index(), 0, stopMotion.dragID);
             stopMotion.frames = newFrames;
-
-
-            var framesString = "";
-            newFrames.forEach(function(e, index){
-                if(index == newFrames.length-1) framesString = framesString+"'"+e+"'";
-                else framesString = framesString+"'"+e+"',";
-
-            });
-
-            var allTM = myCodeMirror.getAllMarks();
-            for (var m=0; m<allTM.length; m++){
-              var tm = allTM[m];
-              if (tm.className=="cm-frames"){
-                var cmLine = tm.find();
-                updateCodeInEditor(' stopMotion.frames = ['+framesString+'];', cmLine.to.line, "cm-frames");
-                if(!newFrames.length) myCodeMirror.removeLine(cmLine.to.line);
-              }
-            }
-
-          if(!newFrames.length) createStopMotionInEditor("frames");
+            createStopMotionInEditor("frames");
+            stopMotion.addFramesToTimeline();
    }
 
     $('.js-img-click').click(imgClickSetup);
@@ -369,5 +394,17 @@ $(document).ready(function () {
         $('.js-switch-view-container').toggleClass('is-hidden');
         $('body').toggleClass('js-switch-menu-appear');
     });
+
+
+
+    $( window ).resize(function() {
+        if(!$('.video2').hasClass('is-hidden')){
+            adjustCanvasHeight();
+        }
+        // var timelineWidth = $('#stop-motion-timeline').width();
+        // document.getElementById('stop-motion-timeline').style.height = timelineWidth/8+"px";
+    });
+
+
 
 });
