@@ -251,7 +251,6 @@ $(document).ready(function () {
         //Todo: Template these
         if (newSession){
             activateSession();
-            newSession = false;
         }
         var view = ($(this).attr('id'));
         var lName = ($(this).attr('name'));

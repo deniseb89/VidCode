@@ -35,7 +35,7 @@ var checkWebGL = function () {
 //in a new session, this will happen manually upon selecting a video
 //in a saved session, this will happen automatically
 var activateSession = function () {
-	var newSession = $('.is-new-session').text();
+	newSession = $('.is-new-session').text();
 	InitSeriously();
     if (newSession==="false"){
         var code =  myCodeMirror.getValue();
@@ -59,6 +59,7 @@ var activateSession = function () {
     movie.addEventListener("loadeddata", changeSrc, false);
     movie.removeEventListener("canplay", activateSession, false);
     vidLen = Math.round(movie.duration);
+    newSession = false;
 };
 
 var InitSeriously = function () {
