@@ -20,6 +20,7 @@ var movie,
     mult = {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
     defaultValue = {'number': 5, 'color': '"red"'};
     last_lessonId = '1-1';
+    newSession = true;
 
 var checkWebGL = function () {
     //check Seriously compatibility
@@ -58,6 +59,7 @@ var activateSession = function () {
     movie.addEventListener("loadeddata", changeSrc, false);
     movie.removeEventListener("canplay", activateSession, false);
     vidLen = Math.round(movie.duration);
+    newSession = false;
 };
 
 var InitSeriously = function () {

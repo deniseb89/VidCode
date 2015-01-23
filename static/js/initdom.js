@@ -249,6 +249,9 @@ $(document).ready(function () {
     //Switch between content
     $('.js-switch-view').click(function () {
         //Todo: Template these
+        if (newSession){
+            activateSession();
+        }
         var view = ($(this).attr('id'));
         var lName = ($(this).attr('name'));
         var lessonNum = ($(this).attr('lessnum'));

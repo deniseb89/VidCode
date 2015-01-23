@@ -126,12 +126,12 @@
                         <p class="is-new-session is-hidden">{{newSession}}</p>
                         {{#if user.sessionToLoad}}
                             <video class="video1 is-hidden js-load-last-session" id="myvideo"
-                                       src="{{user.sessionToLoad.videoSrc}}" autoplay loop></video>
+                                       src="{{user.sessionToLoad.videoSrc}}" muted autoplay loop></video>
                         {{else}}
                             <div class="vid-placeholder overlay">
                                 <h3>Select a video below</h3>
                             </div>
-                            <video class="video1 is-hidden" id="myvideo" autoplay loop></video>
+                            <video class="video1 is-hidden" id="myvideo" muted autoplay loop></video>
                         {{/if}}
                             <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
                             <canvas class="is-hidden" id="graphicsCanvas"   width="420" height="250px"></canvas>
@@ -145,10 +145,10 @@
                                 <ul id="timeline-sortable"></ul>
                         </div>
                         <div class="video-container clearfix">
-<!--                             <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button> -->
+                            <button type="button" class="basic-filter-method btn btn-primary js-upload-video left-btn">Upload Your Own Videos</button>
 
 
-                            <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media to Library</button>
+<!--                             <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media to Library</button> -->
 
 
                             <div id="vid-library" class="basic-filter-method">
@@ -156,7 +156,7 @@
                             </div>
 
 <!-- hide row profile for this user test as there is no need to upload their media to the server -->
-                            <div class="row profile">
+                            <div class="row profile is-hidden">
                                 {{#if user.videoLibrary}}
 
                                 {{#each user.videoLibrary}}
@@ -177,7 +177,7 @@
 
 
                             <div id="img-library" class="is-hidden stop-motion-method">
-                                <p>Uploaded Stills</p>
+                                <!-- <p>Uploaded Stills</p> -->
                             </div>
 
                             <div class="is-hidden stop-motion-method">
@@ -260,8 +260,8 @@
 
                     <div class="methodsBox js-appear clearfix">
                         <div class="clearfix">
-                            <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code
-                            </button>
+<!--                             <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code
+                            </button> -->
                         </div>
                     </div>
 
