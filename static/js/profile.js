@@ -10,4 +10,14 @@ jQuery(document).ready(function() {
 
         e.preventDefault();
     });
+
+		$(function () {
+		    $('.tab-content').on('click', '.js-delete-vid', function (evt) {
+		        if (confirm('Are you sure you want to delete this item?')) {
+		            deleteItem($(evt.target).data('id'));
+		        }
+		    });
+		});
+
+
 });
