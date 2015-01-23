@@ -66,6 +66,7 @@ var InitSeriously = function () {
     seriously = new Seriously();
 
     //TODO: generalize to my media
+   
     video = seriously.transform('reformat');
     video.width = 420;
     video.height = 250;
@@ -100,7 +101,12 @@ var changeSrc = function () {
 
     labelLines();
     if (this.tagName=='VIDEO') {
-        //effects[allEffects[0]]["bottom"] = seriously.source(video);
+        video = seriously.transform('reformat');
+        video.width = 420;
+        video.height = 250;
+        video.mode = 'contain';   
+        video.source = ('#myvideo');
+        effects[allEffects[0]]["bottom"] = seriously.source(video);
         vidLen = Math.round(this.duration);
       } else {
         vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
@@ -179,6 +185,7 @@ var vidClickSetup = function() {
     $('.js-vid-click').removeClass('js-selected-video');
     $(this).addClass('js-selected-video');
     var thisSrc = $(this).attr('src');
+
     movie.src = thisSrc;
 };
 
