@@ -99,23 +99,11 @@
 
         <div class="set-container lesson-page clearfix">
             <div class="current-lesson-display">
-                <h3 class="js-switch-menu-appear"><span class="js-lesson-name">Filters</span> <img
-                        src="/img/header-down-arrow.png"></h3>
+<!--                 <h3 class="js-switch-menu-appear"><span class="js-lesson-name">Filters</span> <img
+                        src="/img/header-down-arrow.png"></h3> -->
 
                 <div class="large-selection-dropdown js-switch-view-container is-hidden">
-                    <ul>
-                        <li class="js-switch-view" id="basic-filter-method" name="Filters" lessnum="4">Filters</li>
-                        <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
-                        </li>
-                        <li class="js-switch-view" id="graphic-method" name="Graphics" lessnum="1">Graphics</li>
-                    </ul>
                 </div>
-            </div>
-            <div class="progress-set">
-
-            </div>
-
-            <div class="view-controller">
             </div>
 
             <div class="lesson-container">
@@ -228,13 +216,6 @@
 
                     </div>
 
-                    <div class="methodsBox js-appear clearfix">
-                        <div class="clearfix">
-                            <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
 
 
@@ -251,7 +232,12 @@
                       <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
                         Share
                       </span>
+                        <span class="big-action-btn"> NEXT: STOP MOTION
+                        </span>
                     </div>
+                    <div class="buy-btn-container">
+
+                    </div>                    
                 </div>
 
                 <div class="col-md-3">
@@ -260,8 +246,8 @@
                             <div class="sm-header-bg clearfix">
                                 <p class="js-lesson-name left">Filters</p>
 
-                                <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
-                                        class="js-lesson-page-num-total">4</span> ▾</p>
+   <!--                              <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
+                                        class="js-lesson-page-num-total">4</span> ▾</p> -->
                             </div>
                         </div>
 
@@ -294,7 +280,7 @@
                             <div class="is-hidden {{this.class}}">
                                 <ul class="methodList">
                                     {{#each this.elements}}
-                                    <li name={{.}} class='btn btn-method draggable'>{{.}}</li>
+                                    <li name={{.}} class='btn btn-method draggable inactive-b-a-btn'>{{.}}</li>
                                     <img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
                                     {{/each}}
                                 </ul>
@@ -302,14 +288,12 @@
                             {{/each}}
                         </div>
                     </div>
-
                 </div>
                 <!--end of lesson container-->
-
-
-            </div>
+            </div>         
             <!--end of set-container lesson-page-->
         </div>
+    </div>
     </div>
 
 <h4 id="username" class="is-hidden">{{user.username}}</h4>

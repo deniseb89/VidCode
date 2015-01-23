@@ -9,7 +9,7 @@ var lessonContent =
         {'topic':'Pieces of our code', 'target': '#lesson-3-222'},
         {'topic':'Effects', 'target': '#effects222'}
       ],
-      'elements' : ['blur','noise','vignette','exposure', 'fader','kaleidoscope'],
+      'elements' : ['blur','noise','vignette','exposure', 'fader'],
       'class' : 'basic-filter-method'
     },
     'movieControls' : {

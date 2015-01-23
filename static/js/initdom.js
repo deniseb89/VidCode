@@ -162,46 +162,8 @@ $(document).ready(function () {
 
 
     $(".tabs-2").droppable({
-        drop: function (event, ui) {
-
-            lessonIsActive(".js-effects");
-
-            var eff = ui.draggable.attr("name");   
-            $('[name=' + eff + ']').addClass("is-active");
-
-            var filter = seriouslyEffects[eff];
-            if (filter) {
-                numFilterSelect++;
-                if (numFilterSelect == 1) {
-                    updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
-                } else if (numFilterSelect == 2) {
-                    updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects"</p><p><strong>Effects is an Object</strong>. This is a word you will be hearing a lot. Objects hold data. In this case the effects Object holds ALL the effects inside of itself. When we write the word "effects" the program knows we are asking to retrieve a piece of data from the effects object.</p>', 'Notice anything about your code?', '');
-                }
-                var input;
-                for (var i in filter.inputs) {
-                    input = filter.inputs[i];
-                    if ((i != 'source') && (i != 'timer') && (i != 'overlay')) {
-                        lineText = '\n\ effects.' + eff + '.' + i + ' = ' + defaultValue[input.type] + ';';
-                        createCodeInEditor(lineText, "cm-" + eff);
-                    }
-                }
-            } 
-            else if (stopMotion.controls.hasOwnProperty(eff)) {
-                createStopMotionInEditor(eff);
-            } 
-            else if (eff == "drawing" ){
-                createDrawing();
-            } 
-            else if (eff == "animation"){
-                if(hasGraphic) createAnimation();                   
-                else  $('[name=' + eff + ']').removeClass("is-active"); 
-            }
-
-            myCodeMirror.save();
-
-            $(".cm-" + eff).effect("highlight", 2000);
-        }
-    });
+        drop: setupDropEditor
+        });
 
     $(".draggable").click(function () {
         var eff = ($(this).attr('name'));
@@ -228,7 +190,7 @@ $(document).ready(function () {
     $('.methodList li').each(function () {
         $(this).draggable({
             helper: "clone",
-            revert: "invalid"
+            revert: "valid"
         });
     });
 
