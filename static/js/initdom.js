@@ -234,19 +234,122 @@ $(document).ready(function () {
         });
     });
 
+     $('.js-vid-click').each(function () {
+        $(this).draggable({
+            helper: "clone",
+            revert: "invalid",
+            start: function(event, ui) {
+               $('.ui-draggable-dragging').attr("width", "80");
+               $('.ui-draggable-dragging').attr("height", "60");
+               $('.js-vid-click').removeClass('js-selected-video');
+            },
+            stop: function(event, ui){
+                $(this).addClass('js-selected-video');            
+            }
+        });
+    });   
+
+
+    $('#canvas').droppable({
+        drop: function (event, ui) {            
+            $('.loader').removeClass('is-hidden');
+            $('.js-vid-click').removeClass('js-selected-video');
+            ui.draggable.addClass('js-selected-video');
+            var thisSrc = ui.draggable.attr("src"); 
+            movie.src = thisSrc;
+        }
+    });
+
+     $('.js-img-click').each(function () {
+        $(this).draggable({
+            helper: "clone",
+            revert: "invalid",
+            connectToSortable: "#timeline-sortable",
+            start: function(event, ui) {
+
+               $('.ui-draggable-dragging').attr("width", "80");
+               $('.ui-draggable-dragging').attr("height", "60");
+               $('.ui-draggable-dragging').attr("id", ui.helper.context.id);
+          },
+
+        });
+    });  
+
+     $('#timeline-sortable').sortable({
+        distance:30,
+        placeholder: "placeholder-highlight",
+        receive: function( event, ui ) {
+            dropFrames(ui.item);
+            stopMotion.addFramesToTimeline();  
+            stopMotion.reorderFrames();
+        },
+        stop: function( event, ui ) {
+            stopMotion.reorderFrames();
+       }
+
+      }); 
+
+
+    $('#timeline-sortable').droppable({
+        accept: '.ui-state-default',
+        out: function(event, ui){
+            console.log(ui);
+
+        }
+    });   
+   
+
+   var dropFrames = function(item){
+            console.log("dropped");
+            console.log(item[0].id);
+           updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
+
+            //generalize this somewhere else so when source changes, target changes
+            if (!stopMotion.on) changeUniqueSrc(item[0]);
+            item.addClass('js-selected-still');
+            item.addClass('js-selected-video');
+
+            var selectedStills = document.querySelectorAll('.js-selected-still');
+            var newFrames = [];   
+            for (var i=0; i<stopMotion.frames.length; i++){
+              var frameIsSelected = false;
+
+              for(var j = 0; j < selectedStills.length; j++){
+                if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;    
+              }  
+
+              if (frameIsSelected) newFrames.push(stopMotion.frames[i]);
+            }
+         
+            newFrames.push(item[0].id);           
+            stopMotion.frames = newFrames;
+
+
+            var framesString = "";
+            newFrames.forEach(function(e, index){
+                if(index == newFrames.length-1) framesString = framesString+"'"+e+"'";
+                else framesString = framesString+"'"+e+"',";
+
+            });
+
+            var allTM = myCodeMirror.getAllMarks();
+            for (var m=0; m<allTM.length; m++){
+              var tm = allTM[m];
+              if (tm.className=="cm-frames"){
+                var cmLine = tm.find();
+                updateCodeInEditor(' stopMotion.frames = ['+framesString+'];', cmLine.to.line, "cm-frames");
+                if(!newFrames.length) myCodeMirror.removeLine(cmLine.to.line);
+              }
+            }
+
+          if(!newFrames.length) createStopMotionInEditor("frames");
+   }
+
     $('.js-img-click').click(imgClickSetup);
 
     $('.js-vid-click').click(vidClickSetup);
 
     $('.js-graph-click').click(graphClickSetup);
-
-    $( "#timeline-sortable" ).sortable({
-        distance:30,
-        placeholder: "placeholder-highlight",
-        stop: function( event, ui ) {
-            reorderFrames();
-        }
-    });
    
     //Switch between content
     $('.js-switch-view').click(function () {

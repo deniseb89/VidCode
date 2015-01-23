@@ -1,46 +1,3 @@
-var addFramesToTimeline = function(){
-  var timeline = $('#timeline-sortable');
-  timeline.empty();
-
-  for (var i=0; i<stopMotion.frames.length; i++){
-    var element = stopMotion.frames[i];
-    element = element.replace("'", "");
-    element = element.replace("'", "");
-
-    var imgSrc = document.getElementById(element).src;
-    var frameImg = '<li class="ui-state-default"><img src="'+imgSrc+'" class="js-timeline" id="_'+element+'"></li>';
-    $('#timeline-sortable').append(frameImg);
-  }
-}
-
-var reorderFrames = function(){
-  var framesTimeline = document.querySelectorAll('.js-timeline');
-  stopMotion.frames = [];
-  var allFrames = [];
-
-  for(var i = 0; i < framesTimeline.length; i++){
-    var _id =  framesTimeline[i].id;
-    _id = _id.replace("_","");
-
-    stopMotion.frames[i]= _id;
-    allFrames[i] = "'"+_id+"'";
-  }
-
-
-  var allTM = myCodeMirror.getAllMarks();
-  for (var m=0; m<allTM.length; m++){
-    var tm = allTM[m];
-    if (tm.className=="cm-frames"){
-      var cmLine = tm.find();
-      updateCodeInEditor(' stopMotion.frames = ['+allFrames+'];', cmLine.to.line, "cm-frames");
-
-      if(!stopMotion.frames.length) myCodeMirror.removeLine(cmLine.to.line);
-    }
-  } 
-
-  stopMotion.start();
-
-}
 
 var createStopMotionInEditor = function(eff){
     var effectExists = false;
@@ -60,7 +17,18 @@ var createStopMotionInEditor = function(eff){
             updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
         }
     } 
+};
+
+var changeUniqueSrc = function(src){
+      var this_still;
+      this_still = seriously.transform('reformat');
+      this_still.width = 420;
+      this_still.height = 250;
+      this_still.mode = 'contain';
+      this_still.source = src;           
+      effects[allEffects[0]]["bottom"] = seriously.source(this_still); 
 }
+
 
 //create stop Motion object
 var stopMotion = {
@@ -114,6 +82,43 @@ var stopMotion = {
   reverse: function(){
 
   },
+  addFramesToTimeline: function(){
+    var timeline = $('#timeline-sortable');
+    timeline.empty();
+
+    for (var i=0; i<stopMotion.frames.length; i++){
+      var element = stopMotion.frames[i];
+      element = element.replace("'", "");
+      element = element.replace("'", "");
+
+      var imgSrc = document.getElementById(element).src;
+      var frameImg = '<li class="ui-state-default ui-draggable"><img src="'+imgSrc+'" class="js-timeline" id="_'+element+'"></li>';
+      $('#timeline-sortable').append(frameImg);
+    }
+  },
+
+  reorderFrames: function(){
+    var framesTimeline = document.querySelectorAll('.js-timeline');
+    var allFrames = [];
+
+    for(var i = 0; i < framesTimeline.length; i++){
+      var _id =  framesTimeline[i].id;
+      _id = _id.replace("_","");
+
+      allFrames[i] = "'"+_id+"'";
+    }
+
+    var allTM = myCodeMirror.getAllMarks();
+    for (var m=0; m<allTM.length; m++){
+      var tm = allTM[m];
+      if (tm.className=="cm-frames"){
+        var cmLine = tm.find();
+        updateCodeInEditor(' stopMotion.frames = ['+allFrames+'];', cmLine.to.line, "cm-frames");
+      }
+    } 
+    stopMotion.start();
+  },
+
   stop : function(){
   	clearInterval(stopMotion.animate); 
   	stopMotion.on = false; 

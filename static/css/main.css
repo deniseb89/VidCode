@@ -1441,8 +1441,8 @@ li.ui-state-default{
 }
 
 .lesson-page .video-container video {
-    width: 100%;
     cursor: pointer;
+    width: 130px;
 }
 
 .lesson-page .video-container .i-vid-container {
@@ -1461,7 +1461,7 @@ li.ui-state-default{
 
 .lesson-page .video-container img {
     height: 90px;
-    width: 96%;
+    width: 128px;
     margin: 2%;
     cursor: pointer;
 }
