@@ -71,7 +71,7 @@ var InitSeriously = function () {
     video.width = 420;
     video.height = 250;
     video.mode = 'contain';   
-    video.source = ('#myvideo');
+    video.source = movie;
 
     target = seriously.target('#canvas'); 
     graphic = seriously.source(graphicsCanvas);   
@@ -101,13 +101,14 @@ var changeSrc = function () {
 
     labelLines();
     if (this.tagName=='VIDEO') {
-        video = seriously.transform('reformat');
-        video.width = 420;
-        video.height = 250;
-        video.mode = 'contain';   
-        video.source = ('#myvideo');
-        effects[allEffects[0]]["bottom"] = seriously.source(video);
-        vidLen = Math.round(this.duration);
+            video = null;
+            video = seriously.transform('reformat');
+            video.width = 420;
+            video.height = 250;
+            video.mode = 'contain';   
+            video.source = movie;
+            effects[allEffects[0]]["bottom"] = seriously.source(video);  
+            vidLen = Math.round(this.duration); 
       } else {
         vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
         movie.src = "";
@@ -185,8 +186,8 @@ var vidClickSetup = function() {
     $('.js-vid-click').removeClass('js-selected-video');
     $(this).addClass('js-selected-video');
     var thisSrc = $(this).attr('src');
-
     movie.src = thisSrc;
+    removeStopMotionInEditor();
 };
 
 var activateEndButtons = function (bType) {
@@ -394,7 +395,7 @@ var updateScript = function (code) {
 
     if(textScript.indexOf('animation')>=0){
         $('li[name=animation]').addClass('is-active');
-        console.log("textScript animation");
+        //console.log("textScript animation");
 
         if(textScript.indexOf('animationMode=false')>=0 || textScript.indexOf('animationMode= false')>=0 ||
         textScript.indexOf('animationMode = false')>=0 || textScript.indexOf('animationMode =false')>=0){        
@@ -595,7 +596,7 @@ var updateCodeInEditor = function(text, cmline, cmclass){
     myCodeMirror.markText({
                     line: cmline,
                     ch: 0
-                }, CodeMirror.Pos(cmline), {className: cmclass});       
+                }, CodeMirror.Pos(cmline), {className: cmclass});                   
 };
 
 

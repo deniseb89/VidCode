@@ -1,3 +1,19 @@
+var removeStopMotionInEditor = function(){
+
+  var allTM = myCodeMirror.getAllMarks();
+    for (var m=0; m<allTM.length; m++){
+      var tm = allTM[m];
+      if (tm.className=="cm-frames"){
+        var cmLine = tm.find();
+        myCodeMirror.removeLine(cmLine.to.line);
+      }
+      else if (tm.className=="cm-interval"){
+        var cmLine = tm.find();
+        myCodeMirror.removeLine(cmLine.to.line);
+      }      
+    } 
+}
+
 
 var createStopMotionInEditor = function(eff){
     var effectExists = false;
@@ -12,11 +28,11 @@ var createStopMotionInEditor = function(eff){
     if(!effectExists){
         var text = '\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';';
         createCodeInEditor(text, "cm-"+eff); 
-
         if (eff == "interval") {
             updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
         }
     } 
+
 };
 
 var changeUniqueSrc = function(src){
@@ -119,7 +135,6 @@ var stopMotion = {
     } 
     stopMotion.start();
   },
-
   stop : function(){
   	clearInterval(stopMotion.animate); 
   	stopMotion.on = false; 

@@ -221,6 +221,10 @@ var createDrawing = function(){
         createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
         createCodeInEditor("\n\ drawingOffset.x=0", 'cm-offsetX');
         createCodeInEditor("\n\ drawingOffset.y=0", 'cm-offsetY'); 
+        $('.cm-drawingMode').effect("highlight", 2000);
+        $('.cm-drawingColor').effect("highlight", 2000);
+        $('.cm-offsetX').effect("highlight", 2000);
+        $('.cm-offsetY').effect("highlight", 2000);
 }
 
 var createGraphics = function(){
@@ -251,7 +255,12 @@ var createGraphics = function(){
     if(!sizeExists){
       var text = "\n\ size="+Math.round(size)+";";
       createCodeInEditor(text, "cm-size");
-   }    
+  }    
+     if(!sizeExists || !positionExists){
+        $('.cm-positionX').effect("highlight", 2000);
+        $('.cm-positionY').effect("highlight", 2000);
+        $('.cm-size').effect("highlight", 2000);
+    }
 
     if(drawingMode){
         var allTM = myCodeMirror.getAllMarks();
@@ -280,6 +289,13 @@ var createAnimation = function(){
     createCodeInEditor("\n\ targetPosition.y="+targetPosition.y+";", 'cm-animationY');
     createCodeInEditor("\n\ speed.x="+speed.x+";", 'cm-animationSpeedX');
     createCodeInEditor("\n\ speed.y="+speed.y+";", 'cm-animationSpeedY');
+
+    $('.cm-animationMode').effect("highlight", 2000);
+    $('.cm-animationBounce').effect("highlight", 2000);
+    $('.cm-animationX').effect("highlight", 2000);
+    $('.cm-animationY').effect("highlight", 2000);
+    $('.cm-animationSpeedX').effect("highlight", 2000);
+    $('.cm-animationSpeedY').effect("highlight", 2000);
 }
 
 var turnOffGraphics = function(){
