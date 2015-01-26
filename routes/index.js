@@ -15,6 +15,7 @@ exports.intro = function (db) {
   return function (req, res) {
     var social = req.params.social;
     var id = req.params.id;
+
     if (id&&social){
       var vc = db.collection('vidcode');
       vc.findOne({ id: id, 'social':social }, function (err, doc) {
@@ -29,6 +30,30 @@ exports.intro = function (db) {
       // There is no logged in user
       // res.redirect('/signin');
       res.render('intro');
+
+    }
+  }
+};
+
+exports.trialintro = function (db) {
+  return function (req, res) {
+    var social = req.params.social;
+    var id = req.params.id;
+
+    if (id&&social){
+      var vc = db.collection('vidcode');
+      vc.findOne({ id: id, 'social':social }, function (err, doc) {
+        if (!doc) {
+          res.render('404', {layout:false});
+          return;
+        }
+          res.render('intro', {preorder: true, user: doc});
+          return;
+      });      
+    } else {
+      // There is no logged in user
+      // res.redirect('/signin');
+      res.render('intro', {preorder: true});
 
     }
   }
@@ -318,6 +343,9 @@ exports.igCB = function (db) {
           else if (referer.indexOf('/trial') > -1) {
               res.redirect('/trial');
           }
+          else if (referer.indexOf('/signin') > -1){
+              res.redirect('/trialintro');
+          }
           else {
               res.redirect('/intro');
           }
@@ -396,8 +424,13 @@ exports.getAllVids = function(db){
 
 exports.fbCB = function (db) {
   return function (req, res) {
-    var successcb = function(doc) {
-      res.redirect ('/intro');
+    var successcb = function(doc) {      
+      var referer = req.headers.referer.toString();
+      if (referer.indexOf('/signin') > -1) {
+          res.redirect('/trialintro')
+      } else {
+          res.redirect('/intro');
+      }
     };  
 
     var user = req.user;
@@ -409,9 +442,15 @@ exports.fbCB = function (db) {
 exports.signup = function (db, crypto) {
   return function (req, res) {
     var user = {};
-    var successcb = function(doc) {
-      res.redirect ('/intro');
-    };
+    var successcb = function(doc) {      
+      var referer = req.headers.referer.toString();
+      if (referer.indexOf('/signin') > -1) {
+          res.redirect('/trialintro')
+      } else {
+          res.redirect('/intro');
+      }
+    };  
+
     user.username = req.body.email;
     user.id = req.body.email;
     user.provider = 'vidcode';

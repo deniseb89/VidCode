@@ -2094,14 +2094,11 @@ li.active a, li.active a:hover {
 }
 
 .save-session-btn {
-    width: 90%;
-    display: block;
     margin: 7px auto;
     border-radius: 2px;
     font-family: 'Open Sans';
     font-weight: 600;
-    border: 1px solid #fff;
-    padding: 10px 0;
+    float: right;
 }
 
 .n-a-video-save-desc {
@@ -2382,7 +2379,7 @@ li.active a, li.active a:hover {
     width: 100%;
     background-color: #EFF3F4;
     color: #323762;
-    padding: 23px 25px 25px;
+    padding: 23px 25px 53px;
 }
 
 .action-modal .c-desc {

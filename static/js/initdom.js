@@ -142,9 +142,6 @@ $(document).ready(function () {
     });
 
     $('.finish-btn-container').on('click', ".js-finish-m", function () {
-        $('.js-finish-m').addClass('inactive-b-a-btn');
-        $('.js-finish-m').addClass('inactive-js-finish-m');
-        $('.js-finish-m').removeClass('js-finish-m');
         saveSession(webmBlob);
     });
 
@@ -154,9 +151,6 @@ $(document).ready(function () {
         $('.js-s-onload').addClass('is-hidden');
         $('.js-h-onload').removeClass('is-hidden');
         $('.dl-progress').css('width', '1px');
-        $('.js-finish-m').addClass('inactive-b-a-btn');
-        $('.js-finish-m').addClass('inactive-js-finish-m');
-        $('.js-finish-m').removeClass('js-finish-m');
         $('.js-ss-both-content').addClass('is-hidden');
     });
 

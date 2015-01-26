@@ -11,7 +11,11 @@
         <div class="circle bg3 js-fade is-hidden"></div>
       </div>
       <div class="95width">
-        <a class="right" href="/lesson/1"><button class="btn btn-primary" id="mix-finish-tour">Let's Get Started!</button></a>
+      {{#if preorder}}
+        <a class="right" href="/trial"><button class="btn btn-primary" id="mix-finish-tour">Let's Get Started!</button></a>
+      {{else}}
+        <a class="right" href="/lesson/1"><button class="btn btn-primary" id="mix-finish-tour">Let's Get Started!</button></a>      
+      {{/if}}
       </div>
     </div>
 

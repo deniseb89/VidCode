@@ -479,7 +479,7 @@ var stopDL = function () {
     cancelAnimationFrame(rafId);
     webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
     $('.progressDiv').addClass('is-hidden');
-    activateEndButtons('finish');
+    $('.js-finish-m').removeClass('is-hidden');
 };
 //end Whammy video save
 
@@ -503,6 +503,7 @@ var saveSession = function (blob) {
         success: function (token, textStatus, jqXHR) {
             $('.share-p-text-container').removeClass('is-hidden');
             $('.js-h-onload').addClass('is-hidden');
+            $('.js-finish-m').addClass('is-hidden');
             $('.js-s-onload').removeClass('is-hidden');
             $('.js-share').removeClass('is-inactive-btn');
             $('.js-share').attr('href', '/share/' + token);
