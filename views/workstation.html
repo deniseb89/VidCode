@@ -122,6 +122,7 @@
                 <div class="col-md-4">
                     <div class="loader is-hidden"><img src="/img/loader.gif"></div>
 
+                    <div id="video-wrapper">
                     <span class="js-active-vid active-vid">
                         <p class="is-new-session is-hidden">{{newSession}}</p>
                         {{#if user.sessionToLoad}}
@@ -133,12 +134,12 @@
                             </div>
                             <video class="video1 is-hidden" id="myvideo" muted autoplay loop></video>
                         {{/if}}
-                            <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas"  width="420" height="250px"></canvas>
-                            <canvas class="is-hidden" id="graphicsCanvas"   width="420" height="250px"></canvas>
-                            <canvas id="supportCanvas"  width="420" height="250px"></canvas>
-                            <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
+                                 <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
+                                 <canvas class="is-hidden" id="graphicsCanvas" width="420px" height="250px"> </canvas>
+                                 <canvas class="is-hidden" id="supportCanvas" width="420px" height="250px"></canvas>
+                             <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
                     </span>
-
+                    </div>
 
                     <div class="js-switch-appear">
                         <div id="stop-motion-timeline" class="is-hidden stop-motion-method">
@@ -186,22 +187,22 @@
                         
                                 <div class="stills-container">
                                   <div class="i-vid-container">
-                                    <img class="js-img-click" id="sample-1" src="/img/still0.png"/>
+                                    <img class="js-img-click ui-draggable" id="sample-1" src="/img/still0.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click" id="sample-2" src="/img/still1.png"/>
+                                    <img class="js-img-click ui-draggable" id="sample-2" src="/img/still1.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click" id="sample-3" src="/img/still2.png"/>
+                                    <img class="js-img-click ui-draggable" id="sample-3" src="/img/still2.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click" id="sample-4" src="/img/still3.png"/>
+                                    <img class="js-img-click ui-draggable" id="sample-4" src="/img/still3.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click" id="sample-5" src="/img/still4.png"/>
+                                    <img class="js-img-click ui-draggable" id="sample-5" src="/img/still4.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click" id="sample-6" src="/img/still5.png"/>
+                                    <img class="js-img-click ui-draggable" id="sample-6" src="/img/still5.png"/>
                                   </div>     
                                 </div>
                             </div>
@@ -234,19 +235,19 @@
                             <p>Sample Videos</p>
 
                             <div class="i-vid-container">
-                                <video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
+                                <video class="js-vid-click sample-vid ui-draggable" src="/img/ge.mp4"></video>
                             </div>
                             <div class="i-vid-container">
-                                <video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
+                                <video class="js-vid-click sample-vid ui-draggable" src="/img/paper.mp4"></video>
                             </div>
                             <div class="i-vid-container">
-                                <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
+                                <video class="js-vid-click sample-vid ui-draggable" src="/img/wha_color.mp4"></video>
                             </div>
                         </div>
 						<div class="is-hidden video-container graphic-method">
 							<p>Sample Graphics</p>
 							    <div class="i-vid-container">
-                                    <img src="/img/graphics/robot.png" class="js-graph-click" id="mygraphic"/> 
+                                    <img src="/img/graphics/robot.png" class="js-graph-click"/> 
                                 </div>
 							    <div class="i-vid-container">
                                     <img src="/img/graphics/flowers.png" class="js-graph-click" /> 
