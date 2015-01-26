@@ -160,11 +160,6 @@ $(document).ready(function () {
         $('.js-ss-both-content').addClass('is-hidden');
     });
 
-
-    $(".tabs-2").droppable({
-        drop: setupDropEditor
-        });
-
     $(".draggable").click(function () {
         var eff = ($(this).attr('name'));
         $(this).removeClass("is-active");
@@ -190,7 +185,7 @@ $(document).ready(function () {
     $('.methodList li').each(function () {
         $(this).draggable({
             helper: "clone",
-            revert: "valid"
+            revert: "invalid"
         });
     });
 
