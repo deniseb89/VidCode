@@ -56,6 +56,13 @@ $(document).ready(function () {
         updateLearnMore(5, "<p><strong>Drag over the 'Reverse' button.</strong></p><p>Reverse is a property that takes values that are either true or false (it's called a boolean, we'll go over more on that weird word later)</p><p>How can you make the video reverse? Give it a go! There are no wrong answers! Just discoveries on the way to the right answer! Coding is ALL about trying and failing then eventually… finding the answer! (cue triumphant music!)</p>", "Reverse it up!", '');
         trackLesson('2-5');
     });
+    $('.learnMore').on('click', '.js-lesson-6-sm', function () {
+        updateLearnMore(5, "<p>You customized your own video filter with CODE!<strong> So cool!</strong></p><p>You are on your way to becoming a digital media coding ninja!</p><p><strong>Next up, Stop Motion! Click 'Next'to continue.</strong></p><span class='btn btn-primary right vapor-next'>Next</span>", "Congratulations!", '');
+    });
+    $('.learnMore').on('click', '.vapor-next', function () {
+        mixpanel.track('Vapor Next Clicked');
+        $('.buy-stop-motion').removeClass('is-hidden');
+    });
 
     //turn tooltips on
     $(".save-modal").tooltip({selector: '[data-toggle=tooltip]'});
@@ -120,10 +127,12 @@ $(document).ready(function () {
     });
 
     $('.save-btns-container').on('click', ".js-share-m", function () {
+        mixpanel.track('Save Big Action');
         modalVideoLoad('share');
     });
 
     $('.save-btns-container').on('click', ".js-save-m", function () {
+        mixpanel.track('Share Big Action');
         modalVideoLoad('save');
     });
 
