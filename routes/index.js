@@ -311,7 +311,16 @@ exports.igCB = function (db) {
         user.IGvideos = urls;
         
         var successcb = function(doc) {
-          res.redirect ('/intro');
+          var referer = req.headers.referer.toString();
+          if (referer.indexOf('/workstation') > -1) {
+              res.redirect('/workstation')
+          }
+          else if (referer.indexOf('/trial') > -1) {
+              res.redirect('/trial');
+          }
+          else {
+              res.redirect('/intro');
+          }
         };
 
         findOrCreate(db,user,successcb);
