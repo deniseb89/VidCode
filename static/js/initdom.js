@@ -224,6 +224,7 @@ $(document).ready(function () {
 
     //stop motion buying popup
     $('.vapor-stop-motion').click(function(){
+        mixpanel.track('Vapor Stop Motion Clicked');
         $('.buy-stop-motion').removeClass('is-hidden');
     });
 
