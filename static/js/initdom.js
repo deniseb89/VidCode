@@ -7,11 +7,11 @@ $(document).ready(function () {
 
     supportCanvas = document.getElementById('supportCanvas');
     graphicsCanvas = document.getElementById('graphicsCanvas');
-    graphicsContext = graphicsCanvas.getContext("2d");  
+    graphicsContext = graphicsCanvas.getContext("2d");
     //graphics
     supportCanvas.addEventListener('mousemove', drawGraphics, false);
     supportCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
- 
+
     var inputFile = document.getElementById('inputFile');
     var inputFileToLibrary = document.getElementById('inputFileToLibrary');
     inputFile.addEventListener('change', uploadFromComp, false);
@@ -166,7 +166,7 @@ $(document).ready(function () {
 
             lessonIsActive(".js-effects");
 
-            var eff = ui.draggable.attr("name");   
+            var eff = ui.draggable.attr("name");
             $('[name=' + eff + ']').addClass("is-active");
 
             var filter = seriouslyEffects[eff];
@@ -185,16 +185,16 @@ $(document).ready(function () {
                         createCodeInEditor(lineText, "cm-" + eff);
                     }
                 }
-            } 
+            }
             else if (stopMotion.controls.hasOwnProperty(eff)) {
                 createStopMotionInEditor(eff);
-            } 
+            }
             else if (eff == "drawing" ){
                 createDrawing();
-            } 
+            }
             else if (eff == "animation"){
-                if(hasGraphic) createAnimation();                   
-                else  $('[name=' + eff + ']').removeClass("is-active"); 
+                if(hasGraphic) createAnimation();
+                else  $('[name=' + eff + ']').removeClass("is-active");
             }
 
             myCodeMirror.save();
@@ -217,14 +217,14 @@ $(document).ready(function () {
 
         if (eff == "drawing" ){
             turnOffDrawing();
-            updateGraphicsCanvas();     
+            updateGraphicsCanvas();
         }
         if(eff == "animation"){
             turnOffAnimation("delete");
-        } 
+        }
         myCodeMirror.save();
     });
-   
+
     $('.methodList li').each(function () {
         $(this).draggable({
             helper: "clone",
@@ -245,7 +245,7 @@ $(document).ready(function () {
             reorderFrames();
         }
     });
-   
+
     //Switch between content
     $('.js-switch-view').click(function () {
         //Todo: Template these
@@ -264,5 +264,4 @@ $(document).ready(function () {
         $('.js-switch-view-container').toggleClass('is-hidden');
         $('body').toggleClass('js-switch-menu-appear');
     });
-
 });
