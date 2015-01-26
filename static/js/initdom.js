@@ -222,4 +222,13 @@ $(document).ready(function () {
         $('body').toggleClass('js-switch-menu-appear');
     });
 
+    //stop motion buying popup
+    $('.vapor-stop-motion').click(function(){
+        $('.buy-stop-motion').removeClass('is-hidden');
+    });
+
+    $('.buy-stop-motion-hide').click(function(){
+        $('.buy-stop-motion').addClass('is-hidden');
+    });
+
 });

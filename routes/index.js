@@ -135,6 +135,26 @@ exports.workstation = function (db) {
   };
 };
 
+exports.trial = function (db) {
+  var content = require('../models/content');  
+  return function (req, res) {
+    var user = req.user;
+    if (user){
+      var social = user.provider;
+      var vc = db.collection('vidcode');
+
+      var successcb = function(doc) {
+        res.render("workstation", {content: content, preorder: true, user: doc});
+      };  
+
+      findOrCreate(db,user,successcb);
+      
+    } else {
+      res.render("workstation", {content: content, preorder: true});
+    }
+  };
+};
+
 exports.profilePage = function(db){
   return function(req, res) {
     var user = req.user;
@@ -387,6 +407,18 @@ exports.signup = function (db, crypto) {
     user.id = req.body.email;
     user.provider = 'vidcode';
     findOrCreate(db,user,successcb);
+  };
+};
+
+exports.preOrderSignUp = function(db) {
+  return function (req, res) {
+    var vc = db.collection('vidcode');
+    doc = {
+      email : req.body.email,
+      social : "preorder"
+    }
+    vc.insert(doc, {w: 0});
+    res.redirect('/trial');
   };
 };
 

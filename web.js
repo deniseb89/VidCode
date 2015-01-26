@@ -97,6 +97,7 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/signin', routes.signin);
   app.get('/intro/:social?/:id?', routes.intro(db));
   app.get('/workstation', routes.workstation(db));  
+  app.get('/trial', routes.trial(db));  
   app.get('/lesson/1', function(req, res){
     res.redirect('/workstation');
   });
@@ -104,6 +105,7 @@ MongoClient.connect(host, function(err, Db) {
 
   // sign up + sign in
   app.post('/signup', routes.signup(db));
+  app.post('/preorder', routes.preOrderSignUp(db));
   app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
   app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
   app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});

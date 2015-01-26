@@ -18,6 +18,29 @@
         </div>
     </div>
 
+    <div class="buy-stop-motion is-hidden">
+        <div class="error-message">
+            <div class="panelhead">
+                <h2>Coming soon!</h2>
+            </div>
+            <div class="panelbody">
+                <p>Be the first to make stop-motion projects with code!</p>
+
+                <p>Sign up to pre-order the full kit.
+                </p>
+
+                <form method="post" id="email-preorder" action="/preorder">
+                    <p class="sm-form"><label>Email</label>
+                    <input type="email" name="email" class="email-input" required>
+                    </p>
+                    <div><input type="submit" value="Pre-order Now" class="big-action-btn submit"/></div>
+                </form>
+            </div>
+        </div>
+        <div class="cover90 cover buy-stop-motion-hide">
+        </div>
+    </div>
+
     <div class="action-modal">
 
         <div class="ss-modal action-m is-hidden">
@@ -28,15 +51,11 @@
             <div class="a-body">
                 <p class="c-desc js-h-onload">Your video is loading</p>
 
-                <!-- <form method="post" id="video-update-descr" action="/video-update-descr"> -->
                     <label for="video-title">Title</label>
                     <input type="text" name="title" id="video-title" class="generalInput js-video-title">
                     <label for="video-descr">Optional Video Description</label>
                     <textarea id="video-descr" name="descr" rows="4" class="js-video-descr"></textarea>
                     <input type="text" id="video-token" name="token" class="js-video-token" hidden="true" value="">
-                <!-- <input type="submit" value="Update Description" onsubmit="return false;"
-                           class="save-video-desc-btn n-a-video-save-desc"/> -->
-                <!-- </form> -->
 
                 <div class="finish-btn-container">
                     <span href="#" class="save-session-btn big-action-btn inactive-b-a-btn inactive-js-finish-m">
@@ -232,12 +251,13 @@
                       <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
                         Share
                       </span>
-                        <span class="big-action-btn"> NEXT: STOP MOTION
-                        </span>
                     </div>
+                    {{#if preorder}}
                     <div class="buy-btn-container">
-
-                    </div>                    
+                        <span class="big-action-btn vapor-stop-motion"> NEXT: STOP MOTION
+                        </span>
+                    </div>  
+                    {{/if}}                  
                 </div>
 
                 <div class="col-md-3">
