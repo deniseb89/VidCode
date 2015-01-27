@@ -527,6 +527,7 @@ body.is-in-signup {
 }
 
 
+
 .steps {
     background-color: rgba(68, 27, 75, .9);
     padding: 10px;
@@ -967,6 +968,7 @@ body.is-in-signup {
 
 .learnMore .btn-primary {
     width: auto;
+    background-color: #58355F;
 }
 
 .methods .learnMore {
@@ -1051,6 +1053,8 @@ body.is-in-signup {
     margin-bottom: -74px;
 }
 
+
+
 /* ---------------- Graphics, Animation and Timeline ------------------ */
 
 #supportCanvas, #graphicsCanvas, #cameraCanvas{
@@ -1123,7 +1127,6 @@ li.ui-state-default{
     padding-top: 20px;
     padding-bottom: 20px;
 }   
-
 /* ---------------- Learn More Games ------------------ */
 
 .boolean-game {
@@ -1348,6 +1351,11 @@ li.ui-state-default{
 }
 
 .save-btns-container {
+    float: left;
+    margin-top: 24px;
+}
+
+.buy-btn-container {
     float: right;
     margin-top: 24px;
 }
@@ -1466,8 +1474,8 @@ li.ui-state-default{
 }
 
 .lesson-page .video-container video {
-    cursor: pointer;
     width: 100%;
+    cursor: pointer;
 }
 
 .lesson-page .video-container .i-vid-container {
@@ -1485,7 +1493,8 @@ li.ui-state-default{
 
 
 .lesson-page .video-container img {
-    width: 96%; 
+    height: 90px;
+    width: 96%;
     margin: 2%;
     cursor: pointer;
 }
@@ -1594,7 +1603,7 @@ li.ui-state-default{
 
 .lesson-page .vid-placeholder {
     background-color: blue;
-    width: 100%;
+    width: 420px;
     height: 250px;
     margin: -20px 0 0 0;
 }
@@ -2014,7 +2023,8 @@ li.active a, li.active a:hover {
 }
 
 .addthis-container {
-    margin-top: 30px
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 .greentext {
@@ -2104,6 +2114,7 @@ li.active a, li.active a:hover {
     width: 36%;
 }
 
+
 .s-separator .line-l {
     margin: 25px auto auto 20px;
 }
@@ -2113,14 +2124,11 @@ li.active a, li.active a:hover {
 }
 
 .save-session-btn {
-    width: 90%;
-    display: block;
     margin: 7px auto;
     border-radius: 2px;
     font-family: 'Open Sans';
     font-weight: 600;
-    border: 1px solid #fff;
-    padding: 10px 0;
+    float: right;
 }
 
 .n-a-video-save-desc {
@@ -2144,6 +2152,7 @@ li.active a, li.active a:hover {
     padding: 10px 0;
 }
 
+
 .signup-btn {
     width: 90%;
     display: block;
@@ -2154,6 +2163,7 @@ li.active a, li.active a:hover {
     border: 1px solid #fff;
     padding: 10px 0;
 }
+
 
 .forgot-btn {
     width: 90%;
@@ -2166,6 +2176,7 @@ li.active a, li.active a:hover {
     padding: 10px 0;
 }
 
+
 .reset-btn {
     width: 90%;
     display: block;
@@ -2176,6 +2187,7 @@ li.active a, li.active a:hover {
     border: 1px solid #fff;
     padding: 10px 0;
 }
+
 
 .fb-login {
     background-color: #323761;
@@ -2343,6 +2355,7 @@ li.active a, li.active a:hover {
     background-color: rgba(46, 48, 58, .98);
 }
 
+
 .cover50 {
     background-color: rgba(46, 48, 58, .35);
 }
@@ -2401,7 +2414,7 @@ li.active a, li.active a:hover {
     width: 100%;
     background-color: #EFF3F4;
     color: #323762;
-    padding: 23px 25px 25px;
+    padding: 23px 25px 53px;
 }
 
 .action-modal .c-desc {
@@ -2458,7 +2471,6 @@ li.active a, li.active a:hover {
     padding: 9px 16px !important;
     height: 47px !important;
     color: #fff !important;
-    margin-left: 10px !important;
 }
 
 #fb-btn-styling img {
@@ -2471,12 +2483,16 @@ li.active a, li.active a:hover {
     padding: 9px 16px !important;
     height: 47px !important;
     color: #fff !important;
-    margin-left: 15px !important;
+    right: -244px!important;
+    position: relative!important;
 }
 
 #tw-btn-styling img {
     padding-right: 5px !important
 }
+
+
+.at-share-btn{height: 0!important; width: 0!important;}
 
 
 
@@ -2751,3 +2767,21 @@ li.active a, li.active a:hover {
 }
 
 
+.buy-stop-motion .email-input{
+    padding: 9px;
+    border: solid 1px #BDBEC1;
+    outline: 0;
+    font: normal 13px/100% Verdana, Tahoma, sans-serif;
+    width: 200px;
+    background: #FFFFFF;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+}
+
+.buy-stop-motion .sm-form{
+    width: 57%; margin: 30px auto; font-weight: bold;
+}
+
+.buy-stop-motion label{margin-right: 10px;}
+.buy-stop-motion .big-action-btn{text-align: center; width:100%;}

@@ -63,8 +63,16 @@ $(document).ready(function () {
         trackLesson('2-5');
     });
 
+    $('.learnMore').on('click', '.js-lesson-6-sm', function () {
+        updateLearnMore(5, "<p>You customized your own video filter with CODE!<strong> So cool!</strong></p><p>You are on your way to becoming a digital media coding ninja!</p><p><strong>Next up, Stop Motion! Click 'Next'to continue.</strong></p><span class='btn btn-primary right vapor-next'>Next</span>", "Congratulations!", '');
+    });
+    $('.learnMore').on('click', '.vapor-next', function () {
+        mixpanel.track('Vapor Next Clicked');
+        $('.buy-stop-motion').removeClass('is-hidden');
+    });
+
     //turn tooltips on
-    $(".save-modal").tooltip({selector: '[data-toggle=tooltip]'});
+    $(".js-ss-both-content").tooltip({selector: '[data-toggle=tooltip]'});
 
     //share success on copy click
     $('.js-copy-sucess').click(function () {
@@ -126,10 +134,14 @@ $(document).ready(function () {
     });
 
     $('.save-btns-container').on('click', ".js-share-m", function () {
+
+        mixpanel.track('Save Big Action');
         modalVideoLoad('share');
     });
 
     $('.save-btns-container').on('click', ".js-save-m", function () {
+
+        mixpanel.track('Share Big Action');
         modalVideoLoad('save');
     });
 
@@ -148,9 +160,7 @@ $(document).ready(function () {
     });
 
     $('.finish-btn-container').on('click', ".js-finish-m", function () {
-        $('.js-finish-m').addClass('inactive-b-a-btn');
-        $('.js-finish-m').addClass('inactive-js-finish-m');
-        $('.js-finish-m').removeClass('js-finish-m');
+
         saveSession(webmBlob);
     });
 
@@ -160,17 +170,7 @@ $(document).ready(function () {
         $('.js-s-onload').addClass('is-hidden');
         $('.js-h-onload').removeClass('is-hidden');
         $('.dl-progress').css('width', '1px');
-        $('.js-finish-m').addClass('inactive-b-a-btn');
-        $('.js-finish-m').addClass('inactive-js-finish-m');
-        $('.js-finish-m').removeClass('js-finish-m');
         $('.js-ss-both-content').addClass('is-hidden');
-    });
-
-
-    $(".tabs-2").droppable({
-        drop: function (event, ui) {
-            dropEffects(ui);
-        }
     });
 
     $(".draggable").click(function () {
@@ -195,6 +195,7 @@ $(document).ready(function () {
         myCodeMirror.save();
     });
    
+
     $('.methodList li').each(function () {
         $(this).draggable({
             helper: "clone",
@@ -366,12 +367,14 @@ $(document).ready(function () {
             stopMotion.addFramesToTimeline();
    };
 
+
     $('.js-img-click').click(imgClickSetup);
 
     $('.js-vid-click').click(vidClickSetup);
 
     $('.js-graph-click').click(graphClickSetup);
-   
+
+
     //Switch between content
     $('.js-switch-view').click(function () {
         //Todo: Template these
@@ -402,6 +405,17 @@ $(document).ready(function () {
         // document.getElementById('stop-motion-timeline').style.height = timelineWidth/8+"px";
     });
 
-        computerVision.capture();
+        //computerVision.capture();
+
+});
+    //stop motion buying popup
+    $('.vapor-stop-motion').click(function(){
+        mixpanel.track('Vapor Stop Motion Clicked');
+        $('.buy-stop-motion').removeClass('is-hidden');
+    });
+
+    $('.buy-stop-motion-hide').click(function(){
+        $('.buy-stop-motion').addClass('is-hidden');
+    });
 
 });

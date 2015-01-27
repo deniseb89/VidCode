@@ -48,9 +48,55 @@ app.set('views', __dirname + '/views');
 app.engine('.html', exphbs({defaultLayout: 'main', extname: '.html'}));
 app.set('view engine', 'html');
 
-// routes ======================================================================
-// load our routes and pass in our app and fully configured passport
-require('./routes')(app, passport);
+// configure express routes
+var routes = require('./routes');
+
+// create server
+// connect to Mongo
+MongoClient.connect(host, function(err, Db) {
+  if (err) throw err;
+  db = Db;
+  var collection = db.collection('vidcode');
+  gfs = Grid(db, mongo);
+  console.log('connected to Mongo database');
+
+  app.get('/',routes.signin);
+  app.get('/signin', routes.signin);
+  app.get('/intro/:trial?', routes.intro(db));
+  app.get('/trial', routes.trial(db));
+  app.get('/trialintro', routes.trialintro(db));
+  app.get('/workstation', routes.workstation(db));
+
+  app.get('/lesson/1', function(req, res){
+    res.redirect('/workstation');
+  });
+  app.get('/share/:token?', routes.share(db));
+
+  // sign up + sign in
+  app.post('/signup', routes.signup(db));
+  app.post('/preorder', routes.preOrderSignUp(db));
+  app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
+  app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
+  app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});
+  app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
+
+  //getting and sending videos
+  app.get('/instagramVids/', routes.igUrlGet(db));
+  app.get('/instagram/:ix', routes.igVidGet(db));
+  app.get('/sample/:file', routes.getSample);
+  app.get('/getVideos', routes.getAllVids(db));
+  app.get('/video', routes.getUserVid(gfs));
+  app.post('/uploadFinished', routes.uploadFinished(db,gfs,crypto));
+  app.post('/uploadMedia', routes.uploadMedia(db,gfs,crypto));
+
+  //catch all for any other request attempts
+  app.get('*', function(req,res){
+    res.render('404',{layout: false});
+  });
+
+  http.createServer(app).listen(app.get('port'),function(){
+    console.log("Listening on " + app.get('port'));
+  });
 
 app.listen(app.get('port'));
 console.log('Listening on ' + app.get('port'));

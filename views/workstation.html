@@ -17,6 +17,28 @@
         <div class="cover90 cover">
         </div>
     </div>
+    <div class="buy-stop-motion is-hidden">
+        <div class="error-message">
+            <div class="panelhead">
+                <h2>Coming soon!</h2>
+            </div>
+            <div class="panelbody">
+                <p>Be the first to make stop-motion projects with code!</p>
+
+                <p>Sign up to pre-order the full kit.
+                </p>
+
+                <form method="post" id="email-preorder" action="/preorder">
+                    <p class="sm-form"><label>Email</label>
+                    <input type="email" name="email" class="email-input" required>
+                    </p>
+                    <div><input type="submit" value="Pre-order Now" class="big-action-btn submit"/></div>
+                </form>
+            </div>
+        </div>
+        <div class="cover90 cover buy-stop-motion-hide">
+        </div>
+    </div>
 
     <div class="action-modal">
 
@@ -28,19 +50,15 @@
             <div class="a-body">
                 <p class="c-desc js-h-onload">Your video is loading</p>
 
-                <!-- <form method="post" id="video-update-descr" action="/video-update-descr"> -->
-                    <label for="video-title">Title</label>
-                    <input type="text" name="title" id="video-title" class="generalInput js-video-title">
-                    <label for="video-descr">Optional Video Description</label>
-                    <textarea id="video-descr" name="descr" rows="4" class="js-video-descr"></textarea>
+                    <label for="video-title" class="js-h-onload">Title</label>
+                    <input type="text" name="title" id="video-title" class="generalInput js-video-title js-h-onload">
+                    <label for="video-descr" class="js-h-onload">Optional Video Description</label>
+                    <textarea id="video-descr" name="descr" rows="4" class="js-video-descr js-h-onload"></textarea>
                     <input type="text" id="video-token" name="token" class="js-video-token" hidden="true" value="">
-                <!-- <input type="submit" value="Update Description" onsubmit="return false;"
-                           class="save-video-desc-btn n-a-video-save-desc"/> -->
-                <!-- </form> -->
 
                 <div class="finish-btn-container">
-                    <span href="#" class="save-session-btn big-action-btn inactive-b-a-btn inactive-js-finish-m">
-                       Finish
+                    <span href="#" class="save-session-btn big-action-btn js-finish-m is-hidden">
+                       Submit
                     </span>
                 </div>
 
@@ -99,86 +117,45 @@
 
         <div class="set-container lesson-page clearfix">
             <div class="current-lesson-display">
-                <h3 class="js-switch-menu-appear"><span class="js-lesson-name">Filters</span> <img
-                        src="/img/header-down-arrow.png"></h3>
+<!--                 <h3 class="js-switch-menu-appear"><span class="js-lesson-name">Filters</span> <img
+                        src="/img/header-down-arrow.png"></h3> -->
 
                 <div class="large-selection-dropdown js-switch-view-container is-hidden">
-                    <ul>
-                        <li class="js-switch-view" id="basic-filter-method" name="Filters" lessnum="4">Filters</li>
-                        <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
-                        </li>
-                        <li class="js-switch-view" id="graphic-method" name="Graphics" lessnum="1">Graphics</li>
-                    </ul>
                 </div>
-            </div>
-            <div class="progress-set">
-
-            </div>
-
-            <div class="view-controller">
             </div>
 
             <div class="lesson-container">
                 <div class="col-md-4">
                     <div class="loader is-hidden"><img src="/img/loader.gif"></div>
 
-                    <div id="video-wrapper">
                     <span class="js-active-vid active-vid">
                         <p class="is-new-session is-hidden">{{newSession}}</p>
-                        {{#if user.sessionToLoad}}
-                            <video class="video1 is-hidden js-load-last-session" id="myvideo"
-                                       src="{{user.sessionToLoad.videoSrc}}" autoplay loop></video>
-                        {{else}}
                             <div class="vid-placeholder overlay">
                                 <h3>Select a video below</h3>
                             </div>
                             <video class="video1 is-hidden" id="myvideo" autoplay loop></video>
                             <video class="video3 is-hidden" id="cameraVideo" autoplay loop></video>
-                        {{/if}}
-                                 <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
-                                 <canvas class="is-hidden" id="graphicsCanvas" width="420px" height="250px"> </canvas>
-                                 <canvas class="is-hidden" id="supportCanvas" width="420px" height="250px"></canvas>
-                                 <canvas class="is-hidden" id="bufferCanvas" width="420px" height="250px"></canvas>
-                                 <canvas class="is-hidden" id="cameraCanvas" width="420px" height="250px"></canvas>
+
+                             <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
+                             <canvas class="is-hidden" id="graphicsCanvas" width="420px" height="250px"> </canvas>
+                             <canvas class="is-hidden" id="supportCanvas" width="420px" height="250px"></canvas>
+                             <canvas class="is-hidden" id="bufferCanvas" width="420px" height="250px"></canvas>
+                             <canvas class="is-hidden" id="cameraCanvas" width="420px" height="250px"></canvas>
+                            
                             <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
                     </span>
-                    </div>
+
 
                     <div class="js-switch-appear">
                         <div id="stop-motion-timeline" class="is-hidden stop-motion-method">
                                 <ul id="timeline-sortable"></ul>
                         </div>
                         <div class="video-container clearfix">
-<!--                             <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Media</button> -->
-
-
-                            <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media to Library</button>
-
+                            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Videos</button>
 
                             <div id="vid-library" class="basic-filter-method">
                                 <p>Uploaded Videos</p>
                             </div>
-
-<!-- hide row profile for this user test as there is no need to upload their media to the server -->
-                            <div class="row profile">
-                                {{#if user.videoLibrary}}
-
-                                {{#each user.videoLibrary}}
-                                <div class="insta-thumbnails">
-                                    <div class="row">
-                                        <div class="i-vid-container">
-                                            <a>
-                                                <video class="video js-vid-click" src="/video/?file={{this.file}}"/>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{/each}}
-                                {{else}}
-                                <h2 class="profileheader">You have not uploaded videos to your library!</h2>
-                                {{/if}}
-                            </div>
-
 
                             <div id="img-library" class="is-hidden stop-motion-method">
                                 <p>Uploaded Stills</p>
@@ -190,22 +167,22 @@
                         
                                 <div class="stills-container">
                                   <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-1" src="/img/still0.png"/>
+                                    <img class="js-img-click" id="sample-1" src="/img/still0.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-2" src="/img/still1.png"/>
+                                    <img class="js-img-click" id="sample-2" src="/img/still1.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-3" src="/img/still2.png"/>
+                                    <img class="js-img-click" id="sample-3" src="/img/still2.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-4" src="/img/still3.png"/>
+                                    <img class="js-img-click" id="sample-4" src="/img/still3.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-5" src="/img/still4.png"/>
+                                    <img class="js-img-click" id="sample-5" src="/img/still4.png"/>
                                   </div>
                                   <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-6" src="/img/still5.png"/>
+                                    <img class="js-img-click" id="sample-6" src="/img/still5.png"/>
                                   </div>     
                                 </div>
                             </div>
@@ -238,35 +215,28 @@
                             <p>Sample Videos</p>
 
                             <div class="i-vid-container">
-                                <video class="js-vid-click sample-vid ui-draggable" src="/img/ge.mp4"></video>
+                                <video class="js-vid-click sample-vid" src="/img/ge.mp4"></video>
                             </div>
                             <div class="i-vid-container">
-                                <video class="js-vid-click sample-vid ui-draggable" src="/img/paper.mp4"></video>
+                                <video class="js-vid-click sample-vid" src="/img/paper.mp4"></video>
                             </div>
                             <div class="i-vid-container">
-                                <video class="js-vid-click sample-vid ui-draggable" src="/img/wha_color.mp4"></video>
+                                <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
                             </div>
                         </div>
-						<div class="is-hidden video-container graphic-method">
-							<p>Sample Graphics</p>
-							    <div class="i-vid-container">
-                                    <img src="/img/graphics/robot.png" class="js-graph-click"/> 
+            <div class="is-hidden video-container graphic-method">
+              <p>Sample Graphics</p>
+                  <div class="i-vid-container">
+                                    <img src="/img/graphics/robot.png" class="js-graph-click" id="mygraphic"/> 
                                 </div>
-							    <div class="i-vid-container">
+                  <div class="i-vid-container">
                                     <img src="/img/graphics/flowers.png" class="js-graph-click" /> 
-                                </div>						
-							    <div class="i-vid-container">
+                                </div>            
+                  <div class="i-vid-container">
                                     <img src="/img/graphics/stars.png" class="js-graph-click" /> 
-                                </div>	
-						</div>
+                                </div>  
+            </div>
 
-                    </div>
-
-                    <div class="methodsBox js-appear clearfix">
-                        <div class="clearfix">
-                            <button type="button" class="sm-btn show-inline js-reset-code btn btn-primary">Reset Code
-                            </button>
-                        </div>
                     </div>
 
                 </div>
@@ -279,16 +249,19 @@
                         </form>
                     </div>
                     <div class="save-btns-container">
-                       <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-code-m">
+                    <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
                         Save
                       </span>
-                   <!--  <span href="#" class="big-action-btn inactive-b-a-btn inactive-js-save-m">
-                        Save
-                      </span> -->
                       <span class="big-action-btn inactive-b-a-btn inactive-js-share-m">
                         Share
                       </span>
                     </div>
+                    {{#if preorder}}
+                    <div class="buy-btn-container">
+                        <span class="big-action-btn vapor-stop-motion"> NEXT
+                        </span>
+                    </div>  
+                    {{/if}}                  
                 </div>
 
                 <div class="col-md-3">
@@ -297,8 +270,8 @@
                             <div class="sm-header-bg clearfix">
                                 <p class="js-lesson-name left">Filters</p>
 
-                                <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
-                                        class="js-lesson-page-num-total">4</span> ▾</p>
+   <!--                              <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
+                                        class="js-lesson-page-num-total">4</span> ▾</p> -->
                             </div>
                         </div>
 
@@ -331,7 +304,7 @@
                             <div class="is-hidden {{this.class}}">
                                 <ul class="methodList">
                                     {{#each this.elements}}
-                                    <li name={{.}} class='btn btn-method draggable'>{{.}}</li>
+                                    <li name={{.}} class='btn btn-method draggable inactive-b-a-btn'>{{.}}</li>
                                     <img name={{.}} class='x-drag xbtn' src='/img/xbtn_drag.png'/>
                                     {{/each}}
                                 </ul>
@@ -339,14 +312,13 @@
                             {{/each}}
                         </div>
                     </div>
-
                 </div>
                 <!--end of lesson container-->
-
-
-            </div>
+            </div>         
             <!--end of set-container lesson-page-->
         </div>
+    </div>
+>>>>>>> 1f969f6a112455cbc0a45bd1ba72f98973432dea
     </div>
 
 <h4 id="username" class="is-hidden">{{user.username}}</h4>
@@ -368,4 +340,5 @@
         'page name': document.title,
         'url': window.location.pathname
     });
+    mixpanel.track_forms("#email-preorder", "preorder sent!");
 </script>
