@@ -127,22 +127,26 @@
                     <div id="video-wrapper">
                         <span class="js-active-vid active-vid">
                         <p class="is-new-session is-hidden">{{newSession}}</p>
+                        {{#if user.sessionToLoad}}
+                            <video class="video1 is-hidden js-load-last-session" id="myvideo"
+                                       src="{{user.sessionToLoad.videoSrc}}" muted autoplay loop></video>
+                        {{else}}
                             <div class="vid-placeholder overlay">
                                 <h3>Select a video below</h3>
                             </div>
-                            <video class="video1 is-hidden" id="myvideo" autoplay loop></video>
-                            <video class="video3 is-hidden" id="cameraVideo" autoplay loop></video>
+                            <video class="video1 is-hidden" id="myvideo" muted autoplay loop></video>
+                        {{/if}}
+
+                           <video class="video3 is-hidden" id="cameraVideo" autoplay loop></video>
 
                              <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
                              <canvas class="is-hidden" id="graphicsCanvas" width="420px" height="250px"> </canvas>
                              <canvas class="is-hidden" id="supportCanvas" width="420px" height="250px"></canvas>
                              <canvas class="is-hidden" id="bufferCanvas" width="420px" height="250px"></canvas>
-                             <canvas class="is-hidden" id="cameraCanvas" width="420px" height="250px"></canvas>
-                            
-                            <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
-                        </span>
-                     </div>
-
+                             <canvas class="is-hidden" id="cameraCanvas" width="420px" height="250px"></canvas>></canvas>
+                             <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
+                    </span>
+                    </div>
                     <div class="js-switch-appear">
                         <div id="stop-motion-timeline" class="is-hidden stop-motion-method">
                                 <ul id="timeline-sortable"></ul>
