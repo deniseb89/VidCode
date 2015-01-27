@@ -48,6 +48,10 @@ $(document).ready(function () {
         updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
     });
 
+    $('#computer-vision-method').click(function () {
+        updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
+    });
+
     $('.learnMore').on('click', '.js-lesson-4-sm', function () {
         updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
         trackLesson('2-4');
@@ -372,14 +376,16 @@ $(document).ready(function () {
     $('.js-switch-view').click(function () {
         //Todo: Template these
         if (newSession){
+            console.log('newsession');
             activateSession();
         }
         var view = ($(this).attr('id'));
         var lName = ($(this).attr('name'));
         var lessonNum = ($(this).attr('lessnum'));
         $('.basic-filter-method').addClass('is-hidden');
-        $('.graphic-method').addClass('is-hidden');
         $('.stop-motion-method').addClass('is-hidden');
+        $('.graphic-method').addClass('is-hidden');
+        $('.computer-vision-method').addClass('is-hidden');
         $('.' + view).removeClass('is-hidden');
         $('.js-lesson-name').text(lName);
         $('.js-lesson-page-num-total').text(lessonNum);
