@@ -96,9 +96,9 @@ MongoClient.connect(host, function(err, Db) {
   app.get('/',routes.signin);
   app.get('/signin', routes.signin);
   app.get('/intro/:social?/:id?', routes.intro(db));
-  app.get('/trial', routes.trial(db));  
+  app.get('/trial', routes.trial(db));
   app.get('/trialintro', routes.trialintro(db));
-  app.get('/workstation', routes.workstation(db));  
+  app.get('/workstation', routes.workstation(db));
 
   app.get('/lesson/1', function(req, res){
     res.redirect('/workstation');

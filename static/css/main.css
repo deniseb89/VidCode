@@ -1039,14 +1039,14 @@ body.is-in-signup {
 /* ---------------- Graphics, Animation and Timeline ------------------ */
 
 #supportCanvas{
-    margin-top: -270px; 
+    margin-top: -270px;
 }
 
 #stop-motion-timeline{
     margin-top: -15px;
     background-color: #d8d8d8;
     height: 64px;
-    width: 420px;   
+    width: 420px;
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
@@ -1098,7 +1098,7 @@ body.is-in-signup {
 li.ui-state-default{
     padding-top: 20px;
     padding-bottom: 20px;
-}   
+}
 
 /* ---------------- Learn More Games ------------------ */
 
@@ -1996,7 +1996,8 @@ li.active a, li.active a:hover {
 }
 
 .addthis-container {
-    margin-top: 30px
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 .greentext {
@@ -2437,7 +2438,6 @@ li.active a, li.active a:hover {
     padding: 9px 16px !important;
     height: 47px !important;
     color: #fff !important;
-    margin-left: 10px !important;
 }
 
 #fb-btn-styling img {
@@ -2450,12 +2450,15 @@ li.active a, li.active a:hover {
     padding: 9px 16px !important;
     height: 47px !important;
     color: #fff !important;
-    margin-left: 15px !important;
+    right: -244px!important;
+    position: relative!important;
 }
 
 #tw-btn-styling img {
     padding-right: 5px !important
 }
+
+.at-share-btn{height: 0!important; width: 0!important;}
 
 
 

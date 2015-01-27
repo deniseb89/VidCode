@@ -7,11 +7,11 @@ $(document).ready(function () {
 
     supportCanvas = document.getElementById('supportCanvas');
     graphicsCanvas = document.getElementById('graphicsCanvas');
-    graphicsContext = graphicsCanvas.getContext("2d");  
+    graphicsContext = graphicsCanvas.getContext("2d");
     //graphics
     supportCanvas.addEventListener('mousemove', drawGraphics, false);
     supportCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
- 
+
     var inputFile = document.getElementById('inputFile');
     var inputFileToLibrary = document.getElementById('inputFileToLibrary');
     inputFile.addEventListener('change', uploadFromComp, false);
@@ -65,7 +65,7 @@ $(document).ready(function () {
     });
 
     //turn tooltips on
-    $(".save-modal").tooltip({selector: '[data-toggle=tooltip]'});
+    $(".js-ss-both-content").tooltip({selector: '[data-toggle=tooltip]'});
 
     //share success on copy click
     $('.js-copy-sucess').click(function () {
@@ -177,14 +177,14 @@ $(document).ready(function () {
 
         if (eff == "drawing" ){
             turnOffDrawing();
-            updateGraphicsCanvas();     
+            updateGraphicsCanvas();
         }
         if(eff == "animation"){
             turnOffAnimation("delete");
-        } 
+        }
         myCodeMirror.save();
     });
-   
+
     $('.methodList li').each(function () {
         $(this).draggable({
             helper: "clone",
@@ -205,7 +205,7 @@ $(document).ready(function () {
             reorderFrames();
         }
     });
-   
+
     //Switch between content
     $('.js-switch-view').click(function () {
         //Todo: Template these
