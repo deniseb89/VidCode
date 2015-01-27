@@ -376,7 +376,6 @@ $(document).ready(function () {
     $('.js-switch-view').click(function () {
         //Todo: Template these
         if (newSession){
-            console.log('newsession');
             activateSession();
         }
         var view = ($(this).attr('id'));
