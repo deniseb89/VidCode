@@ -7,11 +7,11 @@ $(document).ready(function () {
 
     supportCanvas = document.getElementById('supportCanvas');
     graphicsCanvas = document.getElementById('graphicsCanvas');
-    graphicsContext = graphicsCanvas.getContext("2d");  
+    graphicsContext = graphicsCanvas.getContext("2d");
     //graphics
     supportCanvas.addEventListener('mousemove', drawGraphics, false);
     supportCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
- 
+
     var inputFile = document.getElementById('inputFile');
     var inputFileToLibrary = document.getElementById('inputFileToLibrary');
     inputFile.addEventListener('change', uploadFromComp, false);
@@ -181,14 +181,14 @@ $(document).ready(function () {
 
         if (eff == "drawing" ){
             turnOffDrawing();
-            updateGraphicsCanvas();     
+            updateGraphicsCanvas();
         }
         if(eff == "animation"){
             turnOffAnimation("delete");
-        } 
+        }
         myCodeMirror.save();
     });
-   
+
     $('.methodList li').each(function () {
         $(this).draggable({
             helper: "clone",
@@ -201,16 +201,16 @@ $(document).ready(function () {
             helper: "clone",
             revert: "invalid",
             start: function (e, ui) {
-                $('.js-vid-click').removeClass('js-selected-video');               
+                $('.js-vid-click').removeClass('js-selected-video');
                 ui.helper.width(ui.helper.prevObject[0].clientWidth);
                 ui.helper.height(ui.helper.prevObject[0].clientHeight);
             },
             cursorAt: {left:45, top:30},
             stop: function(event, ui){
-                $(this).addClass('js-selected-video');            
+                $(this).addClass('js-selected-video');
             }
         });
-    });   
+    });
 
      $('.js-graph-click').each(function () {
         $(this).draggable({
@@ -222,31 +222,31 @@ $(document).ready(function () {
             },
             cursorAt: {left:45, top:30}
         });
-    });   
+    });
 
 
     $('#canvas').droppable({
-        drop: function (event, ui) {  
+        drop: function (event, ui) {
             if(ui.draggable[0].tagName == "VIDEO"){
                 $('.loader').removeClass('is-hidden');
                 $('.js-vid-click').removeClass('js-selected-video');
                 ui.draggable.addClass('js-selected-video');
-                var thisSrc = ui.draggable.attr("src"); 
+                var thisSrc = ui.draggable.attr("src");
                 movie.src = thisSrc;
             }
-            else if(ui.draggable[0].tagName == "IMG"){ 
+            else if(ui.draggable[0].tagName == "IMG"){
                 if(ui.draggable[0].className.indexOf("js-graph") >= 0){
-                  $('.js-graph-click').removeClass('js-selected-graphic'); 
-                  var thisSrc = ui.draggable.attr("src"); 
+                  $('.js-graph-click').removeClass('js-selected-graphic');
+                  var thisSrc = ui.draggable.attr("src");
                     var allGraphs = document.querySelectorAll('.js-graph-click');
-                    $('#mygraphic').attr("id", "");              
+                    $('#mygraphic').attr("id", "");
 
                     for(var i = 0; i < allGraphs.length; i++){
                         if(allGraphs[i].src.indexOf(thisSrc) >= 0 ){
                             if(allGraphs[i].style.position != "absolute"){
                                allGraphs[i].setAttribute('class', 'js-graph-click ui-draggable js-selected-graphic');
                                createGraphics();
-                               updateGraphicsCanvas(); 
+                               updateGraphicsCanvas();
                            }
                         }
                     }
@@ -273,13 +273,13 @@ $(document).ready(function () {
           cursorAt: {left:45, top:30}
 
         });
-    });  
+    });
 
      $('#timeline-sortable').sortable({
         distance:30,
         placeholder: "placeholder-highlight",
 
-        stop: function( event, ui ) {            
+        stop: function( event, ui ) {
            $('.ui-draggable').off('mouseup');
            if(ui.item[0].tagName == "IMG"){
                 dropFrames(ui.item);
@@ -291,16 +291,16 @@ $(document).ready(function () {
                 ui.item[0].children[0].setAttribute('class','');
                 console.log(ui.item[0].children[0].className);
                 stopMotion.reorderFrames();
-            });           
+            });
        }
 
-      }); 
-  
-   
+      });
+
+
    var dropEffects = function(ui){
             lessonIsActive(".js-effects");
 
-            var eff = ui.draggable.attr("name");   
+            var eff = ui.draggable.attr("name");
             $('[name=' + eff + ']').addClass("is-active");
 
             var filter = seriouslyEffects[eff];
@@ -319,16 +319,16 @@ $(document).ready(function () {
                         createCodeInEditor(lineText, "cm-" + eff);
                     }
                 }
-            } 
+            }
             else if (stopMotion.controls.hasOwnProperty(eff)) {
                 createStopMotionInEditor(eff);
-            } 
+            }
             else if (eff == "drawing" ){
                 createDrawing();
-            } 
+            }
             else if (eff == "animation"){
-                if(hasGraphic) createAnimation();                   
-                else  $('[name=' + eff + ']').removeClass("is-active"); 
+                if(hasGraphic) createAnimation();
+                else  $('[name=' + eff + ']').removeClass("is-active");
             }
 
             myCodeMirror.save();
@@ -342,17 +342,18 @@ $(document).ready(function () {
             item.addClass('js-selected-video');
 
 
-            //recalculate and keep only frames which are still selected 
+            //recalculate and keep only frames which are still selected
             var selectedStills = document.querySelectorAll('.js-selected-still');
-            var newFrames = [];   
+            var newFrames = [];
             for (var i=0; i<stopMotion.frames.length; i++){
               var frameIsSelected = false;
               for(var j = 0; j < selectedStills.length; j++){
-                if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;    
-              }  
+                if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;
+              }
               if (frameIsSelected) newFrames.push(stopMotion.frames[i]);
             }
-          
+
+
             //add new item to the new frames
             newFrames.splice(item.index(), 0, stopMotion.dragID);
             stopMotion.frames = newFrames;
@@ -360,12 +361,13 @@ $(document).ready(function () {
             stopMotion.addFramesToTimeline();
    };
 
+
     $('.js-img-click').click(imgClickSetup);
 
     $('.js-vid-click').click(vidClickSetup);
 
     $('.js-graph-click').click(graphClickSetup);
-   
+
     //Switch between content
     $('.js-switch-view').click(function () {
         //Todo: Template these
@@ -387,6 +389,7 @@ $(document).ready(function () {
         $('.js-switch-view-container').toggleClass('is-hidden');
         $('body').toggleClass('js-switch-menu-appear');
     });
+
 
 
 
