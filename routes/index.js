@@ -336,19 +336,20 @@ exports.igCB = function (db) {
         user.IGvideos = urls;
         
         var successcb = function(doc) {
-          var referer = req.headers.referer.toString();
-          if (referer.indexOf('/workstation') > -1) {
-              res.redirect('/workstation')
-          }
-          else if (referer.indexOf('/trial') > -1) {
-              res.redirect('/trial');
-          }
-          else if (referer.indexOf('/signin') > -1){
-              res.redirect('/trialintro');
-          }
-          else {
-              res.redirect('/intro');
-          }
+          // var referer = req.headers.referer.toString();
+          // if (referer.indexOf('/workstation') > -1) {
+          //     res.redirect('/workstation')
+          // }
+          // else if (referer.indexOf('/trial') > -1) {
+          //     res.redirect('/trial');
+          // }
+          // else if (referer.indexOf('/signin') > -1){
+          //     res.redirect('/trialintro');
+          // }
+          // else {
+          //     res.redirect('/intro');
+          // }
+          res.redirect('/trialintro');
         };
 
         findOrCreate(db,user,successcb);
@@ -425,12 +426,12 @@ exports.getAllVids = function(db){
 exports.fbCB = function (db) {
   return function (req, res) {
     var successcb = function(doc) {      
-      var referer = req.headers.referer.toString();
-      if (referer.indexOf('/signin') > -1) {
-          res.redirect('/trialintro')
-      } else {
-          res.redirect('/intro');
-      }
+      // var referer = req.headers.referer.toString();
+      // if (referer.indexOf('/signin') > -1) {
+      //     res.redirect('/trialintro');
+      // } else {
+          res.redirect('/trialintro');
+      // }
     };  
 
     var user = req.user;
@@ -443,12 +444,12 @@ exports.signup = function (db, crypto) {
   return function (req, res) {
     var user = {};
     var successcb = function(doc) {      
-      var referer = req.headers.referer.toString();
-      if (referer.indexOf('/signin') > -1) {
-          res.redirect('/trialintro')
-      } else {
-          res.redirect('/intro');
-      }
+      // var referer = req.headers.referer.toString();
+      // if (referer.indexOf('/signin') > -1) {
+      //     res.redirect('/trialintro')
+      // } else {
+          res.redirect('/trialintro');
+    //   }
     };  
 
     user.username = req.body.email;
