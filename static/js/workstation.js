@@ -1,5 +1,8 @@
+
 var movie,
     canvas,
+    camera,
+    cameraVideo,
     seriously,
     myCodeMirror,
     video,
@@ -75,6 +78,7 @@ var InitSeriously = function () {
 
     target = seriously.target('#canvas'); 
     graphic = seriously.source(graphicsCanvas);   
+    camera = seriously.source(cameraCanvas);
 
     //Set up Seriously.js effects
     seriouslyEffects = Seriously.effects();
@@ -98,6 +102,8 @@ var changeSrc = function () {
     numVidSelect++;
     $('.loader').addClass('is-hidden');
     $(".popup").addClass("is-hidden");
+
+    console.log("changed source");
 
     labelLines();
     if (this.tagName=='VIDEO') {

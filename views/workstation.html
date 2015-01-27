@@ -133,11 +133,14 @@
                                 <h3>Select a video below</h3>
                             </div>
                             <video class="video1 is-hidden" id="myvideo" autoplay loop></video>
+                            <video class="video3 is-hidden" id="cameraVideo" autoplay loop></video>
                         {{/if}}
                                  <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
                                  <canvas class="is-hidden" id="graphicsCanvas" width="420px" height="250px"> </canvas>
                                  <canvas class="is-hidden" id="supportCanvas" width="420px" height="250px"></canvas>
-                             <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
+                                 <canvas class="is-hidden" id="bufferCanvas" width="420px" height="250px"></canvas>
+                                 <canvas class="is-hidden" id="cameraCanvas" width="420px" height="250px"></canvas>
+                            <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
                     </span>
                     </div>
 
@@ -352,6 +355,7 @@
 <script src="/js/initdom.js"></script>
 <script src="/js/workstation.js"></script>
 <script src="/js/stopmotion.js"></script>
+<script src="/js/computervision.js"></script>
 <script src="/js/graphics.js"></script>
 
 <script>

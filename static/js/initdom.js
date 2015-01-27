@@ -5,13 +5,19 @@ $(document).ready(function () {
     checkWebGL();
     movie.addEventListener("canplay", activateSession, false);
 
+    //graphics
     supportCanvas = document.getElementById('supportCanvas');
     graphicsCanvas = document.getElementById('graphicsCanvas');
     graphicsContext = graphicsCanvas.getContext("2d");  
-    //graphics
     supportCanvas.addEventListener('mousemove', drawGraphics, false);
     supportCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
- 
+
+    //camera
+    cameraCanvas = document.getElementById('cameraCanvas');
+    cameraContext = cameraCanvas.getContext('2d');
+    bufferCanvas = document.getElementById('bufferCanvas');
+    bufferContext = bufferCanvas.getContext('2d');
+
     var inputFile = document.getElementById('inputFile');
     var inputFileToLibrary = document.getElementById('inputFileToLibrary');
     inputFile.addEventListener('change', uploadFromComp, false);
@@ -391,10 +397,11 @@ $(document).ready(function () {
         if(!$('.video2').hasClass('is-hidden')){
             adjustCanvasHeight();
         }
+
         // var timelineWidth = $('#stop-motion-timeline').width();
         // document.getElementById('stop-motion-timeline').style.height = timelineWidth/8+"px";
     });
 
-
+        computerVision.capture();
 
 });

@@ -1053,12 +1053,12 @@ body.is-in-signup {
 
 /* ---------------- Graphics, Animation and Timeline ------------------ */
 
-#supportCanvas, #graphicsCanvas{
+#supportCanvas, #graphicsCanvas, #cameraCanvas{
     width:100%;
 }
 
 @media (min-width: 1240) {
-    #supportCanvas{
+    #supportCanvas, #cameraCanvas{
         width:420px;
         height:250px;
         margin: 0 auto;
