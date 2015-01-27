@@ -54,6 +54,10 @@ $(document).ready(function () {
         updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
     });
 
+    $('#computer-vision-method').click(function () {
+        updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
+    });
+
     $('.learnMore').on('click', '.js-lesson-4-sm', function () {
         updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
         trackLesson('2-4');
@@ -63,16 +67,8 @@ $(document).ready(function () {
         trackLesson('2-5');
     });
 
-    $('.learnMore').on('click', '.js-lesson-6-sm', function () {
-        updateLearnMore(5, "<p>You customized your own video filter with CODE!<strong> So cool!</strong></p><p>You are on your way to becoming a digital media coding ninja!</p><p><strong>Next up, Stop Motion! Click 'Next'to continue.</strong></p><span class='btn btn-primary right vapor-next'>Next</span>", "Congratulations!", '');
-    });
-    $('.learnMore').on('click', '.vapor-next', function () {
-        mixpanel.track('Vapor Next Clicked');
-        $('.buy-stop-motion').removeClass('is-hidden');
-    });
-
     //turn tooltips on
-    $(".js-ss-both-content").tooltip({selector: '[data-toggle=tooltip]'});
+    $(".save-modal").tooltip({selector: '[data-toggle=tooltip]'});
 
     //share success on copy click
     $('.js-copy-sucess').click(function () {
@@ -134,14 +130,10 @@ $(document).ready(function () {
     });
 
     $('.save-btns-container').on('click', ".js-share-m", function () {
-
-        mixpanel.track('Save Big Action');
         modalVideoLoad('share');
     });
 
     $('.save-btns-container').on('click', ".js-save-m", function () {
-
-        mixpanel.track('Share Big Action');
         modalVideoLoad('save');
     });
 
@@ -160,7 +152,9 @@ $(document).ready(function () {
     });
 
     $('.finish-btn-container').on('click', ".js-finish-m", function () {
-
+        $('.js-finish-m').addClass('inactive-b-a-btn');
+        $('.js-finish-m').addClass('inactive-js-finish-m');
+        $('.js-finish-m').removeClass('js-finish-m');
         saveSession(webmBlob);
     });
 
@@ -170,7 +164,17 @@ $(document).ready(function () {
         $('.js-s-onload').addClass('is-hidden');
         $('.js-h-onload').removeClass('is-hidden');
         $('.dl-progress').css('width', '1px');
+        $('.js-finish-m').addClass('inactive-b-a-btn');
+        $('.js-finish-m').addClass('inactive-js-finish-m');
+        $('.js-finish-m').removeClass('js-finish-m');
         $('.js-ss-both-content').addClass('is-hidden');
+    });
+
+
+    $(".tabs-2").droppable({
+        drop: function (event, ui) {
+            dropEffects(ui);
+        }
     });
 
     $(".draggable").click(function () {
@@ -187,14 +191,13 @@ $(document).ready(function () {
 
         if (eff == "drawing" ){
             turnOffDrawing();
-            updateGraphicsCanvas();     
+            updateGraphicsCanvas();
         }
         if(eff == "animation"){
             turnOffAnimation("delete");
-        } 
+        }
         myCodeMirror.save();
     });
-   
 
     $('.methodList li').each(function () {
         $(this).draggable({
@@ -208,16 +211,16 @@ $(document).ready(function () {
             helper: "clone",
             revert: "invalid",
             start: function (e, ui) {
-                $('.js-vid-click').removeClass('js-selected-video');               
+                $('.js-vid-click').removeClass('js-selected-video');
                 ui.helper.width(ui.helper.prevObject[0].clientWidth);
                 ui.helper.height(ui.helper.prevObject[0].clientHeight);
             },
             cursorAt: {left:45, top:30},
             stop: function(event, ui){
-                $(this).addClass('js-selected-video');            
+                $(this).addClass('js-selected-video');
             }
         });
-    });   
+    });
 
      $('.js-graph-click').each(function () {
         $(this).draggable({
@@ -229,31 +232,31 @@ $(document).ready(function () {
             },
             cursorAt: {left:45, top:30}
         });
-    });   
+    });
 
 
     $('#canvas').droppable({
-        drop: function (event, ui) {  
+        drop: function (event, ui) {
             if(ui.draggable[0].tagName == "VIDEO"){
                 $('.loader').removeClass('is-hidden');
                 $('.js-vid-click').removeClass('js-selected-video');
                 ui.draggable.addClass('js-selected-video');
-                var thisSrc = ui.draggable.attr("src"); 
+                var thisSrc = ui.draggable.attr("src");
                 movie.src = thisSrc;
             }
-            else if(ui.draggable[0].tagName == "IMG"){ 
+            else if(ui.draggable[0].tagName == "IMG"){
                 if(ui.draggable[0].className.indexOf("js-graph") >= 0){
-                  $('.js-graph-click').removeClass('js-selected-graphic'); 
-                  var thisSrc = ui.draggable.attr("src"); 
+                  $('.js-graph-click').removeClass('js-selected-graphic');
+                  var thisSrc = ui.draggable.attr("src");
                     var allGraphs = document.querySelectorAll('.js-graph-click');
-                    $('#mygraphic').attr("id", "");              
+                    $('#mygraphic').attr("id", "");
 
                     for(var i = 0; i < allGraphs.length; i++){
                         if(allGraphs[i].src.indexOf(thisSrc) >= 0 ){
                             if(allGraphs[i].style.position != "absolute"){
                                allGraphs[i].setAttribute('class', 'js-graph-click ui-draggable js-selected-graphic');
                                createGraphics();
-                               updateGraphicsCanvas(); 
+                               updateGraphicsCanvas();
                            }
                         }
                     }
@@ -280,13 +283,13 @@ $(document).ready(function () {
           cursorAt: {left:45, top:30}
 
         });
-    });  
+    });
 
      $('#timeline-sortable').sortable({
         distance:30,
         placeholder: "placeholder-highlight",
 
-        stop: function( event, ui ) {            
+        stop: function( event, ui ) {
            $('.ui-draggable').off('mouseup');
            if(ui.item[0].tagName == "IMG"){
                 dropFrames(ui.item);
@@ -298,16 +301,16 @@ $(document).ready(function () {
                 ui.item[0].children[0].setAttribute('class','');
                 console.log(ui.item[0].children[0].className);
                 stopMotion.reorderFrames();
-            });           
+            });
        }
 
-      }); 
-  
-   
+      });
+
+
    var dropEffects = function(ui){
             lessonIsActive(".js-effects");
 
-            var eff = ui.draggable.attr("name");   
+            var eff = ui.draggable.attr("name");
             $('[name=' + eff + ']').addClass("is-active");
 
             var filter = seriouslyEffects[eff];
@@ -326,16 +329,16 @@ $(document).ready(function () {
                         createCodeInEditor(lineText, "cm-" + eff);
                     }
                 }
-            } 
+            }
             else if (stopMotion.controls.hasOwnProperty(eff)) {
                 createStopMotionInEditor(eff);
-            } 
+            }
             else if (eff == "drawing" ){
                 createDrawing();
-            } 
+            }
             else if (eff == "animation"){
-                if(hasGraphic) createAnimation();                   
-                else  $('[name=' + eff + ']').removeClass("is-active"); 
+                if(hasGraphic) createAnimation();
+                else  $('[name=' + eff + ']').removeClass("is-active");
             }
 
             myCodeMirror.save();
@@ -349,17 +352,18 @@ $(document).ready(function () {
             item.addClass('js-selected-video');
 
 
-            //recalculate and keep only frames which are still selected 
+            //recalculate and keep only frames which are still selected
             var selectedStills = document.querySelectorAll('.js-selected-still');
-            var newFrames = [];   
+            var newFrames = [];
             for (var i=0; i<stopMotion.frames.length; i++){
               var frameIsSelected = false;
               for(var j = 0; j < selectedStills.length; j++){
-                if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;    
-              }  
+                if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;
+              }
               if (frameIsSelected) newFrames.push(stopMotion.frames[i]);
             }
-          
+
+
             //add new item to the new frames
             newFrames.splice(item.index(), 0, stopMotion.dragID);
             stopMotion.frames = newFrames;
@@ -374,16 +378,19 @@ $(document).ready(function () {
 
     $('.js-graph-click').click(graphClickSetup);
 
-
     //Switch between content
     $('.js-switch-view').click(function () {
         //Todo: Template these
+        if (newSession){
+            activateSession();
+        }
         var view = ($(this).attr('id'));
         var lName = ($(this).attr('name'));
         var lessonNum = ($(this).attr('lessnum'));
         $('.basic-filter-method').addClass('is-hidden');
-        $('.graphic-method').addClass('is-hidden');
         $('.stop-motion-method').addClass('is-hidden');
+        $('.graphic-method').addClass('is-hidden');
+        $('.computer-vision-method').addClass('is-hidden');
         $('.' + view).removeClass('is-hidden');
         $('.js-lesson-name').text(lName);
         $('.js-lesson-page-num-total').text(lessonNum);
@@ -396,26 +403,14 @@ $(document).ready(function () {
 
 
 
+
     $( window ).resize(function() {
         if(!$('.video2').hasClass('is-hidden')){
             adjustCanvasHeight();
         }
-
         // var timelineWidth = $('#stop-motion-timeline').width();
         // document.getElementById('stop-motion-timeline').style.height = timelineWidth/8+"px";
     });
 
-        //computerVision.capture();
-
-});
-    //stop motion buying popup
-    $('.vapor-stop-motion').click(function(){
-        mixpanel.track('Vapor Stop Motion Clicked');
-        $('.buy-stop-motion').removeClass('is-hidden');
-    });
-
-    $('.buy-stop-motion-hide').click(function(){
-        $('.buy-stop-motion').addClass('is-hidden');
-    });
 
 });

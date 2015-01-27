@@ -33,26 +33,7 @@ module.exports = function (app, passport) {
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function (req, res) {
 
-
-exports.intro = function (db) {
-  return function (req, res) {
-    var social = req.params.social;
-    var id = req.params.id;
-
-    if (id&&social){
-      var vc = db.collection('vidcode');
-      vc.findOne({ id: id, 'social':social }, function (err, doc) {
-        if (!doc) {
-          res.render('404', {layout:false});
-          return;
-        }
-          res.render('intro', {user: doc});
-          return;
-      });      
-    } else {
-      // There is no logged in user
-      // res.redirect('/signin');
-      res.render('intro');
+        var _units = {};
 
         mongoose.connection.db.collection('units').find().toArray(function (err, result) {
             if (err) {
@@ -60,34 +41,7 @@ exports.intro = function (db) {
             } else {
                 _units = result;
 
-
-exports.trialintro = function (db) {
-  return function (req, res) {
-    var social = req.params.social;
-    var id = req.params.id;
-
-    if (id&&social){
-      var vc = db.collection('vidcode');
-      vc.findOne({ id: id, 'social':social }, function (err, doc) {
-        if (!doc) {
-          res.render('404', {layout:false});
-          return;
-        }
-          res.render('intro', {preorder: true, user: doc});
-          return;
-      });      
-    } else {
-      // There is no logged in user
-      // res.redirect('/signin');
-      res.render('intro', {preorder: true});
-
-    }
-  }
-};
-
-exports.csweek = function (req, res) {
-  res.redirect ('/intro');
-};
+                _units.forEach(function (_unit){
 
                   _unit.lessons.forEach(function(_lesson){
 
@@ -200,42 +154,54 @@ exports.csweek = function (req, res) {
         res.render('signin', {title: 'Vidcode', message: req.flash('loginMessage')});
     });
 
+    // process the login form
+    app.post('/signin', passport.authenticate('local-login', {
+        successRedirect: '/intro', // redirect to the secure profile section
+        failureRedirect: '/signin', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
 
-exports.workstation = function (db) {
-  var content = require('../models/content');  
-  return function (req, res) {
-    var user = req.user;
-    if (user){
-      var social = user.provider;
-      var vc = db.collection('vidcode');
+    // SIGNUP =================================
+    // show the signup form
+    app.get('/signup', function (req, res) {
+        res.render('signup', {message: req.flash('signupMessage')});
+    });
 
-      var successcb = function(doc) {
-        res.render("workstation", {content: content, user: doc});
-      };  
+    // process the signup form
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect: '/intro', // redirect to the secure profile section
+        failureRedirect: '/signup', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
+
+    // facebook ==============================
 
     // send to facebook to do the authentication
     app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
 
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/cb',
+        passport.authenticate('facebook', {
+            successRedirect: '/intro',
+            failureRedirect: '/'
+        }));
 
-exports.trial = function (db) {
-  var content = require('../models/content');  
-  return function (req, res) {
-    var user = req.user;
-    if (user){
-      var social = user.provider;
-      var vc = db.collection('vidcode');
+    // instagram ==============================
 
-      var successcb = function(doc) {
-        res.render("workstation", {content: content, preorder: true, user: doc});
-      };  
+    // send to instagram to do the authentication
+    app.get('/auth/instagram', passport.authenticate('instagram'));
 
-      findOrCreate(db,user,successcb);
-      
-    } else {
-      res.render("workstation", {content: content, preorder: true});
-    }
-  };
-};
+    // handle the callback after instagram has authenticated the user
+    app.get('/auth/instagram/cb',
+        passport.authenticate('instagram', {failureRedirect: '/'}),
+        function (req, res) {
+            if (req.headers.referer.toString().indexOf('/workstation') > -1) {
+                res.redirect('/workstation')
+            }
+            else {
+                res.redirect('/intro');
+            }
+        });
 
 
     // twitter ==============================
@@ -493,28 +459,6 @@ exports.trial = function (db) {
             //handle if there are none
             console.log('you have not created any vidcodes');
         }
-
-        user.IGvideos = urls;
-        
-        var successcb = function(doc) {
-          // var referer = req.headers.referer.toString();
-          // if (referer.indexOf('/workstation') > -1) {
-          //     res.redirect('/workstation')
-          // }
-          // else if (referer.indexOf('/trial') > -1) {
-          //     res.redirect('/trial');
-          // }
-          // else if (referer.indexOf('/signin') > -1){
-          //     res.redirect('/trialintro');
-          // }
-          // else {
-          //     res.redirect('/intro');
-          // }
-          res.redirect('/trialintro');
-        };
-
-        findOrCreate(db,user,successcb);
-      }
     });
 
     app.post('/addVideoToLibrary', isLoggedIn, function (req, res) {
@@ -777,17 +721,9 @@ exports.trial = function (db) {
 
 };
 
-
-exports.fbCB = function (db) {
-  return function (req, res) {
-    var successcb = function(doc) {      
-      // var referer = req.headers.referer.toString();
-      // if (referer.indexOf('/signin') > -1) {
-      //     res.redirect('/trialintro');
-      // } else {
-          res.redirect('/trialintro');
-      // }
-    };  
+// =============================================================================
+// MIDDLEWARE AND UTILITY FUNCTIONS  ===========================================
+// =============================================================================
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
@@ -797,37 +733,51 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
+function getInstagramVideos(req, res, next) {
 
-exports.signup = function (db, crypto) {
-  return function (req, res) {
-    var user = {};
-    var successcb = function(doc) {      
-      // var referer = req.headers.referer.toString();
-      // if (referer.indexOf('/signin') > -1) {
-      //     res.redirect('/trialintro')
-      // } else {
-          res.redirect('/trialintro');
-    //   }
-    };  
+    var user = req.user;
+    if (user) {
+        var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
+        var token = user.instagram.token;
+        var media_json,
+            media,
+            next_max_id = "",
+            pages = 0,
+            urls = [];
 
-    user.username = req.body.email;
-    user.id = req.body.email;
-    user.provider = 'vidcode';
-    findOrCreate(db,user,successcb);
-  };
-};
+        function igApiCall(next_page) {
+            request.get(apiCall + token + "&max_id=" + next_page, function (err, resp, body) {
+                if (!err) {
+                    pages++;
+                    media_json = JSON.parse(body);
+                    next_page = media_json.pagination.next_max_id;
+                    media = media_json.data;
+                    var item;
 
-exports.preOrderSignUp = function(db) {
-  return function (req, res) {
-    var vc = db.collection('vidcode');
-    doc = {
-      email : req.body.email,
-      social : "preorder"
+                    for (var i = 0; i < media.length; i++) {
+                        item = media[i];
+                        if (item.hasOwnProperty("videos") && (urls.length < 4)) {
+                            urls.push(item.videos.standard_resolution.url);
+                        }
+                    }
+                } else {
+                    res.send('error with Instagram API');
+                    return;
+                }
+                if (next_page && (pages < 5)) {
+                    igApiCall(next_page);
+                } else {
+
+                    req.user.instagram.IGvideos = urls;
+                    req.user.save();
+                    return next();
+                }
+            });
+        }
+
+        igApiCall(next_max_id);
     }
-    vc.insert(doc, {w: 0});
-    res.redirect('/trial');
-  };
-};
+}
 
 function generateToken(crypto) {
     var tokenLength = 10;

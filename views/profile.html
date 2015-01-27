@@ -38,14 +38,14 @@
                         <a href="/workstation/{{this.token}}">
                             <video class="video" src="{{this.videoSrc}}"/>
                         </a>
-
+                        <p class="js-edit-vid-attrs edit-vid is-hidden"><img src="/img/icons/eraser.png"></p>
                         <div class="vid-row">
                             <a href="/workstation/{{this.token}}">
-                            <span class="info">
+                            <div class="info">
                                 <p class="title">{{this.title}}</p>
                                 <p class="descr">{{this.descr}}</p>
                                 <p class="videocode">see code</p>
-                            </span>
+                            </div>
                             </a>
                         </div>
 
@@ -70,20 +70,21 @@
                     {{#each videos}}
 
 
-                   <div class="profile-vid-small">
+                   <div class="profile-vid-small js-vid-info">
 
                         <a href="/share/{{this.token}}">
                             <video class="video" src="/video/?file={{this.file}}"/>
                         </a>
-
+                        <p class="js-edit-vid-attrs edit-vid is-hidden"><img src="/img/icons/eraser.png"></p>
                         <div class="vid-row">
-                            <a href="/share/{{this.token}}">
-                            <span class="info">
-                                <p class="title">{{this.title}}</p>
-                                <p class="descr">{{this.descr}}</p>
-                                <p class="videocode">see code</p>
-                            </span>
-                            </a>
+                            <div class="info">
+                                <a href="/share/{{this.token}}"><p class="title">{{this.title}}</p></a>
+                                <input type="text" class="edit-title is-hidden">
+                                <a href="/share/{{this.token}}"><p class="descr">{{this.descr}}</p></a>
+                                <input type="text" class="edit-descr is-hidden">
+                                <a href="/share/{{this.token}}"><p class="videocode">see code</p></a>
+                            </div>
+
                         </div>
 
                     </div>

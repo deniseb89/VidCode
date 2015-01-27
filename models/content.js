@@ -35,7 +35,18 @@ var lessonContent =
       ],
       'elements' : ['interval', 'frames'],
       'class' : 'stop-motion-method',
-    }
+    },
+    'computerVision' : {
+      'title': ['Live Vidcode Coding!'],
+      'lessonText': ['speed step', 'speed step', 'speed step', 'speed step'],
+      'images':['pixel.png'],
+      'learnMore' : [
+        {'topic':'My Movie', 'target':'#movies222'},
+        {'topic':'Play', 'target': '#play222'}
+      ],
+      'elements' : ['squares', 'circles'],
+      'class' : 'computer-vision-method'
+    }    
   };
 
  module.exports = lessonContent;

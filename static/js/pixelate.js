@@ -8,7 +8,7 @@ var cameraCanvas,
 var gUM = navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.getUserMedia ||  navigator.msGetUserMedia;
 var URL = window.webkitURL = window.URL || window.webkitURL || window.mozURL || window.msURL;
 
-var computerVision = {
+var pixelate = {
   on : false,
   run: null,
   step: {'x':5, 'y':5},
@@ -19,7 +19,7 @@ var computerVision = {
         if (gUM) {
             console.log("hey trying to get camera");
             gUM.call(navigator,
-                {video:true}, computerVision.start, function(error) {
+                {video:true}, pixelate.start, function(error) {
                 alert('couldn\'t get stream, try using Chrome?');
                 console.log(error);
             });
@@ -29,18 +29,17 @@ var computerVision = {
   },
 
   start: function(stream){
-        clearInterval(computerVision.run);
+        clearInterval(pixelate.run);
         
         cameraVideo = document.getElementById('cameraVideo');
         cameraVideo.src = webkitURL.createObjectURL(stream);       
 
         console.log("got stream");
-        computerVision.on = true;
+        pixelate.on = true;
         activateSession();
         effects[allEffects[0]]["bottom"] = seriously.source(camera);
         
-        computerVision.updateStream();
-        //computerVision.run = setInterval(computerVision.updateStream,60);
+        pixelate.updateStream();
 
   },    
   updateStream: function(){
@@ -49,18 +48,18 @@ var computerVision = {
         var videoFrame = bufferContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height).data;
 
         cameraContext.clearRect(0,0, cameraCanvas.width, cameraCanvas.height);
-        cameraContext.fillStyle = computerVision.backgroundColor;
+        cameraContext.fillStyle = pixelate.backgroundColor;
         cameraContext.fillRect(0,0, cameraCanvas.width, cameraCanvas.height); 
 
-         for(var x=0; x<bufferCanvas.width; x+=computerVision.step.x){
-             for(var y=0; y<bufferCanvas.height; y+=computerVision.step.y){
+         for(var x=0; x<bufferCanvas.width; x+=pixelate.step.x){
+             for(var y=0; y<bufferCanvas.height; y+=pixelate.step.y){
                var i = ((bufferCanvas.width * y) + (bufferCanvas.width-1-x))  * 4;
 
                cameraContext.fillStyle = "rgba(" + videoFrame[i] + "," + videoFrame[i+1] + "," + videoFrame[i+2] +",1)";
-               cameraContext.fillRect(x, y, computerVision.size, computerVision.size);
+               cameraContext.fillRect(x, y, pixelate.size, pixelate.size);
              }
          }  
         camera.update();
-        requestAnimationFrame(computerVision.updateStream);
+        requestAnimationFrame(pixelate.updateStream);
   }
 }

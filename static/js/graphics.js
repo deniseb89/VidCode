@@ -225,7 +225,6 @@ var createDrawing = function(){
         $('.cm-drawingColor').effect("highlight", 2000);
         $('.cm-offsetX').effect("highlight", 2000);
         $('.cm-offsetY').effect("highlight", 2000);
-
 }
 
 var createGraphics = function(){
@@ -256,13 +255,12 @@ var createGraphics = function(){
     if(!sizeExists){
       var text = "\n\ size="+Math.round(size)+";";
       createCodeInEditor(text, "cm-size");
-    }    
+  }    
      if(!sizeExists || !positionExists){
         $('.cm-positionX').effect("highlight", 2000);
         $('.cm-positionY').effect("highlight", 2000);
         $('.cm-size').effect("highlight", 2000);
     }
-
 
     if(drawingMode){
         var allTM = myCodeMirror.getAllMarks();
@@ -298,7 +296,6 @@ var createAnimation = function(){
     $('.cm-animationY').effect("highlight", 2000);
     $('.cm-animationSpeedX').effect("highlight", 2000);
     $('.cm-animationSpeedY').effect("highlight", 2000);
-
 }
 
 var turnOffGraphics = function(){
@@ -346,7 +343,6 @@ var turnOffDrawing = function(){
 
 var turnOffAnimation = function(status){
     animationMode = false;  
-
     clearInterval(animationInterval);
 
     if(status == "delete"){
@@ -378,7 +374,6 @@ var turnOffAnimation = function(status){
 var adjustCanvasHeight = function(){
         var newHeight = $('.video2').height();
         var newWidth = $('.video2').width();
-
         var marginTopSupport, marginTopCamera;
 
         var marginTop = newHeight*-1;
@@ -398,6 +393,4 @@ var adjustCanvasHeight = function(){
 
         graphicsCanvas.width = newWidth;
         graphicsCanvas.height = newHeight;
-
-
 }
