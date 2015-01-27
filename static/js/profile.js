@@ -28,17 +28,44 @@ jQuery(document).ready(function() {
     });
 
     //clicking eraser makes text fields editable for description and title
-    $('.js-edit-vid-attrs').click(function(){
+    $('.tabs').on('click', '.js-edit-vid-attrs', function(){
         var $thisTitle = $(this).parent().find('.title:first')
         var $thisDescr = $(this).parent().find('.descr:first')
+        var $thisTitleEdit = $(this).parent().find('.edit-title:first');
+        var $thisDescrEdit = $(this).parent().find('.edit-descr:first');
 
         $thisTitle.addClass('is-hidden');
         $thisDescr.addClass('is-hidden');
-        $(this).parent().find('.edit-title:first').removeClass('is-hidden');
-        $(this).parent().find('.edit-descr:first').removeClass('is-hidden');
-        $(this).parent().find('.edit-title:first').val($thisTitle.text());
-        $(this).parent().find('.edit-descr:first').val($thisDescr.text());
+        $thisTitleEdit.removeClass('is-hidden');
+        $thisDescrEdit.removeClass('is-hidden');
+        $thisTitleEdit.val($thisTitle.text());
+        $thisDescrEdit.val($thisDescr.text());
 
+        $(this).children().attr("src", "/img/icons/check-save.png");
+
+        $(this).removeClass('js-edit-vid-attrs');
+        $(this).addClass('js-save-vid-attrs');
+    });
+
+    $('.tabs').on('click', '.js-save-vid-attrs', function(){
+        var $thisTitle = $(this).parent().find('.title:first');
+        var $thisDescr = $(this).parent().find('.descr:first');
+        var $thisTitleEdit = $(this).parent().find('.edit-title:first');
+        var $thisDescrEdit = $(this).parent().find('.edit-descr:first');
+
+        $thisTitle.text($thisTitleEdit.val());
+        $thisDescr.text($thisDescrEdit.val());
+
+        $thisTitle.removeClass('is-hidden');
+        $thisDescr.removeClass('is-hidden');
+
+        $thisTitleEdit.addClass('is-hidden');
+        $thisDescrEdit.addClass('is-hidden');
+
+        $(this).children().attr("src", "/img/icons/eraser.png");
+
+        $(this).addClass('js-edit-vid-attrs');
+        $(this).removeClass('js-save-vid-attrs');
     });
 
 

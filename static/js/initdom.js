@@ -163,7 +163,141 @@ $(document).ready(function () {
 
     $(".tabs-2").droppable({
         drop: function (event, ui) {
+            dropEffects(ui);
+        }
+    });
 
+    $(".draggable").click(function () {
+        var eff = ($(this).attr('name'));
+        $(this).removeClass("is-active");
+
+        var allTM = myCodeMirror.getAllMarks();
+        for (var m = 0; m < allTM.length; m++) {
+            var tm = allTM[m];
+            if (tm.className == "cm-" + eff) {
+                myCodeMirror.removeLine(tm.find().to.line);
+            }
+        }
+
+        if (eff == "drawing" ){
+            turnOffDrawing();
+            updateGraphicsCanvas();
+        }
+        if(eff == "animation"){
+            turnOffAnimation("delete");
+        }
+        myCodeMirror.save();
+    });
+
+    $('.methodList li').each(function () {
+        $(this).draggable({
+            helper: "clone",
+            revert: "invalid"
+        });
+    });
+
+     $('.js-vid-click').each(function () {
+        $(this).draggable({
+            helper: "clone",
+            revert: "invalid",
+            start: function (e, ui) {
+                $('.js-vid-click').removeClass('js-selected-video');
+                ui.helper.width(ui.helper.prevObject[0].clientWidth);
+                ui.helper.height(ui.helper.prevObject[0].clientHeight);
+            },
+            cursorAt: {left:45, top:30},
+            stop: function(event, ui){
+                $(this).addClass('js-selected-video');
+            }
+        });
+    });
+
+     $('.js-graph-click').each(function () {
+        $(this).draggable({
+            helper: "clone",
+            revert: "invalid",
+            start: function (e, ui) {
+                ui.helper.width(ui.helper.prevObject[0].clientWidth);
+                ui.helper.height(ui.helper.prevObject[0].clientHeight);
+            },
+            cursorAt: {left:45, top:30}
+        });
+    });
+
+
+    $('#canvas').droppable({
+        drop: function (event, ui) {
+            if(ui.draggable[0].tagName == "VIDEO"){
+                $('.loader').removeClass('is-hidden');
+                $('.js-vid-click').removeClass('js-selected-video');
+                ui.draggable.addClass('js-selected-video');
+                var thisSrc = ui.draggable.attr("src");
+                movie.src = thisSrc;
+            }
+            else if(ui.draggable[0].tagName == "IMG"){
+                if(ui.draggable[0].className.indexOf("js-graph") >= 0){
+                  $('.js-graph-click').removeClass('js-selected-graphic');
+                  var thisSrc = ui.draggable.attr("src");
+                    var allGraphs = document.querySelectorAll('.js-graph-click');
+                    $('#mygraphic').attr("id", "");
+
+                    for(var i = 0; i < allGraphs.length; i++){
+                        if(allGraphs[i].src.indexOf(thisSrc) >= 0 ){
+                            if(allGraphs[i].style.position != "absolute"){
+                               allGraphs[i].setAttribute('class', 'js-graph-click ui-draggable js-selected-graphic');
+                               createGraphics();
+                               updateGraphicsCanvas();
+                           }
+                        }
+                    }
+                }
+            }
+            else{
+                dropEffects(ui);
+            }
+        }
+    });
+
+     $('.js-img-click').each(function () {
+        $(this).draggable({
+            helper: "clone",
+            revert: "invalid",
+            connectToSortable: "#timeline-sortable",
+            start: function(event, ui) {
+               ui.helper.width(ui.helper.prevObject[0].clientWidth);
+               ui.helper.height(ui.helper.prevObject[0].clientHeight);
+
+               stopMotion.dragID = ui.helper.prevObject[0].id;
+               //console.log(ui.helper.prevObject[0].id);
+          },
+          cursorAt: {left:45, top:30}
+
+        });
+    });
+
+     $('#timeline-sortable').sortable({
+        distance:30,
+        placeholder: "placeholder-highlight",
+
+        stop: function( event, ui ) {
+           $('.ui-draggable').off('mouseup');
+           if(ui.item[0].tagName == "IMG"){
+                dropFrames(ui.item);
+            }
+           stopMotion.reorderFrames();
+       },
+       out: function(event, ui){
+            $('.ui-draggable').on('mouseup', function() {
+                ui.item[0].children[0].setAttribute('class','');
+                console.log(ui.item[0].children[0].className);
+                stopMotion.reorderFrames();
+            });
+       }
+
+      });
+
+
+   var dropEffects = function(ui){
             lessonIsActive(".js-effects");
 
             var eff = ui.draggable.attr("name");
@@ -198,53 +332,41 @@ $(document).ready(function () {
             }
 
             myCodeMirror.save();
-
             $(".cm-" + eff).effect("highlight", 2000);
-        }
-    });
+    };
 
-    $(".draggable").click(function () {
-        var eff = ($(this).attr('name'));
-        $(this).removeClass("is-active");
+   var dropFrames = function(item){
+            updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
+            if (!stopMotion.on) changeUniqueSrc(item[0]);
+            item.addClass('js-selected-still');
+            item.addClass('js-selected-video');
 
-        var allTM = myCodeMirror.getAllMarks();
-        for (var m = 0; m < allTM.length; m++) {
-            var tm = allTM[m];
-            if (tm.className == "cm-" + eff) {
-                myCodeMirror.removeLine(tm.find().to.line);
+
+            //recalculate and keep only frames which are still selected
+            var selectedStills = document.querySelectorAll('.js-selected-still');
+            var newFrames = [];
+            for (var i=0; i<stopMotion.frames.length; i++){
+              var frameIsSelected = false;
+              for(var j = 0; j < selectedStills.length; j++){
+                if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;
+              }
+              if (frameIsSelected) newFrames.push(stopMotion.frames[i]);
             }
-        }
 
-        if (eff == "drawing" ){
-            turnOffDrawing();
-            updateGraphicsCanvas();
-        }
-        if(eff == "animation"){
-            turnOffAnimation("delete");
-        }
-        myCodeMirror.save();
-    });
 
-    $('.methodList li').each(function () {
-        $(this).draggable({
-            helper: "clone",
-            revert: "invalid"
-        });
-    });
+            //add new item to the new frames
+            newFrames.splice(item.index(), 0, stopMotion.dragID);
+            stopMotion.frames = newFrames;
+            createStopMotionInEditor("frames");
+            stopMotion.addFramesToTimeline();
+   };
+
 
     $('.js-img-click').click(imgClickSetup);
 
     $('.js-vid-click').click(vidClickSetup);
 
     $('.js-graph-click').click(graphClickSetup);
-
-    $( "#timeline-sortable" ).sortable({
-        distance:30,
-        placeholder: "placeholder-highlight",
-        stop: function( event, ui ) {
-            reorderFrames();
-        }
-    });
 
     //Switch between content
     $('.js-switch-view').click(function () {
@@ -264,4 +386,18 @@ $(document).ready(function () {
         $('.js-switch-view-container').toggleClass('is-hidden');
         $('body').toggleClass('js-switch-menu-appear');
     });
+
+
+
+
+    $( window ).resize(function() {
+        if(!$('.video2').hasClass('is-hidden')){
+            adjustCanvasHeight();
+        }
+        // var timelineWidth = $('#stop-motion-timeline').width();
+        // document.getElementById('stop-motion-timeline').style.height = timelineWidth/8+"px";
+    });
+
+
+
 });
