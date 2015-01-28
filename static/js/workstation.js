@@ -69,7 +69,7 @@ var activateSession = function () {
 var InitSeriously = function () {
     seriously = new Seriously();
 
-    //TODO: generalize to my media
+	//TODO: generalize to my media
    
     video = seriously.transform('reformat');
     video.width = 420;

@@ -390,7 +390,7 @@ $(document).ready(function () {
         $('.basic-filter-method').addClass('is-hidden');
         $('.stop-motion-method').addClass('is-hidden');
         $('.graphic-method').addClass('is-hidden');
-        $('.computer-vision-method').addClass('is-hidden');
+        $('.computer-vison-method').addClass('is-hidden');
         $('.' + view).removeClass('is-hidden');
         $('.js-lesson-name').text(lName);
         $('.js-lesson-page-num-total').text(lessonNum);
@@ -402,6 +402,16 @@ $(document).ready(function () {
     });
 
 
+    $('#access-camera').click(function(){
+		if(pixelate.cameraStatus){
+			this.innerHTML = "Access Camera";	
+			pixelate.turnOff();
+			
+		}else{
+			this.innerHTML = "Turn Off Camera";				
+			pixelate.capture();
+		}		
+	});
 
 
     $( window ).resize(function() {

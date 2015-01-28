@@ -34,7 +34,7 @@ var lessonContent =
         {'topic':'Frame Rate', 'target': ''}
       ],
       'elements' : ['interval', 'frames'],
-      'class' : 'stop-motion-method',
+      'class' : 'stop-motion-method'
     },
     'computerVision' : {
       'title': ['Live Vidcode Coding!'],
@@ -45,7 +45,7 @@ var lessonContent =
         {'topic':'Play', 'target': '#play222'}
       ],
       'elements' : ['squares', 'circles'],
-      'class' : 'computer-vision-method'
+      'class' : 'computer-vison-method'
     }    
   };
 
