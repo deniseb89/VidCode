@@ -29,7 +29,7 @@ var checkWebGL = function () {
     if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
         $('.compatibility-error').removeClass('is-hidden');
     } else {
-    	$('.basic-filter-method').removeClass('is-hidden');
+    	$('.filter-method').removeClass('is-hidden');
     }
 };
 
