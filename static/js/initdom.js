@@ -410,16 +410,35 @@ $(document).ready(function () {
 
 
     $('#access-camera').click(function(){
+       
+       $('#recordBtn').toggleClass('is-hidden');
+        
 		if(pixelate.cameraStatus){
 			this.innerHTML = "Access Camera";	
+            pixelate.cameraStatus = false;
 			pixelate.turnOff();
-			
+            $('#playBtn').addClass('is-hidden');			
 		}else{
 			this.innerHTML = "Turn Off Camera";				
 			pixelate.capture();
 		}		
 	});
-
+    $('#recordBtn').click(function(){
+        if(pixelate.recording){
+            pixelate.stopRecording();
+            
+        }else{
+            pixelate.startRecording();
+        }       
+    });
+    $('#playBtn').click(function(){
+        if(!pixelate.playing){
+            pixelate.playVideo();
+            
+        }else{
+            pixelate.stopVideo();
+        }       
+    });
 
     $( window ).resize(function() {
         if(!$('.video2').hasClass('is-hidden')){

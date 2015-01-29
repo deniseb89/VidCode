@@ -267,7 +267,11 @@
 
                         <div class="is-hidden video-container pixelate-method">
                             <button id="access-camera" class="btn btn-primary">Access Camera</button>
-                        </div>
+                            <button id="recordBtn" class="is-hidden btn btn-primary">Record</button>
+                            <button id="playBtn" class="is-hidden btn btn-primary">Play Video</button>
+                             <video class="is-hidden" id="recordBlob" autoplay loop></video>
+                             <audio class="is-hidden" id="audioBlob"></audio>
+                      </div>
                     </div>
 
                     <div class="methodsBox js-appear clearfix">
@@ -365,6 +369,7 @@
 <script src="/js/stopmotion.js"></script>
 <script src="/js/pixelate.js"></script>
 <script src="/js/graphics.js"></script>
+<script src="//cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
 
 <script>
     mixpanel.track_links("#mix-share", "Share clicked");
