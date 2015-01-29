@@ -398,7 +398,9 @@ var updateScript = function (code) {
     if(textScript.indexOf('pixelate.shape')>=0){  
        $('li[name=shape]').addClass('is-active');
     }  
-
+    if(textScript.indexOf('pixelate.motion')>=0){  
+       $('li[name=motion]').addClass('is-active');
+    } 
     //-------------------Graphics in Script-----------------------//
 
     //if there is not position in the editor, turn off graphics

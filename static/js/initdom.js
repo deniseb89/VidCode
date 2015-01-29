@@ -343,7 +343,7 @@ $(document).ready(function () {
                 if(hasGraphic) createAnimation();
                 else  $('[name=' + eff + ']').removeClass("is-active");
             }
-            else if (eff == "pixel" || eff == "shape" || eff == "pixels" || eff == "background" || eff == "audio"){
+            else if (eff == "pixel" || eff == "shape" || eff == "pixels" || eff == "background" || eff == "audio" || eff == "motion"){
                 createPixelate(eff);
             }
   
