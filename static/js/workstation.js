@@ -381,7 +381,23 @@ var updateScript = function (code) {
         stopMotion.stop();
       }
     }
+    //-------------------Pixelate in Script-----------------------//
 
+    if(textScript.indexOf('pixelate.step')>=0){  
+      $('li[name=pixel]').addClass('is-active');
+    }         
+    if(textScript.indexOf('pixelate.addColor')>=0){  
+       $('li[name=pixels]').addClass('is-active');
+    }         
+    if(textScript.indexOf('pixelate.backgroundColor')>=0){  
+       $('li[name=background]').addClass('is-active');
+    }         
+    if(textScript.indexOf('pixelate.audio')>=0){  
+       $('li[name=audio]').addClass('is-active');
+    }         
+    if(textScript.indexOf('pixelate.shape')>=0){  
+       $('li[name=shape]').addClass('is-active');
+    }  
 
     //-------------------Graphics in Script-----------------------//
 

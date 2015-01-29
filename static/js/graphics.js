@@ -214,8 +214,20 @@ var updateGraphicsEditor = function(){
 
 
 var createDrawing = function(){
-     drawingMode = true;
-       $('#supportCanvas').removeClass('is-hidden');
+    
+    var drawingExists = false;
+    var allTM = myCodeMirror.getAllMarks();
+
+    for (var m = 0; m < allTM.length; m++) {
+        var tm = allTM[m];
+        if (tm.className == "cm-drawingMode" || tm.className == "cm-drawingColor" || tm.className == "cm-offsetX" || tm.className == "cm-offsetY" ) {
+           drawingExists = true;
+        }        
+    }
+
+    if(!drawingExists){
+        drawingMode = true;
+        $('#supportCanvas').removeClass('is-hidden');
         createCodeInEditor("\n\ ");
         createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
         createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
@@ -225,6 +237,7 @@ var createDrawing = function(){
         $('.cm-drawingColor').effect("highlight", 2000);
         $('.cm-offsetX').effect("highlight", 2000);
         $('.cm-offsetY').effect("highlight", 2000);
+    }
 }
 
 var createGraphics = function(){

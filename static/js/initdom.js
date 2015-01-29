@@ -195,6 +195,10 @@ $(document).ready(function () {
         if(eff == "animation"){
             turnOffAnimation("delete");
         }
+        if(eff == "pixel" || eff == "shape" || eff == "pixels" || eff == "background" || eff == "audio"){
+            turnOffPixelate(eff);
+        }
+
         myCodeMirror.save();
     });
 
@@ -339,6 +343,10 @@ $(document).ready(function () {
                 if(hasGraphic) createAnimation();
                 else  $('[name=' + eff + ']').removeClass("is-active");
             }
+            else if (eff == "pixel" || eff == "shape" || eff == "pixels" || eff == "background" || eff == "audio"){
+                createPixelate(eff);
+            }
+  
 
             myCodeMirror.save();
             $(".cm-" + eff).effect("highlight", 2000);

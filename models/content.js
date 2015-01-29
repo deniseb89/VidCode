@@ -58,7 +58,7 @@ var lessonContent =
         {'topic':'My Movie', 'target':'#movies222'},
         {'topic':'Play', 'target': '#play222'}
       ],
-      'elements' : ['squares', 'circles'],
+      'elements' : ['pixel grid', 'shape', 'background color', 'pixels color', 'audio reactive'],
       'class' : 'pixelate-method'
     }    
   };
