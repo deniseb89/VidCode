@@ -1446,6 +1446,10 @@ li.ui-state-default{
     width: 96%;
 }
 
+.lesson-page .video-container {
+    width: 100%;
+}
+
 .lesson-page .video-container video {
     width: 100%;
     cursor: pointer;
@@ -2750,3 +2754,7 @@ li.active a, li.active a:hover {
 
 .buy-stop-motion label{margin-right: 10px;}
 .buy-stop-motion .big-action-btn{text-align: center; width:100%;}
+
+.instagram-container {
+    float: left;
+}

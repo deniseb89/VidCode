@@ -53,7 +53,7 @@
 
                     <label for="video-title" class="js-h-onload">Title</label>
                     <input type="text" name="title" id="video-title" class="generalInput js-video-title js-h-onload">
-                    <label for="video-descr" class="js-h-onload">Optional Video Description</label>
+                    <label for="video-descr" class="js-h-onload">Video Description</label>
                     <textarea id="video-descr" name="descr" rows="4" class="js-video-descr js-h-onload"></textarea>
                     <input type="text" id="video-token" name="token" class="js-video-token" hidden="true" value="">
 
@@ -110,7 +110,7 @@
         </div>
 
         <div class="popup-upload-to-library is-hidden">
-            10 mb max file size
+            Select a .mp4, .webm, .ogg file under 10 MB
             <input type="file" id="inputFileToLibrary" name="file" multiple value="Select a File"/>
             <button class="btn js-hide-upload-to-library uploadfile">Cancel</button>
             <p class="fileError"></p>
@@ -147,12 +147,15 @@
                                 <ul id="timeline-sortable"></ul>
                         </div>
                         <div class="video-container clearfix">
-                            <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Videos</button>
-
                             <div id="vid-library" class="basic-filter-method">
                                 <p>Uploaded Videos</p>
+                                <div>
+                                    <button type="button" class="btn btn-primary js-upload-video left-btn">Upload Your Own Videos</button>                                
+                                </div>
                             </div>
+                        </div>
 
+                        <div class="video-container">
                             <div id="img-library" class="is-hidden stop-motion-method">
                                 <p>Uploaded Stills</p>
                             </div>
@@ -173,16 +176,12 @@
                                   </div>
                                   <div class="i-vid-container">
                                     <img class="js-img-click" id="sample-4" src="/img/still3.png"/>
-                                  </div>
-                                  <div class="i-vid-container">
-                                    <img class="js-img-click" id="sample-5" src="/img/still4.png"/>
-                                  </div>
-                                  <div class="i-vid-container">
-                                    <img class="js-img-click" id="sample-6" src="/img/still5.png"/>
-                                  </div>     
+                                  </div>    
                                 </div>
                             </div>
+                        </div>
 
+                        <div class="video-container instagram-container">
                             <p class="basic-filter-method">Instagram Videos</p>
 
                             <div class="insta-thumbnails basic-filter-method">
@@ -203,11 +202,11 @@
                             </div>
 
                             <div class="insta-import is-hidden">
-                                <a href="/auth/instagram">Import from Instagram</a>
+                                <a href="/auth/instagram/?ws=true">Import from Instagram</a>
                             </div>
                         </div>
 
-                        <div class="video-container clearfix basic-filter-method">
+                        <div class="video-container basic-filter-method">
                             <p>Sample Videos</p>
 
                             <div class="i-vid-container">
@@ -220,18 +219,19 @@
                                 <video class="js-vid-click sample-vid" src="/img/wha_color.mp4"></video>
                             </div>
                         </div>
-            <div class="is-hidden video-container graphic-method">
-              <p>Sample Graphics</p>
-                  <div class="i-vid-container">
-                                    <img src="/img/graphics/robot.png" class="js-graph-click" id="mygraphic"/> 
-                                </div>
-                  <div class="i-vid-container">
-                                    <img src="/img/graphics/flowers.png" class="js-graph-click" /> 
-                                </div>            
-                  <div class="i-vid-container">
-                                    <img src="/img/graphics/stars.png" class="js-graph-click" /> 
-                                </div>  
-            </div>
+
+                        <div class="video-container graphic-method is-hidden">
+                          <p>Sample Graphics</p>
+                              <div class="i-vid-container">
+                                                <img src="/img/graphics/robot.png" class="js-graph-click" id="mygraphic"/> 
+                                            </div>
+                              <div class="i-vid-container">
+                                                <img src="/img/graphics/flowers.png" class="js-graph-click" /> 
+                                            </div>            
+                              <div class="i-vid-container">
+                                                <img src="/img/graphics/stars.png" class="js-graph-click" /> 
+                                            </div>  
+                        </div>
 
                     </div>
 

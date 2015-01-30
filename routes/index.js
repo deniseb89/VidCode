@@ -292,7 +292,6 @@ exports.uploadFinished = function(db, gfs, crypto) {
 
 exports.igCB = function (db) {
   return function (req, res) {    
-
     var user = req.user;
     if (user){
       var apiCall = "https://api.instagram.com/v1/users/self/media/recent/?access_token=";
@@ -336,20 +335,18 @@ exports.igCB = function (db) {
         user.IGvideos = urls;
         
         var successcb = function(doc) {
-          // var referer = req.headers.referer.toString();
-          // if (referer.indexOf('/workstation') > -1) {
-          //     res.redirect('/workstation')
-          // }
-          // else if (referer.indexOf('/trial') > -1) {
-          //     res.redirect('/trial');
-          // }
-          // else if (referer.indexOf('/signin') > -1){
-          //     res.redirect('/trialintro');
-          // }
-          // else {
-          //     res.redirect('/intro');
-          // }
-          res.redirect('/trialintro');
+          var referer = req.headers.referer;
+          if (referer) {
+            referer = referer.toString().split('/').pop();
+            if (referer.length > 0) {
+                res.redirect('/trial');
+            }
+            else {
+                res.redirect('/trialintro');
+            }
+          } else {
+              res.redirect('/trial');            
+          }
         };
 
         findOrCreate(db,user,successcb);

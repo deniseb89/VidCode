@@ -108,8 +108,8 @@ MongoClient.connect(host, function(err, Db) {
   // sign up + sign in
   app.post('/signup', routes.signup(db));
   app.post('/preorder', routes.preOrderSignUp(db));
-  app.get('/auth/instagram', passport.authenticate('instagram'), function(req, res){});
-  app.get('/auth/instagram/cb', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
+  app.get('/auth/instagram/', passport.authenticate('instagram'), function(req, res){});
+  app.get('/auth/instagram/cb/', passport.authenticate('instagram', { failureRedirect: '/' }), routes.igCB(db));
   app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res){});
   app.get('/auth/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/' }), routes.fbCB(db));
 
