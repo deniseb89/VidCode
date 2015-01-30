@@ -70,7 +70,6 @@ var InitSeriously = function () {
     seriously = new Seriously();
 
 	//TODO: generalize to my media
-   
     video = seriously.transform('reformat');
     video.width = 420;
     video.height = 250;
@@ -122,13 +121,13 @@ var changeSrc = function () {
 
 
 var imgClickSetup = function () {
+    pixelate.turnOff();
     changeSrc();
     updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
-    //generalize this somewhere else so when source changes, target changes
-    if (!stopMotion.on) changeUniqueSrc(this);
+ 
 
     var selectedStills = document.querySelectorAll('.js-selected-still');
 
@@ -137,7 +136,9 @@ var imgClickSetup = function () {
       var frameIsSelected = false;
 
       for(var j = 0; j < selectedStills.length; j++){
-        if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;    
+        if(selectedStills[j].id == stopMotion.frames[i]){
+          frameIsSelected = true;   
+        }  
       }  
 
       if (frameIsSelected) newFrames.push(stopMotion.frames[i]);
@@ -147,6 +148,11 @@ var imgClickSetup = function () {
         newFrames.push(this.id);
         createStopMotionInEditor("frames");
     }  
+
+    if(!newFrames.length) {
+        stopMotion.frames = [];
+        stopMotion.addFramesToTimeline();
+    }
 
     var framesString = "";
     newFrames.forEach(function(e, index){
@@ -162,8 +168,19 @@ var imgClickSetup = function () {
         var cmLine = tm.find();
         updateCodeInEditor(' stopMotion.frames = ['+framesString+'];', cmLine.to.line, "cm-frames");
 
-        if(!newFrames.length) myCodeMirror.removeLine(cmLine.to.line);
+        if(!newFrames.length)  myCodeMirror.removeLine(cmLine.to.line);
+        
       }
+    } 
+
+    //generalize this somewhere else so when source changes, target changes
+    if (!stopMotion.on){
+      if(newFrames.length == 0) {
+        movie.src = "";
+        changeUniqueSrc(movie);
+      }else{
+        changeUniqueSrc(this);  
+      } 
     } 
 };
 
@@ -193,6 +210,7 @@ var vidClickSetup = function() {
     var thisSrc = $(this).attr('src');
     movie.src = thisSrc;
     removeStopMotionInEditor();
+    pixelate.turnOff();
 };
 
 var activateEndButtons = function (bType) {
@@ -406,6 +424,11 @@ var updateScript = function (code) {
     if(textScript.indexOf('pixelate.motion')>=0){  
        $('li[name=motion]').addClass('is-active');
     } 
+    if(textScript.indexOf('pixel') < 0){
+        pixelate.pixelateMode = false;
+
+    }
+
     //-------------------Graphics in Script-----------------------//
 
     //if there is not position in the editor, turn off graphics

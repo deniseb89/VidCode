@@ -13,15 +13,21 @@ var URL = window.webkitURL = window.URL || window.webkitURL || window.mozURL || 
 window.AudioContext = window.AudioContext||window.webkitAudioContext;
 var frequencies = null,
     analyser = null,
-    volume = 0;
+    volume = 0,
+    audioBlob,
+    framesBlob,
+    frames = 0,
+    recordAudio;
 
 var pixelate = {
   interval: null,	
   stream: null,	
+  playing: false,
+  recording: false,
   recordedFrames: [],	
   cameraStatus : false,
   run: null,
-  shape: 'circle',
+  shape: 'square',
   starPikes: 5,
   addColor: [0,0,0],	
   step: {'x':5, 'y':5},
@@ -34,7 +40,7 @@ var pixelate = {
   audioReactive: false,
   rotateAngle: 5,
   volumeThreshold: 0,
-  fill: true,
+  fill: false,
 
   capture: function(){
         if (gUM) {
@@ -52,11 +58,15 @@ var pixelate = {
   },
 
   start: function(str){
-	      stream = str;
+        removeStopMotionInEditor();
+
+	      pixelate.stream = str;
         clearInterval(pixelate.run);
         
+        recordAudio = RecordRTC(pixelate.stream);         
+
         cameraVideo = document.getElementById('cameraVideo');
-        cameraVideo.src = webkitURL.createObjectURL(stream);  
+        cameraVideo.src = webkitURL.createObjectURL(pixelate.stream);  
         cameraContext.webkitImageSmoothingEnabled=true;
 
         pixelate.cameraStatus = true;
@@ -67,7 +77,7 @@ var pixelate = {
 
         //==============audio ==================/
         var audioContext = new AudioContext();       
-        var audioSource = audioContext.createMediaStreamSource(stream);
+        var audioSource = audioContext.createMediaStreamSource(pixelate.stream);
 
         var gainNode = audioContext.createGain();
         gainNode.gain.value =0;        
@@ -84,16 +94,26 @@ var pixelate = {
   },    
   updateStream: function(){
         pixelate.soundAnalysis();
+
+        pixelate.recordFrames();
         
         if(pixelate.pixelateMode){
           pixelate.pixelManipulate();
         }
         else{
-         cameraContext.save();  
-         cameraContext.translate(cameraCanvas.width, 0);
-         cameraContext.scale(-1, 1);
-         cameraContext.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height); 
-         cameraContext.restore();    
+         if(!pixelate.playing) {
+           cameraContext.save();  
+           cameraContext.translate(cameraCanvas.width, 0);
+           pixelate.recordFrames();
+
+           cameraContext.scale(-1, 1);
+           cameraContext.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height); 
+           cameraContext.restore();    
+         }
+         else{
+            cameraContext.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height); 
+
+         }
         }
         
         camera.update(); 
@@ -106,14 +126,27 @@ var pixelate = {
           oldFrame = bufferContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height).data;          
         }
         
-        bufferContext.drawImage(cameraVideo, 0, 0, bufferCanvas.width, bufferCanvas.height);
+        if(pixelate.playing){
+           bufferContext.save();  
+           bufferContext.translate(cameraCanvas.width, 0);
+           bufferContext.scale(-1, 1);
+           bufferContext.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height); 
+           bufferContext.restore();  
+
+        }
+        else{
+          bufferContext.drawImage(cameraVideo, 0, 0, bufferCanvas.width, bufferCanvas.height);          
+        }
         var videoFrame = bufferContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height).data;
+        
+        pixelate.recordFrames();
+
 
         cameraContext.clearRect(0,0, cameraCanvas.width, cameraCanvas.height);
         cameraContext.fillStyle = pixelate.backgroundColor;
         cameraContext.fillRect(0,0, cameraCanvas.width, cameraCanvas.height); 
         
-         volume = mapValue(volume, 0, 80, 0, pixelate.pixelSize);
+        volume = mapValue(volume, 0, 80, 0, pixelate.pixelSize);
 
         for(var x=0; x<bufferCanvas.width; x+=pixelate.step.x){
           for(var y=0; y<bufferCanvas.height; y+=pixelate.step.y){
@@ -138,9 +171,9 @@ var pixelate = {
                   finalPixelSize = volume;
                 }
          
-               var red =  videoFrame[i]+ pixelate.addColor.red;
-               var green = videoFrame[i+1]+ pixelate.addColor.green;
-               var blue =  videoFrame[i+2]+ pixelate.addColor.blue; 
+               var red =  videoFrame[i]+ pixelate.addColor[0];
+               var green = videoFrame[i+1]+ pixelate.addColor[1];
+               var blue =  videoFrame[i+2]+ pixelate.addColor[2]; 
                
                cameraContext.fillStyle = "rgba(" + red + "," + green + "," + blue +",1)";
                cameraContext.strokeStyle = "rgba(" + red + "," + green + "," + blue +",1)";
@@ -179,19 +212,75 @@ var pixelate = {
         } 
         volume /= frequencies.length;
   }, 
+  recordFrames: function(){
+        if(pixelate.recording){
+           var dataUrl =  cameraCanvas.toDataURL('image/webp', 1);
+           //console.log(dataUrl);
+           pixelate.recordedFrames.push(dataUrl);    
+           frames++;   
+        }
+  },
+  startRecording: function(){
+    recordAudio.startRecording();
+    document.getElementById('recordBtn').innerHTML = "Stop"; 
+    console.log("started audio recording");
+    pixelate.recording = true;
+  },
+  stopRecording: function(){
+    recordAudio.stopRecording(function(audioURL){
+       audioBlob = audioURL;
+       console.log("stopped recorded. file at "+ audioURL);
+    }); 
+    document.getElementById('recordBtn').innerHTML = "Record"; 
+    pixelate.recording = false;
+    framesBlob = Whammy.fromImageArray(pixelate.recordedFrames, 1000 / 30);
+
+    $('#playBtn').removeClass('is-hidden');
+    //$('#recordBlob').removeClass('is-hidden');
+
+    document.getElementById('recordBlob').src = window.URL.createObjectURL(framesBlob);
+
+    pixelate.recordedFrames = [];
+  },
+  playVideo: function(){
+    cameraVideo.src = window.URL.createObjectURL(framesBlob);
+    document.getElementById('audioBlob').src = audioBlob;
+    document.getElementById('audioBlob').play();
+    pixelate.playing = true;
+    document.getElementById('playBtn').innerHTML = "Stop Video"; 
+  },
+  stopVideo: function(){
+    pixelate.playing = false;
+    cameraVideo.src = webkitURL.createObjectURL(pixelate.stream);  
+    document.getElementById('audioBlob').pause(); 
+    document.getElementById('audioBlob').currentTime = 0;
+    document.getElementById('playBtn').innerHTML = "Play Video"; 
+  },
   turnOff: function(){
-   		clearInterval(pixelate.interval);	   
-        pixelate.cameraStatus = false;
+   		  clearInterval(pixelate.interval);
+
+        if(pixelate.cameraStatus){
+          document.getElementById('access-camera').innerHTML = "Access Camera"; 
+          pixelate.cameraStatus = false;
+        }
 
         cameraContext.clearRect(0,0, cameraCanvas.width, cameraCanvas.height);
         cameraContext.fillStyle = 'black';
         cameraContext.fillRect(0,0, cameraCanvas.width, cameraCanvas.height); 
-        camera.update();
+        if(camera) camera.update();
 
-		    cameraVideo.src = "";
-		    stream.stop();
-        pixelateMode = false;
- 
+		    if(cameraVideo) cameraVideo.src = "";
+		    if(pixelate.stream) pixelate.stream.stop();
+
+        pixelate.pixelateMode = false;
+         
+        //turn everything off
+        turnOffPixelate("pixel");
+        turnOffPixelate("pixels");
+        turnOffPixelate("audio");
+        turnOffPixelate("motion");
+        turnOffPixelate("background");
+        turnOffPixelate("shape");
   }
 }
 
@@ -200,7 +289,7 @@ var createPixelate = function(eff){
   var pixelateExists; 
   var allTM = myCodeMirror.getAllMarks();
   if(eff == "pixel"){
-        for (var m = 0; m < allTM.length; m++) {
+      for (var m = 0; m < allTM.length; m++) {
           var tm = allTM[m];
           if (tm.className == "cm-pixelSize" || tm.className == "cm-pixelateStepX" || tm.className == "cm-pixelateStepY" ) {
              pixelateExists = true;
@@ -219,18 +308,14 @@ var createPixelate = function(eff){
   else if(eff == "pixels"){
       for (var m = 0; m < allTM.length; m++) {
           var tm = allTM[m];
-          if (tm.className == "cm-colorpixelsR" || tm.className == "cm-colorpixelsG" || tm.className == "cm-colorpixelsB" ) {
+          if (tm.className == "cm-colorpixels" ) {
              pixelateExists = true;
           }        
       }
      if(!pixelateExists){     
         createCodeInEditor("\n\ ");
-        createCodeInEditor("\n\ pixelate.addColor.red=0;", 'cm-colorpixelsR');
-        createCodeInEditor("\n\ pixelate.addColor.green=0;", 'cm-colorpixelsG');
-        createCodeInEditor("\n\ pixelate.addColor.blue=0;", 'cm-colorpixelsB');
-        $('.cm-colorpixelsR').effect("highlight", 2000);
-        $('.cm-colorpixelsG').effect("highlight", 2000);
-        $('.cm-colorpixelsB').effect("highlight", 2000);
+        createCodeInEditor("\n\ pixelate.addColor = [0,0,0];", 'cm-colorpixels');
+        $('.cm-colorpixels').effect("highlight", 2000);
       }
   } 
   else if(eff == "shape"){
@@ -306,21 +391,13 @@ var turnOffPixelate = function(eff){
             if(tm.className == "cm-pixelateStepY"){
                 myCodeMirror.removeLine(tm.find().to.line);
             }
-            pixelateMode = false;
+          pixelate.pixelateMode = false;
         }
         else if(eff=="pixels"){
-            if(tm.className == "cm-colorpixelsR"){
+            if(tm.className == "cm-colorpixels"){
                 myCodeMirror.removeLine(tm.find().to.line);
-                pixelate.addColor.red = 0;
-            }        
-            if(tm.className == "cm-colorpixelsG"){
-                myCodeMirror.removeLine(tm.find().to.line);
-                pixelate.addColor.green = 0;
-            } 
-            if(tm.className == "cm-colorpixelsB"){
-                myCodeMirror.removeLine(tm.find().to.line);
-                 pixelate.addColor.blue = 0;
-           }        
+                pixelate.addColor=[0,0,0];
+            }               
         }
         else if(eff=="shape"){
             if(tm.className == "cm-pixelShape"){
@@ -329,8 +406,8 @@ var turnOffPixelate = function(eff){
            }            
             if(tm.className == "cm-pixelFill"){
                 myCodeMirror.removeLine(tm.find().to.line);
-                pixelate.fill=true;
-           }         
+                 pixelate.fill=false;
+          }         
             if(tm.className == "cm-pixelStroke"){
                 myCodeMirror.removeLine(tm.find().to.line);
                 pixelate.strokeWidth=1;
@@ -356,6 +433,13 @@ var turnOffPixelate = function(eff){
         }
     }
 }
+
+
+
+
+
+
+
 
 
 
