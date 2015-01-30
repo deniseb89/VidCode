@@ -465,7 +465,7 @@ window.requestAnimationFrame = requestAnimationFrame;
 //begin Whammy video save
 var drawVideoFrame = function (time) {
     rafId = requestAnimationFrame(drawVideoFrame);
-    capture = frames.length * 60 / 1000;
+    capture = frames.length * 30 / 1000;
     captureTxt = Math.floor(100 * capture / vidLen) + '%';
     $('.dl-progress').css('width', captureTxt);
     $('.dl-progress').text('saving...');
@@ -477,7 +477,7 @@ var drawVideoFrame = function (time) {
 
 var stopDL = function () {
     cancelAnimationFrame(rafId);
-    webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+    webmBlob = Whammy.fromImageArray(frames, 1000 / 30);
     $('.progressDiv').addClass('is-hidden');
     $('.js-finish-m').removeClass('is-hidden');
 };
