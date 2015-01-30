@@ -424,6 +424,10 @@ $(document).ready(function () {
 		}		
 	});
     $('#recordBtn').click(function(){
+        if(pixelate.playing){
+              pixelate.stopVideo();          
+        }
+
         if(pixelate.recording){
             pixelate.stopRecording();
             

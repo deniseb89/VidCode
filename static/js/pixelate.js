@@ -14,6 +14,7 @@ window.AudioContext = window.AudioContext||window.webkitAudioContext;
 var frequencies = null,
     analyser = null,
     volume = 0,
+    audioBlob,
     framesBlob,
     frames = 0,
     recordAudio;
@@ -227,6 +228,7 @@ var pixelate = {
   },
   stopRecording: function(){
     recordAudio.stopRecording(function(audioURL){
+       audioBlob = audioURL;
        console.log("stopped recorded. file at "+ audioURL);
     }); 
     document.getElementById('recordBtn').innerHTML = "Record"; 
@@ -242,12 +244,16 @@ var pixelate = {
   },
   playVideo: function(){
     cameraVideo.src = window.URL.createObjectURL(framesBlob);
+    document.getElementById('audioBlob').src = audioBlob;
+    document.getElementById('audioBlob').play();
     pixelate.playing = true;
     document.getElementById('playBtn').innerHTML = "Stop Video"; 
   },
   stopVideo: function(){
+    pixelate.playing = false;
     cameraVideo.src = webkitURL.createObjectURL(pixelate.stream);  
-    console.log("stop video");
+    document.getElementById('audioBlob').pause(); 
+    document.getElementById('audioBlob').currentTime = 0;
     document.getElementById('playBtn').innerHTML = "Play Video"; 
   },
   turnOff: function(){
