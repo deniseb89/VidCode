@@ -23,7 +23,7 @@ var pixelate = {
   run: null,
   shape: 'circle',
   starPikes: 5,
-  addColor: {'red':0, 'green':0, 'blue':0},	
+  addColor: [0,0,0],	
   step: {'x':5, 'y':5},
   pixelSize: 5,	
   strokeWidth: 1,

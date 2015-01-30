@@ -275,10 +275,14 @@ var updateMediaLibrary = function (file, data) {
     var parent;
     var fn;
     var this_still;
+    var id = null;
+
     if (file.type.match(/image.*/)) {
         type = 'img';
         style = 'js-img-click';
         parent = 'img-library';
+        var allImgs = document.querySelectorAll('.js-img-click');
+        id = 'my-photo-'+Math.max(1,allImgs.length);
         fn = imgClickSetup;
     }
     else if (file.type.match(/video.*/)) {
@@ -292,6 +296,7 @@ var updateMediaLibrary = function (file, data) {
     div.className += 'i-vid-container';
     var media = document.createElement(type);
     media.className += style;
+    media.id = id;
     media.src = data;
     media.addEventListener('click', fn, false);
     div.appendChild(media);
