@@ -333,6 +333,8 @@ body.is-in-signup {
     color: #58355F;
 }
 
+.purpleText{color: #9469A0!important; cursor: pointer; font-weight: bold;}
+
 .btn-purple {
     background-color: #441B4B;
     border: 0px;
@@ -1050,6 +1052,9 @@ body.is-in-signup {
 }
 
 /* ---------------- Graphics, Animation and Timeline ------------------ */
+.full-width{
+    width:100%;
+}
 
 
 #supportCanvas, #graphicsCanvas{

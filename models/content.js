@@ -1,13 +1,12 @@
 var lessonContent =
   {
     'basicFilters' : {
-      'title': ['What are we writing? Javascript!'],
-      'lessonText': ["Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.", "All your favorite apps are made by talking to computers with programming languages."],
-      'images':['lesson-1-right.png'],
-      'learnMore' : [
-        {'topic':'What are we writing?', 'target':'#lesson-1-222'},
-        {'topic':'Pieces of our code', 'target': '#lesson-3-222'},
-        {'topic':'Effects', 'target': '#effects222'}
+      'lessonContainer' : [
+        {
+          'title': 'What are we writing? Javascript!',
+          'lessonText': "Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them. All your favorite apps are made by talking to computers with programming languages.",
+          'images':'lesson-1-right.png'
+        }
       ],
       'elements' : ['blur','noise','vignette','exposure', 'fader'],
       'class' : 'basic-filter-method'
@@ -46,7 +45,7 @@ var lessonContent =
       ],
       'elements' : ['squares', 'circles'],
       'class' : 'computer-vison-method'
-    }    
+    }
   };
 
  module.exports = lessonContent;

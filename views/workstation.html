@@ -104,7 +104,7 @@
 
                 <div class="large-selection-dropdown js-switch-view-container is-hidden">
                     <ul>
-                        <li class="js-switch-view" id="basic-filter-method" name="Filters" lessnum="4">Filters</li>
+                        <li class="js-switch-view" id="basic-filter-method" name="Filters" lessnum="6">Filters</li>
                         <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
                         </li>
                         <li class="js-switch-view" id="graphic-method" name="Graphics" lessnum="2">Graphics</li>
@@ -306,28 +306,34 @@
                                 <p class="js-lesson-name left">Filters</p>
 
                                 <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
-                                        class="js-lesson-page-num-total">4</span> ▾</p>
+                                        class="js-lesson-page-num-total">6</span> ▾</p>
                             </div>
                         </div>
 
 
                         {{#each content}}
                         <div class="is-hidden {{this.class}} clearfix lesson-text-container">
-                            {{#each this.title}}
+                            {{#each this.lessonContainer}}
+
                             <h3 class="lm-title">
-                                {{.}}
+                                {{this.title}}
                             </h3>
                             {{/each}}
                             <div class="js-lesson-text-update">
-                                {{#each this.lessonText}}
+                                {{#each this.lessonContainer}}
                                 <p>
-                                    {{.}}
+                                    {{this.lessonText}}
+                                </p>
+                                <p>
+                                    <strong>
+                                        Start your project by selecting media from the left hand corner.
+                                    </strong>
                                 </p>
                                 {{/each}}
                             </div>
-                            {{#each this.images}}
+                            {{#each this.lessonContainer}}
                             <div class="js-lesson-img">
-                                <img class="lessonImg" src="/img/lessons/{{.}}">
+                                <img class="lessonImg" src="/img/lessons/{{this.images}}">
                             </div>
                             {{/each}}
                         </div>
