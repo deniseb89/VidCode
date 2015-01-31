@@ -74,14 +74,13 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
 	        {{/if}}
 	    {{/if}}
 	    </div>
-	    <h3 id="file" class="is-hidden">{{file}}</h3>
-		<video id="vid-display" controls src="/video?file={{file}}"></video>
+		<video id="vid-display" controls src="/video/?file={{file}}"></video>
     <div class="share-p-text-container">
       <h3 class="kaytitle">{{title}}</h3>
       <p class="kaydesc">{{descr}}</p>
     </div>
-		<h2>Share your video on:</h2>
-		<div class="addthis-container">
+		<h2>Share your video</h2>
+		<div class="addthis-container is-hidden">
 			<div class="addthis_sharing_toolbox"></div>
 		</div>
 		<p class="greentext">Thank you for vidcoding!</p>
@@ -94,8 +93,16 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
 <script src="/js/bootstrap.js"></script>
 <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53e5544e45115c2b"></script>
 <script>
+  //addthis functionality and appearance
+  var addThisStyles = function () {
+      $('.at-share-btn').addClass('addthis-spacing');
+      $('.at-share-btn').addClass('addthis-spacing');
+      $('.addthis-container').removeClass('is-hidden');
+  };
+
   $( document ).ready(function() {
   	mixpanel.track_links("#mix-return-to-editor", "Return to Editor clicked" );
+    setInterval(addThisStyles, 2000);
   });
 </script>
 

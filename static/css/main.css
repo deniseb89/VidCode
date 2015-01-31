@@ -1465,6 +1465,10 @@ li.ui-state-default{
     width: 96%;
 }
 
+.lesson-page .video-container {
+    width: 100%;
+}
+
 .lesson-page .video-container video {
     cursor: pointer;
     width: 100%;
@@ -2498,7 +2502,9 @@ li.active a, li.active a:hover {
     padding-right: 5px !important
 }
 
+.at-share-btn{height: 0!important; width: 0!important;}
 
+.addthis-spacing{margin: 0px 20px!important;}
 
 /* ==========================================================================
 Helper classes
@@ -2770,4 +2776,5 @@ li.active a, li.active a:hover {
     font-weight: 600;
 }
 
-
+.buy-stop-motion label{margin-right: 10px;}
+.buy-stop-motion .big-action-btn{text-align: center; width:100%;}

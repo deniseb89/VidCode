@@ -195,11 +195,18 @@ module.exports = function (app, passport) {
     app.get('/auth/instagram/cb',
         passport.authenticate('instagram', {failureRedirect: '/'}),
         function (req, res) {
-            if (req.headers.referer.toString().indexOf('/workstation') > -1) {
-                res.redirect('/workstation')
-            }
-            else {
-                res.redirect('/intro');
+            var referer = req.headers.referer;
+
+            if (referer) {
+                referer = referer.toString().split('/').pop();
+                if (referer.length > 0) {
+                    res.redirect('/workstation');
+                }
+                else {
+                    res.redirect('/trialintro');
+                }
+            } else {
+                res.redirect('/workstation'); 
             }
         });
 
@@ -639,6 +646,17 @@ module.exports = function (app, passport) {
         res.render('intro', {
             user: req.user
         });
+    });
+
+    app.get('/trial', isLoggedIn, function (req, res) {
+
+        res.render("workstation",
+            {
+                user: req.user,
+                content: content,
+                newSession: true,
+                preorder: true
+            });
     });
 
     app.get('/workstation', isLoggedIn, function (req, res) {
