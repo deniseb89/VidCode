@@ -104,11 +104,12 @@
 
                 <div class="large-selection-dropdown js-switch-view-container is-hidden">
                     <ul>
-                        <li class="js-switch-view" id="basic-filter-method" name="Filters" lessnum="6">Filters</li>
+                        <li class="js-switch-view" id="basic-filter-method filter-method" name="Filters" lessnum="7">Filters</li>
+
                         <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
                         </li>
                         <li class="js-switch-view" id="graphic-method" name="Graphics" lessnum="2">Graphics</li>
-                        <li class="js-switch-view" id="computer-vision-method" name="Pixelate" lessnum="2">Pixelate</li>
+                        <li class="js-switch-view" id="pixelate-method" name="Pixelate" lessnum="2">Pixelate</li>
                     </ul>
                 </div>
             </div>
@@ -137,7 +138,7 @@
                             <video class="video1 is-hidden" id="myvideo" muted autoplay loop></video>
                         {{/if}}
 
-                           <video class="video3 is-hidden" id="cameraVideo" autoplay loop></video>
+                           <video class="video3 is-hidden" id="cameraVideo" autoplay muted loop></video>
 
                              <canvas class="video2 tabs-2 ui-droppable is-hidden" id="canvas" width="420px" height="250px"></canvas>
                              <canvas class="is-hidden" id="graphicsCanvas" width="420px" height="250px"> </canvas>
@@ -152,71 +153,70 @@
                                 <ul id="timeline-sortable"></ul>
                         </div>
                         <div class="video-container clearfix">
-                            <button type="button" class="basic-filter-method btn btn-primary js-upload-video left-btn">Upload Your Own Videos</button>
+                            <div id="vid-library" class="filter-method">
+                                <p>Uploaded Videos</p>
+                                <button type="button" class="filter-method btn btn-primary js-upload-video left-btn">Upload Your Own Videos</button>
+                            </div>
+                        </div>
 
+<!-- hide row profile for this user test as there is no need to upload their media to the server -->
+                        <div class="video-container row profile is-hidden">
 
 <!--                             <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media to Library</button> -->
 
+                            {{#if user.videoLibrary}}
 
-                            <div id="vid-library" class="basic-filter-method">
-                                <p>Uploaded Videos</p>
-                            </div>
-
-<!-- hide row profile for this user test as there is no need to upload their media to the server -->
-                            <div class="row profile is-hidden">
-                                {{#if user.videoLibrary}}
-
-                                {{#each user.videoLibrary}}
-                                <div class="insta-thumbnails">
-                                    <div class="row">
-                                        <div class="i-vid-container">
-                                            <a>
-                                                <video class="video js-vid-click" src="/video/?file={{this.file}}"/>
-                                            </a>
-                                        </div>
+                            {{#each user.videoLibrary}}
+                            <div class="insta-thumbnails">
+                                <div class="row">
+                                    <div class="i-vid-container">
+                                        <a>
+                                            <video class="video js-vid-click" src="/video/?file={{this.file}}"/>
+                                        </a>
                                     </div>
                                 </div>
-                                {{/each}}
-                                {{else}}
-                                <h2 class="profileheader">You have not uploaded videos to your library!</h2>
-                                {{/if}}
                             </div>
+                            {{/each}}
+                            {{else}}
+                            <h2 class="profileheader">You have not uploaded videos to your library!</h2>
+                            {{/if}}
+                        </div>
 
 
-                            <div id="img-library" class="is-hidden stop-motion-method">
-                                <!-- <p>Uploaded Stills</p> -->
-                            </div>
+                        <div id="img-library" class="video-container stop-motion-method is-hidden">
+                            <p>Uploaded Stills</p>
+                            <button type="button" class="stop-motion-method btn btn-primary js-upload-video left-btn">Upload Your Own Photos</button>
+                        </div>
 
-                            <div class="is-hidden stop-motion-method">
+                        <div class="video-container stop-motion-method is-hidden">
 
-                                <p class="is-hidden stop-motion-method">Sample Stills</p>
+                            <p class="is-hidden stop-motion-method">Sample Stills</p>
 
-                                <div class="stills-container">
-                                  <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-1" src="/img/still0.png"/>
-                                  </div>
-                                  <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-2" src="/img/still1.png"/>
-                                  </div>
-                                  <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-3" src="/img/still2.png"/>
-                                  </div>
-                                  <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-4" src="/img/still3.png"/>
-                                  </div>
-                                  <div class="i-vid-container">
-                                    <img class="js-img-click ui-draggable" id="sample-5" src="/img/still4.png"/>
-                                  </div>
-                                  <div class="i-vid-container">
+                              <div class="i-vid-container">
+                                <img class="js-img-click ui-draggable" id="sample-1" src="/img/still0.png"/>
+                              </div>
+                              <div class="i-vid-container">
+                                <img class="js-img-click ui-draggable" id="sample-2" src="/img/still1.png"/>
+                              </div>
+                              <div class="i-vid-container">
+                                <img class="js-img-click ui-draggable" id="sample-3" src="/img/still2.png"/>
+                              </div>
+                              <div class="i-vid-container">
+                                <img class="js-img-click ui-draggable" id="sample-4" src="/img/still3.png"/>
+                              </div>
+                              <div class="i-vid-container">
+                                <img class="js-img-click ui-draggable" id="sample-5" src="/img/still4.png"/>
+                              </div>
+                              <div class="i-vid-container">
+                                <img class="js-img-click ui-draggable" id="sample-6" src="/img/still5.png"/>
+                              </div>
+                        </div>
 
-                                    <img class="js-img-click ui-draggable" id="sample-6" src="/img/still5.png"/>
-                                  </div>
-                                </div>
-                            </div>
+                        <div class="video-container clearfix filter-method">
 
-                            <p class="basic-filter-method">Instagram Videos</p>
+                            <p class="filter-method">Instagram Videos</p>
 
-                            <div class="insta-thumbnails basic-filter-method">
+                            <div class="insta-thumbnails filter-method">
                                 <span class="i-error"></span>
 
                                 <div class="i-vid-container">
@@ -238,7 +238,7 @@
                             </div>
                         </div>
 
-                        <div class="video-container clearfix basic-filter-method">
+                        <div class="video-container clearfix filter-method">
                             <p>Sample Videos</p>
 
                             <div class="i-vid-container">
@@ -251,23 +251,27 @@
                                 <video class="js-vid-click sample-vid ui-draggable" src="/img/wha_color.mp4"></video>
                             </div>
                         </div>
-						<div class="is-hidden video-container graphic-method">
-							<p>Sample Graphics</p>
-						    <div class="i-vid-container">
+                        <div class="video-container graphic-method is-hidden ">
+                            <p>Sample Graphics</p>
+                            <div class="i-vid-container">
 
                                 <img src="/img/graphics/robot.png" class="js-graph-click"/>
                             </div>
-						    <div class="i-vid-container">
+                            <div class="i-vid-container">
                                 <img src="/img/graphics/flowers.png" class="js-graph-click" />
                             </div>
-						    <div class="i-vid-container">
+                            <div class="i-vid-container">
                                 <img src="/img/graphics/stars.png" class="js-graph-click" />
                             </div>
-						</div>
-
-                        <div class="is-hidden video-container computer-vision-method">
-                            <button id="access-camera" class="btn btn-primary">Access Camera</button>
                         </div>
+
+                        <div class="video-container pixelate-method is-hidden ">
+                            <button id="access-camera" class="btn btn-primary">Access Camera</button>
+                            <button id="recordBtn" class="is-hidden btn btn-primary">Record</button>
+                            <button id="playBtn" class="is-hidden btn btn-primary">Play Video</button>
+                             <video class="is-hidden" id="recordBlob" autoplay loop></video>
+                             <audio class="is-hidden" id="audioBlob" loop></audio>
+                      </div>
                     </div>
 
                     <div class="methodsBox js-appear clearfix">
@@ -306,21 +310,21 @@
                                 <p class="js-lesson-name left">Filters</p>
 
                                 <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
-                                        class="js-lesson-page-num-total">6</span> ▾</p>
+                                        class="js-lesson-page-num-total">7</span> ▾</p>
                             </div>
                         </div>
 
 
                         {{#each content}}
                         <div class="is-hidden {{this.class}} clearfix lesson-text-container">
-                            {{#each this.lessonContainer}}
+                            {{#each this.learnMore}}
 
                             <h3 class="lm-title">
                                 {{this.title}}
                             </h3>
                             {{/each}}
                             <div class="js-lesson-text-update">
-                                {{#each this.lessonContainer}}
+                                {{#each this.learnMore}}
                                 <p>
                                     {{this.lessonText}}
                                 </p>
@@ -331,7 +335,7 @@
                                 </p>
                                 {{/each}}
                             </div>
-                            {{#each this.lessonContainer}}
+                            {{#each this.learnMore}}
                             <div class="js-lesson-img">
                                 <img class="lessonImg" src="/img/lessons/{{this.images}}">
                             </div>
@@ -371,6 +375,7 @@
 <script src="/js/stopmotion.js"></script>
 <script src="/js/pixelate.js"></script>
 <script src="/js/graphics.js"></script>
+<script src="//cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
 
 <script>
     mixpanel.track_links("#mix-share", "Share clicked");

@@ -46,7 +46,7 @@ $(document).ready(function () {
         stillsSelectedLesson = false;
         updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing then that?!</p><p>Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
     });
-    $('#basic-filter-method').click(function () {
+    $('#filter-method').click(function () {
         updateLearnMore(1, "<p>JavaScript?</p><p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="img/lessons/lesson-1-right.png">');
     });
 
@@ -54,8 +54,7 @@ $(document).ready(function () {
         updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
     });
 
-    $('#computer-vision-method').click(function () {
-        updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
+    $('#pixelate-method').click(function () {
     });
 
     $('.learnMore').on('click', '.js-lesson-5-f', function () {
@@ -219,6 +218,10 @@ $(document).ready(function () {
         if(eff == "animation"){
             turnOffAnimation("delete");
         }
+        if(eff == "pixel" || eff == "shape" || eff == "pixels" || eff == "background" || eff == "audio"){
+            turnOffPixelate(eff);
+        }
+
         myCodeMirror.save();
     });
 
@@ -363,6 +366,10 @@ $(document).ready(function () {
                 if(hasGraphic) createAnimation();
                 else  $('[name=' + eff + ']').removeClass("is-active");
             }
+            else if (eff == "pixel" || eff == "shape" || eff == "pixels" || eff == "background" || eff == "audio" || eff == "motion"){
+                createPixelate(eff);
+            }
+
 
             myCodeMirror.save();
             $(".cm-" + eff).effect("highlight", 2000);
@@ -410,10 +417,10 @@ $(document).ready(function () {
         var view = ($(this).attr('id'));
         var lName = ($(this).attr('name'));
         var lessonNum = ($(this).attr('lessnum'));
-        $('.basic-filter-method').addClass('is-hidden');
+        $('.filter-method').addClass('is-hidden');
         $('.stop-motion-method').addClass('is-hidden');
         $('.graphic-method').addClass('is-hidden');
-        $('.computer-vison-method').addClass('is-hidden');
+        $('.pixelate-method').addClass('is-hidden');
         $('.' + view).removeClass('is-hidden');
         $('.js-lesson-name').text(lName);
         $('.js-lesson-page-num-total').text(lessonNum);
@@ -426,16 +433,40 @@ $(document).ready(function () {
 
 
     $('#access-camera').click(function(){
-		if(pixelate.cameraStatus){
-			this.innerHTML = "Access Camera";
-			pixelate.turnOff();
 
+       $('#recordBtn').toggleClass('is-hidden');
+
+		if(pixelate.cameraStatus){
+
+			this.innerHTML = "Access Camera";
+            pixelate.cameraStatus = false;
+			pixelate.turnOff();
+            $('#playBtn').addClass('is-hidden');
 		}else{
 			this.innerHTML = "Turn Off Camera";
 			pixelate.capture();
 		}
 	});
+    $('#recordBtn').click(function(){
+        if(pixelate.playing){
+              pixelate.stopVideo();
+        }
 
+        if(pixelate.recording){
+            pixelate.stopRecording();
+
+        }else{
+            pixelate.startRecording();
+        }
+    });
+    $('#playBtn').click(function(){
+        if(!pixelate.playing){
+            pixelate.playVideo();
+
+        }else{
+            pixelate.stopVideo();
+        }
+    });
 
     $( window ).resize(function() {
         if(!$('.video2').hasClass('is-hidden')){

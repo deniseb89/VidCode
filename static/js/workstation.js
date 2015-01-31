@@ -29,7 +29,7 @@ var checkWebGL = function () {
     if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
         $('.compatibility-error').removeClass('is-hidden');
     } else {
-    	$('.basic-filter-method').removeClass('is-hidden');
+    	$('.filter-method').removeClass('is-hidden');
     }
 };
 
@@ -70,7 +70,6 @@ var InitSeriously = function () {
     seriously = new Seriously();
 
 	//TODO: generalize to my media
-
     video = seriously.transform('reformat');
     video.width = 420;
     video.height = 250;
@@ -122,13 +121,13 @@ var changeSrc = function () {
 
 
 var imgClickSetup = function () {
+    pixelate.turnOff();
     changeSrc();
     updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
-    //generalize this somewhere else so when source changes, target changes
-    if (!stopMotion.on) changeUniqueSrc(this);
+
 
     var selectedStills = document.querySelectorAll('.js-selected-still');
 
@@ -137,7 +136,10 @@ var imgClickSetup = function () {
       var frameIsSelected = false;
 
       for(var j = 0; j < selectedStills.length; j++){
-        if(selectedStills[j].id == stopMotion.frames[i]) frameIsSelected = true;
+
+        if(selectedStills[j].id == stopMotion.frames[i]){
+          frameIsSelected = true;
+        }
       }
 
       if (frameIsSelected) newFrames.push(stopMotion.frames[i]);
@@ -146,6 +148,11 @@ var imgClickSetup = function () {
     if($(this).hasClass('js-selected-still')){
         newFrames.push(this.id);
         createStopMotionInEditor("frames");
+    }
+
+    if(!newFrames.length) {
+        stopMotion.frames = [];
+        stopMotion.addFramesToTimeline();
     }
 
     var framesString = "";
@@ -162,7 +169,19 @@ var imgClickSetup = function () {
         var cmLine = tm.find();
         updateCodeInEditor(' stopMotion.frames = ['+framesString+'];', cmLine.to.line, "cm-frames");
 
-        if(!newFrames.length) myCodeMirror.removeLine(cmLine.to.line);
+        if(!newFrames.length)  myCodeMirror.removeLine(cmLine.to.line);
+
+      }
+
+    }
+
+    //generalize this somewhere else so when source changes, target changes
+    if (!stopMotion.on){
+      if(newFrames.length == 0) {
+        movie.src = "";
+        changeUniqueSrc(movie);
+      }else{
+        changeUniqueSrc(this);
       }
     }
 };
@@ -193,6 +212,7 @@ var vidClickSetup = function() {
     var thisSrc = $(this).attr('src');
     movie.src = thisSrc;
     removeStopMotionInEditor();
+    pixelate.turnOff();
 };
 
 var activateEndButtons = function (bType) {
@@ -204,20 +224,23 @@ var activateEndButtons = function (bType) {
 var uploadFromComp = function (ev) {
     var files = ev.target.files;
     var maxSize = 10000000;
-
+    var fileTypes = ['mp4','ogg','webm'];
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
+        console.log(file);
+        var ext = file.name.split('.').pop()
+        ext = ext.toLowerCase();
         var reader = new FileReader();
 
         reader.onload = (function (theFile) {
             return function (e) {
-                if (file.size < maxSize) {
+                if ((file.size < maxSize)&&(fileTypes.indexOf(ext) >= 0)) {
                     updateMediaLibrary(file, e.target.result);
                     $(".popup").addClass("is-hidden");
                     $(".fileError").text("");
                 } else {
                     $('.loader').addClass('is-hidden');
-                    $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
+                    $(".fileError").text("Videos must be smaller than 10MB and end with '.mp4', '.webm', or '.ogg'. Try again with a different file.");
                 }
             };
         })(file);
@@ -275,10 +298,14 @@ var updateMediaLibrary = function (file, data) {
     var parent;
     var fn;
     var this_still;
+    var id = null;
+
     if (file.type.match(/image.*/)) {
         type = 'img';
         style = 'js-img-click';
         parent = 'img-library';
+        var allImgs = document.querySelectorAll('.js-img-click');
+        id = 'my-photo-'+Math.max(1,allImgs.length);
         fn = imgClickSetup;
     }
     else if (file.type.match(/video.*/)) {
@@ -292,6 +319,7 @@ var updateMediaLibrary = function (file, data) {
     div.className += 'i-vid-container';
     var media = document.createElement(type);
     media.className += style;
+    media.id = id;
     media.src = data;
     media.addEventListener('click', fn, false);
     div.appendChild(media);
@@ -381,7 +409,30 @@ var updateScript = function (code) {
         stopMotion.stop();
       }
     }
+    //-------------------Pixelate in Script-----------------------//
 
+    if(textScript.indexOf('pixelate.step')>=0){
+      $('li[name=pixel]').addClass('is-active');
+    }
+    if(textScript.indexOf('pixelate.addColor')>=0){
+       $('li[name=pixels]').addClass('is-active');
+    }
+    if(textScript.indexOf('pixelate.backgroundColor')>=0){
+       $('li[name=background]').addClass('is-active');
+    }
+    if(textScript.indexOf('pixelate.audio')>=0){
+       $('li[name=audio]').addClass('is-active');
+    }
+    if(textScript.indexOf('pixelate.shape')>=0){
+       $('li[name=shape]').addClass('is-active');
+    }
+    if(textScript.indexOf('pixelate.motion')>=0){
+       $('li[name=motion]').addClass('is-active');
+    }
+    if(textScript.indexOf('pixel') < 0){
+        pixelate.pixelateMode = false;
+
+    }
 
     //-------------------Graphics in Script-----------------------//
 
@@ -481,7 +532,7 @@ window.requestAnimationFrame = requestAnimationFrame;
 //begin Whammy video save
 var drawVideoFrame = function (time) {
     rafId = requestAnimationFrame(drawVideoFrame);
-    capture = frames.length * 60 / 1000;
+    capture = frames.length * 30 / 1000;
     captureTxt = Math.floor(100 * capture / vidLen) + '%';
     $('.dl-progress').css('width', captureTxt);
     $('.dl-progress').text('saving...');
@@ -493,7 +544,7 @@ var drawVideoFrame = function (time) {
 
 var stopDL = function () {
     cancelAnimationFrame(rafId);
-    webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+    webmBlob = Whammy.fromImageArray(frames, 1000 / 30);
     $('.progressDiv').addClass('is-hidden');
     activateEndButtons('finish');
 };

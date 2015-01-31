@@ -12,6 +12,7 @@ var removeStopMotionInEditor = function(){
         myCodeMirror.removeLine(cmLine.to.line);
       }      
     } 
+    stopMotion.stop();
 }
 
 
@@ -133,7 +134,14 @@ var stopMotion = {
         updateCodeInEditor(' stopMotion.frames = ['+allFrames+'];', cmLine.to.line, "cm-frames");
       }
     } 
-    stopMotion.start();
+    if(!framesTimeline.length){
+      movie.src="";
+      changeUniqueSrc(movie);
+
+    }
+    else{
+      stopMotion.start();  
+    }
   },
   stop : function(){
   	clearInterval(stopMotion.animate); 
@@ -141,26 +149,3 @@ var stopMotion = {
   }
 };
 
-//implement similar object for filters, graphics, movie, img
-/*
-var effects = {
-  allEffects = ['blur', 'noise', 'vignette', 'exposure', 'fader', 'kaleidoscope'],
-  seriouslyEffects: null,
-  mult : {'blur': .01, 'noise': .1, 'vignette': 1, 'exposure': .04, 'fader': .04, 'kaleidoscope': 1, 'saturation': .1};
-  defaultValue : {'number': 5, 'color': '"red"'};
-};
-
-var movieObj = {
-  src: "/img/wha_color.mp4",
-  play: function() {
-    console.log('playing');
-    return movie.play();
-  },
-  pause: function() {
-    console.log('pause');
-    return movie.pause();
-  },
-  speed: movie.playbackRate,
-  length: movie.duration
-};
-*/

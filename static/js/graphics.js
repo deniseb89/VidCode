@@ -7,12 +7,13 @@ var supportCanvas,
     graphicsContext;
 
 //graphic variables
-var position = {'x':0, 'y':0};
-    targetPosition = {'x':0, 'y':0};
-    currentPosition = {'x':0, 'y':0};
-    speed = {'x':1, 'y':1}
-    animationMode = false;
-    bouncingAnimation = true;
+var position = {'x':0, 'y':0},
+    targetPosition = {'x':0, 'y':0},
+    currentPosition = {'x':0, 'y':0},
+    initialPosition = {'x':0, 'y':0},
+    speed = {'x':1, 'y':1},
+    animationMode = false,
+    bouncingAnimation = true,
     size = 200,
     hasGraphic = false;
 
@@ -102,10 +103,10 @@ var animateImage = function(){
     var img = document.getElementsByClassName('js-selected-graphic')[0];    
     var directionX, directionY;
 
-    if(position.x < targetPosition.x) directionX = true;
+    if(initialPosition.x < targetPosition.x) directionX = true;
     else directionX = false;
 
-    if(position.y < targetPosition.y) directionY = true;
+    if(initialPosition.y < targetPosition.y) directionY = true;
     else directionY = false;
 
 
@@ -143,6 +144,7 @@ var animateImage = function(){
 
     graphicsContext.drawImage(img,currentPosition.x , currentPosition.y, size,size-size/5);
     graphic.update();
+    console.log("animating");
 
    
 }
@@ -154,16 +156,16 @@ var reverseAnimation = function(){
         temp.x = targetPosition.x;
         temp.y = targetPosition.y;
 
-        targetPosition.x = position.x;
-        targetPosition.y = position.y;
+        targetPosition.x = initialPosition.x;
+        targetPosition.y = initialPosition.y;
 
-        position.x = temp.x;
-        position.y = temp.y;  
-        updateGraphicsEditor();  
+        initialPosition.x = temp.x;
+        initialPosition.y = temp.y;  
+        //updateGraphicsEditor();  
     }
     else{
-        currentPosition.x = position.x;
-        currentPosition.y = position.y;
+        currentPosition.x = initialPosition.x;
+        currentPosition.y = initialPosition.y;
     }    
 }
 
@@ -200,31 +202,53 @@ var updateGraphicsEditor = function(){
             }
             if (tm.className=="cm-animationX"){
                 var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" targetPosition.x="+Math.round(targetPosition.x)+";", cmLine.to.line, "cm-animationX" );       
+                if(hasGraphic) updateCodeInEditor(" initialPosition.x="+Math.round(initialPosition.x)+";", cmLine.to.line, "cm-animationX" );       
                 else myCodeMirror.removeLine(cmLine.to.line);
             }
             if (tm.className=="cm-animationY"){
                 var cmLine = tm.find();
-                if(hasGraphic) updateCodeInEditor(" targetPosition.y="+Math.round(targetPosition.y)+";", cmLine.to.line, "cm-animationY" );       
+                if(hasGraphic) updateCodeInEditor(" initialPosition.y="+Math.round(initialPosition.y)+";", cmLine.to.line, "cm-animationY" );       
                 else myCodeMirror.removeLine(cmLine.to.line);
             }
-        }
+            if (tm.className=="cm-targetX"){
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor(" targetPosition.x="+Math.round(targetPosition.x)+";", cmLine.to.line, "cm-targetX" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
+            }
+            if (tm.className=="cm-targetY"){
+                var cmLine = tm.find();
+                if(hasGraphic) updateCodeInEditor(" targetPosition.y="+Math.round(targetPosition.y)+";", cmLine.to.line, "cm-targetY" );       
+                else myCodeMirror.removeLine(cmLine.to.line);
+            }        }
     myCodeMirror.save();
 }
 
 
 var createDrawing = function(){
-     drawingMode = true;
-       $('#supportCanvas').removeClass('is-hidden');
+    
+    var drawingExists = false;
+    var allTM = myCodeMirror.getAllMarks();
+
+    for (var m = 0; m < allTM.length; m++) {
+        var tm = allTM[m];
+        if (tm.className == "cm-drawingMode" || tm.className == "cm-drawingColor" || tm.className == "cm-offsetX" || tm.className == "cm-offsetY" ) {
+           drawingExists = true;
+        }        
+    }
+
+    if(!drawingExists){
+        drawingMode = true;
+        $('#supportCanvas').removeClass('is-hidden');
         createCodeInEditor("\n\ ");
         createCodeInEditor("\n\ drawingMode=true;", 'cm-drawingMode');
         createCodeInEditor("\n\ drawingColor='green';", 'cm-drawingColor');
-        createCodeInEditor("\n\ drawingOffset.x=0", 'cm-offsetX');
-        createCodeInEditor("\n\ drawingOffset.y=0", 'cm-offsetY'); 
+        createCodeInEditor("\n\ drawingOffset.x=0;", 'cm-offsetX');
+        createCodeInEditor("\n\ drawingOffset.y=0;", 'cm-offsetY'); 
         $('.cm-drawingMode').effect("highlight", 2000);
         $('.cm-drawingColor').effect("highlight", 2000);
         $('.cm-offsetX').effect("highlight", 2000);
         $('.cm-offsetY').effect("highlight", 2000);
+    }
 }
 
 var createGraphics = function(){
@@ -285,13 +309,17 @@ var createAnimation = function(){
     createCodeInEditor("\n\ ");
     createCodeInEditor("\n\ animationMode=true;", 'cm-animationMode');
     createCodeInEditor("\n\ bouncingAnimation=true;", 'cm-animationBounce');
-    createCodeInEditor("\n\ targetPosition.x="+targetPosition.x+";", 'cm-animationX');
-    createCodeInEditor("\n\ targetPosition.y="+targetPosition.y+";", 'cm-animationY');
+    createCodeInEditor("\n\ initialPosition.x="+initialPosition.x+";", 'cm-animationX');
+    createCodeInEditor("\n\ initialPosition.y="+initialPosition.y+";", 'cm-animationY');
+    createCodeInEditor("\n\ targetPosition.x="+targetPosition.x+";", 'cm-targetX');
+    createCodeInEditor("\n\ targetPosition.y="+targetPosition.y+";", 'cm-targetY');
     createCodeInEditor("\n\ speed.x="+speed.x+";", 'cm-animationSpeedX');
     createCodeInEditor("\n\ speed.y="+speed.y+";", 'cm-animationSpeedY');
 
     $('.cm-animationMode').effect("highlight", 2000);
     $('.cm-animationBounce').effect("highlight", 2000);
+    $('.cm-targetY').effect("highlight", 2000);
+    $('.cm-targetX').effect("highlight", 2000);
     $('.cm-animationX').effect("highlight", 2000);
     $('.cm-animationY').effect("highlight", 2000);
     $('.cm-animationSpeedX').effect("highlight", 2000);
@@ -352,6 +380,12 @@ var turnOffAnimation = function(status){
             if(tm.className == "cm-animationMode"){
                   myCodeMirror.removeLine(tm.find().to.line);             
             }
+             if(tm.className == "cm-targetX"){
+                  myCodeMirror.removeLine(tm.find().to.line);             
+            }           
+             if(tm.className == "cm-targetY"){
+                  myCodeMirror.removeLine(tm.find().to.line);             
+            }                     
              if(tm.className == "cm-animationX"){
                   myCodeMirror.removeLine(tm.find().to.line);             
             }           
