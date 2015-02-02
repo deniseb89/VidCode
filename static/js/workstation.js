@@ -59,7 +59,7 @@ var activateSession = function () {
     activateEndButtons('save');
     activateEndButtons('save-code');
     activateEndButtons('share');
-    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom left.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
+    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom right.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
     movie.addEventListener("loadeddata", changeSrc, false);
     movie.removeEventListener("canplay", activateSession, false);
     vidLen = Math.round(movie.duration);
@@ -73,29 +73,29 @@ var InitSeriously = function () {
     video = seriously.transform('reformat');
     video.width = 420;
     video.height = 250;
-    video.mode = 'contain';   
+    video.mode = 'contain';
     video.source = movie;
 
-    target = seriously.target('#canvas'); 
-    graphic = seriously.source(graphicsCanvas);   
+    target = seriously.target('#canvas');
+    graphic = seriously.source(graphicsCanvas);
     camera = seriously.source(cameraCanvas);
 
     //Set up Seriously.js effects
     seriouslyEffects = Seriously.effects();
-    
+
     var thisEffect;
     effects[allEffects[0]] = thisEffect = seriously.effect(allEffects[0]);
     thisEffect.top = graphic;
     thisEffect.bottom = video;
-  
+
     for (var i=1;i<allEffects.length;i++){
         effects[allEffects[i]]= thisEffect = seriously.effect(allEffects[i]);
         effects[allEffects[i]]["source"] = effects[allEffects[i-1]];
         thisEffect.amount = 0;
-    } 
-  
+    }
+
     target.source = effects[allEffects[allEffects.length-1]];
-    seriously.go();    
+    seriously.go();
 };
 
 var changeSrc = function () {
@@ -109,10 +109,10 @@ var changeSrc = function () {
             video = seriously.transform('reformat');
             video.width = 420;
             video.height = 250;
-            video.mode = 'contain';   
+            video.mode = 'contain';
             video.source = movie;
-            effects[allEffects[0]]["bottom"] = seriously.source(video);  
-            vidLen = Math.round(this.duration); 
+            effects[allEffects[0]]["bottom"] = seriously.source(video);
+            vidLen = Math.round(this.duration);
       } else {
         vidLen = 10; //arbitrarily make the stop-motion video length 10 seconds
         movie.src = "";
@@ -127,27 +127,28 @@ var imgClickSetup = function () {
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
- 
+
 
     var selectedStills = document.querySelectorAll('.js-selected-still');
 
-    var newFrames = [];   
+    var newFrames = [];
     for (var i=0; i<stopMotion.frames.length; i++){
       var frameIsSelected = false;
 
       for(var j = 0; j < selectedStills.length; j++){
+
         if(selectedStills[j].id == stopMotion.frames[i]){
-          frameIsSelected = true;   
-        }  
-      }  
+          frameIsSelected = true;
+        }
+      }
 
       if (frameIsSelected) newFrames.push(stopMotion.frames[i]);
     }
-    
+
     if($(this).hasClass('js-selected-still')){
         newFrames.push(this.id);
         createStopMotionInEditor("frames");
-    }  
+    }
 
     if(!newFrames.length) {
         stopMotion.frames = [];
@@ -169,9 +170,10 @@ var imgClickSetup = function () {
         updateCodeInEditor(' stopMotion.frames = ['+framesString+'];', cmLine.to.line, "cm-frames");
 
         if(!newFrames.length)  myCodeMirror.removeLine(cmLine.to.line);
-        
+
       }
-    } 
+
+    }
 
     //generalize this somewhere else so when source changes, target changes
     if (!stopMotion.on){
@@ -179,28 +181,28 @@ var imgClickSetup = function () {
         movie.src = "";
         changeUniqueSrc(movie);
       }else{
-        changeUniqueSrc(this);  
-      } 
-    } 
+        changeUniqueSrc(this);
+      }
+    }
 };
 
 
 var graphClickSetup = function () {
         //if graphic is not selected already, remove previous one
         if($(this).hasClass('js-selected-graphic') === false){
-            $('.js-graph-click').removeClass('js-selected-graphic'); 
+            $('.js-graph-click').removeClass('js-selected-graphic');
         }
          $(this).toggleClass('js-selected-graphic');
-        
+
         //check if has any Graphic selected
         if($(this).hasClass('js-selected-graphic') === true){
             createGraphics();
         }
         else{
            turnOffGraphics();
-           turnOffAnimation("delete");  
+           turnOffAnimation("delete");
         }
-        updateGraphicsCanvas();     
+        updateGraphicsCanvas();
 };
 
 var vidClickSetup = function() {
@@ -353,11 +355,11 @@ var updateScript = function (code) {
 
     labelLines();
     var matchEff = document.querySelectorAll(".active-effect");
-    var matchNames = [];    
+    var matchNames = [];
 
     //turn everything off
-    $('.btn-method').removeClass('is-active');          
-    
+    $('.btn-method').removeClass('is-active');
+
 
     //turn on back the effects in
     for (var t = 0; t < matchEff.length; t++) {
@@ -375,10 +377,10 @@ var updateScript = function (code) {
             adjScript += "\n\ effects." + thisEffect + ".amount = " + adjAmt + ";";
         }
     }
-    
+
     //-------------------Stop motion in Script-----------------------//
 
-    if(textScript.indexOf('stopMotion.frames')>=0){           
+    if(textScript.indexOf('stopMotion.frames')>=0){
         var currentStills = document.querySelectorAll('.js-img-click');
         var allFrames = stopMotion.frames.join(",");
 
@@ -391,7 +393,7 @@ var updateScript = function (code) {
                 $("#"+currentStills[i].id).addClass('js-selected-still');
                 $("#"+currentStills[i].id).addClass('js-selected-video');
           }
-        } 
+        }
 
         stopMotion.addFramesToTimeline();
     }
@@ -409,24 +411,24 @@ var updateScript = function (code) {
     // }
     //-------------------Pixelate in Script-----------------------//
 
-    if(textScript.indexOf('pixelate.step')>=0){  
+    if(textScript.indexOf('pixelate.step')>=0){
       $('li[name=pixel]').addClass('is-active');
-    }         
-    if(textScript.indexOf('pixelate.addColor')>=0){  
+    }
+    if(textScript.indexOf('pixelate.addColor')>=0){
        $('li[name=pixels]').addClass('is-active');
-    }         
-    if(textScript.indexOf('pixelate.backgroundColor')>=0){  
+    }
+    if(textScript.indexOf('pixelate.backgroundColor')>=0){
        $('li[name=background]').addClass('is-active');
-    }         
-    if(textScript.indexOf('pixelate.audio')>=0){  
+    }
+    if(textScript.indexOf('pixelate.audio')>=0){
        $('li[name=audio]').addClass('is-active');
-    }         
-    if(textScript.indexOf('pixelate.shape')>=0){  
+    }
+    if(textScript.indexOf('pixelate.shape')>=0){
        $('li[name=shape]').addClass('is-active');
-    }  
-    if(textScript.indexOf('pixelate.motion')>=0){  
+    }
+    if(textScript.indexOf('pixelate.motion')>=0){
        $('li[name=motion]').addClass('is-active');
-    } 
+    }
     if(textScript.indexOf('pixel') < 0){
         pixelate.pixelateMode = false;
 
@@ -444,7 +446,7 @@ var updateScript = function (code) {
        $('li[name=drawing]').addClass('is-active');
     }
     else{
-        turnOffDrawing();        
+        turnOffDrawing();
     }
 
     if(textScript.indexOf('animation')>=0){
@@ -452,7 +454,7 @@ var updateScript = function (code) {
         //console.log("textScript animation");
 
         if(textScript.indexOf('animationMode=false')>=0 || textScript.indexOf('animationMode= false')>=0 ||
-        textScript.indexOf('animationMode = false')>=0 || textScript.indexOf('animationMode =false')>=0){        
+        textScript.indexOf('animationMode = false')>=0 || textScript.indexOf('animationMode =false')>=0){
             turnOffAnimation("pause");
         }
         else{
@@ -461,8 +463,8 @@ var updateScript = function (code) {
         }
     }
     else{
-        turnOffAnimation("delete");  
-    }   
+        turnOffAnimation("delete");
+    }
 
     updateGraphicsCanvas();
 
@@ -637,7 +639,7 @@ var getDateMMDDYYYY = function () {
     return m + "-" + d + "-" + y;
 };
 
-var createCodeInEditor = function(text, cmclass){ 
+var createCodeInEditor = function(text, cmclass){
     myCodeMirror.replaceRange(text, CodeMirror.Pos( myCodeMirror.lastLine()));
     myCodeMirror.markText({
                     line:  myCodeMirror.lastLine(),
@@ -650,7 +652,7 @@ var updateCodeInEditor = function(text, cmline, cmclass){
     myCodeMirror.markText({
                     line: cmline,
                     ch: 0
-                }, CodeMirror.Pos(cmline), {className: cmclass});                   
+                }, CodeMirror.Pos(cmline), {className: cmclass});
 };
 
 

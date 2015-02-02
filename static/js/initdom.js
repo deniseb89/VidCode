@@ -8,7 +8,7 @@ $(document).ready(function () {
     //graphics
     supportCanvas = document.getElementById('supportCanvas');
     graphicsCanvas = document.getElementById('graphicsCanvas');
-    graphicsContext = graphicsCanvas.getContext("2d");  
+    graphicsContext = graphicsCanvas.getContext("2d");
     supportCanvas.addEventListener('mousemove', drawGraphics, false);
     supportCanvas.addEventListener('mouseup', updateGraphicsCanvas, false);
 
@@ -57,6 +57,21 @@ $(document).ready(function () {
     $('#pixelate-method').click(function () {
     });
 
+    $('.learnMore').on('click', '.js-lesson-5-f', function () {
+        updateLearnMore(5, "<p>List the names of the effects that are stored in the 'effects' object?</p><textarea class='full-width'></textarea><div class='btn btn-primary js-lesson-6-f right'>Submit</div>", "Quiz", '');
+        trackLesson('1-5');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-6-f', function () {
+        updateLearnMore(6, "<p>Now, try typing in a filter that you havent used yet into the text editor. Don't drag and drop this time, just type :)</p><p class='js-hint-1-6 purpleText'>Get a hint</p><div class='btn btn-primary js-lesson-7-f right'>Next →</div>", "Quiz", '');
+        trackLesson('1-6');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-7-f', function () {
+        updateLearnMore(7, "<p>Whoa! You did it! Let's move on coding PRO! Time to create a stop motion! Go ahead and <a class='purpleText' target='_blank' href='/doc/vocab-sheet-1.pdf'>download the vocab cheat sheet</a> from Filters to build on as you go!</p><div class='btn btn-primary js-lesson-7-f right'>Next Lesson: Stop Motion</div>", "Next Steps", '');
+        trackLesson('1-7');
+    });
+
     $('.learnMore').on('click', '.js-lesson-4-sm', function () {
         updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
         trackLesson('2-4');
@@ -65,6 +80,14 @@ $(document).ready(function () {
         updateLearnMore(5, "<p><strong>Drag over the 'Reverse' button.</strong></p><p>Reverse is a property that takes values that are either true or false (it's called a boolean, we'll go over more on that weird word later)</p><p>How can you make the video reverse? Give it a go! There are no wrong answers! Just discoveries on the way to the right answer! Coding is ALL about trying and failing then eventually… finding the answer! (cue triumphant music!)</p>", "Reverse it up!", '');
         trackLesson('2-5');
     });
+
+
+
+    $('.learnMore').on('click', '.js-hint-1-6', function () {
+        $(this).removeClass('purpleText');
+        $(this).html('Make sure that your text matches the other filters. For example, you could type <strong>effects.blur.amount = 12</strong>');
+    });
+
 
     //turn tooltips on
     $(".save-modal").tooltip({selector: '[data-toggle=tooltip]'});
@@ -322,7 +345,7 @@ $(document).ready(function () {
                 if (numFilterSelect == 1) {
                     updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
                 } else if (numFilterSelect == 2) {
-                    updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects"</p><p><strong>Effects is an Object</strong>. This is a word you will be hearing a lot. Objects hold data. In this case the effects Object holds ALL the effects inside of itself. When we write the word "effects" the program knows we are asking to retrieve a piece of data from the effects object.</p>', 'Notice anything about your code?', '');
+                    updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects."</p><p><strong>Effects is an Object.</strong> This is a word you will be hearing a lot. Objects hold data. When we write the word "effects" in the editor we are asking to retrieve data from the "effects" object.  Computer programs LOVE passing information around.</p><div class="btn btn-primary js-lesson-5-f right">Take a Quiz! →</div>', '');
                 }
                 var input;
                 for (var i in filter.inputs) {
@@ -346,7 +369,7 @@ $(document).ready(function () {
             else if (eff == "pixel" || eff == "shape" || eff == "pixels" || eff == "background" || eff == "audio" || eff == "motion"){
                 createPixelate(eff);
             }
-  
+
 
             myCodeMirror.save();
             $(".cm-" + eff).effect("highlight", 2000);
@@ -410,38 +433,39 @@ $(document).ready(function () {
 
 
     $('#access-camera').click(function(){
-       
+
        $('#recordBtn').toggleClass('is-hidden');
-        
+
 		if(pixelate.cameraStatus){
-			this.innerHTML = "Access Camera";	
+
+			this.innerHTML = "Access Camera";
             pixelate.cameraStatus = false;
 			pixelate.turnOff();
-            $('#playBtn').addClass('is-hidden');			
+            $('#playBtn').addClass('is-hidden');
 		}else{
-			this.innerHTML = "Turn Off Camera";				
+			this.innerHTML = "Turn Off Camera";
 			pixelate.capture();
-		}		
+		}
 	});
     $('#recordBtn').click(function(){
         if(pixelate.playing){
-              pixelate.stopVideo();          
+              pixelate.stopVideo();
         }
 
         if(pixelate.recording){
             pixelate.stopRecording();
-            
+
         }else{
             pixelate.startRecording();
-        }       
+        }
     });
     $('#playBtn').click(function(){
         if(!pixelate.playing){
             pixelate.playVideo();
-            
+
         }else{
             pixelate.stopVideo();
-        }       
+        }
     });
 
     $( window ).resize(function() {

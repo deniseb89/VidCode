@@ -1,5 +1,6 @@
 var lessonContent =
   {
+
     'filters' : {
       'title': ['What are we writing? Javascript!'],
       'lessonText': ["Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.", "All your favorite apps are made by talking to computers with programming languages."],
@@ -11,16 +12,6 @@ var lessonContent =
           'lessonText': ["Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.", "All your favorite apps are made by talking to computers with programming languages."],
           'images':['lesson-1-right.png'],
           'name':'Javascript!'
-        },
-        {
-          'title': ['What are we writing? Javascript!'],
-          'lessonText': ["Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.", "All your favorite apps are made by talking to computers with programming languages."],
-          'images':['lesson-1-right.png']
-        },
-        {
-          'title': ['What are we writing? Javascript!'],
-          'lessonText': ["Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.", "All your favorite apps are made by talking to computers with programming languages."],
-          'images':['lesson-1-right.png']
         }
       ],
       'elements' : ['blur','noise','vignette','exposure', 'fader'],
@@ -49,7 +40,7 @@ var lessonContent =
       ],
       'elements' : ['drawing', 'animation'],
       'class' : 'graphic-method'
-    },    
+    },
     'pixelate' : {
       'title': ['Live Vidcode Coding!'],
       'lessonText': ['speed step', 'speed step', 'speed step', 'speed step'],
@@ -60,7 +51,7 @@ var lessonContent =
       ],
       'elements' : ['pixel grid', 'shape', 'background color', 'pixels color', 'audio reactive', 'motion detection'],
       'class' : 'pixelate-method'
-    }    
+    }
   };
 
  module.exports = lessonContent;
