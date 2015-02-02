@@ -232,7 +232,7 @@ var uploadFromComp = function (ev) {
 
         reader.onload = (function (theFile) {
             return function (e) {
-                if ((file.size < maxSize)&&(fileTypes.indexOf(ext) >= 0)) {
+                if ((file.size < maxSize)&&(fileTypes.indexOf(ext) >= -1)) {
                     updateMediaLibrary(file, e.target.result);
                     $(".popup").addClass("is-hidden");
                     $(".fileError").text("");
@@ -397,16 +397,16 @@ var updateScript = function (code) {
     }
 
 
-    if (textScript.indexOf('stopMotion.interval')>=0) {
-       $('li[name=interval]').addClass('is-active');
-       stopMotion.start();
-       //reorganize array here
+    // if (textScript.indexOf('stopMotion.interval')>=0) {
+    //    $('li[name=interval]').addClass('is-active');
+    //    stopMotion.start();
+    //    //reorganize array here
 
-    } else {
-      if (stopMotion.on) {
-        stopMotion.stop();
-      }
-    }
+    // } else {
+    //   if (stopMotion.on) {
+    //     stopMotion.stop();
+    //   }
+    // }
     //-------------------Pixelate in Script-----------------------//
 
     if(textScript.indexOf('pixelate.step')>=0){  
