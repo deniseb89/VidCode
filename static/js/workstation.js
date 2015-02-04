@@ -327,6 +327,21 @@ var updateMediaLibrary = function (file, data) {
 };
 
 var labelLines = function () {
+
+    //search for code that has been typed.
+    //markText for each cmline
+
+    // myCodeMirror.markText({
+    //                 line: cmline,
+    //                 ch: 0
+    //             }, CodeMirror.Pos(cmline), {className: cmclass});
+    var allTM = myCodeMirror.getAllMarks();
+    console.log(allTM);
+    for (var m=0; m<allTM.length; m++){
+      var tm = allTM[m];
+      console.log(tm);
+    }
+
     //this function should take an input for the relevant effect, not brute force for all
     for (var e = 0; e < allEffects.length; e++) {
         $("pre:contains('effects." + allEffects[e] + "')").addClass('active-effect');
