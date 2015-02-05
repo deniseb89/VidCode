@@ -11,7 +11,7 @@ var astraSecret = process.env.ASTRA_SECRET;
 module.exports = {
 
   getAstraSecret: function(callback){
-        callback(astraSecret)
+        callback(astraSecret);
   },
 
   createBucket: function( bucketName, callback){

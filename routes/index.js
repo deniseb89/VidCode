@@ -461,12 +461,16 @@ module.exports = function (app, passport) {
 
     app.get('/getastra', isLoggedIn, function (req, res) {
 
-        var astra = {};
+          astra.getAstraSecret(function (secRes){
 
-        astraKv.key = astra.getAstraSecret;
-        astraKv.bucketName = req.user._id.toString();
+                var astraKv = {};
 
-        res.send(astraKv);
+                astraKv.key = secRes;
+                astraKv.bucketName = req.user._id.toString();
+
+                res.send(astraKv);
+
+          });
 
     });
 
