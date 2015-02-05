@@ -188,6 +188,8 @@ var imgClickSetup = function () {
 
 
 var graphClickSetup = function () {
+        updateLearnMore(3, "<p>That looks great!</p><p><strong>Now, try changing the value of the 'size'!</strong><p class='js-l-4-g-error'></p><div class='btn btn-primary js-lesson-4-g right'>Changed the size! →</div>", 'Video magic!', '');
+
         //if graphic is not selected already, remove previous one
         if($(this).hasClass('js-selected-graphic') === false){
             $('.js-graph-click').removeClass('js-selected-graphic');
@@ -670,5 +672,21 @@ var updateCodeInEditor = function(text, cmline, cmclass){
                 }, CodeMirror.Pos(cmline), {className: cmclass});
 };
 
+
+
+
+$('.learnMore').on('click', '.js-lesson-4-g', function () {
+    $(".cm-size").each(function(){
+        var onlySizeNums = ($('div.CodeMirror span.cm-size').text()).replace(/[^0-9]/gi, ''); // Replace everything that is not a number with nothing
+        curentSizeNum = parseInt(onlySizeNums, 10); // Always hand in the correct base since 010 != 10 in js
+    });
+    if(curentSizeNum != 200){
+        updateLearnMore(4, "<p>Great job changing that variable!</p><p>Now let's move on to coordinates!</p><p>They're the location of where things are placed on your video. Computer programs learn where things are in space by a system of (x,y) coordinates. Remember them from geometry?</p><div class='btn btn-primary js-lesson-5-g right'>Next →</div>", "Now let's cover x and y coordinates", '');
+        trackLesson('3-4');
+    }
+    else{
+       $('.js-l-4-g-error').text('Make sure that you change the variable next to "size="');
+    }
+});
 
 
