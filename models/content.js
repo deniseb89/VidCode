@@ -22,9 +22,9 @@ var lessonContent =
       'lessonText': ['select images for your animation by clicking the thumbnails you want in your stop-motion animation.', 'drag the "interval" button. This controls how quickly your animation moves! This code uses milliseconds so 1000 is the same as 1 second!'],
       'images':['lesson-stop-motion.jpg'],
       'learnMore' : [
-        {'topic':'Objects', 'target':'#lesson-objects-222'},
-        {'topic':'Functions', 'target': '#function222'},
-        {'topic':'Frame Rate', 'target': ''}
+        {'topic':'Objects', 'target':'#lesson-objects-222'}
+        //{'topic':'Functions', 'target': '#function222'},
+        //{'topic':'Frame Rate', 'target': ''}
       ],
       'elements' : ['interval', 'frames'],
       'class' : 'stop-motion-method'
@@ -34,9 +34,9 @@ var lessonContent =
       'lessonText': ['speed step', 'speed step', 'speed step', 'speed step'],
       'images':['pixel.png'],
       'learnMore' : [
-        {'topic':'My Movie', 'target':'#movies222'},
-        {'topic':'Play', 'target': '#play222'},
-        {'topic':'Values: An Overview', 'target': '#lesson-4-222'}
+        {'topic':'My Movie', 'target':'#movies222'}
+        //{'topic':'Play', 'target': '#play222'},
+        //{'topic':'Values: An Overview', 'target': '#lesson-4-222'}
       ],
       'elements' : ['drawing', 'animation'],
       'class' : 'graphic-method'

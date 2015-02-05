@@ -51,8 +51,14 @@ $(document).ready(function () {
     });
 
     $('#graphic-method').click(function () {
-        updateLearnMore(1, "<p>That's where things are placed on your video!</p><p>Computer programs learn where things are in space by a system of (x,y) coordinates.  Remember that from geometry?! ;)</p><p>But,a video is just one grid, with x as horizontal and y as vertical. Lke the one below!</p><p>If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?</p>", 'What is an x y coordinate?', '<img class="lessonImg" src="/img/lessons/pixel.jpg">');
+        updateLearnMore(1, "<p>Ooooo, that's a fun word.</p><p>You can now make a graphic animate on top of your video!</p><p>Your stop motion projects were <strong>frame based animations</strong> - meaning within each frame there was something that moved. Your graphic animation will be <strong>generative</strong> - meaning it changes with time and based off everlasting calculations!</p><p><a target='_blank' href='https://processing.org/exhibition/'>check out generative animation artwork here</a></p><div class='btn btn-primary js-lesson-2-g right'>Next →</div>", 'Generative', '');
     });
+
+    $('.learnMore').on('click', '.js-lesson-2-g', function () {
+        updateLearnMore(2, "Now let's get a crazy cool graphic on top of your video!</p><p><strong>Go ahead and drag in a graphic from your library.</strong></p>", "Adding Graphics", '');
+        trackLesson('3-2');
+    });
+
 
     $('#pixelate-method').click(function () {
     });
@@ -63,7 +69,7 @@ $(document).ready(function () {
     });
 
     $('.learnMore').on('click', '.js-lesson-6-f', function () {
-        updateLearnMore(6, "<p>Now, try typing in a filter that you havent used yet into the text editor. Don't drag and drop this time, just type :)</p><p class='js-hint-1-6 purpleText'>Get a hint</p><div class='btn btn-primary js-lesson-7-f right'>Next →</div>", "Quiz", '');
+        updateLearnMore(6, "<p><strong>Great job!</strong></p><p>Now, try typing in a filter that you havent used yet into the text editor. Don't drag and drop this time, just type :)</p><p class='js-hint-1-6 purpleText'>Get a hint</p><div class='btn btn-primary js-lesson-7-f right'>Next →</div>", "Quiz", '');
         trackLesson('1-6');
     });
 
@@ -155,7 +161,7 @@ $(document).ready(function () {
         modalVideoLoad('share');
     });
 
-    $('.save-btns-container').on('click', ".js-save-m", function () {
+    $('.save-btns-container').on('click', ".js-save-code-m", function () {
         modalVideoLoad('save');
     });
 
@@ -233,6 +239,7 @@ $(document).ready(function () {
     });
 
      $('.js-vid-click').each(function () {
+
         $(this).draggable({
             helper: "clone",
             revert: "invalid",
@@ -283,6 +290,7 @@ $(document).ready(function () {
                                allGraphs[i].setAttribute('class', 'js-graph-click ui-draggable js-selected-graphic');
                                createGraphics();
                                updateGraphicsCanvas();
+                               updateLearnMore(3, "<p>That looks great!</p><p><strong>Now, try changing the value of the 'size'!</strong><p class='js-l-4-g-error'></p><div class='btn btn-primary js-lesson-4-g right'>Changed the size! →</div>", 'Video magic!', '');
                            }
                         }
                     }
