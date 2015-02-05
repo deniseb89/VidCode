@@ -6,6 +6,7 @@ var bcrypt = require('bcrypt-nodejs');
 var userSchema = mongoose.Schema({
     created: {type: Date, default: Date.now},
     username: String,
+    astraBucket: String,
     social: String,
     currentPage: String,
     resetPasswordToken: String,

@@ -10,6 +10,10 @@ var astraSecret = process.env.ASTRA_SECRET;
 
 module.exports = {
 
+  getAstraSecret: function(callback){
+        callback(astraSecret)
+  },
+
   createBucket: function( bucketName, callback){
     restler.post('https://api.astra.io/v0/bucket', {
       data   : { "name": bucketName },
