@@ -89,6 +89,7 @@ var stopMotion = {
     var allTM = myCodeMirror.getAllMarks();
     for (var m=0; m<allTM.length; m++){
       var tm = allTM[m];
+      //use updatecodeineditor instead
       if (tm.className=="cm-interval"){
         var cmLine = tm.find();
         myCodeMirror.replaceRange(' stopMotion.interval = '+int+';',{ line: cmLine.to.line, ch: 0 }, CodeMirror.Pos( cmLine.to.line ) );

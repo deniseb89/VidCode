@@ -59,7 +59,7 @@ var activateSession = function () {
     activateEndButtons('save');
     activateEndButtons('save-code');
     activateEndButtons('share');
-    updateLearnMore(2, "<p>You just made a video play with CODE! Your code is now populating the <strong>'text editor'</strong> which speaks to the rest of the computer program and tells it what to do!</p><p>Go ahead and <strong>drag over a filter button on the bottom right.</strong> Tell that computer who's boss!</p>", 'Awesome!', '');
+    updateLearnMoreSlide('1-2');
     movie.addEventListener("loadeddata", changeSrc, false);
     movie.removeEventListener("canplay", activateSession, false);
     vidLen = Math.round(movie.duration);
@@ -123,7 +123,8 @@ var changeSrc = function () {
 var imgClickSetup = function () {
     pixelate.turnOff();
     changeSrc();
-    updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
+    updateLearnMoreSlide('2-2');
+    // updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
 
@@ -230,7 +231,7 @@ var uploadFromComp = function (ev) {
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
         console.log(file);
-        var ext = file.name.split('.').pop()
+        var ext = file.name.split('.').pop();
         ext = ext.toLowerCase();
         var reader = new FileReader();
 
@@ -337,12 +338,10 @@ var labelLines = function () {
     //                 line: cmline,
     //                 ch: 0
     //             }, CodeMirror.Pos(cmline), {className: cmclass});
-    var allTM = myCodeMirror.getAllMarks();
-    console.log(allTM);
-    for (var m=0; m<allTM.length; m++){
-      var tm = allTM[m];
-      console.log(tm);
-    }
+    // var allTM = myCodeMirror.getAllMarks();
+    // for (var m=0; m<allTM.length; m++){
+    //   var tm = allTM[m];
+    // }
 
     //this function should take an input for the relevant effect, not brute force for all
     for (var e = 0; e < allEffects.length; e++) {
@@ -639,6 +638,13 @@ var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
     $('.js-lesson-text-update').html(lessonText);
     $('.lm-title').text(lessonTitle);
     $('.js-lesson-img').html(lessonImg);
+};
+
+var updateLearnMoreSlide = function(id){
+    var stepNum = id.split('-').pop();
+    $('.js-lesson-p-update').text(stepNum);
+    $('.js-lesson-slides').addClass('is-hidden');
+    $('#'+id).removeClass('is-hidden');
 };
 
 var trackLesson = function (lessonName) {

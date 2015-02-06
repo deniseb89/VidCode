@@ -104,12 +104,9 @@
 
                 <div class="large-selection-dropdown js-switch-view-container is-hidden">
                     <ul>
-                        <li class="js-switch-view" id="basic-filter-method filter-method" name="Filters" lessnum="7">Filters</li>
-
-                        <li class="js-switch-view" id="stop-motion-method" name="Stop Motion" lessnum="5">Stop Motion
-                        </li>
-                        <li class="js-switch-view" id="graphic-method" name="Graphics" lessnum="4">Graphics</li>
-                        <li class="js-switch-view" id="pixelate-method" name="Pixelate" lessnum="2">Pixelate</li>
+                    {{#each content}}
+                        <li class="js-switch-view" id="{{this.class}}" name="{{this.name}}" lessnum="{{this.total}}">{{this.name}}</li>
+                    {{/each}}
                     </ul>
                 </div>
             </div>
@@ -305,39 +302,45 @@
 
                 <div class="col-md-3">
                     <div class="learnMore">
-                        <div class="clearfix">
+                        {{#each content}}
+                        <div class="is-hidden {{this.class}} clearfix">
                             <div class="sm-header-bg clearfix">
-                                <p class="js-lesson-name left">Filters</p>
+                                <p class="js-lesson-name left">{{this.name}}</p>
+                                <p class="js-switch-learnmore-appear lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span class="js-lesson-page-num-total">{{this.total}}</span> ▾
+                                </p>
 
-                                <p class="lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span
-                                        class="js-lesson-page-num-total">7</span> ▾</p>
+                                <div class="large-selection-dropdow js-switch-learnmore-container right is-hidden">
+                                    <ul>
+                                    {{#each this.learnMore}}
+                                        <li class="js-switch-learnmore" name="{{this.lessonId}}">{{this.name}}</li>
+                                    {{/each}}
+                                    </ul>
+                                </div>
+                            
                             </div>
                         </div>
 
-
-                        {{#each content}}
                         <div class="is-hidden {{this.class}} clearfix lesson-text-container">
                             {{#each this.learnMore}}
-
-                            <h3 class="lm-title">
-                                {{this.title}}
-                            </h3>
-                            {{/each}}
-                            <div class="js-lesson-text-update">
-                                {{#each this.learnMore}}
-                                <p>
-                                    {{this.lessonText}}
-                                </p>
-                                <p>
-                                    <strong>
-                                        Start your project by selecting media from the left hand corner.
-                                    </strong>
-                                </p>
-                                {{/each}}
-                            </div>
-                            {{#each this.learnMore}}
-                            <div class="js-lesson-img">
-                                <img class="lessonImg" src="/img/lessons/{{this.images}}">
+                            <div class="is-hidden js-lesson-slides" id="{{this.lessonId}}">
+                                <h3 class="lm-title"> {{this.title}} </h3>
+                                <div class="js-lesson-text-update">
+                                    <p> {{this.p1}} </p>
+                                    <p> {{this.p2}} </p>
+                                    <p> {{this.p3}} </p>
+                                    <p><strong> {{this.pstrong}} </strong></p>
+                                    {{#if this.textarea}}
+                                        <textarea></textarea>
+                                    {{/if}}
+                                    {{#if this.btn}}
+                                        <div class="btn btn-primary right js-lesson-{{this.lessonId}}">{{this.btn}}</div>
+                                    {{/if}}
+                                </div>
+                                {{#if this.image}}
+                                <div class="js-lesson-img">
+                                    <img class="lessonImg" src="/img/lessons/{{this.image}}">
+                                </div>
+                                {{/if}}
                             </div>
                             {{/each}}
                         </div>

@@ -42,20 +42,23 @@ $(document).ready(function () {
     });
 
     //lesson updates for NYTM
+    $('#filter-method').click(function () {
+        updateLearnMoreSlide('1-1');
+    });
+
     $('#stop-motion-method').click(function () {
         stillsSelectedLesson = false;
-        updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing then that?!</p><p>Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
-    });
-    $('#filter-method').click(function () {
-        updateLearnMore(1, "<p>JavaScript?</p><p>Javascript is a programming language. Since computers don't speak human languages like English or Spanish, we use programming languages to talk to them.</p><p>All your favorite apps are made by talking to computers with programming languages.</p>", 'What are we writing? Javascript!', '<img class="lessonImg" src="img/lessons/lesson-1-right.png">');
+        updateLearnMoreSlide('2-1');
+        //updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing then that?!</p><p>Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
     });
 
     $('#graphic-method').click(function () {
-        updateLearnMore(1, "<p>Ooooo, that's a fun word.</p><p>You can now make a graphic animate on top of your video!</p><p>Your stop motion projects were <strong>frame based animations</strong> - meaning within each frame there was something that moved. Your graphic animation will be <strong>generative</strong> - meaning it changes with time and based off everlasting calculations!</p><p><a target='_blank' href='https://processing.org/exhibition/'>check out generative animation artwork here</a></p><div class='btn btn-primary js-lesson-2-g right'>Next →</div>", 'Generative', '');
+        updateLearnMoreSlide('3-1');
+        //updateLearnMore(1, "<p>Ooooo, that's a fun word.</p><p>You can now make a graphic animate on top of your video!</p><p>Your stop motion projects were <strong>frame based animations</strong> - meaning within each frame there was something that moved. Your graphic animation will be <strong>generative</strong> - meaning it changes with time and based off everlasting calculations!</p><p><a target='_blank' href='https://processing.org/exhibition/'>check out generative animation artwork here</a></p><div class='btn btn-primary js-lesson-2-g right'>Next →</div>", 'Generative', '');
     });
 
     $('.learnMore').on('click', '.js-lesson-2-g', function () {
-        updateLearnMore(2, "Now let's get a crazy cool graphic on top of your video!</p><p><strong>Go ahead and drag in a graphic from your library.</strong></p>", "Adding Graphics", '');
+        //updateLearnMore(2, "Now let's get a crazy cool graphic on top of your video!</p><p><strong>Go ahead and drag in a graphic from your library.</strong></p>", "Adding Graphics", '');
         trackLesson('3-2');
     });
 
@@ -63,18 +66,20 @@ $(document).ready(function () {
     $('#pixelate-method').click(function () {
     });
 
-    $('.learnMore').on('click', '.js-lesson-5-f', function () {
-        updateLearnMore(5, "<p>List the names of the effects that are stored in the 'effects' object?</p><textarea class='full-width'></textarea><div class='btn btn-primary js-lesson-6-f right'>Submit</div>", "Quiz", '');
-        trackLesson('1-5');
-    });
-
-    $('.learnMore').on('click', '.js-lesson-6-f', function () {
-        updateLearnMore(6, "<p><strong>Great job!</strong></p><p>Now, try typing in a filter that you havent used yet into the text editor. Don't drag and drop this time, just type :)</p><p class='js-hint-1-6 purpleText'>Get a hint</p><div class='btn btn-primary js-lesson-7-f right'>Next →</div>", "Quiz", '');
+    $('.learnMore').on('click', '.js-lesson-1-4', function () {
+        updateLearnMoreSlide('1-6');
         trackLesson('1-6');
     });
 
-    $('.learnMore').on('click', '.js-lesson-7-f', function () {
-        updateLearnMore(7, "<p>Whoa! You did it! Let's move on coding PRO! Time to create a stop motion! Go ahead and <a class='purpleText' target='_blank' href='/doc/vocab-sheet-1.pdf'>download the vocab cheat sheet</a> from Filters to build on as you go!</p><div class='btn btn-primary js-lesson-7-f right'>Next Lesson: Stop Motion</div>", "Next Steps", '');
+    $('.learnMore').on('click', '.js-lesson-1-5', function () {
+        //updateLearnMore(6, "<p><strong><p class='js-hint-1-6 purpleText'>Get a hint</p><div class='btn btn-primary js-lesson-7-f right'>Next →</div>", "Quiz", '');
+        updateLearnMoreSlide('1-5');
+        trackLesson('1-5');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-1-6', function () {
+        // updateLearnMore(7, "<p>Whoa! You did it! Let's move on coding PRO! Time to create a stop motion! Go ahead and <a class='purpleText' target='_blank' href='/doc/vocab-sheet-1.pdf'>download the vocab cheat sheet</a> from Filters to build on as you go!</p><div class='btn btn-primary js-lesson-7-f right'>Next Lesson: Stop Motion</div>", "Next Steps", '');
+        updateLearnMoreSlide('1-7');
         trackLesson('1-7');
     });
 
@@ -351,9 +356,11 @@ $(document).ready(function () {
             if (filter) {
                 numFilterSelect++;
                 if (numFilterSelect == 1) {
-                    updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
+                    updateLearnMoreSlide('1-3');
+                    // updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
                 } else if (numFilterSelect == 2) {
-                    updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects."</p><p><strong>Effects is an Object.</strong> This is a word you will be hearing a lot. Objects hold data. When we write the word "effects" in the editor we are asking to retrieve data from the "effects" object.  Computer programs LOVE passing information around.</p><div class="btn btn-primary js-lesson-5-f right">Take a Quiz! →</div>', '');
+                    updateLearnMoreSlide('1-4');
+                    // updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects."</p><p><strong>Effects is an Object.</strong> This is a word you will be hearing a lot. Objects hold data. When we write the word "effects" in the editor we are asking to retrieve data from the "effects" object.  Computer programs LOVE passing information around.</p><div class="btn btn-primary js-lesson-5-f right">Take a Quiz! →</div>', '');
                 }
                 var input;
                 for (var i in filter.inputs) {
@@ -434,11 +441,20 @@ $(document).ready(function () {
         $('.js-lesson-page-num-total').text(lessonNum);
     })
 
+    $('.js-switch-learnmore').click(function() {
+        var id = $(this).attr('name');
+        updateLearnMoreSlide(id);
+    });
+
     $("html").on("click", ".js-switch-menu-appear", function () {
         $('.js-switch-view-container').toggleClass('is-hidden');
         $('body').toggleClass('js-switch-menu-appear');
     });
 
+    $("html").on("click", ".js-switch-learnmore-appear", function () {
+        $('.js-switch-learnmore-container').toggleClass('is-hidden');
+        $('body').toggleClass('js-switch-learnmore-appear');
+    });
 
     $('#access-camera').click(function(){
 
