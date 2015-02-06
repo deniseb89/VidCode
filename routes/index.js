@@ -10,6 +10,7 @@ var gfs = Grid(mongoose.connection.db, mongoose.mongo);
 var User = require('../models/user');
 var Vidcode = require('../models/vidcode');
 var content = require('../models/content');
+var astra = require('../config/astra');
 var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function (app, passport) {
@@ -203,7 +204,7 @@ module.exports = function (app, passport) {
                     res.redirect('/workstation');
                 }
                 else {
-                    res.redirect('/trialintro');
+                    res.redirect('/workstation');
                 }
             } else {
                 res.redirect('/workstation'); 
@@ -458,6 +459,21 @@ module.exports = function (app, passport) {
         request(cdn + '/videos/' + file).pipe(res);
     });
 
+    app.get('/getastra', isLoggedIn, function (req, res) {
+
+          astra.getAstraSecret(function (secRes){
+
+                var astraKv = {};
+
+                astraKv.key = secRes;
+                astraKv.bucketName = req.user._id.toString();
+
+                res.send(astraKv);
+
+          });
+
+    });
+
     app.get('/getVideos', isLoggedIn, function (req, res) {
         var user = req.user;
         if (user.vidcodes) {
@@ -467,6 +483,7 @@ module.exports = function (app, passport) {
             console.log('you have not created any vidcodes');
         }
     });
+
 
     app.post('/addVideoToLibrary', isLoggedIn, function (req, res) {
 
@@ -634,6 +651,36 @@ module.exports = function (app, passport) {
         rs.pipe(res);
     });
 
+    app.post('/addVideoNameToUserLibrary/:videoName', isLoggedIn, function (req, res) {
+        User.findOne({_id: req.user._id}, function (err, user) {
+
+                if (!err) {
+                    user.videoLibrary.addToSet(req.params.videoName);
+                    user.save();
+
+                    var response = {
+                        status: 200,
+                        success: 'Updated Successfully'
+                    };
+
+                    res.end(JSON.stringify(response));
+                }
+            }
+        );
+    });
+
+    app.get('/astravideo', isLoggedIn, function (req, res) {
+
+        var bucketName = req.user.astraBucket;
+        var videoName = req.query.videoName;
+
+        astra.getVideoUrl( bucketName, videoName, function(videoUrl){
+            console.log("Video URL =", videoUrl);
+            request(videoUrl).pipe(res);
+
+        });
+    });
+
 // =============================================================================
 // ROUTES TO LESSONS ===========================================================
 // =============================================================================
@@ -745,8 +792,33 @@ module.exports = function (app, passport) {
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()){
+        //Let's also check that the astraBucket is set for the user.
+        if(req.user.astraBucket === undefined || req.user.astraBucket === null){
+            var bucketName = req.user._id.toString();
+                 astra.createBucket( bucketName ,function (newbucket){
+                    console.log("Created astra bucket \n", JSON.stringify(newbucket, undefined, 4));
+
+                        User.findOne({_id: req.user._id}, function (err, user) {
+                          if (!err) {
+                            user.astraBucket = bucketName;
+                            user.save(
+                              function (err, result) {
+                                if (err) {
+                                  console.log('err in updating user astra bucket ' + req.user._id.toString() + ':' + err);
+                                } else {
+
+                                  console.log('successfully added astra bucket for user ' + req.user._id.toString());
+                                }
+                              });
+                          }
+                        });
+
+                  });
+        }
+
         return next();
+    }
 
     res.redirect('/');
 }

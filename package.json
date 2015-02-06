@@ -44,6 +44,7 @@
     "passport-twitter": "~1.0.2",
     "pkginfo": "0.2.x",
     "request": "~2.27.0",
+    "restler": "^3.2.2",
     "underscore": ">= 0.0.0"
   },
   "devDependencies": {

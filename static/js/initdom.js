@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     var inputFile = document.getElementById('inputFile');
     var inputFileToLibrary = document.getElementById('inputFileToLibrary');
-    inputFile.addEventListener('change', uploadFromComp, false);
+    inputFile.addEventListener('change', uploadToAstra, false);
     inputFileToLibrary.addEventListener('change', uploadFromCompToLibrary, false);
 
     //initialize codeMirror
