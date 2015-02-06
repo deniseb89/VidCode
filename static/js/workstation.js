@@ -297,7 +297,7 @@ var uploadFromCompToLibrary = function (ev) {
 var uploadToAstra = function (ev) {
   console.log("CALLED uploadToAstra");
     var files = ev.target.files;
-    var maxSize = 10000000;
+    var maxSize = 25000000;
     //TODO: implement multiple file upload on the server
 
     for (var i = 0; i < files.length; i++) {
@@ -305,11 +305,16 @@ var uploadToAstra = function (ev) {
         var reader = new FileReader();
         var ext = file.name.split('.').pop();
 
-        $.ajaxSetup ({ 
-            // Disable caching of AJAX responses 
-            cache: false }); 
+        var astra;
 
-        $.get('/getastra', function(astra){
+        $.ajax({
+          url: '/getastra',
+          async: false
+        }).done(function(data) {
+           astra = data;
+        }).fail(function(xhr)  {
+           // Todo something..
+        });
 
           var astraKey = astra.key;
           var astraBucketName = astra.bucketName;  
@@ -332,9 +337,29 @@ var uploadToAstra = function (ev) {
                       formData.append('file', file);
 
                       $.ajax({
+                            xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+
+                            xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = parseInt(percentComplete * 100);
+
+                                console.log(percentComplete);
+
+                                $('.dl-progress').css('width', percentComplete + '%');
+                                $('.dl-progress').text('saving...');
+                                if (percentComplete === 100) {
+
+                                }
+
+                              }
+                            }, false);
+
+                            return xhr;
+                          },
                           url: 'https://api.astra.io/v0/bucket/'+astraBucketName+'/object',
                           type: 'POST',
-                          //headers: {"Astra-Secret": astraKey},
                           beforeSend: function(xhr) {
                                  xhr.setRequestHeader("Astra-Secret", astraKey);
                              },
@@ -342,13 +367,13 @@ var uploadToAstra = function (ev) {
                             mimeType: "multipart/form-data",
                             contentType: false,
                             cache: false,
-                            //dataType: 'jsonp',
-                            //async : false,
                             processData: false,
                           success: function (data, textStatus, jqXHR) {
+                                $('.dl-progress').css('width', '0%');
                                 console.log("UPLOAD TO ASTRA SUCCESS");
                                 
                                 $.post('/addVideoNameToUserLibrary/' + objectVideoName);
+                                
                                 $(".popup").addClass("is-hidden");
                                 console.log("file upload done");
 
@@ -357,6 +382,7 @@ var uploadToAstra = function (ev) {
                           },
                           error: function (file, textStatus, jqXHR) {
                                 console.log('file upload error');
+                                $(".fileError").text("There was an error uploading your video please check format!");
                           }
                       });
                   } else {
@@ -365,8 +391,6 @@ var uploadToAstra = function (ev) {
                   }
               };
           })(file);
-
-      });
 
         reader.readAsDataURL(file);
     }

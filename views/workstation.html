@@ -88,14 +88,26 @@
             <input type="file" id="inputFile" name="file" multiple value="Select a File"/>
             <button class="btn js-hide-upload uploadfile">Cancel</button>
             <p class="fileError"></p>
+
+            <div class="progressDiv progress progress-striped">
+            <div id="upload-progress" class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+
         </div>
 
-        <div class="popup-upload-to-library is-hidden">
+<!--         <div class="popup-upload-to-library is-hidden">
             10 mb max file size
             <input type="file" id="inputFileToLibrary" name="file" multiple value="Select a File"/>
             <button class="btn js-hide-upload-to-library uploadfile">Cancel</button>
             <p class="fileError"></p>
-        </div>
+
+            <div class="progressDiv progress progress-striped">
+            <div class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+
+        </div> -->
 
         <div class="set-container lesson-page clearfix">
             <div class="current-lesson-display">

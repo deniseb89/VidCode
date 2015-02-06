@@ -19,9 +19,9 @@ $(document).ready(function () {
     bufferContext = bufferCanvas.getContext('2d');
 
     var inputFile = document.getElementById('inputFile');
-    var inputFileToLibrary = document.getElementById('inputFileToLibrary');
+    //var inputFileToLibrary = document.getElementById('inputFileToLibrary');
     inputFile.addEventListener('change', uploadToAstra, false);
-    inputFileToLibrary.addEventListener('change', uploadFromCompToLibrary, false);
+    //inputFileToLibrary.addEventListener('change', uploadFromCompToLibrary, false);
 
     //initialize codeMirror
     myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'), {
