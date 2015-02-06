@@ -484,6 +484,7 @@ module.exports = function (app, passport) {
         }
     });
 
+
     app.post('/addVideoToLibrary', isLoggedIn, function (req, res) {
 
         var video = {};
@@ -650,6 +651,36 @@ module.exports = function (app, passport) {
         rs.pipe(res);
     });
 
+    app.post('/addVideoNameToUserLibrary/:videoName', isLoggedIn, function (req, res) {
+        User.findOne({_id: req.user._id}, function (err, user) {
+
+                if (!err) {
+                    user.videoLibrary.addToSet(req.params.videoName);
+                    user.save();
+
+                    var response = {
+                        status: 200,
+                        success: 'Updated Successfully'
+                    };
+
+                    res.end(JSON.stringify(response));
+                }
+            }
+        );
+    });
+
+    app.get('/astravideo', isLoggedIn, function (req, res) {
+
+        var bucketName = req.user.astraBucket;
+        var videoName = req.query.videoName;
+
+        astra.getVideoUrl( bucketName, videoName, function(videoUrl){
+            console.log("Video URL =", videoUrl);
+            request(videoUrl).pipe(res);
+
+        });
+    });
+
 // =============================================================================
 // ROUTES TO LESSONS ===========================================================
 // =============================================================================
@@ -763,7 +794,7 @@ module.exports = function (app, passport) {
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()){
         //Let's also check that the astraBucket is set for the user.
-        if(req.user.astraBucket === undefined){
+        if(req.user.astraBucket === undefined || req.user.astraBucket === null){
             var bucketName = req.user._id.toString();
                  astra.createBucket( bucketName ,function (newbucket){
                     console.log("Created astra bucket \n", JSON.stringify(newbucket, undefined, 4));

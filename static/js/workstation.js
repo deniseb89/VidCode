@@ -303,6 +303,11 @@ var uploadToAstra = function (ev) {
         var file = files[i];
         var reader = new FileReader();
         var ext = file.name.split('.').pop();
+
+        $.ajaxSetup ({ 
+            // Disable caching of AJAX responses 
+            cache: false }); 
+
         $.get('/getastra', function(astra){
 
           var astraKey = astra.key;
@@ -310,7 +315,13 @@ var uploadToAstra = function (ev) {
 
           var objectVideoName = createGuid() + '-' + file.name;
 
+            console.log("Astra Key: ", astraKey);
+            console.log("Astra Bucket: ", astraBucketName);
+            console.log("Astra File: ", objectVideoName);
+            console.log("jQuery version: ",$().jquery);
+
           reader.onload = (function (theFile) {
+            console.log("START UPLOAD TO ASTRA");
               return function (e) {
                   if (file.size < maxSize) {
                       var formData = new FormData();
@@ -322,19 +333,26 @@ var uploadToAstra = function (ev) {
                       $.ajax({
                           url: 'https://api.astra.io/v0/bucket/'+astraBucketName+'/object',
                           type: 'POST',
-                          beforeSend: function (request)
-                          {
-                              request.setRequestHeader("Astra-Secret", astraKey);
-                          },
-                          data: formData,
-                          mimeType: "multipart/form-data",
-                          contentType: false,
-                          cache: false,
-                          processData: false,
+                          //headers: {"Astra-Secret": astraKey},
+                          beforeSend: function(xhr) {
+                                 xhr.setRequestHeader("Astra-Secret", astraKey);
+                             },
+                            data: formData,
+                            mimeType: "multipart/form-data",
+                            contentType: false,
+                            cache: false,
+                            //dataType: 'jsonp',
+                            //async : false,
+                            processData: false,
                           success: function (data, textStatus, jqXHR) {
-                                updateMediaLibrary(file, e.target.result);
-                                $(".popup-upload-to-library").addClass("is-hidden");
+                                console.log("UPLOAD TO ASTRA SUCCESS");
+                                
+                                $.post('/addVideoNameToUserLibrary/' + objectVideoName);
+                                $(".popup").addClass("is-hidden");
                                 console.log("file upload done");
+
+                                updateMediaLibrary(file, e.target.result);
+
                           },
                           error: function (file, textStatus, jqXHR) {
                                 console.log('file upload error');
@@ -559,9 +577,7 @@ var checkBtnStatus = function (effect) {
 };
 
 
-
-/*old lessons.js*/
-var loadThumbnails = function () {
+var loadInstagramVideoThumbnails = function () {
     var social = $('#social').text();
 
     if (social == "instagram") {
@@ -592,8 +608,42 @@ var loadThumbnails = function () {
 };
 
 
+loadInstagramVideoThumbnails();
 
-loadThumbnails();
+var loadAstraVideoThumbnails = function () {
+    var social = $('#social').text();
+
+    if (social == "instagram") {
+        $.ajax('/instagramVids', {
+            success: function (data, textStatus, jqXHR) {
+                var igVids = data;
+                if (igVids.length) {
+                    for (var i = 0; i < Math.min(igVids.length, 3); i++) {
+                        $('#js-fetch-vid' + i).error(function () {
+                            $(this).addClass('is-hidden');
+                        });
+                        $('#js-fetch-vid' + i).removeClass('is-hidden');
+                        document.getElementById('js-fetch-vid' + i).src = '/instagram/' + i;
+                        document.getElementById('js-fetch-vid' + i).addEventListener("loadeddata", function () {
+                        }, false);
+                    }
+                } else {
+                    $('.i-error').text("You don't have any Instagram videos :(");
+                }
+            },
+            error: function (data, textStatus, jqXHR) {
+                $('.i-error').text("Uh oh. Your Instagram videos aren't loading. Try refreshing the page to fix it.");
+            }
+        });
+    } else {
+        $('.insta-import').removeClass('is-hidden');
+    }
+};
+
+
+//loadAstraVideoThumbnails();
+
+
 
 //account for different browsers with requestAnimationFrame
 var requestAnimationFrame = window.requestAnimationFrame ||
