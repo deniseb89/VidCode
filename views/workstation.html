@@ -168,9 +168,7 @@
                             </div>
                         </div>
 
-                        <div class="video-container row profile">
-
-<!--                             <button type="button" class="btn btn-primary js-upload-to-library left-btn">Upload Media to Library</button> -->
+                        <div class="video-container row profile is-hidden">
 
                             {{#if user.videoLibrary}}
 
@@ -320,7 +318,7 @@
                                 <p class="js-switch-learnmore-appear lesson-dropdown right"><span class="js-lesson-p-update">1</span>/<span class="js-lesson-page-num-total">{{this.total}}</span> ▾
                                 </p>
 
-                                <div class="large-selection-dropdow js-switch-learnmore-container right is-hidden">
+                                <div class="large-selection-dropdown js-switch-learnmore-container right is-hidden">
                                     <ul>
                                     {{#each this.learnMore}}
                                         <li class="js-switch-learnmore" name="{{this.lessonId}}">{{this.name}}</li>
@@ -331,7 +329,7 @@
                             </div>
                         </div>
 
-                        <div class="is-hidden {{this.class}} clearfix lesson-text-container">
+                        <div class="{{this.class}} clearfix lesson-text-container">
                             {{#each this.learnMore}}
                             <div class="is-hidden js-lesson-slides" id="{{this.lessonId}}">
                                 <h3 class="lm-title"> {{this.title}} </h3>
@@ -340,6 +338,7 @@
                                     <p> {{this.p2}} </p>
                                     <p> {{this.p3}} </p>
                                     <p><strong> {{this.pstrong}} </strong></p>
+                                    <p><a target='_blank' href='{{this.link.url}}'>{{this.link.text}}</a></p>
                                     {{#if this.textarea}}
                                         <textarea></textarea>
                                     {{/if}}

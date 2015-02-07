@@ -30,6 +30,7 @@ var checkWebGL = function () {
         $('.compatibility-error').removeClass('is-hidden');
     } else {
     	$('.filter-method').removeClass('is-hidden');
+        updateLearnMoreSlide('1-1');
     }
 };
 
@@ -59,7 +60,6 @@ var activateSession = function () {
     activateEndButtons('save');
     activateEndButtons('save-code');
     activateEndButtons('share');
-    updateLearnMoreSlide('1-2');
     movie.addEventListener("loadeddata", changeSrc, false);
     movie.removeEventListener("canplay", activateSession, false);
     vidLen = Math.round(movie.duration);
@@ -216,6 +216,7 @@ var vidClickSetup = function() {
     movie.src = thisSrc;
     removeStopMotionInEditor();
     pixelate.turnOff();
+    updateLearnMoreSlide('1-2');
 };
 
 var activateEndButtons = function (bType) {
@@ -251,48 +252,6 @@ var uploadFromComp = function (ev) {
         reader.readAsDataURL(file);
     }
 };
-
-var uploadFromCompToLibrary = function (ev) {
-    var files = ev.target.files;
-    var maxSize = 10000000;
-    //TODO: implement multiple file upload on the server
-
-    for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var reader = new FileReader();
-
-        reader.onload = (function (theFile) {
-            return function (e) {
-                if (file.size < maxSize) {
-                    var formData = new FormData();
-                    formData.append('file', file);
-                    $.ajax({
-                        url: '/addVideoToLibrary',
-                        type: 'POST',
-                        data: formData,
-                        mimeType: "multipart/form-data",
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                        success: function (data, textStatus, jqXHR) {
-                            updateMediaLibrary(file, e.target.result);
-                            $(".popup-upload-to-library").addClass("is-hidden");
-                        },
-                        error: function (file, textStatus, jqXHR) {
-                            console.log('file error');
-                        }
-                    });
-                } else {
-                    $('.loader').addClass('is-hidden');
-                    $(".fileError").text("Videos and images must be smaller than 10MB. Select a different file and try again!");
-                }
-            };
-        })(file);
-
-        reader.readAsDataURL(file);
-    }
-};
-
 
 var uploadToAstra = function (ev) {
   console.log("CALLED uploadToAstra");
@@ -362,6 +321,7 @@ var uploadToAstra = function (ev) {
                           type: 'POST',
                           beforeSend: function(xhr) {
                                  xhr.setRequestHeader("Astra-Secret", astraKey);
+                                 console.log('set headers');
                              },
                             data: formData,
                             mimeType: "multipart/form-data",
@@ -381,7 +341,7 @@ var uploadToAstra = function (ev) {
 
                           },
                           error: function (file, textStatus, jqXHR) {
-                                console.log('file upload error');
+                                console.log(jqXHR);
                                 $(".fileError").text("There was an error uploading your video please check format!");
                           }
                       });

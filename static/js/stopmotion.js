@@ -30,7 +30,7 @@ var createStopMotionInEditor = function(eff){
         var text = '\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';';
         createCodeInEditor(text, "cm-"+eff); 
         if (eff == "interval") {
-            updateLearnMore(3, "<p>Whoa! The images are moving now.</p><p>Remember 'Objects'? Now we have a <strong>stop motion Object</strong>.</p><p>Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object's baby.</p><p>Objects can have millions of properties!</p><div class='btn btn-primary js-lesson-4-sm right'>More about Interval</div>", 'What did Interval change?', '');
+            updateLearnMoreSlide('2-3');
         }
     } 
 

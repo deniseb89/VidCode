@@ -12,7 +12,7 @@ var lessonContent =
           'title': ['What are we writing? JavaScript!'],
           'p1': ['JavaScript is a programming language. Since computers don\n\'t speak human languages like English or Spanish, we use programming languages to talk to them.'],
           'p2': ['All your favorite apps are made by talking to computers with programming languages.'],
-          'pstrong': ['<i>Start your project by selecting media from the left hand corner.</i>'],
+          'pstrong': ['Start your project by selecting media from the left hand corner.'],
           'image':['lesson-1-right.png'],
           'name':'JavaScript!'
         },
@@ -76,7 +76,7 @@ var lessonContent =
           'p2': ['We can make our own stop motion masterpiece with CODE! And you know what\n\'s even more amazing then that?!'],
           'p3': ['Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!'],
           'p4': ['Let\n\'s go!'],
-          'name':'JavaScript!'
+          'name':'Stop Motion Intro'
         },
         {
           'lessonId':'2-2',
@@ -87,21 +87,29 @@ var lessonContent =
         },        
         {
           'lessonId':'2-3',
-          'title': '',
-          'p1': [''],
-          'p2': [''],
-          'p3': [''],
+          'title': 'What did Interval change?',
+          'p1': ['Whoa! The images are moving now.'],
+          'p2': ['Remember "Objects"? Now we have a stop motion Object.'],
+          'p3': ['Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object\n\'s baby.'],
+          'p4': ['Objects can have millions of properties!'],
+          'btn': ['More about interval'],
           'name':'Interval'
         },
         {
           'lessonId':'2-4',
-          'p1':[''],
+          'title': ['More about Interval'],
+          'p1':['The interval property controls the speed that your stop motion moves!'],
+          'p2': ['If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!'],
+          'p3': ['Your code uses milliseconds so 1000 is the same as one second!'],
+          'btn': ['What\n\'s Next?'],
           'name':'Interval II'
         },
         {
           'lessonId':'2-5',
           'title': ['Reverse it up!'],
-          'p1': [''],
+          'p1': ['Reverse is a property that takes values that are either true or false (it\n\'s called a boolean, we\n\'ll go over more on that weird word later)'],
+          'p2': ['How can you make the video reverse? Give it a go! There are no wrong answers! Just discoveries on the way to the right answer! Coding is ALL about trying and failing then eventually… finding the answer! (cue triumphant music!)'],
+          'pstrong': ['Drag over the "Reverse" button.'],
           'name':'Reverse'
         }
       ],
@@ -114,11 +122,37 @@ var lessonContent =
       'learnMore' : [
         {
           'lessonId':'3-1',
-          'title': [''],
-          'p1': [''],
-          'name':'',
+          'title': ['Generative'],
+          'p1': ['Ooooo, that\n\'s a fun word.'],
+          'p2':['You can now make a graphic animate on top of your video!'],
+          'p3': ['Your stop motion projects were frame based animations - meaning within each frame there was something that moved. Your graphic animation will be generative - meaning it changes with time and based off everlasting calculations!'],
+          'link': {
+            url: 'https://processing.org/exhibition/',
+            text: 'check out generative animation artwork here'
+          },
+          'btn':['Next'],
+          'name':'Generative Graphics'
+        },
+        {
+          'lessonId':'3-2',
+          'title': ['Generative'],
+          'p1': ['Ooooo, that\n\'s a fun word.'],
+          'name':'Generative Graphics',
           'image':['pixel.png']
-        }
+        },
+        {
+          'lessonId':'3-3',
+          'title': ['Generative'],
+          'p1': ['Ooooo, that\n\'s a fun word.'],
+          'name':'Generative Graphics',
+          'image':['pixel.png']
+        },
+        {
+          'lessonId':'3-4',
+          'title': ['Generative'],
+          'p1': ['Ooooo, that\n\'s a fun word.'],
+          'name':'Generative Graphics',
+        }                        
       ]
     },
     'pixelate' : {

@@ -20,8 +20,8 @@ $(document).ready(function () {
 
     var inputFile = document.getElementById('inputFile');
     //var inputFileToLibrary = document.getElementById('inputFileToLibrary');
-    inputFile.addEventListener('change', uploadToAstra, false);
-    //inputFileToLibrary.addEventListener('change', uploadFromCompToLibrary, false);
+    // inputFile.addEventListener('change', uploadToAstra, false);
+    inputFile.addEventListener('change', uploadFromComp, false);
 
     //initialize codeMirror
     myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'), {
@@ -47,18 +47,17 @@ $(document).ready(function () {
     });
 
     $('#stop-motion-method').click(function () {
-        stillsSelectedLesson = false;
         updateLearnMoreSlide('2-1');
         //updateLearnMore(1, "<p>Now let's get creative!</p><p>We can make our own stop motion masterpiece with CODE! And you know what's even more amazing then that?!</p><p>Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!</p><p>Let's go!</p>", 'The Power of Code', '');
     });
 
     $('#graphic-method').click(function () {
         updateLearnMoreSlide('3-1');
-        //updateLearnMore(1, "<p>Ooooo, that's a fun word.</p><p>You can now make a graphic animate on top of your video!</p><p>Your stop motion projects were <strong>frame based animations</strong> - meaning within each frame there was something that moved. Your graphic animation will be <strong>generative</strong> - meaning it changes with time and based off everlasting calculations!</p><p><a target='_blank' href='https://processing.org/exhibition/'>check out generative animation artwork here</a></p><div class='btn btn-primary js-lesson-2-g right'>Next →</div>", 'Generative', '');
+        // updateLearnMore(1, "<p>Ooooo, that's a fun word.</p><p>You can now make a graphic animate on top of your video!</p><p>Your stop motion projects were <strong>frame based animations</strong> - meaning within each frame there was something that moved. Your graphic animation will be <strong>generative</strong> - meaning it changes with time and based off everlasting calculations!</p><p><a target='_blank' href='https://processing.org/exhibition/'>check out generative animation artwork here</a></p><div class='btn btn-primary js-lesson-2-g right'>Next →</div>", 'Generative', '');
     });
 
     $('.learnMore').on('click', '.js-lesson-2-g', function () {
-        //updateLearnMore(2, "Now let's get a crazy cool graphic on top of your video!</p><p><strong>Go ahead and drag in a graphic from your library.</strong></p>", "Adding Graphics", '');
+        updateLearnMore(2, "Now let's get a crazy cool graphic on top of your video!</p><p><strong>Go ahead and drag in a graphic from your library.</strong></p>", "Adding Graphics", '');
         trackLesson('3-2');
     });
 
@@ -72,26 +71,24 @@ $(document).ready(function () {
     });
 
     $('.learnMore').on('click', '.js-lesson-1-5', function () {
-        //updateLearnMore(6, "<p><strong><p class='js-hint-1-6 purpleText'>Get a hint</p><div class='btn btn-primary js-lesson-7-f right'>Next →</div>", "Quiz", '');
         updateLearnMoreSlide('1-5');
         trackLesson('1-5');
     });
 
     $('.learnMore').on('click', '.js-lesson-1-6', function () {
-        // updateLearnMore(7, "<p>Whoa! You did it! Let's move on coding PRO! Time to create a stop motion! Go ahead and <a class='purpleText' target='_blank' href='/doc/vocab-sheet-1.pdf'>download the vocab cheat sheet</a> from Filters to build on as you go!</p><div class='btn btn-primary js-lesson-7-f right'>Next Lesson: Stop Motion</div>", "Next Steps", '');
         updateLearnMoreSlide('1-7');
         trackLesson('1-7');
     });
 
-    $('.learnMore').on('click', '.js-lesson-4-sm', function () {
-        updateLearnMore(4, "<p>The <strong>interval property</strong> controls the <strong>speed</strong> that your stop motion moves!</p><p>If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!</p><p>Your code uses milliseconds so <strong>1000 is the same as one second!</strong></p><div class='btn btn-primary js-lesson-5-sm right'>What's Next?</div>", "More about Interval", '');
+    $('.learnMore').on('click', '.js-lesson-2-3', function () {
+        updateLearnMoreSlide('2-4');
         trackLesson('2-4');
     });
-    $('.learnMore').on('click', '.js-lesson-5-sm', function () {
-        updateLearnMore(5, "<p><strong>Drag over the 'Reverse' button.</strong></p><p>Reverse is a property that takes values that are either true or false (it's called a boolean, we'll go over more on that weird word later)</p><p>How can you make the video reverse? Give it a go! There are no wrong answers! Just discoveries on the way to the right answer! Coding is ALL about trying and failing then eventually… finding the answer! (cue triumphant music!)</p>", "Reverse it up!", '');
+
+    $('.learnMore').on('click', '.js-lesson-2-4', function () {
+        updateLearnMoreSlide('2-5');
         trackLesson('2-5');
     });
-
 
 
     $('.learnMore').on('click', '.js-hint-1-6', function () {
@@ -112,13 +109,13 @@ $(document).ready(function () {
 
     movie.addEventListener('playing', function () {
         //also update movie.___() line in code editor
-        $("pre:contains('movie.pause()')").html('<span class="cm-variable">movie</span>.<span class="cm-property">play</span>();');
+        $("pre:contains('movie.pause()')").html('<span class="cm-variable"> movie</span>.<span class="cm-property">play</span>();');
         $(".runbtn").text('Pause');
     });
 
     movie.addEventListener('pause', function () {
         //also update movie.___() line in code editor
-        $("pre:contains('movie.play()')").html('<span class="cm-variable">movie</span>.<span class="cm-property">pause</span>();');
+        $("pre:contains('movie.play()')").html('<span class="cm-variable"> movie</span>.<span class="cm-property">pause</span>();');
         $(".runbtn").text('Play');
     });
 
@@ -357,10 +354,8 @@ $(document).ready(function () {
                 numFilterSelect++;
                 if (numFilterSelect == 1) {
                     updateLearnMoreSlide('1-3');
-                    // updateLearnMore(3, '<p>The red number you see is the <strong>"value"</strong> of this line of code.</p><p>Go ahead and change that value to customize your effect.</p><p>Then <strong>bring in another filter!</strong></p>', 'You have a filter!', '');
                 } else if (numFilterSelect == 2) {
                     updateLearnMoreSlide('1-4');
-                    // updateLearnMore(4, '<p>Now that you have 2 filters do you see something in common? "Effects."</p><p><strong>Effects is an Object.</strong> This is a word you will be hearing a lot. Objects hold data. When we write the word "effects" in the editor we are asking to retrieve data from the "effects" object.  Computer programs LOVE passing information around.</p><div class="btn btn-primary js-lesson-5-f right">Take a Quiz! →</div>', '');
                 }
                 var input;
                 for (var i in filter.inputs) {
@@ -391,7 +386,8 @@ $(document).ready(function () {
     };
 
    var dropFrames = function(item){
-            updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
+            updateLearnMoreSlide('2-2');
+            // updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
             if (!stopMotion.on) changeUniqueSrc(item[0]);
             item.addClass('js-selected-still');
             item.addClass('js-selected-video');

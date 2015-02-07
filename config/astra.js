@@ -4,9 +4,8 @@ var request = require('request');
 var crypto = require('crypto');
 var Busboy = require('busboy');
 
-var astraAccount = process.env.ASTRA_ACCOUNT;
-var astraSecret = process.env.ASTRA_SECRET;
-
+var astraAccount = "melissa";
+var astraSecret = "eofQFClIzwS_qhcMV0vTV5mJbMV_TAhu";
 
 module.exports = {
 
@@ -64,17 +63,10 @@ module.exports = {
 
   getVideoUrl: function(bucketName, videoName, callback){
       var url = 'GET:/v0/public/' + astraAccount + '/' + bucketName + '/' + videoName;
-      console.log("HASH START");
       var hash = crypto.createHmac('sha1', astraSecret).update(url).digest('base64');
-      console.log(hash);
       hash = hash.replace(/\+/g,'-').replace(/\//g,'_').substring(0, hash.length - 1);
-      console.log(hash);
-      console.log("HASH END");
-
       urlSigned = 'http://cdn.astra.io/v0/public/' + astraAccount + '/' + bucketName + '/' + videoName + '?hmac=' + hash;
-      console.log(urlSigned);
       callback(urlSigned);
-
   },
 
   postVideo: function( filePath, bucketName, videoName, callback){

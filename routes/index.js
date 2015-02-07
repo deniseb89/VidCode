@@ -96,6 +96,10 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/stopmotionkit', function (req, res) {
+        res.render('stopmotionkit', {layout:false} );
+    });
+
     app.get('/gallery', function (req, res) {
         var userVidURL = req.query.userVidURL;
         if (userVidURL) {
@@ -462,7 +466,7 @@ module.exports = function (app, passport) {
     app.get('/getastra', isLoggedIn, function (req, res) {
 
           astra.getAstraSecret(function (secRes){
-
+            
                 var astraKv = {};
 
                 astraKv.key = secRes;
