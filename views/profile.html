@@ -39,6 +39,7 @@
                             <video class="video" src="{{this.videoSrc}}"/>
                         </a>
                         <p class="js-edit-vid-attrs edit-vid is-hidden"><img src="/img/icons/eraser.png"></p>
+
                         <div class="vid-row">
                             <a href="/workstation/{{this.token}}">
                             <div class="info">
@@ -75,6 +76,7 @@
                         <a href="/share/{{this.token}}">
                             <video class="video" src="/video/?file={{this.file}}"/>
                         </a>
+                        <p class="js-delete-vid edit-vid is-hidden"><img src="/img/icons/delete-vid.png"></p>
                         <p class="js-edit-vid-attrs edit-vid is-hidden"><img src="/img/icons/eraser.png"></p>
                         <div class="vid-row">
                             <div class="info">
@@ -121,7 +123,7 @@
                     <li class="title lesson-list-item">
                         {{this.name}}
                         {{#if this.viewed}}
-                        <img src="/img/checked.png" id="checked">
+                        <img src="/img/icons/check-save.png" id="checked">
                         {{/if}}
 
                     </li>

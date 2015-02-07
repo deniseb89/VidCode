@@ -655,6 +655,10 @@ body.is-in-signup {
     margin: 18px 0 !important;
 }
 
+.boldText{
+    font-weight: bold;
+}
+
 /* Getting started (first) */
 
 .checkbtn {
@@ -1345,6 +1349,32 @@ li.ui-state-default{
     background-color: #323762;
 }
 
+.small-selection-dropdown{
+    width: 160px;
+    position: absolute;
+    z-index: 2;
+    background: #fff;
+    border: 3px solid #22275A;
+    border-radius: 3px;
+    margin: 27px 0 0 68px;
+}
+.small-selection-dropdown li {
+    font-size: 1.2em;
+    color: #323762;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.small-selection-dropdown li:hover {
+    color: #fff;
+    background-color: #323762;
+}
+.small-selection-dropdown ul{
+    text-align: right;
+    padding: 0;
+    margin: 0;
+}
+
 .set-container {
     width: 95%;
     padding: 0 0 25px;
@@ -1737,7 +1767,7 @@ li.ui-state-default{
     border: solid 1px #BDBEC1;
     outline: 0;
     font: normal 13px/100% Verdana, Tahoma, sans-serif;
-    width: 80%;
+    width: 70%;
     background: #FFFFFF;
     margin-bottom: 11px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
@@ -1787,7 +1817,7 @@ li.ui-state-default{
 .profile .title img{
     position: absolute;
     right: 11%;
-    margin-top: -12px;
+    margin-top: -4px;
 }
 
 .profile .title {

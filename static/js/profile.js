@@ -22,9 +22,11 @@ jQuery(document).ready(function() {
     //in the profile page, on video hover the edit icon appears
     $('.js-vid-info').mouseover(function(){
         $(this).children('.js-edit-vid-attrs').first().removeClass("is-hidden");
+        $(this).children('.js-delete-vid').first().removeClass("is-hidden");
     });
     $('.js-vid-info').mouseout(function(){
-       $(this).children('.js-edit-vid-attrs').first().addClass("is-hidden");
+        $(this).children('.js-edit-vid-attrs').first().addClass("is-hidden");
+        $(this).children('.js-delete-vid').first().addClass("is-hidden");
     });
 
     //clicking eraser makes text fields editable for description and title
@@ -33,6 +35,7 @@ jQuery(document).ready(function() {
         var $thisDescr = $(this).parent().find('.descr:first')
         var $thisTitleEdit = $(this).parent().find('.edit-title:first');
         var $thisDescrEdit = $(this).parent().find('.edit-descr:first');
+        var $xBtnShowing = $(this).parent().find('.js-delete-vid:first');
 
         $thisTitle.addClass('is-hidden');
         $thisDescr.addClass('is-hidden');
@@ -43,6 +46,9 @@ jQuery(document).ready(function() {
 
         $(this).children().attr("src", "/img/icons/check-save.png");
 
+        $xBtnShowing.removeClass('js-delete-vid');
+        $xBtnShowing.addClass('js-delete-vid-showing');
+
         $(this).removeClass('js-edit-vid-attrs');
         $(this).addClass('js-save-vid-attrs');
     });
@@ -52,6 +58,7 @@ jQuery(document).ready(function() {
         var $thisDescr = $(this).parent().find('.descr:first');
         var $thisTitleEdit = $(this).parent().find('.edit-title:first');
         var $thisDescrEdit = $(this).parent().find('.edit-descr:first');
+        var $xBtnShowing = $(this).parent().find('.js-delete-vid-showing:first');
 
         $thisTitle.text($thisTitleEdit.val());
         $thisDescr.text($thisDescrEdit.val());
@@ -63,6 +70,9 @@ jQuery(document).ready(function() {
         $thisDescrEdit.addClass('is-hidden');
 
         $(this).children().attr("src", "/img/icons/eraser.png");
+
+        $xBtnShowing.addClass('js-delete-vid');
+        $xBtnShowing.removeClass('js-delete-vid-showing');
 
         $(this).addClass('js-edit-vid-attrs');
         $(this).removeClass('js-save-vid-attrs');
