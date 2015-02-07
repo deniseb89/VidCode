@@ -1345,6 +1345,32 @@ li.ui-state-default{
     background-color: #323762;
 }
 
+.small-selection-dropdown{
+    width: 160px;
+    position: absolute;
+    z-index: 2;
+    background: #fff;
+    border: 3px solid #22275A;
+    border-radius: 3px;
+    margin: 27px 0 0 68px;
+}
+.small-selection-dropdown li {
+    font-size: 1.2em;
+    color: #323762;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.small-selection-dropdown li:hover {
+    color: #fff;
+    background-color: #323762;
+}
+.small-selection-dropdown ul{
+    text-align: right;
+    padding: 0;
+    margin: 0;
+}
+
 .set-container {
     width: 95%;
     padding: 0 0 25px;
