@@ -655,6 +655,10 @@ body.is-in-signup {
     margin: 18px 0 !important;
 }
 
+.boldText{
+    font-weight: bold;
+}
+
 /* Getting started (first) */
 
 .checkbtn {

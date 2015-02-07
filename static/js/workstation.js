@@ -276,7 +276,7 @@ var uploadToAstra = function (ev) {
         });
 
           var astraKey = astra.key;
-          var astraBucketName = astra.bucketName;  
+          var astraBucketName = astra.bucketName;
 
           var objectVideoName = createGuid() + '-' + file.name;
 
@@ -331,9 +331,9 @@ var uploadToAstra = function (ev) {
                           success: function (data, textStatus, jqXHR) {
                                 $('.dl-progress').css('width', '0%');
                                 console.log("UPLOAD TO ASTRA SUCCESS");
-                                
+
                                 $.post('/addVideoNameToUserLibrary/' + objectVideoName);
-                                
+
                                 $(".popup").addClass("is-hidden");
                                 console.log("file upload done");
 
@@ -747,9 +747,15 @@ var updateLearnMore = function (stepNum, lessonText, lessonTitle, lessonImg) {
 
 var updateLearnMoreSlide = function(id){
     var stepNum = id.split('-').pop();
+    var thisIdName = id.toString();
     $('.js-lesson-p-update').text(stepNum);
     $('.js-lesson-slides').addClass('is-hidden');
     $('#'+id).removeClass('is-hidden');
+
+    $('.js-switch-learnmore').removeClass('boldText');
+    if ($('.js-switch-learnmore').hasClass(thisIdName)) {
+        $('.' + thisIdName).addClass('boldText');
+    }
 };
 
 var trackLesson = function (lessonName) {
