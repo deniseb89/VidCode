@@ -1737,7 +1737,7 @@ li.ui-state-default{
     border: solid 1px #BDBEC1;
     outline: 0;
     font: normal 13px/100% Verdana, Tahoma, sans-serif;
-    width: 80%;
+    width: 70%;
     background: #FFFFFF;
     margin-bottom: 11px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
@@ -1787,7 +1787,7 @@ li.ui-state-default{
 .profile .title img{
     position: absolute;
     right: 11%;
-    margin-top: -12px;
+    margin-top: -4px;
 }
 
 .profile .title {

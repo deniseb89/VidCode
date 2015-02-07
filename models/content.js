@@ -22,7 +22,7 @@ var lessonContent =
           'p1': ['You just made a video play with CODE! Your code is now populating the <strong>text editor</strong> which speaks to the rest of the computer program and tells it what to do!'],
           'p2':['Go ahead and <strong>drag over a filter button on the bottom right.</strong> Tell that computer who\'s boss!'],
           'name':'Play'
-        },        
+        },
         {
           'lessonId':'1-3',
           'title': 'You have a filter!',
@@ -45,7 +45,7 @@ var lessonContent =
           'textarea': ["type"],
           'btn': ['Submit'],
           'name':'Effects Quiz'
-        },        
+        },
         {
           'lessonId':'1-6',
           'title': ['Great job!'],
@@ -60,7 +60,7 @@ var lessonContent =
           'p1' : ['Whoa! You did it! Let\n\'s move on coding PRO! Time to create a stop motion! Go ahead and download the vocab cheat sheet from Filters to build on as you go.'],
           'btn' : ['Next Lesson: Stop Motion'],
           'name':'Vocab'
-        }   
+        }
       ]
     },
     'stopMotion' : {
@@ -84,7 +84,7 @@ var lessonContent =
           'p1':['Drag in the "frames" button. Select your favorite stills. Now, drag over the "Interval" button into the code editor.'],
           'image':['lesson-stop-motion.png'],
           'name':'Frames'
-        },        
+        },
         {
           'lessonId':'2-3',
           'title': 'What did Interval change?',
@@ -152,7 +152,7 @@ var lessonContent =
           'title': ['Generative'],
           'p1': ['Ooooo, that\n\'s a fun word.'],
           'name':'Generative Graphics',
-        }                        
+        }
       ]
     },
     'pixelate' : {
