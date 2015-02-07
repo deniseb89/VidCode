@@ -292,7 +292,7 @@ var uploadToAstra = function (ev) {
                       var formData = new FormData();
                       formData.append('name', objectVideoName);
                       formData.append('type', 'video');
-                      formData.append('content', 'application/' + ext);
+                      formData.append('format','.'+ext);
                       formData.append('file', file);
 
                       $.ajax({

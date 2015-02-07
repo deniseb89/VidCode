@@ -50,14 +50,19 @@ var lessonContent =
           'lessonId':'1-6',
           'title': ['Great job!'],
           'p1': ['Now, try typing in a filter that you haven\n\'t used yet into the text editor. Don\n\'t drag and drop this time -- just type :)'],
-          'p2': ['Get a hint'],
+          'phint': ['Get a hint'],
           'btn':['Next →'],
           'name':'Hint'
         },
         {
           'lessonId':'1-7',
           'title': ['Next steps'],
-          'p1' : ['Whoa! You did it! Let\n\'s move on coding PRO! Time to create a stop motion! Go ahead and download the vocab cheat sheet from Filters to build on as you go.'],
+          'p1' : ['Whoa! You did it! Let\n\'s move on coding PRO! Time to create a stop motion!'],
+          'link': {
+            'url': '/doc/vocab-sheet-1.pdf',
+            'text':'vocab cheat sheet'
+          },
+          'p2':['download the vocab cheat sheet from Filters to build on as you go.'],
           'btn' : ['Next Lesson: Stop Motion'],
           'name':'Vocab'
         }   
@@ -127,8 +132,8 @@ var lessonContent =
           'p2':['You can now make a graphic animate on top of your video!'],
           'p3': ['Your stop motion projects were frame based animations - meaning within each frame there was something that moved. Your graphic animation will be generative - meaning it changes with time and based off everlasting calculations!'],
           'link': {
-            url: 'https://processing.org/exhibition/',
-            text: 'check out generative animation artwork here'
+            'url': 'https://processing.org/exhibition/',
+            'text': 'check out generative animation artwork here'
           },
           'btn':['Next'],
           'name':'Generative Graphics'
