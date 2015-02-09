@@ -71,7 +71,7 @@ var lessonContent =
     'stopMotion' : {
       'name' : 'Stop Motion',
       'total' : 5,
-      'elements' : ['interval', 'frames'],
+      'elements' : ['interval', 'reverse'],
       'class' : 'stop-motion-method',
       'learnMore' : [
         {
@@ -81,14 +81,18 @@ var lessonContent =
           'p2': ['We can make our own stop motion masterpiece with CODE! And you know what\n\'s even more amazing then that?!'],
           'p3': ['Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!'],
           'p4': ['Let\n\'s go!'],
+          'pstrong': ['Start your project by selecting some stills in the left hand corner.'],
           'name':'Stop Motion Intro'
         },
         {
           'lessonId':'2-2',
           'title': ['Awesome!'],
-          'p1':['Drag in the "frames" button. Select your favorite stills. Now, drag over the "Interval" button into the code editor.'],
+          'p1':['You made a new line of code appear!'],
+          'p2' : ['Those brackets around the frames make up something called an "array"! We\n\'ll get to that word more soon. For now, select your favorite stills and see how that changes the "frames" in the code.'],
+          'p3' : ['You can choose from the samples or upload your photos to make this stop-motion video super special.'],
+          'pstrong': 'Once you\n\'ve picked your favorite photos, drag over the "Interval" button into the code editor.',
           'image':['lesson-stop-motion.png'],
-          'name':'Frames'
+          'name':'Frame Array'
         },
         {
           'lessonId':'2-3',

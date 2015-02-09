@@ -386,9 +386,11 @@ $(document).ready(function () {
     };
 
    var dropFrames = function(item){
-            updateLearnMoreSlide('2-2');
-            // updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
+            if(newSession)  activateSession('img');
             if (!stopMotion.on) changeUniqueSrc(item[0]);
+
+            updateLearnMoreSlide('2-2');
+
             item.addClass('js-selected-still');
             item.addClass('js-selected-video');
 
@@ -421,10 +423,6 @@ $(document).ready(function () {
 
     //Switch between content
     $('.js-switch-view').click(function () {
-        //Todo: Template these
-        if (newSession){
-            activateSession();
-        }
         var view = ($(this).attr('id'));
         var lName = ($(this).attr('name'));
         var lessonNum = ($(this).attr('lessnum'));

@@ -97,7 +97,12 @@ module.exports = function (app, passport) {
     });
 
     app.get('/stopmotionkit', function (req, res) {
-        res.render('stopmotionkit', {layout:false} );
+        res.render('stopmotionkit',
+        {
+            user: req.user,
+            content: content,
+            newSession: true
+        });
     });
 
     app.get('/gallery', function (req, res) {
@@ -711,7 +716,6 @@ module.exports = function (app, passport) {
     });
 
     app.get('/workstation', isLoggedIn, function (req, res) {
-        console.log(req.user);
         res.render("workstation",
             {
                 user: req.user,

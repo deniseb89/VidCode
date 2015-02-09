@@ -27,7 +27,11 @@ var createStopMotionInEditor = function(eff){
         }               
     }
     if(!effectExists){
-        var text = '\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';';
+        if (eff=="reverse") {
+          var text = '\n\ stopMotion.reverse();';
+        } else {
+          var text = '\n\ stopMotion.' + eff + ' = ' + stopMotion.controls[eff] + ';';          
+        }
         createCodeInEditor(text, "cm-"+eff); 
         if (eff == "interval") {
             updateLearnMoreSlide('2-3');
@@ -36,21 +40,10 @@ var createStopMotionInEditor = function(eff){
 
 };
 
-var changeUniqueSrc = function(src){
-      var this_still;
-      this_still = seriously.transform('reformat');
-      this_still.width = 420;
-      this_still.height = 250;
-      this_still.mode = 'contain';
-      this_still.source = src;           
-      effects[allEffects[0]]["bottom"] = seriously.source(this_still); 
-}
-
-
 //create stop Motion object
 var stopMotion = {
   on : false,
-  reverse: false,
+  // reverse: false,
   interval : 500,
   controls : {'interval': 500, 'frames': '[ , ]','reverse': 'false'},
   still: null,
@@ -58,20 +51,31 @@ var stopMotion = {
   stills: [],
   frames: [],
   dragID: "",
+  min: 20,
+  max: 2000,
 
   start: function(){
-    	clearInterval(stopMotion.animate);
-      this.stills = [];
+    clearInterval(stopMotion.animate);
+    this.stills = [];
 
-      for (var i=0; i<stopMotion.frames.length; i++){
-        this.stills.push(document.getElementById(stopMotion.frames[i]));
-      }
-     this.iterator = 0;
+    for (var i=0; i<stopMotion.frames.length; i++){
+      this.stills.push(document.getElementById(stopMotion.frames[i]));
+    }
+    this.iterator = 0;
+
+    if (stopMotion.interval < stopMotion.min) {
+      stopMotion.interval = stopMotion.min;
+      this.adjustInterval(stopMotion.min);
+    }
+    else if (stopMotion.interval > stopMotion.max) {
+      stopMotion.interval = stopMotion.max;
+      this.adjustInterval(stopMotion.max);
+    }
 
     if (this.stills.length){
-        stopMotion.animate = setInterval(stopMotion.loop, stopMotion.interval);
-        stopMotion.on = true;       
-      }
+      stopMotion.animate = setInterval(stopMotion.loop, stopMotion.interval); 
+      stopMotion.on = true; 
+    }
   },
   loop:  function(){
       if (stopMotion.stills.length){
@@ -99,7 +103,7 @@ var stopMotion = {
     }   
   },
   reverse: function(){
-
+      stopMotion.frames = stopMotion.frames.reverse();
   },
   addFramesToTimeline: function(){
     var timeline = $('#timeline-sortable');
@@ -138,7 +142,6 @@ var stopMotion = {
     if(!framesTimeline.length){
       movie.src="";
       changeUniqueSrc(movie);
-
     }
     else{
       stopMotion.start();  

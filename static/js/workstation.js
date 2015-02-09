@@ -29,22 +29,28 @@ var checkWebGL = function () {
     if (Seriously.incompatible() || !Modernizr.webaudio || !Modernizr.csstransforms) {
         $('.compatibility-error').removeClass('is-hidden');
     } else {
-    	$('.filter-method').removeClass('is-hidden');
-        updateLearnMoreSlide('1-1');
+        // $('.filter-method').removeClass('is-hidden');
+        // updateLearnMoreSlide('1-1');
+        $('.js-lesson-name').text('Stop Motion');
+    	$('.stop-motion-method').removeClass('is-hidden');
+        updateLearnMoreSlide('2-1');
     }
 };
 
 //activateSession will fire one time only upon having a video playing
 //in a new session, this will happen manually upon selecting a video
 //in a saved session, this will happen automatically
-var activateSession = function () {
+
+var activateSession = function (type) {
 	newSession = $('.is-new-session').text();
 	InitSeriously();
     if (newSession==="false"){
         var code =  myCodeMirror.getValue();
     } else {
-        var code = " movie.play();";
-        createCodeInEditor(code, "cm-play");
+        if(type!='img'){
+            var code = " movie.play();";
+            createCodeInEditor(code, "cm-play");
+        }
     }
     updateScript(code);
 
@@ -74,7 +80,7 @@ var InitSeriously = function () {
     video.width = 420;
     video.height = 250;
     video.mode = 'contain';
-    video.source = movie;
+    video.source = movie;        
 
     target = seriously.target('#canvas');
     graphic = seriously.source(graphicsCanvas);
@@ -119,16 +125,22 @@ var changeSrc = function () {
     }
 };
 
+var changeUniqueSrc = function(src){
+      var this_still;
+      this_still = seriously.transform('reformat');
+      this_still.width = 420;
+      this_still.height = 250;
+      this_still.mode = 'contain';
+      this_still.source = src;           
+      effects[allEffects[0]]["bottom"] = seriously.source(this_still); 
+};
 
 var imgClickSetup = function () {
     pixelate.turnOff();
     changeSrc();
     updateLearnMoreSlide('2-2');
-    // updateLearnMore(2, '<p>Drag in the <strong>"frames"</strong> button. Select your favorite stills. Now, drag over the <strong>"Interval" button</strong> into the code editor.</p>', 'Upload Stills', '<img class="lessonImg" src="/img/lessons/lesson-stop-motion.png">');
     $(this).toggleClass('js-selected-video');
     $(this).toggleClass('js-selected-still');
-
-
 
     var selectedStills = document.querySelectorAll('.js-selected-still');
 
@@ -137,7 +149,6 @@ var imgClickSetup = function () {
       var frameIsSelected = false;
 
       for(var j = 0; j < selectedStills.length; j++){
-
         if(selectedStills[j].id == stopMotion.frames[i]){
           frameIsSelected = true;
         }
@@ -173,10 +184,11 @@ var imgClickSetup = function () {
         if(!newFrames.length)  myCodeMirror.removeLine(cmLine.to.line);
 
       }
-
     }
 
     //generalize this somewhere else so when source changes, target changes
+    if(newSession)  activateSession('img');
+
     if (!stopMotion.on){
       if(newFrames.length == 0) {
         movie.src = "";
@@ -231,7 +243,6 @@ var uploadFromComp = function (ev) {
     var fileTypes = ['mp4','ogg','webm'];
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        console.log(file);
         var ext = file.name.split('.').pop();
         ext = ext.toLowerCase();
         var reader = new FileReader();
@@ -395,6 +406,7 @@ var updateMediaLibrary = function (file, data) {
     div.className += 'i-vid-container';
     var media = document.createElement(type);
     media.className += style;
+    media.className += ' ui-draggable';
     media.id = id;
     media.src = data;
     media.addEventListener('click', fn, false);
@@ -488,16 +500,16 @@ var updateScript = function (code) {
     }
 
 
-    // if (textScript.indexOf('stopMotion.interval')>=0) {
-    //    $('li[name=interval]').addClass('is-active');
-    //    stopMotion.start();
-    //    //reorganize array here
+    if (textScript.indexOf('stopMotion.interval')>=0) {
+       $('li[name=interval]').addClass('is-active');
+       stopMotion.start();
+       //reorganize array here
 
-    // } else {
-    //   if (stopMotion.on) {
-    //     stopMotion.stop();
-    //   }
-    // }
+    } else {
+      if (stopMotion.on) {
+        stopMotion.stop();
+      }
+    }
     //-------------------Pixelate in Script-----------------------//
 
     if(textScript.indexOf('pixelate.step')>=0){
