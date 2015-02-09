@@ -19,9 +19,8 @@ $(document).ready(function () {
     bufferContext = bufferCanvas.getContext('2d');
 
     var inputFile = document.getElementById('inputFile');
-    //var inputFileToLibrary = document.getElementById('inputFileToLibrary');
-    // inputFile.addEventListener('change', uploadToAstra, false);
-    inputFile.addEventListener('change', uploadFromComp, false);
+    inputFile.addEventListener('change', uploadToAstra, false);
+    // inputFile.addEventListener('change', uploadFromComp, false);
 
     //initialize codeMirror
     myCodeMirror = CodeMirror.fromTextArea(document.getElementById('codemirror'), {
@@ -163,9 +162,9 @@ $(document).ready(function () {
         modalVideoLoad('share');
     });
 
-    $('.save-btns-container').on('click', ".js-save-code-m", function () {
-        modalVideoLoad('save');
-    });
+    // $('.save-btns-container').on('click', ".js-save-code-m", function () {
+    //     modalVideoLoad('save');
+    // });
 
     $('.save-btns-container').on('click', ".js-save-code-m", function () {
 
