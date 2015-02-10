@@ -216,7 +216,7 @@ module.exports = function (app, passport) {
                     res.redirect('/workstation');
                 }
             } else {
-                res.redirect('/workstation'); 
+                res.redirect('/workstation');
             }
         });
 
@@ -471,7 +471,7 @@ module.exports = function (app, passport) {
     app.get('/getastra', isLoggedIn, function (req, res) {
 
           astra.getAstraSecret(function (secRes){
-            
+
                 var astraKv = {};
 
                 astraKv.key = secRes;
@@ -716,19 +716,23 @@ module.exports = function (app, passport) {
     });
 
     app.get('/workstation', isLoggedIn, function (req, res) {
+
+        var sessionToken = generateToken(crypto);
+
         res.render("workstation",
             {
                 user: req.user,
                 content: content,
-                newSession: true
+                newSession: true,
+                sessionToken: sessionToken
             });
     });
 
-    app.get('/workstation/:videoFileId?',isLoggedIn, function (req, res) {
-        var videoFileId = req.params.videoFileId;
+    app.get('/workstation/:sessionToken?',isLoggedIn, function (req, res) {
+        var sessionToken = req.params.sessionToken;
         var file;
 
-        if (!videoFileId) {
+        if (!sessionToken) {
             res.redirect('/workstation');
             return;
         }
@@ -742,7 +746,7 @@ module.exports = function (app, passport) {
                 } else {
                     var _sessionToLoad = {};
 
-                    if (videoFileId == "lastSession"){
+                    if (sessionToken == "lastSession"){
                                 // _sessionToLoad.code = user.lastSession.code;
                                 // _sessionToLoad.token = user.lastSession.token;
                                 // _sessionToLoad.lessonId = user.lastSession.lessonId;
@@ -754,16 +758,17 @@ module.exports = function (app, passport) {
                             user: user,
                             content: content,
                             code: _sessionToLoad.code,
-                            newSession: false
+                            newSession: false,
+                            sessionToken: _sessionToLoad.token
                         });
 
                     }else{
                         for (var item in user.inProgressProjects) {
-                            if (user.inProgressProjects[item]['token'] == "dummy-token") {
+                            if (user.inProgressProjects[item]['token'] == sessionToken) {
                                 // _sessionToLoad.code = user.inProgressProjects[item]['code'];
                                 // _sessionToLoad.token = user.inProgressProjects[item]['token'];
                                 // _sessionToLoad.lessonId = user.inProgressProjects[item]['lessonId'];
-                                // _sessionToLoad.videoSrc = user.inProgressProjects[item]['videoSrc']; 
+                                // _sessionToLoad.videoSrc = user.inProgressProjects[item]['videoSrc'];
                                 // _sessionToLoad.video = user.inProgressProjects[item];
                                 _sessionToLoad = user.inProgressProjects[item];
                             }
@@ -776,7 +781,8 @@ module.exports = function (app, passport) {
                             user: user,
                             content: content,
                             code: _sessionToLoad.code,
-                            newSession: false
+                            newSession: false,
+                            sessionToken: sessionToken
                         });
                     }
                 }

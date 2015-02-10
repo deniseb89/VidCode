@@ -168,16 +168,13 @@ $(document).ready(function () {
 
     $('.save-btns-container').on('click', ".js-save-code-m", function () {
 
-        var _cmScript = myCodeMirror.getValue();
+        var cmScript = myCodeMirror.getValue();
 
-        var _videoSrc = (document.getElementById('myvideo').src)
+        var videoSrc = (document.getElementById('myvideo').src);
 
-        //may need to add a global variable to store the current video token in session.
-        //TODO: handle uploaded videos that are not in the library (don't have a file ID and sends the entire binary data.)
-        /*
-        http://localhost:5000/workstation-update-session Failed to load resource: the server responded with a status of 413 (Request Entity Too Large)
-        */
-        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': 'dummy-token', 'videoSrc': _videoSrc ,'code': _cmScript});
+        var sessionToken = $('#session-token').val();
+
+        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': sessionToken, 'videoSrc': videoSrc ,'code': cmScript});
     });
 
     $('.finish-btn-container').on('click', ".js-finish-m", function () {

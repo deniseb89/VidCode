@@ -80,7 +80,7 @@ var InitSeriously = function () {
     video.width = 420;
     video.height = 250;
     video.mode = 'contain';
-    video.source = movie;        
+    video.source = movie;
 
     target = seriously.target('#canvas');
     graphic = seriously.source(graphicsCanvas);
@@ -131,8 +131,8 @@ var changeUniqueSrc = function(src){
       this_still.width = 420;
       this_still.height = 250;
       this_still.mode = 'contain';
-      this_still.source = src;           
-      effects[allEffects[0]]["bottom"] = seriously.source(this_still); 
+      this_still.source = src;
+      effects[allEffects[0]]["bottom"] = seriously.source(this_still);
 };
 
 var imgClickSetup = function () {
@@ -688,7 +688,7 @@ var saveSession = function (blob) {
 
     formData.append('title', $('.js-video-title').val());
     formData.append('descr', $('.js-video-descr').val());
-    formData.append('token', $('.js-video-token').val());
+    formData.append('sessionToken', $('.js-session-token').val());
     formData.append('code', myCodeMirror.getValue());
     formData.append('video', blob);
 
@@ -817,5 +817,3 @@ $('.learnMore').on('click', '.js-lesson-4-g', function () {
        $('.js-l-4-g-error').text('Make sure that you change the variable next to "size="');
     }
 });
-
-
