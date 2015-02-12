@@ -139,28 +139,139 @@ var lessonContent =
             'url': 'https://processing.org/exhibition/',
             'text': 'check out generative animation artwork here'
           },
-          'btn':['Next'],
+          'btn':['Next →'],
           'name':'Generative Graphics'
         },
         {
           'lessonId':'3-2',
-          'title': ['Generative'],
-          'p1': ['Ooooo, that\n\'s a fun word.'],
-          'name':'Generative Graphics',
-          'image':['pixel.png']
+          'title': ['Adding Graphics'],
+          'p1': ['Now Let\n\'s get a crazy cool graphic on top of your video!'],
+          'pstrong': ['Go ahead and drag in a graphic from your library.'],
+          'name':'Adding Graphics'
         },
         {
           'lessonId':'3-3',
-          'title': ['Generative'],
-          'p1': ['Ooooo, that\n\'s a fun word.'],
-          'name':'Generative Graphics',
-          'image':['pixel.png']
+          'title': ['Video Magic!'],
+          'p1': ['That looks great!'],
+          'pstrong': ['Try changing the value of \n\'size\n\''],
+          'btn':['Changed the size! →'],
+          'name':'Changing Variables'
         },
         {
           'lessonId':'3-4',
-          'title': ['Generative'],
-          'p1': ['Ooooo, that\n\'s a fun word.'],
-          'name':'Generative Graphics',
+          'title': ['More variables!'],
+          'p1': ['You are in control!  Time to code some movie madness.'],
+          'btn': ['What\'s position.x? →'],
+          'name':'Size Variable',
+        },
+        {
+          'lessonId':'3-5',
+          'title': ['(x,y) Coordinates'],
+          'p1': ['An x coordinate!'],
+          'p2': ['That\n\'s the location of where things are placed on your video! Computer programs learn where things are in space by a system of (x,y) coordinates. Remember that from geometry?! ;)'],
+          'btn': ['Next →'],
+          'name':'(x,y) Coordinates',
+        },
+        {
+          'lessonId':'3-6',
+          'title': ['The Pixel Grid'],
+          'p1': ['A video is a single grid, with x as horizontal and y as vertical. As shown below!'],
+          'pstrong': ['If you wanted to put your graphic on the top right corner of your video player, would x or y be zero?'],
+          'textarea': ["type"],
+          'btn': ['Submit'],
+          'name':'The Pixel Grid',
+          'image':['pixel.jpg']
+        },
+        {
+          'lessonId':'3-7',
+          'title': ['The Pixel Grid (Answer)'],
+          'p1': ['Y would be 0!'],
+          'p2': ['As you code more this way of thinking will become more natural.  Just keep practicing!'],
+          'btn': ['Next →'],
+          'name':'The Pixel Grid (Answer)'
+        },
+        {
+          'lessonId':'3-8',
+          'title': ['Onto Animation'],
+          'p1': ['Now let\n\'s make it move!'],
+          'pstrong': ['Drag over the animation button.'],
+          'name':'Onto Animation'
+        },
+        {
+          'lessonId':'3-9',
+          'title': ['Animation'],
+          'p1': ['Whoa! It\n\'s moving and you can see the JavaScript that\n\'s making it move.'],
+          'p2': ['Want to make it stop moving around?'],
+          'pstrong': ['What do you think you could change in the code to make it stop? Change it to move on.'],
+          'phint': ['Get a hint'],
+          'btn': ['Changed it! →'],
+          'name':'Animation II'
+        },
+        {
+          'lessonId':'3-10',
+          'title': ['True and false'],
+          'p1': ['Great job!'],
+          'p2': ['Computer programs love 010101 true false true false.'],
+          'p3': ['More on that soon!'],
+          'btn': ['Next →'],
+          'name':'True and False'
+        },
+        {
+          'lessonId':'3-11',
+          'title': ['targetPosition.y=0;'],
+          'p1': ['What do you think targetPosition.y=0; is?'],
+          'p2': ['Before we get to that have you noticed there is a semicolon after each code sentence?'],
+          'p3': ['It\n\'s very similar to the period at the end of an english sentence.  Make sure to keep track of your semicolons!'],
+          'btn': ['Next →'],
+          'name':'targetPosition.y=0;'
+        },
+        {
+          'lessonId':'3-12',
+          'title': ['Speed it up!'],
+          'p1': ['Now that you know what targetPosition is what do you think "speed.x=1;" means?'],
+          'p2': ['Play around and see!'],
+          'btn': ['Next →'],
+          'name':'Speed it up!'
+        },
+        {
+          'lessonId':'3-13',
+          'title': ['Dot Notations'],
+          'p1': ['The speed is an object that is grabbing "property" "x".  Think of it as a way to grab data through a glossary.'],
+          'p2': ['In this case we are looking in the book called "speed" for the chapter "x".  It\n\'s a super powerful way to organize code!'],
+          'btn': ['Next →'],
+          'name':'Dot Notations'
+        },
+        {
+          'lessonId':'3-14',
+          'title': ['Drawing'],
+          'p1': ['Now let\n\'s get to drawing!'],
+          'p2': ['You can draw with code! You\n\'re learning the JavaScript that makes it happen.'],
+          'pstrong': ['Drag over the "drawing" button'],
+          'name':'Drawing'
+        },
+        {
+          'lessonId':'3-15',
+          'title': ['Drawing Quiz'],
+          'p1': ['What do you think you need to change in the code to make this drawing happen?'],
+          'phint': ['Get a hint'],
+          'textarea': ["type"],
+          'btn': ['Submit'],
+          'name':'Drawing Quiz'
+        },
+        {
+          'lessonId':'3-16',
+          'title': ['drawingMode'],
+          'p1': ['That\n\'s it! drawingMode!'],
+          'p2': ['It\n\'s like a light switch that you can turn on or off with true/false.'],
+          'phint': ['Get a hint'],
+          'btn': ['Next →'],
+          'name':'drawingMode'
+        },
+        {
+          'lessonId':'3-17',
+          'title': ['Finishing Up Graphics'],
+          'p1': ['Play around with the color and settings then export your masterpiece!'],
+          'name':'Finishing Up Graphics'
         }
       ]
     },

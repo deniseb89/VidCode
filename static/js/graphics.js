@@ -225,6 +225,8 @@ var updateGraphicsEditor = function(){
 
 
 var createDrawing = function(){
+    updateLearnMoreSlide('3-15');
+    trackLesson('3-15');
 
     var drawingExists = false;
     var allTM = myCodeMirror.getAllMarks();
@@ -302,6 +304,10 @@ var createGraphics = function(){
 
 
 var createAnimation = function(){
+    updateLearnMoreSlide('3-9');
+    trackLesson('3-9');
+
+
     animationMode = true;
     targetPosition = {'x': 210, 'y': 125 };
     clearInterval(animationInterval);

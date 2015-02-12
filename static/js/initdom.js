@@ -89,10 +89,97 @@ $(document).ready(function () {
         trackLesson('2-5');
     });
 
+    $('.learnMore').on('click', '.js-lesson-3-4', function () {
+        updateLearnMoreSlide('3-5');
+        trackLesson('3-5');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-5', function () {
+        updateLearnMoreSlide('3-6');
+        trackLesson('3-6');
+    });
+
+
+    $('.learnMore').on('click', '.js-lesson-3-6', function () {
+        updateLearnMoreSlide('3-7');
+        trackLesson('3-7');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-7', function () {
+        updateLearnMoreSlide('3-8');
+        trackLesson('3-8');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-9', function () {
+        updateLearnMoreSlide('3-10');
+        trackLesson('3-10');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-10', function () {
+        updateLearnMoreSlide('3-11');
+        trackLesson('3-11');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-11', function () {
+        updateLearnMoreSlide('3-12');
+        trackLesson('3-12');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-12', function () {
+        updateLearnMoreSlide('3-13');
+        trackLesson('3-13');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-13', function () {
+        updateLearnMoreSlide('3-14');
+        trackLesson('3-14');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-15', function () {
+        updateLearnMoreSlide('3-16');
+        trackLesson('3-16');
+    });
+
+    $('.learnMore').on('click', '.js-lesson-3-16', function () {
+        updateLearnMoreSlide('3-17');
+        trackLesson('3-17');
+    });
 
     $('.learnMore').on('click', '.js-hint-1-6', function () {
         $(this).removeClass('purpleText');
         $(this).html('Make sure that your text matches the other filters. For example, you could type <strong>effects.blur.amount = 12</strong>');
+    });
+
+
+    $('.learnMore').on('click', '.js-lesson-3-1', function () {
+        updateLearnMoreSlide('3-2');
+        trackLesson('3-2');
+    });
+
+
+    $('.learnMore').on('click', '.js-lesson-3-3', function () {
+        $(".cm-size").each(function(){
+            var onlySizeNums = ($('div.CodeMirror span.cm-size').text()).replace(/[^0-9]/gi, ''); // Replace everything that is not a number with nothing
+            curentSizeNum = parseInt(onlySizeNums, 10); // Always hand in the correct base since 010 != 10 in js
+        });
+        if(curentSizeNum != 200){
+            updateLearnMoreSlide('3-4');
+            //updateLearnMore(4, "<p>Great job changing that variable!</p><p>Now let's move on to coordinates!</p><p>They're the location of where things are placed on your video. Computer programs learn where things are in space by a system of (x,y) coordinates. Remember them from geometry?</p><div class='btn btn-primary js-lesson-5-g right'>Next →</div>", "Now let's cover x and y coordinates", '');
+            trackLesson('3-4');
+        }
+        else{
+           $('.js-error-3-3').text('Make sure that you change the variable next to "size="');
+        }
+    });
+
+    $('.learnMore').on('click', '.js-hint-3-9', function () {
+        $(this).removeClass('purpleText');
+        $(this).html('It\n\'s either true or false');
+    });
+
+    $('.learnMore').on('click', '.js-hint-3-15', function () {
+        $(this).removeClass('purpleText');
+        $(this).html('it\n\'s a type of \n\'mode\n\'!');
     });
 
 
@@ -285,10 +372,12 @@ $(document).ready(function () {
                     for(var i = 0; i < allGraphs.length; i++){
                         if(allGraphs[i].src.indexOf(thisSrc) >= 0 ){
                             if(allGraphs[i].style.position != "absolute"){
-                               allGraphs[i].setAttribute('class', 'js-graph-click ui-draggable js-selected-graphic');
-                               createGraphics();
-                               updateGraphicsCanvas();
-                               updateLearnMore(3, "<p>That looks great!</p><p><strong>Now, try changing the value of the 'size'!</strong><p class='js-l-4-g-error'></p><div class='btn btn-primary js-lesson-4-g right'>Changed the size! →</div>", 'Video magic!', '');
+                                allGraphs[i].setAttribute('class', 'js-graph-click ui-draggable js-selected-graphic');
+                                createGraphics();
+                                updateGraphicsCanvas();
+                                //updateLearnMore(3, "<p>That looks great!</p><p><strong>Now, try changing the value of the 'size'!</strong><p class='js-l-4-g-error'></p><div class='btn btn-primary js-lesson-4-g right'>Changed the size! →</div>", 'Video magic!', '');
+                                updateLearnMoreSlide('3-3');
+                                trackLesson('3-3');
                            }
                         }
                     }

@@ -337,12 +337,14 @@
                                     <p> {{this.p1}} </p>
                                     <p> {{this.p2}} </p>
                                     <p> {{this.p3}} </p>
+                                    <p> {{this.p4}} </p>
                                     <p><strong> {{this.pstrong}} </strong></p>
                                     <p><a target='_blank' href='{{this.link.url}}'>{{this.link.text}}</a></p>
                                     <p class="js-hint-{{this.lessonId}} purpleText">{{this.phint}}</p>
                                     {{#if this.textarea}}
                                         <textarea></textarea>
                                     {{/if}}
+                                    <p class="js-error-{{this.lessonId}}"></p>
                                     {{#if this.btn}}
                                         <div class="btn btn-primary right js-lesson-{{this.lessonId}}">{{this.btn}}</div>
                                     {{/if}}

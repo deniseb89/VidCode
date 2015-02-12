@@ -1356,10 +1356,10 @@ li.ui-state-default{
     background: #fff;
     border: 3px solid #22275A;
     border-radius: 3px;
-    margin: 27px 0 0 68px;
+    margin: 27px 0 0 62px;
 }
 .small-selection-dropdown li {
-    font-size: 1.2em;
+    font-size: 1em;
     color: #323762;
     padding: 5px 10px;
     cursor: pointer;
