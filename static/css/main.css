@@ -589,7 +589,7 @@ body.is-in-signup {
 .popup, .instagram-form {
     margin: 200px 0 0 300px;
     position: fixed;
-    height: 50px;
+    height: 130px;
     width: 600px;
     padding: 10px 50px 90px 50px;
     background-color: #fff;
@@ -1516,7 +1516,9 @@ li.ui-state-default{
     margin: 5px;
 }
 
-
+.lesson-page .video-container button {
+    background-color: #319665;
+}
 
 .lesson-page .stills-container {
     /*overflow: visible;    */
@@ -2076,6 +2078,10 @@ li.active a, li.active a:hover {
     margin-top: 30px
 }
 
+.addthis-container2 {
+    margin-right: 180px;
+}
+
 .greentext {
     color: #319665 !important;
 }
@@ -2171,15 +2177,12 @@ li.active a, li.active a:hover {
     margin: -15px auto 25px 200px;
 }
 
-.save-session-btn {
-    width: 90%;
-    display: block;
+.finish-btn-container span{
     margin: 7px auto;
     border-radius: 2px;
     font-family: 'Open Sans';
     font-weight: 600;
-    border: 1px solid #fff;
-    padding: 10px 0;
+    float: right;
 }
 
 .n-a-video-save-desc {
@@ -2460,7 +2463,7 @@ li.active a, li.active a:hover {
     width: 100%;
     background-color: #EFF3F4;
     color: #323762;
-    padding: 23px 25px 25px;
+    padding: 23px 25px 53px;
 }
 
 .action-modal .c-desc {

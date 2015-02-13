@@ -19,8 +19,8 @@ var lessonContent =
         {
           'lessonId':'1-2',
           'title': ['Awesome!'],
-          'p1': ['You just made a video play with CODE! Your code is now populating the <strong>text editor</strong> which speaks to the rest of the computer program and tells it what to do!'],
-          'p2':['Go ahead and <strong>drag over a filter button on the bottom right.</strong> Tell that computer who\'s boss!'],
+          'p1': ['You just made a video play with CODE! Your code is now populating the text editor which speaks to the rest of the computer program and tells it what to do!'],
+          'p2':['Go ahead and drag over a filter button on the bottom right. Tell that computer who\'s boss!'],
           'name':'Play'
         },
         {
@@ -70,7 +70,7 @@ var lessonContent =
     },
     'stopMotion' : {
       'name' : 'Stop Motion',
-      'total' : 5,
+      'total' : 9,
       'elements' : ['interval', 'reverse'],
       'class' : 'stop-motion-method',
       'learnMore' : [
@@ -81,51 +81,78 @@ var lessonContent =
           'p2': ['We can make our own stop motion masterpiece with CODE! And you know what\n\'s even more amazing then that?!'],
           'p3': ['Because we are using CODE to create our stop motion we have more control to make it our own that we ever could by a program that someone else wrote. This is yours!'],
           'p4': ['Let\n\'s go!'],
-          'pstrong': ['Start your project by selecting some stills in the left hand corner.'],
+          'pstrong': ['Start your project by selecting some sample stills on the left or upload your own.'],
           'name':'Stop Motion Intro'
         },
         {
           'lessonId':'2-2',
-          'title': ['Awesome!'],
-          'p1':['You made a new line of code appear!'],
-          'p2' : ['Those brackets around the frames make up something called an "array"! We\n\'ll get to that word more soon. For now, select your favorite stills and see how that changes the "frames" in the code.'],
-          'p3' : ['You can choose from the samples or upload your photos to make this stop-motion video super special.'],
-          'pstrong': 'Once you\n\'ve picked your favorite photos, drag over the "Interval" button into the code editor.',
+          'title': ['An Array!'],
+          'p1':['Whoa! You made a new line of code appear!'],
+          'p2' : ['The thumbs you are selecting are creating a numbered list between those [ ] brackets.  That is a super powerful thing called an "array".  Arrays contain lists of data separted by commas.'],
+          'pstrong': 'Once you\n\'ve selected ALL your images click NEXT',
+          'btn': ['Next'],
           'image':['lesson-stop-motion.png'],
-          'name':'Frame Array'
+          'name':'Arrays'
         },
         {
           'lessonId':'2-3',
-          'title': 'What did Interval change?',
-          'p1': ['Whoa! The images are moving now.'],
-          'p2': ['Remember "Objects"? Now we have a stop motion Object.'],
-          'p3': ['Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object\n\'s baby.'],
-          'p4': ['Objects can have millions of properties!'],
-          'btn': ['More about interval'],
-          'name':'Interval'
+          'title': 'Frame it up',
+          'p1': ['You\n\'ve picked your favorite photos and now they are in an array. Hooray!'],
+          'pstrong': ['Now drag over the "interval" button'],
+          'name':'Frames'
         },
         {
           'lessonId':'2-4',
-          'title': ['More about Interval'],
-          'p1':['The interval property controls the speed that your stop motion moves!'],
-          'p2': ['If only there had been CODE like this back in the day, think what Charlie Chaplin would have created!'],
-          'p3': ['Your code uses milliseconds so 1000 is the same as one second!'],
-          'btn': ['What\n\'s Next?'],
-          'name':'Interval II'
+          'title': 'What did Interval change?',
+          'p1': ['Whoa! The images are moving now.'],
+          'p2': ['The interval property controls the speed that your stop motion moves!'],
+          'p3': ['If only there had been CODE like this back in the day. Think what Charlie Chaplin would have created!'],
+          'btn': ['Next'],
+          'name':'Interval'
         },
         {
           'lessonId':'2-5',
+          'title': 'Remember "Objects"?',
+          'p1': ['Now we have a stop motion object.'],
+          'p2': ['Anything to the right of the stop motion object is a property that is being pulled out of that object. A property is kind of like an object\n\'s baby.'],
+          'btn': ['Next'],
+          'name':'Objects Review'
+        },
+        {
+          'lessonId':'2-6',
           'title': ['Reverse it up!'],
-          'p1': ['Reverse is a property that takes values that are either true or false (it\n\'s called a boolean, we\n\'ll go over more on that weird word later)'],
-          'p2': ['How can you make the video reverse? Give it a go! There are no wrong answers! Just discoveries on the way to the right answer! Coding is ALL about trying and failing then eventually… finding the answer! (cue triumphant music!)'],
           'pstrong': ['Drag over the "Reverse" button.'],
           'name':'Reverse'
-        }
+        },
+        {
+          'lessonId':'2-7',
+          'title': ['How does reverse work?'],
+          'p1' : ['Reverse is called a "native Javascript method".'],
+          'p2' : ['Every time you see those () brackets, that means a method is being called. A method is like an action.'],
+          'btn': ['Next'],
+          'name':'Methods'
+        },
+        {
+          'lessonId':'2-8',
+          'title': ['BEAUTIFUL!'],
+          'p1': ['Did you know that stop motion was first used in films back in 1897?  Guess when code was invented?'],
+          'p2': ['The world\n\'s first computer program was written around 1843 by a WOMAN named Ada Lovelace.  Google her LATER! But for now, back to YOUR coding project'],
+          'btn': ['Next'],
+          'name':'History'
+        },    
+        {
+          'lessonId':'2-9',
+          'title': ['ADD FILTERS AND SHARE'],
+          'p1': ['Go back and add a few filters to your masterpiece.'],
+          'p2': ['Select "Filters" from the drop down menu on the top lefthand corner of the screen.'],
+          'pstrong': ['Once you\n\'re done, share your hard earned blood sweat and tears (aka your awesome video)!'],
+          'name':'Share'
+        }                
       ],
     },
     'graphics' : {
       'name': 'Graphics',
-      'total' : 6,
+      'total' : 17,
       'elements' : ['drawing', 'animation'],
       'class' : 'graphic-method',
       'learnMore' : [
@@ -277,7 +304,7 @@ var lessonContent =
     },
     'pixelate' : {
       'name': 'Pixelate',
-      'total': 10,
+      'total': 1,
       'elements' : ['pixel grid', 'shape', 'background color', 'pixels color', 'audio reactive', 'motion detection'],
       'class' : 'pixelate-method',
       'learnMore' : [

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -17,10 +16,11 @@
   <meta property="og:title" content="I just coded my video!"/>
   <meta property="og:description" content="Check out my snazzy custom video filter I made with JavaScript."/>
   <meta property="og:type" content="website"/>  
+<!--   <meta property="og:url" content={{url}}/>  
+ -->
   <meta property="og:url" content="http://app.vidcode.io/share"/>  
   <meta property="og:image" content="http://app.vidcode.io/img/fb-image.jpg"/>
   <meta property="og:site_name" content="Vidcode"/>
-  <meta property="og:description" content="Vidcode lets you customize your own videos with code. You can upload videos from Instagram and hack the filters. Start coding your own videos now!"/>
 
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -36,7 +36,6 @@
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
     ga('create', 'UA-50458041-1', 'vidcode.herokuapp.com');
     ga('send', 'pageview');
   </script>
@@ -55,7 +54,8 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
     <li><a class="show-inline" href="/"><img src="/img/logo.png" id="image"></a>
       <a class="small nudge-left show-inline" href="http://vidcode.io/" target="_blank">
         <span class="glyphicon glyphicon-star"></span>About & Updates
-      </a></li>
+      </a>
+    </li>
   </ul>
 
   <div class="mobile-display">
@@ -66,43 +66,37 @@ mixpanel.init("ec6bfc2b9d29e5fb0093fa5e6022efc5",{cross_subdomain_cookie : false
     <p>For now, please enjoy Vidcode on all your larger devices. Learn more at <a href="http://www.vidcode.io/">vidcode.io</a></p>
   </div>
   <div class="general-display">
-	<div class="set-container lesson-page clearfix share-landing">
-	    <div class="share-p-text-container">
-	    {{#if user}}
-	        {{#if user.username}}
-	    	  <h3 class>Made by {{user.username}}</h3>
-	        {{/if}}
-	    {{/if}}
-	    </div>
-		<video id="vid-display" controls src="/video/?file={{file}}"></video>
+  <div class="set-container lesson-page clearfix share-landing">
+    <h2 class="is-hidden">title</h2>
+      <h2 class="is-hidden">desc</h2>
+      <div class="share-p-text-container">
+      {{#if user}}
+          {{#if user.username}}
+          <h3 class>Made by {{user.username}}</h3>
+          {{/if}}
+      {{/if}}
+      </div>
+    <video id="vid-display" controls src="/video/?file={{file}}"></video>
     <div class="share-p-text-container">
       <h3 class="kaytitle">{{title}}</h3>
-      <p class="kaydesc">{{descr}}</p>
+      <p class="kaydesc">{{desc}}</p>
     </div>
-		<h2>Share your video</h2>
-		<div class="addthis-container is-hidden">
-			<div class="addthis_sharing_toolbox"></div>
-		</div>
-		<p class="greentext">Thank you for vidcoding!</p>
-		<a class="btn" id="mix-return-to-editor" href="/workstation">Return to Editor</a>
-	</div>
+    <h2>Share your video using:</h2>
+    <div class="addthis-container2">
+      <div class="addthis_sharing_toolbox"></div>
+    </div>
+    <p class="greentext">Thank you for vidcoding!</p>
+    <a class="btn" id="mix-return-to-editor" href="/lesson/1">Return to Editor</a>
+  </div>
   </div>
 
 <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
 <script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="/js/bootstrap.js"></script>
 <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53e5544e45115c2b"></script>
-<script>
-  //addthis functionality and appearance
-  var addThisStyles = function () {
-      $('.at-share-btn').addClass('addthis-spacing');
-      $('.at-share-btn').addClass('addthis-spacing');
-      $('.addthis-container').removeClass('is-hidden');
-  };
-
+<script>  
   $( document ).ready(function() {
-  	mixpanel.track_links("#mix-return-to-editor", "Return to Editor clicked" );
-    setInterval(addThisStyles, 2000);
+    mixpanel.track_links("#mix-return-to-editor", "Return to Editor clicked" );
   });
 </script>
 

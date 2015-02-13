@@ -20,6 +20,7 @@ var userSchema = mongoose.Schema({
     },
     inProgressProjects:{type: Array, default: []},
     videoLibrary: {type: Array, default: []},
+    imageLibrary: {type: Array, default: []},
     vidcodes: {type: Array, default: []},
     vidcode: {
         email: {type: String, trim: true},

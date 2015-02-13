@@ -33,42 +33,29 @@ module.exports = function (app, passport) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function (req, res) {
-
-        var _units = {};
-
-        mongoose.connection.db.collection('units').find().toArray(function (err, result) {
-            if (err) {
-                console.log('err in getting units ' + err);
-            } else {
-                _units = result;
-
-                _units.forEach(function (_unit){
-
-                  _unit.lessons.forEach(function(_lesson){
-
-                    if(req.user.lessons.indexOf(_lesson.lessonId) > -1){
-                      _lesson.viewed = true;
-                      console.log(_lesson);
-                    }
-
-                  });
-
-                });
-
-                if (req.user.vidcodes) {
-                    res.render('profile', {
-                        user: req.user,
-                        videos: req.user.vidcodes,
-                        units: _units
-                    });
-                } else {
-                    res.render('profile', {
-                        user: req.user,
-                        units: _units
-                    });
+        var _units = content;
+        for (var i in content) {
+            _units[i];
+            var learnMore = _units[i]['learnMore'];
+            for (var j in learnMore) {
+                if(req.user.lessons.indexOf(learnMore[j]['lessonId']) > -1){
+                    learnMore[j]['viewed'] = true;
                 }
             }
-        });
+        }
+
+        if (req.user.vidcodes) {
+            res.render('profile', {
+                user: req.user,
+                videos: req.user.vidcodes,
+                units: _units
+            });
+        } else {
+            res.render('profile', {
+                user: req.user,
+                units: _units
+            });
+        }
     });
 
     app.post('/lesson/:lessonId', isLoggedIn, function (req, res) {
@@ -587,7 +574,6 @@ module.exports = function (app, passport) {
                 if (err) {
                     console.log('err in updating vidcode token ' + token + ':' + err);
                 } else {
-
                     console.log('successfully updated vidcode token ' + token);
                 }
             });
@@ -637,7 +623,6 @@ module.exports = function (app, passport) {
                 if (err) {
                   console.log('err in updating Session ' + session + ':' + err);
                 } else {
-
                   console.log('successfully updated vidcode session ' + token);
                 }
               });
@@ -660,6 +645,22 @@ module.exports = function (app, passport) {
         rs.pipe(res);
     });
 
+    app.get('/image', function (req, res) {
+        var file = req.query.file;
+        var rs = gfs.createReadStream({
+            _id: file
+        });
+
+        rs.on('error', function (err) {
+            console.log('An error occurred in reading file ' + file + ': ' + err);
+            res.status(500).end();
+        });
+
+        // res.setHeader("content-type", "video/webm");
+        rs.pipe(res);
+    });
+
+
     app.post('/addVideoNameToUserLibrary/:videoName', isLoggedIn, function (req, res) {
         User.findOne({_id: req.user._id}, function (err, user) {
 
@@ -678,17 +679,7 @@ module.exports = function (app, passport) {
         );
     });
 
-    app.get('/astravideo', isLoggedIn, function (req, res) {
 
-        var bucketName = req.user.astraBucket;
-        var videoName = req.query.videoName;
-
-        astra.getVideoUrl( bucketName, videoName, function(videoUrl){
-            console.log("Video URL =", videoUrl);
-            request(videoUrl).pipe(res);
-
-        });
-    });
 
 // =============================================================================
 // ROUTES TO LESSONS ===========================================================

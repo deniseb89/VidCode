@@ -214,6 +214,7 @@ $(document).ready(function () {
     $(".js-hide-upload").click(function () {
         $('.loader').addClass('is-hidden');
         $(".popup").addClass("is-hidden");
+        $(".fileError").text("");
     });
 
     // Add video to library start
@@ -249,26 +250,37 @@ $(document).ready(function () {
         modalVideoLoad('share');
     });
 
-    // $('.save-btns-container').on('click', ".js-save-code-m", function () {
-    //     modalVideoLoad('save');
-    // });
-
     $('.save-btns-container').on('click', ".js-save-code-m", function () {
-
-        var cmScript = myCodeMirror.getValue();
-
-        var videoSrc = (document.getElementById('myvideo').src);
-
-        var sessionToken = $('#session-token').val();
-
-        $.post("/workstation-update-session", {'lessonId': last_lessonId, 'token': sessionToken, 'videoSrc': videoSrc ,'code': cmScript});
+        modalVideoLoad('save');
     });
 
-    $('.finish-btn-container').on('click', ".js-finish-m", function () {
-        $('.js-finish-m').addClass('inactive-b-a-btn');
-        $('.js-finish-m').addClass('inactive-js-finish-m');
-        $('.js-finish-m').removeClass('js-finish-m');
+
+    $('.finish-btn-container').on('click', ".save-session-btn", function () {
+        $('.ss-modal').addClass('is-hidden');
+        $('.js-hide-a-m').addClass('is-hidden');
+        $('.js-s-onload').addClass('is-hidden');
+        $('.js-h-onload').removeClass('is-hidden');
+        $('.js-ss-both-content').addClass('is-hidden');
+
+        var sessionToken = $('#session-token').val();
+        var videoSrc = (document.getElementById('myvideo').src);
+        var cmScript = myCodeMirror.getValue();
+        var title = $('.js-video-title').val();
+        var descr = $('.js-video-descr').val();
+        
+        $.post("/workstation-update-session", {
+            'lessonId': last_lessonId,
+            'token': sessionToken,
+            'videoSrc': videoSrc,
+            'code': cmScript,
+            'title': title,
+            'descr': descr
+        });
+    });
+
+    $('.finish-btn-container').on('click', ".share-session-btn", function () {
         saveSession(webmBlob);
+        $('.js-finish-m').addClass('is-hidden');
     });
 
     $('.js-hide-a-m').click(function () {
@@ -277,10 +289,8 @@ $(document).ready(function () {
         $('.js-s-onload').addClass('is-hidden');
         $('.js-h-onload').removeClass('is-hidden');
         $('.dl-progress').css('width', '1px');
-        $('.js-finish-m').addClass('inactive-b-a-btn');
-        $('.js-finish-m').addClass('inactive-js-finish-m');
-        $('.js-finish-m').removeClass('js-finish-m');
         $('.js-ss-both-content').addClass('is-hidden');
+        cancelAnimationFrame(rafId);
     });
 
 

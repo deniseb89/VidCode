@@ -245,6 +245,7 @@ var uploadFromComp = function (ev) {
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
         var ext = file.name.split('.').pop();
+        console.log(ext);
         ext = ext.toLowerCase();
         var reader = new FileReader();
 
@@ -269,12 +270,18 @@ var uploadToAstra = function (ev) {
   console.log("CALLED uploadToAstra");
     var files = ev.target.files;
     var maxSize = 25000000;
+    var type;
     //TODO: implement multiple file upload on the server
 
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
         var reader = new FileReader();
         var ext = file.name.split('.').pop();
+        if (file.type.match(/image.*/)) {
+            type = 'image';
+        } else if (file.type.match(/video.*/)) {
+            type = 'video';
+        }
 
         var astra;
 
@@ -291,11 +298,8 @@ var uploadToAstra = function (ev) {
           var astraBucketName = astra.bucketName;
 
           var objectVideoName = createGuid() + '-' + file.name;
-
-            console.log("Astra Key: ", astraKey);
-            console.log("Astra Bucket: ", astraBucketName);
-            console.log("Astra File: ", objectVideoName);
-            console.log("jQuery version: ",$().jquery);
+          console.log("Astra Bucket: ", astraBucketName);
+          console.log("Astra File: ", objectVideoName);
 
           reader.onload = (function (theFile) {
             console.log("START UPLOAD TO ASTRA");
@@ -303,9 +307,10 @@ var uploadToAstra = function (ev) {
                   if (file.size < maxSize) {
                       var formData = new FormData();
                       formData.append('name', objectVideoName);
-                      formData.append('type', 'video');
-                      formData.append('format','.'+ext);
+                      formData.append('type', type);
+                      formData.append('format',ext);
                       formData.append('file', file);
+                      console.log(ext);
 
                       $.ajax({
                             xhr: function() {
@@ -680,7 +685,7 @@ var stopDL = function () {
     cancelAnimationFrame(rafId);
     webmBlob = Whammy.fromImageArray(frames, 1000 / 30);
     $('.progressDiv').addClass('is-hidden');
-    activateEndButtons('finish');
+    $('.js-finish-m').removeClass('is-hidden');
 };
 //end Whammy video save
 
@@ -723,9 +728,17 @@ var modalVideoLoad = function (mname) {
     $('.js-' + mname + '-content').removeClass('is-hidden');
     $('.js-ss-title').text(mname);
     $('.cover50').removeClass('is-hidden');
-    $('.progressDiv').removeClass('is-hidden');
-    frames = [];
-    rafId = requestAnimationFrame(drawVideoFrame);
+    if (mname=="share"){
+        $('.progressDiv').removeClass('is-hidden');
+        frames = [];
+        rafId = requestAnimationFrame(drawVideoFrame);
+        $('.js-finish-m').removeClass('save-session-btn');
+        $('.js-finish-m').addClass('share-session-btn');
+    } else if (mname=="save"){
+        $('.js-finish-m').removeClass('is-hidden');
+        $('.js-finish-m').removeClass('share-session-btn');
+        $('.js-finish-m').addClass('save-session-btn');        
+    }
 };
 
 //addthis functionality and appearance
