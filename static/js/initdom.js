@@ -205,6 +205,10 @@ $(document).ready(function () {
         $(".runbtn").text('Play');
     });
 
+    movie.addEventListener('stalled', function () {
+        console.log('playback stalled');
+    });
+
     // End video events section
 
     $(".js-upload-video").click(function () {
@@ -288,6 +292,7 @@ $(document).ready(function () {
         $(this).addClass('is-hidden');
         $('.js-s-onload').addClass('is-hidden');
         $('.js-h-onload').removeClass('is-hidden');
+        $('.js-finish-m').addClass('is-hidden');
         $('.dl-progress').css('width', '1px');
         $('.js-ss-both-content').addClass('is-hidden');
         cancelAnimationFrame(rafId);
