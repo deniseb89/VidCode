@@ -1,4 +1,5 @@
 var movie,
+    audio,
     canvas,
     camera,
     cameraVideo,
@@ -242,6 +243,34 @@ var uploadFromComp = function (ev) {
     var files = ev.target.files;
     var maxSize = 10000000;
     var fileTypes = ['mp4','ogg','webm'];
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var ext = file.name.split('.').pop();
+        console.log(ext);
+        ext = ext.toLowerCase();
+        var reader = new FileReader();
+
+        reader.onload = (function (theFile) {
+            return function (e) {
+                if ((file.size < maxSize)&&(fileTypes.indexOf(ext) >= -1)) {
+                    updateMediaLibrary(file, e.target.result);
+                    $(".popup").addClass("is-hidden");
+                    $(".fileError").text("");
+                } else {
+                    $('.loader').addClass('is-hidden');
+                    $(".fileError").text("Videos must be smaller than 10MB and end with '.mp4', '.webm', or '.ogg'. Try again with a different file.");
+                }
+            };
+        })(file);
+
+        reader.readAsDataURL(file);
+    }
+};
+
+var uploadAudio = function (ev) {
+    var files = ev.target.files;
+    var maxSize = 10000000;
+    var fileTypes = ['mp3','ogg','wav'];
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
         var ext = file.name.split('.').pop();

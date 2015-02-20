@@ -92,6 +92,18 @@
             </div>
 
         </div>
+        <div class="audio-popup is-hidden">
+            10 mb max file size
+            <input type="file" id="inputFile" name="file" multiple value="Select a File"/>
+            <button class="btn js-hide-upload uploadfile">Cancel</button>
+            <p class="fileError"></p>
+
+            <div class="progressDiv progress progress-striped">
+            <div id="upload-progress" class="progress-bar progress-bar-success dl-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+
+        </div>
 
         <div class="set-container lesson-page clearfix">
             <div class="current-lesson-display">
@@ -139,8 +151,9 @@
                              <canvas class="is-hidden" id="bufferCanvas" width="420px" height="250px"></canvas>
                              <canvas class="is-hidden" id="cameraCanvas" width="420px" height="250px"></canvas></canvas>
                              <button type="button" class="runbtn btn btn-danger pullRight is-hidden"></button>
-                    </span>
+                        </span>
                     </div>
+                        <audio src="" controls></audio>
                     <div class="js-switch-appear">
                         <div id="stop-motion-timeline" class="is-hidden stop-motion-method">
                                 <ul id="timeline-sortable"></ul>
@@ -157,6 +170,7 @@
                                 {{/each}}
                                 {{/if}}
                             </div>
+                                <button type="button" class="filter-method btn btn-primary js-upload-audio left-btn">Upload Your Own Audio</button>
                         </div>
 
                         <div id="img-library" class="video-container stop-motion-method is-hidden">

@@ -215,6 +215,10 @@ $(document).ready(function () {
         $(".popup").removeClass("is-hidden");
     });
 
+    $(".js-upload-audio").click(function () {
+        $(".audio-popup").removeClass("is-hidden");
+    });
+
     $(".js-hide-upload").click(function () {
         $('.loader').addClass('is-hidden');
         $(".popup").addClass("is-hidden");
